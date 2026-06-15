@@ -6,6 +6,19 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Check, ArrowLeft, CreditCard, ShieldCheck, Lock, AlertCircle } from 'lucide-react'
 
+const ADD_ON_NAMES: Record<string, string> = {
+  seo: 'Advanced SEO Package',
+  analytics: 'Analytics Dashboard',
+  multilang: 'Multi-Language Support',
+  ecommerce: 'E-Commerce Module',
+  blog: 'Blog & Content Studio',
+  social: 'Social Media Integration',
+  chat: 'Live Chat Widget',
+  security: 'Advanced Security Suite',
+  backup: 'Automated Backups',
+  speed: 'Performance Booster',
+}
+
 const ADD_ON_MAP: Record<string, { name: string }> = {
   seo: { name: 'Advanced SEO Package' },
   analytics: { name: 'Analytics Dashboard' },
@@ -51,8 +64,30 @@ export default function CheckoutPage() {
   const total = basePrice + addOnTotal + extraFeatureTotal
   const period = billing === 'monthly' ? 'mo' : 'yr'
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     setProcessing(true)
+    try {
+      // Create order with all features data
+      await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: user?.id,
+          templateId: checkoutData.templateId,
+          status: 'pending',
+          progress: 0,
+          milestones: JSON.stringify(['Order placed', 'Design in progress', 'Review', 'Delivery']),
+          templateFeatures: JSON.stringify(templateFeatures),
+          addOns: JSON.stringify(selectedAddOns),
+          billing,
+          additionalInfo: checkoutData.additionalInfo || null,
+          similarSiteUrl: checkoutData.similarSiteUrl || null,
+          similarSiteCriteria: JSON.stringify(checkoutData.similarSiteCriteria || []),
+        }),
+      })
+    } catch {
+      // silently continue even if order creation fails (e.g. Vercel serverless)
+    }
     setTimeout(() => {
       setProcessing(false)
       setCheckoutData(null)

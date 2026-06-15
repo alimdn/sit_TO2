@@ -166,6 +166,9 @@ export default function TemplatePreview() {
       templateFeatures: selectedFeatures,
       billing,
       selectedAddOns,
+      additionalInfo,
+      similarSiteUrl,
+      similarSiteCriteria: selectedSimilarities,
     })
     setPreviewTemplate(null)
     setCurrentPage('checkout')

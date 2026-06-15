@@ -22,6 +22,9 @@ export interface CheckoutData {
   templateFeatures: string[]
   billing: 'monthly' | 'annual'
   selectedAddOns: string[]
+  additionalInfo?: string
+  similarSiteUrl?: string
+  similarSiteCriteria?: string[]
 }
 
 interface AppStore {

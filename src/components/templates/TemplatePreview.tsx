@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X } from 'lucide-react'
+import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, ChevronDown } from 'lucide-react'
 
 interface Template {
   id: string
@@ -30,7 +30,6 @@ const ADD_ONS = [
   { id: 'speed', name: 'Performance Booster', description: 'CDN, image optimization, lazy loading & Core Web Vitals tuning' },
 ]
 
-// Pool of extra features users can swap/add
 const EXTRA_FEATURES_POOL = [
   'Responsive Design', 'SEO Optimized', 'Contact Forms', 'Analytics Integration',
   'Multi-page Layout', 'Newsletter Signup', 'Image Gallery', 'Video Support',
@@ -48,6 +47,14 @@ const EXTRA_FEATURES_POOL = [
 
 const FREE_FEATURES_LIMIT = 5
 
+const SIMILARITY_OPTIONS = [
+  { id: 'layout', label: 'Layout', labelAr: 'الشكل', icon: '🏗️' },
+  { id: 'features', label: 'Features', labelAr: 'الميزة', icon: '⚙️' },
+  { id: 'colors', label: 'Colors', labelAr: 'الألوان', icon: '🎨' },
+  { id: 'images', label: 'Image Density', labelAr: 'كثافة الصور', icon: '🖼️' },
+  { id: 'structure', label: 'Structure', labelAr: 'ترتيب الموقع', icon: '📐' },
+]
+
 export default function TemplatePreview() {
   const { previewTemplate, setPreviewTemplate, setCurrentPage, user, setCheckoutData } = useAppStore()
   const [template, setTemplate] = useState<Template | null>(null)
@@ -55,6 +62,11 @@ export default function TemplatePreview() {
   const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly')
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])
   const [showFeaturePicker, setShowFeaturePicker] = useState(false)
+
+  // New: Additional info & similar site
+  const [additionalInfo, setAdditionalInfo] = useState('')
+  const [similarSiteUrl, setSimilarSiteUrl] = useState('')
+  const [selectedSimilarities, setSelectedSimilarities] = useState<string[]>([])
 
   // Reset when template changes
   const prevTemplateRef = useState<string | null>(null)
@@ -64,6 +76,9 @@ export default function TemplatePreview() {
       setSelectedAddOns([])
       setBilling('monthly')
       setShowFeaturePicker(false)
+      setAdditionalInfo('')
+      setSimilarSiteUrl('')
+      setSelectedSimilarities([])
     }
   }
 
@@ -75,7 +90,6 @@ export default function TemplatePreview() {
       .then(data => {
         if (!cancelled) {
           setTemplate(data)
-          // Initialize selected features from template
           const templateFeatures: string[] = data?.features ? JSON.parse(data.features) : []
           setSelectedFeatures(templateFeatures)
         }
@@ -102,9 +116,7 @@ export default function TemplatePreview() {
   const period = billing === 'monthly' ? 'mo' : 'yr'
 
   const toggleAddOn = (id: string) => {
-    setSelectedAddOns(prev =>
-      prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id]
-    )
+    setSelectedAddOns(prev => prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id])
   }
 
   const removeFeature = (feature: string) => {
@@ -118,7 +130,10 @@ export default function TemplatePreview() {
     setShowFeaturePicker(false)
   }
 
-  // Available features to pick (not already selected)
+  const toggleSimilarity = (id: string) => {
+    setSelectedSimilarities(prev => prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id])
+  }
+
   const availableFeatures = EXTRA_FEATURES_POOL.filter(f => !selectedFeatures.includes(f))
 
   const handleProceedToCheckout = () => {
@@ -171,105 +186,90 @@ export default function TemplatePreview() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
         {template ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Left: Preview & Features (2 columns) */}
-            <div className="lg:col-span-2 space-y-8">
-              {/* Full preview image */}
+            {/* Left: Preview, Features, Notes, Similar Site (2 columns) */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Preview image */}
               <div>
                 <h1 className="text-2xl sm:text-3xl font-bold text-[#000f22] mb-4" style={{ letterSpacing: '-0.02em' }}>
                   {template.title}
                 </h1>
                 <p className="text-[#4F5B76] mb-6 leading-relaxed">{template.description}</p>
                 <div className="rounded-2xl overflow-hidden border border-[#e6ebf1] shadow-card">
-                  <img
-                    src={template.image}
-                    alt={template.title}
-                    className="w-full object-cover"
-                  />
+                  <img src={template.image} alt={template.title} className="w-full object-cover" />
                 </div>
               </div>
 
-              {/* Selectable Features */}
-              <div className="bg-white rounded-2xl p-6 border border-[#e6ebf1] shadow-card">
-                <div className="flex items-center justify-between mb-1">
-                  <h2 className="text-lg font-bold text-[#000f22]">Features</h2>
-                  <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-[#f1f4f7] text-[#4F5B76]">
+              {/* Features - compact */}
+              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
+                <div className="flex items-center justify-between mb-2">
+                  <h2 className="text-base font-bold text-[#000f22]">Features</h2>
+                  <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[#f1f4f7] text-[#4F5B76]">
                     {selectedFeatures.length} selected · {FREE_FEATURES_LIMIT} free
                   </span>
                 </div>
-                <p className="text-sm text-[#4F5B76] mb-4">
-                  First {FREE_FEATURES_LIMIT} features are included free. Each additional feature is <span className="font-semibold text-[#000f22]">+$3/{period}</span>.
+                <p className="text-xs text-[#4F5B76] mb-3">
+                  First {FREE_FEATURES_LIMIT} free. Extra: <span className="font-semibold text-[#000f22]">+$3/{period}</span> each.
                 </p>
 
-                {/* Selected features */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                {/* Selected features - compact grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
                   {selectedFeatures.map((feature, i) => {
                     const isFree = i < FREE_FEATURES_LIMIT
                     return (
-                      <div key={i} className={`flex items-center gap-2.5 p-3 rounded-xl border transition-all ${
+                      <div key={i} className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg border text-xs transition-all ${
                         isFree ? 'bg-[#f7fafd] border-transparent' : 'bg-[#FFF8E1] border-[#FFE082]'
                       }`}>
-                        <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
+                        <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${
                           isFree ? 'bg-[#10B981]/10' : 'bg-[#F59E0B]/10'
                         }`}>
-                          <Check className={`h-3.5 w-3.5 ${isFree ? 'text-[#10B981]' : 'text-[#F59E0B]'}`} />
+                          <Check className={`h-2.5 w-2.5 ${isFree ? 'text-[#10B981]' : 'text-[#F59E0B]'}`} />
                         </div>
-                        <span className="text-sm text-[#43474d] flex-1">{feature}</span>
+                        <span className="text-[#43474d] flex-1 truncate">{feature}</span>
                         {!isFree && (
-                          <span className="text-[10px] font-bold text-[#F59E0B] bg-[#F59E0B]/10 px-2 py-0.5 rounded-full">
-                            +$3
-                          </span>
+                          <span className="text-[9px] font-bold text-[#F59E0B]">+$3</span>
                         )}
                         <button
                           onClick={() => removeFeature(feature)}
-                          className="w-5 h-5 rounded-full bg-[#ef4444]/10 hover:bg-[#ef4444]/20 flex items-center justify-center flex-shrink-0 transition-colors"
-                          title="Remove feature"
+                          className="w-4 h-4 rounded-full bg-[#ef4444]/10 hover:bg-[#ef4444]/20 flex items-center justify-center flex-shrink-0"
                         >
-                          <X className="h-3 w-3 text-[#ef4444]" />
+                          <X className="h-2.5 w-2.5 text-[#ef4444]" />
                         </button>
                       </div>
                     )
                   })}
                 </div>
 
-                {/* Add feature button / picker */}
+                {/* Add feature */}
                 <div className="relative">
                   <Button
                     variant="outline"
                     onClick={() => setShowFeaturePicker(!showFeaturePicker)}
-                    className="w-full border-dashed border-[#c4c6ce] hover:border-[#00D1FF] hover:bg-[#00D1FF]/5 text-[#74777e] hover:text-[#00D1FF] h-10"
+                    className="w-full border-dashed border-[#c4c6ce] hover:border-[#00D1FF] hover:bg-[#00D1FF]/5 text-[#74777e] hover:text-[#00D1FF] h-8 text-xs"
                   >
-                    <Plus className="h-4 w-4 mr-2" />
+                    <Plus className="h-3.5 w-3.5 mr-1.5" />
                     {selectedFeatures.length < FREE_FEATURES_LIMIT
-                      ? `Add Feature (${FREE_FEATURES_LIMIT - selectedFeatures.length} free slots left)`
+                      ? `Add Feature (${FREE_FEATURES_LIMIT - selectedFeatures.length} free left)`
                       : 'Add Feature (+$3 each)'
                     }
                   </Button>
 
                   {showFeaturePicker && (
-                    <div className="absolute left-0 right-0 top-12 z-20 bg-white rounded-xl border border-[#e6ebf1] shadow-lg max-h-64 overflow-y-auto">
-                      <div className="p-3">
-                        <input
-                          type="text"
-                          placeholder="Search features..."
-                          className="w-full px-3 py-2 rounded-lg border border-[#e6ebf1] text-sm focus:outline-none focus:ring-2 focus:ring-[#00D1FF]/30 mb-2"
-                          onChange={(e) => {
-                            // Simple filter - just re-render
-                          }}
-                        />
-                        <div className="space-y-1">
+                    <div className="absolute left-0 right-0 top-10 z-20 bg-white rounded-xl border border-[#e6ebf1] shadow-lg max-h-48 overflow-y-auto">
+                      <div className="p-2">
+                        <div className="space-y-0.5">
                           {availableFeatures.map((feature, i) => (
                             <button
                               key={i}
                               onClick={() => addFeature(feature)}
-                              className="w-full text-left px-3 py-2.5 rounded-lg text-sm text-[#43474d] hover:bg-[#00D1FF]/5 hover:text-[#000f22] transition-colors flex items-center gap-2"
+                              className="w-full text-left px-3 py-2 rounded-lg text-xs text-[#43474d] hover:bg-[#00D1FF]/5 hover:text-[#000f22] transition-colors flex items-center gap-2"
                             >
-                              <Plus className="h-3.5 w-3.5 text-[#00D1FF]" />
+                              <Plus className="h-3 w-3 text-[#00D1FF]" />
                               {feature}
                             </button>
                           ))}
                         </div>
                         {availableFeatures.length === 0 && (
-                          <p className="text-sm text-[#74777e] text-center py-3">All features are already selected</p>
+                          <p className="text-xs text-[#74777e] text-center py-2">All features selected</p>
                         )}
                       </div>
                     </div>
@@ -277,26 +277,128 @@ export default function TemplatePreview() {
                 </div>
               </div>
 
-              {/* Suitable Industries */}
+              {/* Suitable Industries - compact */}
               {industries.length > 0 && (
-                <div className="bg-white rounded-2xl p-6 border border-[#e6ebf1] shadow-card">
-                  <h2 className="text-lg font-bold text-[#000f22] mb-4">Suitable For</h2>
-                  <div className="flex flex-wrap gap-2">
+                <div className="bg-white rounded-2xl p-4 border border-[#e6ebf1] shadow-card">
+                  <h2 className="text-sm font-bold text-[#000f22] mb-2">Suitable For</h2>
+                  <div className="flex flex-wrap gap-1.5">
                     {industries.map((industry, i) => (
-                      <Badge key={i} variant="outline" className="text-sm border-[#e6ebf1] text-[#4F5B76] py-1.5 px-3">
+                      <Badge key={i} variant="outline" className="text-xs border-[#e6ebf1] text-[#4F5B76] py-1 px-2.5">
                         {industry}
                       </Badge>
                     ))}
                   </div>
                 </div>
               )}
+
+              {/* Additional Notes */}
+              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-7 h-7 rounded-lg bg-[#00D1FF]/10 flex items-center justify-center">
+                    <MessageSquare className="h-4 w-4 text-[#00D1FF]" />
+                  </div>
+                  <div>
+                    <h2 className="text-sm font-bold text-[#000f22]">Additional Information</h2>
+                    <p className="text-[11px] text-[#74777e]">Share any details or special requests for your website</p>
+                  </div>
+                </div>
+                <textarea
+                  value={additionalInfo}
+                  onChange={(e) => setAdditionalInfo(e.target.value)}
+                  placeholder="e.g., I want a modern look with blue accents, need Arabic language support, prefer a minimalist homepage..."
+                  className="w-full px-4 py-3 rounded-xl border border-[#e6ebf1] bg-[#f7fafd] text-sm text-[#000f22] placeholder:text-[#74777e] focus:outline-none focus:ring-2 focus:ring-[#00D1FF]/30 focus:border-[#00D1FF] resize-none transition-all"
+                  rows={4}
+                />
+                {additionalInfo.length > 0 && (
+                  <p className="text-[10px] text-[#74777e] mt-1.5 text-right">{additionalInfo.length} characters</p>
+                )}
+              </div>
+
+              {/* Similar Website Reference */}
+              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-7 h-7 rounded-lg bg-[#7C3AED]/10 flex items-center justify-center">
+                    <Globe className="h-4 w-4 text-[#7C3AED]" />
+                  </div>
+                  <div>
+                    <h2 className="text-sm font-bold text-[#000f22]">Similar Website</h2>
+                    <p className="text-[11px] text-[#74777e]">Optional — reference a website you like</p>
+                  </div>
+                </div>
+
+                {/* URL input */}
+                <div className="relative mb-4">
+                  <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#74777e]" />
+                  <input
+                    type="url"
+                    value={similarSiteUrl}
+                    onChange={(e) => setSimilarSiteUrl(e.target.value)}
+                    placeholder="https://example.com"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#e6ebf1] bg-[#f7fafd] text-sm text-[#000f22] placeholder:text-[#74777e] focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all"
+                  />
+                  {similarSiteUrl && (
+                    <button
+                      onClick={() => setSimilarSiteUrl('')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#ef4444]/10 hover:bg-[#ef4444]/20 flex items-center justify-center"
+                    >
+                      <X className="h-3 w-3 text-[#ef4444]" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Similarity options - multi-select */}
+                <div>
+                  <p className="text-xs font-medium text-[#43474d] mb-2">What do you like about it? <span className="text-[#74777e] font-normal">(select all that apply)</span></p>
+                  <div className="flex flex-wrap gap-2">
+                    {SIMILARITY_OPTIONS.map((option) => {
+                      const isSelected = selectedSimilarities.includes(option.id)
+                      return (
+                        <button
+                          key={option.id}
+                          onClick={() => toggleSimilarity(option.id)}
+                          className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border text-xs font-medium transition-all duration-200 ${
+                            isSelected
+                              ? 'border-[#7C3AED] bg-[#7C3AED]/5 ring-1 ring-[#7C3AED]/30 text-[#7C3AED]'
+                              : 'border-[#e6ebf1] text-[#4F5B76] hover:border-[#c4c6ce] hover:bg-[#f7fafd]'
+                          }`}
+                        >
+                          <span>{option.icon}</span>
+                          <span>{option.labelAr}</span>
+                          <span className="text-[#74777e]">({option.label})</span>
+                          {isSelected && <Check className="h-3 w-3 ml-0.5" />}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {/* Preview link */}
+                {similarSiteUrl && (
+                  <div className="mt-3 p-2.5 rounded-lg bg-[#7C3AED]/5 border border-[#7C3AED]/10 flex items-center gap-2">
+                    <Globe className="h-3.5 w-3.5 text-[#7C3AED] flex-shrink-0" />
+                    <a
+                      href={similarSiteUrl.startsWith('http') ? similarSiteUrl : `https://${similarSiteUrl}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-[#7C3AED] hover:underline truncate"
+                    >
+                      {similarSiteUrl}
+                    </a>
+                    {selectedSimilarities.length > 0 && (
+                      <span className="text-[10px] text-[#74777e] ml-auto flex-shrink-0">
+                        {selectedSimilarities.length} similarity{selectedSimilarities.length > 1 ? 'ies' : 'y'}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Right: Pricing & Add-ons (1 column) */}
             <div className="space-y-6">
-              {/* Price summary with billing toggle on top */}
+              {/* Price summary with billing toggle */}
               <div className="bg-gradient-to-br from-[#000f22] via-[#0A2540] to-[#0A2540] rounded-2xl text-white sticky top-36 overflow-hidden">
-                {/* Billing toggle - directly above pricing */}
+                {/* Billing toggle */}
                 <div className="px-6 pt-5 pb-4 border-b border-[#768dad]/20">
                   <div className="flex items-center gap-2 mb-3">
                     <ShoppingCart className="h-5 w-5 text-[#00D1FF]" />
@@ -306,9 +408,7 @@ export default function TemplatePreview() {
                     <button
                       onClick={() => setBilling('monthly')}
                       className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
-                        billing === 'monthly'
-                          ? 'bg-[#00D1FF] text-[#000f22] shadow-md'
-                          : 'text-[#768dad] hover:text-white'
+                        billing === 'monthly' ? 'bg-[#00D1FF] text-[#000f22] shadow-md' : 'text-[#768dad] hover:text-white'
                       }`}
                     >
                       Monthly — $30/mo
@@ -316,16 +416,12 @@ export default function TemplatePreview() {
                     <button
                       onClick={() => setBilling('annual')}
                       className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-1.5 ${
-                        billing === 'annual'
-                          ? 'bg-[#00D1FF] text-[#000f22] shadow-md'
-                          : 'text-[#768dad] hover:text-white'
+                        billing === 'annual' ? 'bg-[#00D1FF] text-[#000f22] shadow-md' : 'text-[#768dad] hover:text-white'
                       }`}
                     >
                       Annual — $300/yr
                       <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
-                        billing === 'annual'
-                          ? 'bg-[#000f22] text-[#00D1FF]'
-                          : 'bg-[#10B981]/20 text-[#10B981]'
+                        billing === 'annual' ? 'bg-[#000f22] text-[#00D1FF]' : 'bg-[#10B981]/20 text-[#10B981]'
                       }`}>
                         -17%
                       </span>
@@ -335,7 +431,6 @@ export default function TemplatePreview() {
 
                 {/* Order details */}
                 <div className="p-6 space-y-2.5 pb-4 border-b border-[#768dad]/20">
-                  {/* Template */}
                   <div className="flex items-center gap-3">
                     <img src={template.image} alt="" className="w-12 h-12 rounded-lg object-cover flex-shrink-0" />
                     <div className="flex-1 min-w-0">
@@ -344,15 +439,11 @@ export default function TemplatePreview() {
                     </div>
                   </div>
 
-                  {/* Base plan */}
                   <div className="flex justify-between text-sm pt-2">
-                    <span className="text-[#768dad]">
-                      Plan ({billing === 'monthly' ? 'Monthly' : 'Annual'})
-                    </span>
+                    <span className="text-[#768dad]">Plan ({billing === 'monthly' ? 'Monthly' : 'Annual'})</span>
                     <span>${basePrice}/{period}</span>
                   </div>
 
-                  {/* Extra features cost */}
                   {extraFeaturesCount > 0 && (
                     <div className="flex justify-between text-sm">
                       <span className="text-[#768dad]">Extra features ({extraFeaturesCount} × $3)</span>
@@ -360,18 +451,31 @@ export default function TemplatePreview() {
                     </div>
                   )}
 
-                  {/* Add-ons */}
                   {selectedAddOns.map((addOnId) => {
                     const addOn = ADD_ONS.find(a => a.id === addOnId)
                     return addOn ? (
                       <div key={addOnId} className="flex justify-between text-sm">
                         <span className="text-[#768dad] truncate mr-2">{addOn.name}</span>
-                        <span className="text-[#00D1FF] flex-shrink-0">
-                          +{billing === 'monthly' ? '$3/mo' : '$36/yr'}
-                        </span>
+                        <span className="text-[#00D1FF] flex-shrink-0">+{billing === 'monthly' ? '$3/mo' : '$36/yr'}</span>
                       </div>
                     ) : null
                   })}
+
+                  {/* Similar site & notes indicators */}
+                  {(similarSiteUrl || additionalInfo) && (
+                    <div className="flex flex-wrap gap-1.5 pt-2">
+                      {similarSiteUrl && (
+                        <span className="text-[9px] px-2 py-0.5 rounded-full bg-[#7C3AED]/20 text-[#c4b5fd] flex items-center gap-1">
+                          <Globe className="h-2.5 w-2.5" /> Ref site added
+                        </span>
+                      )}
+                      {additionalInfo && (
+                        <span className="text-[9px] px-2 py-0.5 rounded-full bg-[#00D1FF]/20 text-[#67e8f9] flex items-center gap-1">
+                          <MessageSquare className="h-2.5 w-2.5" /> Notes added
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 <div className="px-6 pt-4 pb-6">
@@ -406,13 +510,12 @@ export default function TemplatePreview() {
               </div>
 
               {/* Add-ons list */}
-              <div className="bg-white rounded-2xl p-6 border border-[#e6ebf1] shadow-card">
-                <div className="mb-5">
-                  <h3 className="font-bold text-[#000f22] mb-1">Add-Ons</h3>
-                  <p className="text-xs text-[#4F5B76]">
+              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
+                <div className="mb-4">
+                  <h3 className="font-bold text-[#000f22] mb-1 text-sm">Add-Ons</h3>
+                  <p className="text-[11px] text-[#4F5B76]">
                     Enhance your website — <span className="font-semibold text-[#000f22]">+$3/month</span> each
-                    <br />
-                    <span className="text-[#74777e]">(Add-ons fees apply for the first year only)</span>
+                    <span className="text-[#74777e]"> (first year only)</span>
                   </p>
                 </div>
                 <div className="space-y-2">
@@ -422,28 +525,27 @@ export default function TemplatePreview() {
                       <button
                         key={addOn.id}
                         onClick={() => toggleAddOn(addOn.id)}
-                        className={`w-full text-left p-3.5 rounded-xl border transition-all duration-200 ${
+                        className={`w-full text-left p-3 rounded-xl border transition-all duration-200 ${
                           isSelected
                             ? 'border-[#00D1FF] bg-[#00D1FF]/5 ring-1 ring-[#00D1FF]/30'
                             : 'border-[#e6ebf1] hover:border-[#c4c6ce] hover:bg-[#f7fafd]'
                         }`}
                       >
-                        <div className="flex items-start gap-3">
-                          <div className={`w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
+                        <div className="flex items-center gap-2.5">
+                          <div className={`w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 transition-colors ${
                             isSelected ? 'bg-[#00D1FF] text-[#000f22]' : 'bg-[#f1f4f7] text-[#74777e]'
                           }`}>
-                            {isSelected ? <Check className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
+                            {isSelected ? <Check className="h-3 w-3" /> : <Plus className="h-3 w-3" />}
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between gap-2">
-                              <span className={`text-sm font-medium ${isSelected ? 'text-[#000f22]' : 'text-[#43474d]'}`}>
+                              <span className={`text-xs font-medium ${isSelected ? 'text-[#000f22]' : 'text-[#43474d]'}`}>
                                 {addOn.name}
                               </span>
-                              <span className={`text-xs font-semibold flex-shrink-0 ${isSelected ? 'text-[#00D1FF]' : 'text-[#74777e]'}`}>
+                              <span className={`text-[11px] font-semibold flex-shrink-0 ${isSelected ? 'text-[#00D1FF]' : 'text-[#74777e]'}`}>
                                 +$3/mo
                               </span>
                             </div>
-                            <p className="text-xs text-[#74777e] mt-0.5 leading-relaxed">{addOn.description}</p>
                           </div>
                         </div>
                       </button>

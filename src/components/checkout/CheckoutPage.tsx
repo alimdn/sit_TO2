@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Check, ArrowLeft, CreditCard, ShieldCheck, Lock, AlertCircle } from 'lucide-react'
+import { Check, ArrowLeft, CreditCard, ShieldCheck, Lock, AlertCircle, LayoutDashboard, Clock } from 'lucide-react'
 
 const ADD_ON_NAMES: Record<string, string> = {
   seo: 'Advanced SEO Package',
@@ -320,11 +320,27 @@ export default function CheckoutPage() {
             </div>
 
             {/* Total */}
-            <div className="flex justify-between items-baseline mb-6">
+            <div className="flex justify-between items-baseline mb-3">
               <span className="text-[#768dad]">Total Due Today</span>
               <div className="text-right">
                 <span className="text-4xl font-bold">${total}</span>
                 <span className="text-[#768dad] text-sm">/{period}</span>
+              </div>
+            </div>
+
+            {/* Delivery & Dashboard alerts */}
+            <div className="space-y-2 mb-4">
+              <div className="flex items-start gap-2 p-2.5 rounded-lg bg-[#10B981]/10 border border-[#10B981]/20">
+                <LayoutDashboard className="h-4 w-4 text-[#10B981] flex-shrink-0 mt-0.5" />
+                <p className="text-[11px] text-[#10B981] leading-relaxed">
+                  <span className="font-semibold">Website Control Panel Included</span> — Full dashboard to manage your website.
+                </p>
+              </div>
+              <div className="flex items-start gap-2 p-2.5 rounded-lg bg-[#00D1FF]/10 border border-[#00D1FF]/20">
+                <Clock className="h-4 w-4 text-[#00D1FF] flex-shrink-0 mt-0.5" />
+                <p className="text-[11px] text-[#67e8f9] leading-relaxed">
+                  <span className="font-semibold">Delivery: 5-7 Business Days</span> — Your website will be ready within 5 to 7 business days.
+                </p>
               </div>
             </div>
 

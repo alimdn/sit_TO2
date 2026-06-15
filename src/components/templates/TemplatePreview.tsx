@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, ChevronDown, PenLine } from 'lucide-react'
+import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, ChevronDown, PenLine, LayoutDashboard, Clock } from 'lucide-react'
 
 interface Template {
   id: string
@@ -542,6 +542,22 @@ export default function TemplatePreview() {
                       * Extra features & add-ons fees apply for the first year only
                     </p>
                   )}
+
+                  {/* Delivery & Dashboard alerts */}
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-start gap-2.5 p-2.5 rounded-lg bg-[#10B981]/10 border border-[#10B981]/20">
+                      <LayoutDashboard className="h-4 w-4 text-[#10B981] flex-shrink-0 mt-0.5" />
+                      <p className="text-[11px] text-[#10B981] leading-relaxed">
+                        <span className="font-semibold">Website Control Panel Included</span> — You&apos;ll get a full dashboard to manage your website content, pages, and settings.
+                      </p>
+                    </div>
+                    <div className="flex items-start gap-2.5 p-2.5 rounded-lg bg-[#00D1FF]/10 border border-[#00D1FF]/20">
+                      <Clock className="h-4 w-4 text-[#00D1FF] flex-shrink-0 mt-0.5" />
+                      <p className="text-[11px] text-[#67e8f9] leading-relaxed">
+                        <span className="font-semibold">Delivery: 5-7 Business Days</span> — Your website will be ready within 5 to 7 business days after order confirmation.
+                      </p>
+                    </div>
+                  </div>
 
                   <Button
                     onClick={handleProceedToCheckout}

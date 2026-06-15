@@ -8,8 +8,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
-import { Copy, Check, FileText, Globe, MessageSquare, Sparkles } from 'lucide-react'
+import { Copy, Check, FileText, Globe, MessageSquare, Sparkles, Plus, Trash2, Edit3, Save } from 'lucide-react'
 
 const ADD_ON_NAMES: Record<string, string> = {
   seo: 'Advanced SEO Package',
@@ -33,6 +35,12 @@ const SIMILARITY_LABELS: Record<string, { en: string; ar: string }> = {
 }
 
 const FREE_FEATURES_LIMIT = 5
+
+interface Milestone {
+  name: string
+  status: 'completed' | 'in_progress' | 'pending'
+  date?: string
+}
 
 interface Order {
   id: string
@@ -58,6 +66,13 @@ export default function AdminOrders() {
   const [statusUpdate, setStatusUpdate] = useState('')
   const [copied, setCopied] = useState(false)
 
+  // Work management state
+  const [editMilestones, setEditMilestones] = useState<Milestone[]>([])
+  const [newMilestoneName, setNewMilestoneName] = useState('')
+  const [editProgress, setEditProgress] = useState(0)
+  const [editNotes, setEditNotes] = useState('')
+  const [isEditing, setIsEditing] = useState(false)
+
   const fetchOrders = () => {
     fetch('/api/orders')
       .then(r => r.json())
@@ -67,7 +82,95 @@ export default function AdminOrders() {
 
   useEffect(() => { fetchOrders() }, [])
 
-  const handleStatusUpdate = async () => {
+  const openOrderDetail = (order: Order) => {
+    setSelected(order)
+    setStatusUpdate(order.status)
+    const milestones = parseMilestones(order.milestones)
+    setEditMilestones(milestones)
+    setEditProgress(order.progress)
+    setEditNotes(order.notes || '')
+    setIsEditing(false)
+  }
+
+  const parseJSON = (str: string | null): string[] => {
+    if (!str) return []
+    try { return JSON.parse(str) } catch { return [] }
+  }
+
+  const parseMilestones = (str: string): Milestone[] => {
+    try {
+      const parsed = JSON.parse(str)
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        if (typeof parsed[0] === 'object') return parsed
+      }
+      // Convert simple string array to Milestone objects
+      return parsed.map((name: string, i: number) => ({
+        name,
+        status: i === 0 ? 'completed' as const : 'pending' as const,
+      }))
+    } catch {
+      return [
+        { name: 'Order Placed', status: 'completed' },
+        { name: 'Design Phase', status: 'pending' },
+        { name: 'Review', status: 'pending' },
+        { name: 'Development', status: 'pending' },
+        { name: 'Delivery', status: 'pending' },
+      ]
+    }
+  }
+
+  const addMilestone = () => {
+    if (!newMilestoneName.trim()) return
+    setEditMilestones(prev => [...prev, { name: newMilestoneName.trim(), status: 'pending' }])
+    setNewMilestoneName('')
+  }
+
+  const removeMilestone = (index: number) => {
+    setEditMilestones(prev => prev.filter((_, i) => i !== index))
+  }
+
+  const toggleMilestoneStatus = (index: number) => {
+    setEditMilestones(prev => prev.map((m, i) => {
+      if (i !== index) return m
+      const next: Record<string, Milestone['status']> = {
+        completed: 'in_progress',
+        in_progress: 'pending',
+        pending: 'completed',
+      }
+      return { ...m, status: next[m.status] }
+    }))
+  }
+
+  const handleSaveWork = async () => {
+    if (!selected) return
+    try {
+      const res = await fetch(`/api/orders/${selected.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          status: statusUpdate,
+          progress: editProgress,
+          milestones: JSON.stringify(editMilestones),
+          notes: editNotes || null,
+        }),
+      })
+      if (res.ok) {
+        toast.success('Order updated successfully')
+        setIsEditing(false)
+        fetchOrders()
+        // Refresh selected order data
+        const updated = await res.json()
+        setSelected(updated)
+        setEditMilestones(parseMilestones(updated.milestones))
+        setEditProgress(updated.progress)
+        setEditNotes(updated.notes || '')
+      }
+    } catch {
+      toast.error('Failed to update order')
+    }
+  }
+
+  const handleStatusOnlyUpdate = async () => {
     if (!selected || !statusUpdate) return
     try {
       const res = await fetch(`/api/orders/${selected.id}`, {
@@ -85,15 +188,11 @@ export default function AdminOrders() {
     }
   }
 
-  const parseJSON = (str: string | null): string[] => {
-    if (!str) return []
-    try { return JSON.parse(str) } catch { return [] }
-  }
-
   const generateOrderText = (order: Order): string => {
     const features = parseJSON(order.templateFeatures)
     const addOns = parseJSON(order.addOns)
     const criteria = parseJSON(order.similarSiteCriteria)
+    const milestones = parseMilestones(order.milestones)
     const lines: string[] = []
 
     lines.push('═══════════════════════════════════════')
@@ -107,6 +206,15 @@ export default function AdminOrders() {
     lines.push(`Billing:   ${order.billing === 'annual' ? 'Annual ($300/yr)' : 'Monthly ($30/mo)'}`)
     lines.push(`Progress:  ${order.progress}%`)
     lines.push('')
+
+    if (milestones.length > 0) {
+      lines.push('── Milestones ──')
+      milestones.forEach((m) => {
+        const icon = m.status === 'completed' ? '[v]' : m.status === 'in_progress' ? '[>]' : '[ ]'
+        lines.push(`  ${icon} ${m.name}${m.date ? ` — ${m.date}` : ''}`)
+      })
+      lines.push('')
+    }
 
     if (features.length > 0) {
       lines.push('── Selected Features ──')
@@ -124,7 +232,7 @@ export default function AdminOrders() {
       lines.push('── Add-Ons ──')
       addOns.forEach((id) => {
         const name = ADD_ON_NAMES[id] || id
-        lines.push(`  [+ ] ${name} (+$3/mo)`)
+        lines.push(`  [+] ${name} (+$3/mo)`)
       })
       lines.push(`  Total: ${addOns.length} add-ons`)
       lines.push('')
@@ -145,6 +253,12 @@ export default function AdminOrders() {
           return label ? `${label.ar} (${label.en})` : c
         }).join(', ')}`)
       }
+      lines.push('')
+    }
+
+    if (order.notes) {
+      lines.push('── Admin Notes ──')
+      lines.push(`  ${order.notes}`)
       lines.push('')
     }
 
@@ -206,7 +320,14 @@ export default function AdminOrders() {
                         {order.status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
                       </Badge>
                     </TableCell>
-                    <TableCell>{order.progress}%</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <div className="w-16 h-1.5 rounded-full bg-[#e6ebf1] overflow-hidden">
+                          <div className="h-full bg-[#00D1FF] rounded-full transition-all" style={{ width: `${order.progress}%` }} />
+                        </div>
+                        <span className="text-xs">{order.progress}%</span>
+                      </div>
+                    </TableCell>
                     <TableCell>
                       <span className="text-xs text-[#4F5B76]">
                         {features.length} feat{addOns.length > 0 ? ` + ${addOns.length} add` : ''}
@@ -214,11 +335,8 @@ export default function AdminOrders() {
                     </TableCell>
                     <TableCell className="text-[#4F5B76]">{new Date(order.createdAt).toLocaleDateString()}</TableCell>
                     <TableCell>
-                      <Button variant="ghost" size="sm" onClick={() => {
-                        setSelected(order)
-                        setStatusUpdate(order.status)
-                      }}>
-                        View
+                      <Button variant="ghost" size="sm" onClick={() => openOrderDetail(order)}>
+                        Manage
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -235,8 +353,8 @@ export default function AdminOrders() {
       </Card>
 
       {/* Order Detail Dialog */}
-      <Dialog open={!!selected} onOpenChange={() => setSelected(null)}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <Dialog open={!!selected} onOpenChange={() => { setSelected(null); setIsEditing(false) }}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <FileText className="h-5 w-5 text-[#00D1FF]" />
@@ -251,32 +369,198 @@ export default function AdminOrders() {
             return (
               <div className="space-y-5 mt-4">
                 {/* Customer & Order Info */}
-                <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
                   <div>
-                    <span className="text-[#4F5B76]">Customer:</span>
+                    <span className="text-[#4F5B76] text-xs">Customer</span>
                     <p className="font-medium">{selected.user?.name}</p>
                   </div>
                   <div>
-                    <span className="text-[#4F5B76]">Email:</span>
-                    <p className="font-medium">{selected.user?.email}</p>
+                    <span className="text-[#4F5B76] text-xs">Email</span>
+                    <p className="font-medium text-xs">{selected.user?.email}</p>
                   </div>
                   <div>
-                    <span className="text-[#4F5B76]">Billing:</span>
+                    <span className="text-[#4F5B76] text-xs">Billing</span>
                     <p className="font-medium capitalize">{selected.billing || 'N/A'}</p>
                   </div>
                   <div>
-                    <span className="text-[#4F5B76]">Created:</span>
+                    <span className="text-[#4F5B76] text-xs">Created</span>
                     <p className="font-medium">{new Date(selected.createdAt).toLocaleDateString()}</p>
+                  </div>
+                </div>
+
+                {/* ─── WORK MANAGEMENT SECTION ─── */}
+                <div className="border border-[#e6ebf1] rounded-2xl overflow-hidden">
+                  <div className="flex items-center justify-between px-5 py-3 bg-[#f7fafd] border-b border-[#e6ebf1]">
+                    <div className="flex items-center gap-2">
+                      <Edit3 className="h-4 w-4 text-[#000f22]" />
+                      <span className="font-semibold text-sm text-[#000f22]">Work Management</span>
+                    </div>
+                    {!isEditing ? (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setIsEditing(true)}
+                        className="h-7 text-xs border-[#00D1FF] text-[#00D1FF] hover:bg-[#00D1FF] hover:text-[#000f22]"
+                      >
+                        <Edit3 className="h-3 w-3 mr-1" /> Edit
+                      </Button>
+                    ) : (
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => { setIsEditing(false); openOrderDetail(selected) }}
+                          className="h-7 text-xs"
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          size="sm"
+                          onClick={handleSaveWork}
+                          className="h-7 text-xs bg-[#10B981] hover:bg-[#059669] text-white"
+                        >
+                          <Save className="h-3 w-3 mr-1" /> Save
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="p-5 space-y-4">
+                    {/* Status & Progress */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label className="text-xs">Status</Label>
+                        {isEditing ? (
+                          <Select value={statusUpdate} onValueChange={setStatusUpdate}>
+                            <SelectTrigger className="h-9 mt-1"><SelectValue /></SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="pending">Pending</SelectItem>
+                              <SelectItem value="in_progress">In Progress</SelectItem>
+                              <SelectItem value="review">Review</SelectItem>
+                              <SelectItem value="completed">Completed</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        ) : (
+                          <Badge className={`${statusColors[selected.status] || 'bg-gray-100 text-gray-600'} mt-1`}>
+                            {selected.status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                          </Badge>
+                        )}
+                      </div>
+                      <div>
+                        <Label className="text-xs">Progress</Label>
+                        {isEditing ? (
+                          <div className="flex items-center gap-2 mt-1">
+                            <input
+                              type="range"
+                              min="0"
+                              max="100"
+                              value={editProgress}
+                              onChange={(e) => setEditProgress(Number(e.target.value))}
+                              className="flex-1 h-1.5 accent-[#00D1FF]"
+                            />
+                            <span className="text-xs font-medium w-8 text-right">{editProgress}%</span>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-2 mt-1">
+                            <div className="flex-1 h-2 rounded-full bg-[#e6ebf1] overflow-hidden">
+                              <div className="h-full bg-[#00D1FF] rounded-full transition-all" style={{ width: `${selected.progress}%` }} />
+                            </div>
+                            <span className="text-xs font-medium">{selected.progress}%</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Milestones */}
+                    <div>
+                      <Label className="text-xs">Milestones</Label>
+                      <div className="mt-1.5 space-y-1.5">
+                        {editMilestones.map((ms, i) => (
+                          <div key={i} className="flex items-center gap-2 p-2 rounded-lg bg-[#f7fafd] border border-[#e6ebf1]">
+                            <button
+                              onClick={() => isEditing && toggleMilestoneStatus(i)}
+                              className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
+                                ms.status === 'completed'
+                                  ? 'bg-[#10B981] text-white'
+                                  : ms.status === 'in_progress'
+                                    ? 'bg-[#00D1FF] text-white'
+                                    : 'bg-[#e6ebf1] text-[#74777e]'
+                              } ${isEditing ? 'cursor-pointer' : 'cursor-default'}`}
+                            >
+                              {ms.status === 'completed' && <Check className="h-3 w-3" />}
+                              {ms.status === 'in_progress' && <span className="text-[8px] font-bold">→</span>}
+                            </button>
+                            <span className={`text-xs flex-1 ${ms.status === 'pending' ? 'text-[#74777e]' : 'text-[#000f22] font-medium'}`}>
+                              {ms.name}
+                            </span>
+                            <Badge className={`text-[9px] px-1.5 py-0 ${
+                              ms.status === 'completed' ? 'bg-[#10B981]/10 text-[#10B981]' :
+                              ms.status === 'in_progress' ? 'bg-[#00D1FF]/10 text-[#00D1FF]' :
+                              'bg-[#e6ebf1] text-[#74777e]'
+                            }`}>
+                              {ms.status === 'completed' ? 'Done' : ms.status === 'in_progress' ? 'Active' : 'Pending'}
+                            </Badge>
+                            {isEditing && (
+                              <button
+                                onClick={() => removeMilestone(i)}
+                                className="w-5 h-5 rounded-full bg-[#ef4444]/10 hover:bg-[#ef4444]/20 flex items-center justify-center"
+                              >
+                                <Trash2 className="h-3 w-3 text-[#ef4444]" />
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Add new milestone */}
+                      {isEditing && (
+                        <div className="flex gap-2 mt-2">
+                          <Input
+                            value={newMilestoneName}
+                            onChange={(e) => setNewMilestoneName(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && addMilestone()}
+                            placeholder="New milestone..."
+                            className="h-8 text-xs"
+                          />
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={addMilestone}
+                            disabled={!newMilestoneName.trim()}
+                            className="h-8 px-3 border-[#00D1FF] text-[#00D1FF] hover:bg-[#00D1FF] hover:text-[#000f22] text-xs flex-shrink-0"
+                          >
+                            <Plus className="h-3 w-3 mr-1" /> Add
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Admin Notes */}
+                    <div>
+                      <Label className="text-xs">Admin Notes</Label>
+                      {isEditing ? (
+                        <Textarea
+                          value={editNotes}
+                          onChange={(e) => setEditNotes(e.target.value)}
+                          placeholder="Add notes about this order..."
+                          className="mt-1 text-xs min-h-[60px]"
+                          rows={3}
+                        />
+                      ) : (
+                        <p className="text-xs text-[#43474d] mt-1 min-h-[20px]">
+                          {selected.notes || 'No notes'}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
 
                 {/* Features as Copyable Text Block */}
                 <div className="bg-[#0A2540] rounded-2xl overflow-hidden">
-                  {/* Header */}
                   <div className="flex items-center justify-between px-5 py-3 border-b border-[#768dad]/20">
                     <div className="flex items-center gap-2">
                       <Sparkles className="h-4 w-4 text-[#00D1FF]" />
-                      <span className="text-white text-sm font-semibold">Order Details</span>
+                      <span className="text-white text-sm font-semibold">Order Details (Copyable)</span>
                     </div>
                     <Button
                       variant="ghost"
@@ -291,8 +575,6 @@ export default function AdminOrders() {
                       )}
                     </Button>
                   </div>
-
-                  {/* Text content */}
                   <div className="p-5">
                     <pre className="text-[#c4d6e8] text-xs leading-relaxed whitespace-pre-wrap font-mono select-all">
                       {orderText}
@@ -300,7 +582,7 @@ export default function AdminOrders() {
                   </div>
                 </div>
 
-                {/* Visual Feature Tags (quick overview) */}
+                {/* Visual Feature Tags */}
                 {features.length > 0 && (
                   <div>
                     <p className="text-xs font-medium text-[#4F5B76] mb-2">Features Overview</p>
@@ -373,30 +655,26 @@ export default function AdminOrders() {
                   </div>
                 )}
 
-                {/* Notes */}
-                {selected.notes && (
-                  <div className="p-3 bg-[#f7fafd] rounded-lg">
-                    <span className="text-xs text-[#4F5B76]">Notes:</span>
-                    <p className="text-sm mt-1">{selected.notes}</p>
+                {/* Quick status update (when not editing) */}
+                {!isEditing && (
+                  <div className="space-y-2 pt-2 border-t border-[#e6ebf1]">
+                    <Label className="text-xs">Quick Status Update</Label>
+                    <div className="flex gap-2">
+                      <Select value={statusUpdate} onValueChange={setStatusUpdate}>
+                        <SelectTrigger className="h-9 text-xs"><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="pending">Pending</SelectItem>
+                          <SelectItem value="in_progress">In Progress</SelectItem>
+                          <SelectItem value="review">Review</SelectItem>
+                          <SelectItem value="completed">Completed</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Button onClick={handleStatusOnlyUpdate} className="h-9 bg-[#000f22] hover:bg-[#0A2540] text-white text-xs px-4">
+                        Update
+                      </Button>
+                    </div>
                   </div>
                 )}
-
-                {/* Update Status */}
-                <div className="space-y-2 pt-2 border-t border-[#e6ebf1]">
-                  <Label>Update Status</Label>
-                  <Select value={statusUpdate} onValueChange={setStatusUpdate}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="pending">Pending</SelectItem>
-                      <SelectItem value="in_progress">In Progress</SelectItem>
-                      <SelectItem value="review">Review</SelectItem>
-                      <SelectItem value="completed">Completed</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <Button onClick={handleStatusUpdate} className="w-full bg-[#000f22] hover:bg-[#0A2540] text-white">
-                  Update Status
-                </Button>
               </div>
             )
           })()}

@@ -1,22 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { db } from '@/lib/db'
+import { fallbackPlans } from '@/lib/fallback-data'
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const plan = await db.subscriptionPlan.findUnique({ where: { id } })
-  if (!plan) return NextResponse.json({ error: 'Not found' }, { status: 404 })
-  return NextResponse.json(plan)
+  try {
+    const { db } = await import('@/lib/db')
+    const plan = await db.subscriptionPlan.findUnique({ where: { id } })
+    if (plan) {
+      return NextResponse.json(plan)
+    }
+  } catch (e) {
+    // Database unavailable, use fallback
+  }
+  const fallback = fallbackPlans.find(p => p.id === id)
+  if (fallback) {
+    return NextResponse.json(fallback)
+  }
+  return NextResponse.json({ error: 'Not found' }, { status: 404 })
 }
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params
-  const body = await req.json()
-  const plan = await db.subscriptionPlan.update({ where: { id }, data: body })
-  return NextResponse.json(plan)
-}
-
-export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params
-  await db.subscriptionPlan.delete({ where: { id } })
-  return NextResponse.json({ success: true })
+  try {
+    const { id } = await params
+    const { db } = await import('@/lib/db')
+    const body = await req.json()
+    const plan = await db.subscriptionPlan.update({ where: { id }, data: body })
+    return NextResponse.json(plan)
+  } catch (e) {
+    return NextResponse.json({ error: 'Database unavailable' }, { status: 503 })
+  }
 }

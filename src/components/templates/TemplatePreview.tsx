@@ -556,50 +556,7 @@ export default function TemplatePreview() {
                 </div>
               </div>
 
-              {/* Add-ons list */}
-              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
-                <div className="mb-4">
-                  <h3 className="font-bold text-[#000f22] mb-1 text-sm">Add-Ons</h3>
-                  <p className="text-[11px] text-[#4F5B76]">
-                    Enhance your website — <span className="font-semibold text-[#000f22]">+$3/month</span> each
-                    <span className="text-[#74777e]"> (first year only)</span>
-                  </p>
-                </div>
-                <div className="space-y-2">
-                  {ADD_ONS.map((addOn) => {
-                    const isSelected = selectedAddOns.includes(addOn.id)
-                    return (
-                      <button
-                        key={addOn.id}
-                        onClick={() => toggleAddOn(addOn.id)}
-                        className={`w-full text-left p-3 rounded-xl border transition-all duration-200 ${
-                          isSelected
-                            ? 'border-[#00D1FF] bg-[#00D1FF]/5 ring-1 ring-[#00D1FF]/30'
-                            : 'border-[#e6ebf1] hover:border-[#c4c6ce] hover:bg-[#f7fafd]'
-                        }`}
-                      >
-                        <div className="flex items-center gap-2.5">
-                          <div className={`w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 transition-colors ${
-                            isSelected ? 'bg-[#00D1FF] text-[#000f22]' : 'bg-[#f1f4f7] text-[#74777e]'
-                          }`}>
-                            {isSelected ? <Check className="h-3 w-3" /> : <Plus className="h-3 w-3" />}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between gap-2">
-                              <span className={`text-xs font-medium ${isSelected ? 'text-[#000f22]' : 'text-[#43474d]'}`}>
-                                {addOn.name}
-                              </span>
-                              <span className={`text-[11px] font-semibold flex-shrink-0 ${isSelected ? 'text-[#00D1FF]' : 'text-[#74777e]'}`}>
-                                +$3/mo
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
+              {/* Add-ons list — hidden from sidebar, features section under image is sufficient */}
             </div>
           </div>
         ) : (

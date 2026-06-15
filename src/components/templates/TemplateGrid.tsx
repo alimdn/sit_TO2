@@ -30,8 +30,11 @@ export default function TemplateGrid() {
   useEffect(() => {
     fetch('/api/templates')
       .then(res => res.json())
-      .then(data => setTemplates(data))
-      .catch(() => {})
+      .then(data => {
+        const list = Array.isArray(data) ? data : (Array.isArray(data?.data) ? data.data : [])
+        setTemplates(list)
+      })
+      .catch(() => setTemplates([]))
   }, [])
 
   const filtered = templates.filter(t => {

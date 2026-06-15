@@ -260,7 +260,7 @@ export default function Home() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-center gap-3">
             <AlertTriangle className="h-4 w-4 flex-shrink-0 animate-pulse" />
             <p className="text-sm font-medium text-center">
-              <span className="font-bold">Notice:</span> E-commerce store services are currently suspended. We apologize for the inconvenience — normal service will resume soon.
+              <span className="font-bold">Notice:</span> E-commerce services are temporarily suspended.
             </p>
             <button
               onClick={() => setShowBanner(false)}

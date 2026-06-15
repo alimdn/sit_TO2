@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
-import { Menu, X, LayoutDashboard, Shield, LogOut } from 'lucide-react'
+import { Menu, X, LayoutDashboard, Shield, LogOut, ShoppingCart } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +14,7 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
 export default function Header() {
-  const { currentPage, setCurrentPage, user, setUser } = useAppStore()
+  const { currentPage, setCurrentPage, user, setUser, checkoutData } = useAppStore()
   const [mobileOpen, setMobileOpen] = useState(false)
 
   const navItems = [
@@ -70,7 +70,28 @@ export default function Header() {
         </nav>
 
         {/* Right side */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-2">
+          {/* Cart */}
+          <button
+            onClick={() => {
+              if (checkoutData) {
+                setCurrentPage('checkout')
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+              } else {
+                setCurrentPage('templates')
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+              }
+            }}
+            className="relative p-1.5 rounded-lg hover:bg-[#f1f4f7] transition-colors group"
+            title={checkoutData ? `Cart: ${1 + checkoutData.selectedAddOns.length} items` : 'Browse Templates'}
+          >
+            <ShoppingCart className="h-4 w-4 text-[#43474d] group-hover:text-[#000f22] transition-colors" />
+            {checkoutData && (
+              <span className="absolute -top-1 -right-1 min-w-[16px] h-4 flex items-center justify-center rounded-full bg-[#00D1FF] text-[#000f22] text-[10px] font-bold px-1 leading-none">
+                {1 + checkoutData.selectedAddOns.length}
+              </span>
+            )}
+          </button>
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -111,13 +132,39 @@ export default function Header() {
           )}
         </div>
 
-        {/* Mobile menu button */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden p-2 rounded-lg hover:bg-[#f1f4f7] transition-colors"
-        >
-          {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-        </button>
+        {/* Right side mobile */}
+        <div className="md:hidden flex items-center gap-2">
+          {/* Cart mobile */}
+          <button
+            onClick={() => {
+              if (checkoutData) {
+                setCurrentPage('checkout')
+                setMobileOpen(false)
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+              } else {
+                setCurrentPage('templates')
+                setMobileOpen(false)
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+              }
+            }}
+            className="relative p-1.5 rounded-lg hover:bg-[#f1f4f7] transition-colors"
+          >
+            <ShoppingCart className="h-4 w-4 text-[#43474d]" />
+            {checkoutData && (
+              <span className="absolute -top-1 -right-1 min-w-[16px] h-4 flex items-center justify-center rounded-full bg-[#00D1FF] text-[#000f22] text-[10px] font-bold px-1 leading-none">
+                {1 + checkoutData.selectedAddOns.length}
+              </span>
+            )}
+          </button>
+
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="p-2 rounded-lg hover:bg-[#f1f4f7] transition-colors"
+          >
+            {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
@@ -138,6 +185,25 @@ export default function Header() {
               </button>
             ))}
             <div className="pt-2 border-t border-[#e6ebf1]">
+              {/* Cart in mobile menu */}
+              {checkoutData && (
+                <button
+                  onClick={() => {
+                    setCurrentPage('checkout')
+                    setMobileOpen(false)
+                    window.scrollTo({ top: 0, behavior: 'smooth' })
+                  }}
+                  className="w-full text-left px-4 py-2.5 rounded-lg text-sm font-medium text-[#43474d] hover:bg-[#f1f4f7] flex items-center justify-between"
+                >
+                  <span className="flex items-center gap-2">
+                    <ShoppingCart className="h-4 w-4" />
+                    Cart
+                  </span>
+                  <span className="min-w-[20px] h-5 flex items-center justify-center rounded-full bg-[#00D1FF] text-[#000f22] text-[10px] font-bold px-1.5">
+                    {1 + checkoutData.selectedAddOns.length}
+                  </span>
+                </button>
+              )}
               {user ? (
                 <>
                   <button

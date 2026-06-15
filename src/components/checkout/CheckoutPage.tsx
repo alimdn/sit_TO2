@@ -19,6 +19,8 @@ const ADD_ON_MAP: Record<string, { name: string }> = {
   speed: { name: 'Performance Booster' },
 }
 
+const FREE_FEATURES_LIMIT = 5
+
 export default function CheckoutPage() {
   const { checkoutData, setCurrentPage, setCheckoutData, user } = useAppStore()
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'paypal' | 'bank'>('card')
@@ -43,12 +45,14 @@ export default function CheckoutPage() {
   const basePrice = billing === 'monthly' ? 30 : 300
   const addOnUnitCost = billing === 'monthly' ? 3 : 36
   const addOnTotal = selectedAddOns.length * addOnUnitCost
-  const total = basePrice + addOnTotal
+  const extraFeaturesCount = Math.max(0, templateFeatures.length - FREE_FEATURES_LIMIT)
+  const extraFeatureUnitCost = billing === 'monthly' ? 3 : 36
+  const extraFeatureTotal = extraFeaturesCount * extraFeatureUnitCost
+  const total = basePrice + addOnTotal + extraFeatureTotal
   const period = billing === 'monthly' ? 'mo' : 'yr'
 
   const handlePayment = () => {
     setProcessing(true)
-    // Simulate payment processing
     setTimeout(() => {
       setProcessing(false)
       setCheckoutData(null)
@@ -103,17 +107,21 @@ export default function CheckoutPage() {
                   {templateCategory}
                 </Badge>
                 <div className="mt-3 flex flex-wrap gap-1.5">
-                  {templateFeatures.slice(0, 4).map((f, i) => (
-                    <span key={i} className="text-[10px] px-2 py-0.5 rounded-full bg-[#f7fafd] text-[#43474d] border border-[#e6ebf1]">
-                      {f}
+                  {templateFeatures.map((f, i) => (
+                    <span key={i} className={`text-[10px] px-2 py-0.5 rounded-full border ${
+                      i < FREE_FEATURES_LIMIT
+                        ? 'bg-[#f7fafd] text-[#43474d] border-[#e6ebf1]'
+                        : 'bg-[#FFF8E1] text-[#92400E] border-[#FFE082]'
+                    }`}>
+                      {f}{i >= FREE_FEATURES_LIMIT && ' (+$3)'}
                     </span>
                   ))}
-                  {templateFeatures.length > 4 && (
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#f7fafd] text-[#74777e]">
-                      +{templateFeatures.length - 4} more
-                    </span>
-                  )}
                 </div>
+                {extraFeaturesCount > 0 && (
+                  <p className="text-[10px] text-[#F59E0B] mt-2">
+                    {extraFeaturesCount} extra feature{extraFeaturesCount > 1 ? 's' : ''} beyond the {FREE_FEATURES_LIMIT} free included
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -142,12 +150,12 @@ export default function CheckoutPage() {
               </div>
             )}
 
-            {selectedAddOns.length > 0 && (
+            {(selectedAddOns.length > 0 || extraFeaturesCount > 0) && (
               <div className="mt-4 p-3 rounded-xl bg-[#FFF8E1] border border-[#FFE082] flex items-start gap-2.5">
                 <AlertCircle className="h-4 w-4 text-[#F59E0B] flex-shrink-0 mt-0.5" />
                 <p className="text-xs text-[#92400E] leading-relaxed">
-                  <span className="font-semibold">Important:</span> Add-ons fees are charged for the <span className="font-semibold">first year only</span>. 
-                  After the first year, your subscription will renew at the base plan price (${basePrice}/{period}) without add-on charges.
+                  <span className="font-semibold">Important:</span> Extra features and add-ons fees are charged for the <span className="font-semibold">first year only</span>. 
+                  After the first year, your subscription will renew at the base plan price (${basePrice}/{period}).
                 </p>
               </div>
             )}
@@ -253,6 +261,13 @@ export default function CheckoutPage() {
                 <span className="font-medium">${basePrice}.00/{period}</span>
               </div>
 
+              {extraFeaturesCount > 0 && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-[#768dad]">Extra features ({extraFeaturesCount} × $3/mo)</span>
+                  <span className="font-medium text-[#F59E0B]">+${extraFeatureTotal}.00/{period}</span>
+                </div>
+              )}
+
               {selectedAddOns.length > 0 && (
                 <div className="flex justify-between text-sm">
                   <span className="text-[#768dad]">Add-ons ({selectedAddOns.length}x $3/mo)</span>
@@ -260,17 +275,10 @@ export default function CheckoutPage() {
                 </div>
               )}
 
-              {billing === 'annual' && selectedAddOns.length > 0 && (
+              {(extraFeaturesCount > 0 || selectedAddOns.length > 0) && (
                 <div className="p-2.5 rounded-lg bg-[#10B981]/10 border border-[#10B981]/20">
                   <p className="text-[10px] text-[#10B981] leading-relaxed">
-                    <span className="font-semibold">After year 1:</span> Renewal at $300/yr only (add-ons charges apply first year)
-                  </p>
-                </div>
-              )}
-              {billing === 'monthly' && selectedAddOns.length > 0 && (
-                <div className="p-2.5 rounded-lg bg-[#10B981]/10 border border-[#10B981]/20">
-                  <p className="text-[10px] text-[#10B981] leading-relaxed">
-                    <span className="font-semibold">After 12 months:</span> Your add-ons fees will be removed, renewal at $30/mo only
+                    <span className="font-semibold">After year 1:</span> Renewal at ${basePrice}/{period} only (extra features & add-ons charges apply first year)
                   </p>
                 </div>
               )}

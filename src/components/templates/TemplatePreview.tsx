@@ -43,11 +43,11 @@ export default function TemplatePreview() {
   return (
     <Sheet open={!!previewTemplate} onOpenChange={(open) => !open && setPreviewTemplate(null)}>
       <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
+        <SheetHeader className="mb-6">
+          <SheetTitle className="text-left">{template?.title ?? 'Template Preview'}</SheetTitle>
+        </SheetHeader>
         {template && (
           <>
-            <SheetHeader className="mb-6">
-              <SheetTitle className="text-left">{template.title}</SheetTitle>
-            </SheetHeader>
 
             <div className="space-y-6">
               {/* Preview image */}

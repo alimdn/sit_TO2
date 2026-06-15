@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
-import { Menu, X, LayoutDashboard, Shield, LogOut, ShoppingCart } from 'lucide-react'
+import { Menu, X, LayoutDashboard, Shield, LogOut, ShoppingCart, FolderOpen } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +14,7 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
 export default function Header() {
-  const { currentPage, setCurrentPage, user, setUser, checkoutData } = useAppStore()
+  const { currentPage, setCurrentPage, user, setUser, checkoutData, setShowProjectFiles } = useAppStore()
   const [mobileOpen, setMobileOpen] = useState(false)
 
   const navItems = [
@@ -92,6 +92,16 @@ export default function Header() {
               </span>
             )}
           </button>
+          {/* Project Files */}
+          {user?.role === 'admin' && (
+            <button
+              onClick={() => setShowProjectFiles(true)}
+              className="relative p-1.5 rounded-lg hover:bg-[#f1f4f7] transition-colors group"
+              title="Project Files"
+            >
+              <FolderOpen className="h-4 w-4 text-[#43474d] group-hover:text-[#000f22] transition-colors" />
+            </button>
+          )}
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -157,6 +167,17 @@ export default function Header() {
             )}
           </button>
 
+          {/* Project Files mobile */}
+          {user?.role === 'admin' && (
+            <button
+              onClick={() => { setShowProjectFiles(true); setMobileOpen(false) }}
+              className="relative p-1.5 rounded-lg hover:bg-[#f1f4f7] transition-colors"
+              title="Project Files"
+            >
+              <FolderOpen className="h-4 w-4 text-[#43474d]" />
+            </button>
+          )}
+
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -202,6 +223,16 @@ export default function Header() {
                   <span className="min-w-[20px] h-5 flex items-center justify-center rounded-full bg-[#00D1FF] text-[#000f22] text-[10px] font-bold px-1.5">
                     {1 + checkoutData.selectedAddOns.length}
                   </span>
+                </button>
+              )}
+              {/* Project Files in mobile menu */}
+              {user?.role === 'admin' && (
+                <button
+                  onClick={() => { setShowProjectFiles(true); setMobileOpen(false) }}
+                  className="w-full text-left px-4 py-2.5 rounded-lg text-sm font-medium text-[#43474d] hover:bg-[#f1f4f7] flex items-center gap-2"
+                >
+                  <FolderOpen className="h-4 w-4" />
+                  Project Files
                 </button>
               )}
               {user ? (

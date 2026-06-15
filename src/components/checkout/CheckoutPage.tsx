@@ -72,6 +72,25 @@ export default function CheckoutPage() {
 
   const handlePayment = async () => {
     setProcessing(true)
+
+    // Build invoice items
+    const invoiceItems: { description: string; amount: number }[] = [
+      { description: `${templateTitle} — ${billing === 'monthly' ? 'Monthly' : 'Annual'} Plan`, amount: basePrice },
+    ]
+    if (extraFeaturesCount > 0) {
+      invoiceItems.push({ description: `Extra Features (${extraFeaturesCount} x $3/${period})`, amount: extraFeatureTotal })
+    }
+    selectedAddOns.forEach((id) => {
+      const name = ADD_ON_NAMES[id] || id
+      invoiceItems.push({ description: `${name}`, amount: addOnUnitCost })
+    })
+    if (domain && domainMonthlyInstallment > 0) {
+      invoiceItems.push({ description: `Domain Installment — ${domain} (${domainInstallmentMonths} x $3)`, amount: domainInstallmentTotal })
+    }
+
+    const invoiceNumber = `INV-${Date.now().toString(36).toUpperCase()}`
+    const invoiceDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+
     try {
       // Create order with all features data
       await fetch('/api/orders', {
@@ -93,6 +112,32 @@ export default function CheckoutPage() {
           domainPrice: domainPrice || null,
         }),
       })
+
+      // Send invoice email
+      if (user?.email) {
+        try {
+          await fetch('/api/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              type: 'invoice',
+              data: {
+                to: user.email,
+                customerName: user.name || 'Customer',
+                customerEmail: user.email,
+                orderId: Date.now().toString(36).toUpperCase(),
+                invoiceNumber,
+                date: invoiceDate,
+                items: invoiceItems,
+                total,
+                billing,
+                paymentMethod: paymentMethod === 'card' ? 'Credit/Debit Card' : paymentMethod === 'paypal' ? 'PayPal' : 'Bank Transfer',
+                siteUrl: `${window.location.origin}`,
+              },
+            }),
+          })
+        } catch { /* email failure shouldn't block checkout */ }
+      }
     } catch {
       // silently continue even if order creation fails (e.g. Vercel serverless)
     }

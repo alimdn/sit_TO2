@@ -143,6 +143,18 @@ export default function AdminOrders() {
     }))
   }
 
+  const getStepDescription = (status: string, progress: number): string => {
+    if (status === 'completed') return 'Your website is now live and ready!'
+    if (status === 'review') return 'Your website design is ready for review and feedback.'
+    if (status === 'in_progress') {
+      if (progress < 30) return 'Our team is working on the initial design concepts.'
+      if (progress < 60) return 'Design is taking shape — refining layouts and features.'
+      if (progress < 90) return 'Development is in progress — building and coding your website.'
+      return 'Final touches and quality assurance testing.'
+    }
+    return 'Your order has been received and is being processed.'
+  }
+
   const handleSaveWork = async () => {
     if (!selected) return
     try {
@@ -166,6 +178,53 @@ export default function AdminOrders() {
         setEditMilestones(parseMilestones(updated.milestones))
         setEditProgress(updated.progress)
         setEditNotes(updated.notes || '')
+
+        // Send progress email to customer
+        try {
+          const currentMilestone = editMilestones.find(m => m.status === 'in_progress') || editMilestones.find(m => m.status === 'completed')
+          await fetch('/api/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              type: 'progress',
+              data: {
+                to: selected.user?.email,
+                customerName: selected.user?.name || 'Customer',
+                orderId: selected.id.slice(-8),
+                currentStep: currentMilestone?.name || statusUpdate.replace('_', ' '),
+                stepDescription: getStepDescription(statusUpdate, editProgress),
+                progress: editProgress,
+                milestones: editMilestones.map(m => ({ name: m.name, status: m.status })),
+                siteUrl: `${window.location.origin}`,
+              },
+            }),
+          })
+        } catch { /* email failure shouldn't block admin */ }
+
+        // Send delivery email if status is completed
+        if (statusUpdate === 'completed' && selected.user?.email) {
+          try {
+            const domain = selected.domain || 'yourwebsite.com'
+            await fetch('/api/send-email', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                type: 'delivery',
+                data: {
+                  to: selected.user.email,
+                  customerName: selected.user.name || 'Customer',
+                  orderId: selected.id.slice(-8),
+                  websiteUrl: `https://${domain}`,
+                  domain,
+                  controlPanelUrl: `${window.location.origin}`,
+                  adminEmail: 'support@webflowsub.com',
+                  billing: selected.billing || 'monthly',
+                  monthlyPrice: selected.billing === 'annual' ? 300 : 30,
+                },
+              }),
+            })
+          } catch { /* email failure shouldn't block admin */ }
+        }
       }
     } catch {
       toast.error('Failed to update order')
@@ -184,6 +243,31 @@ export default function AdminOrders() {
         toast.success('Order status updated')
         setSelected(null)
         fetchOrders()
+
+        // Send delivery email if status is completed
+        if (statusUpdate === 'completed' && selected.user?.email) {
+          try {
+            const domain = selected.domain || 'yourwebsite.com'
+            await fetch('/api/send-email', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                type: 'delivery',
+                data: {
+                  to: selected.user.email,
+                  customerName: selected.user.name || 'Customer',
+                  orderId: selected.id.slice(-8),
+                  websiteUrl: `https://${domain}`,
+                  domain,
+                  controlPanelUrl: `${window.location.origin}`,
+                  adminEmail: 'support@webflowsub.com',
+                  billing: selected.billing || 'monthly',
+                  monthlyPrice: selected.billing === 'annual' ? 300 : 30,
+                },
+              }),
+            })
+          } catch { /* email failure shouldn't block admin */ }
+        }
       }
     } catch {
       toast.error('Failed to update order')

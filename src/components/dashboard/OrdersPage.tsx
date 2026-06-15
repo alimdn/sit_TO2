@@ -44,6 +44,8 @@ interface Order {
   additionalInfo: string | null
   similarSiteUrl: string | null
   similarSiteCriteria: string | null
+  domain: string | null
+  domainPrice: number | null
   createdAt: string
   updatedAt: string
   planId: string | null
@@ -234,6 +236,11 @@ export default function OrdersPage() {
                         Notes included
                       </span>
                     )}
+                    {order.domain && (
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#FF6B35]/10 text-[#FF6B35] flex items-center gap-1">
+                        <Globe className="h-2.5 w-2.5" /> {order.domain}
+                      </span>
+                    )}
                   </div>
 
                   {/* Delivery & Dashboard notice */}
@@ -351,6 +358,25 @@ export default function OrdersPage() {
                         })}
                       </div>
                     )}
+                  </div>
+                )}
+
+                {/* Domain */}
+                {selectedOrder.domain && (
+                  <div className="p-3 bg-[#FF6B35]/5 rounded-xl border border-[#FF6B35]/10">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <Globe className="h-3.5 w-3.5 text-[#FF6B35]" />
+                      <span className="text-xs font-semibold text-[#000f22]">Selected Domain</span>
+                    </div>
+                    <p className="text-sm font-bold text-[#FF6B35]">{selectedOrder.domain}</p>
+                    <div className="text-[10px] text-[#43474d] mt-1">
+                      <span>${selectedOrder.domainPrice?.toFixed(2) || '0.00'}/yr</span>
+                      {selectedOrder.domainPrice && selectedOrder.domainPrice > 50 ? (
+                        <span className="text-[#F59E0B] ml-1">— $50 included + ${(selectedOrder.domainPrice - 50).toFixed(2)} split at $3/mo</span>
+                      ) : selectedOrder.domainPrice && selectedOrder.domainPrice <= 50 ? (
+                        <span className="text-[#10B981] ml-1">— Included free</span>
+                      ) : null}
+                    </div>
                   </div>
                 )}
 

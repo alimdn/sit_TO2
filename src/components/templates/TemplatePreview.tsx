@@ -119,6 +119,12 @@ export default function TemplatePreview() {
   const addOnCostMonthly = selectedAddOns.length * 3
   const addOnCostAnnual = selectedAddOns.length * 36
 
+  // Domain cost calculation
+  const domainBaseIncluded = 50
+  const domainExcess = selectedDomain ? Math.max(0, selectedDomain.price - domainBaseIncluded) : 0
+  const domainMonthlyInstallment = domainExcess > 0 ? 3 : 0
+  const domainInstallmentMonths = domainMonthlyInstallment > 0 ? Math.ceil(domainExcess / domainMonthlyInstallment) : 0
+
   const basePrice = billing === 'monthly' ? basePriceMonthly : basePriceAnnual
   const extraFeatureTotal = billing === 'monthly' ? extraFeatureCost : extraFeatureCost * 12
   const addOnTotal = billing === 'monthly' ? addOnCostMonthly : addOnCostAnnual
@@ -191,12 +197,6 @@ export default function TemplatePreview() {
       setSelectedDomain({ domain, price })
     }
   }
-
-  // Domain cost calculation
-  const domainBaseIncluded = 50
-  const domainExcess = selectedDomain ? Math.max(0, selectedDomain.price - domainBaseIncluded) : 0
-  const domainMonthlyInstallment = domainExcess > 0 ? 3 : 0
-  const domainInstallmentMonths = domainMonthlyInstallment > 0 ? Math.ceil(domainExcess / domainMonthlyInstallment) : 0
 
   const availableFeatures = EXTRA_FEATURES_POOL.filter(f => !selectedFeatures.includes(f))
 

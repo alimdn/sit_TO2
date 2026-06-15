@@ -8,7 +8,7 @@ export default function HeroSection() {
   const { setCurrentPage } = useAppStore()
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[#000f22] via-[#0A2540] to-[#000f22] min-h-[600px] flex items-center">
+    <section className="relative overflow-hidden bg-gradient-to-br from-[#000f22] via-[#0A2540] to-[#000f22] min-h-[450px] flex items-center">
       {/* Background pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-0 w-full h-full" style={{
@@ -23,7 +23,7 @@ export default function HeroSection() {
         backgroundSize: '30px 30px',
       }} />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="animate-fade-in-up">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00D1FF]/10 border border-[#00D1FF]/20 mb-6">
@@ -31,7 +31,7 @@ export default function HeroSection() {
               <span className="text-[#00D1FF] text-xs font-medium">NEW: AI-Powered Design Tools</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6" style={{ letterSpacing: '-0.02em' }}>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-4" style={{ letterSpacing: '-0.02em' }}>
               Build Your Perfect{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D1FF] to-[#10B981]">
                 Website
@@ -39,7 +39,7 @@ export default function HeroSection() {
               with Ease
             </h1>
 
-            <p className="text-lg text-[#768dad] leading-relaxed mb-8 max-w-lg">
+            <p className="text-base text-[#768dad] leading-relaxed mb-6 max-w-lg">
               Professional website design on subscription. Choose from stunning templates, 
               get expert setup, and enjoy ongoing support — all for a predictable monthly price.
             </p>
@@ -50,7 +50,7 @@ export default function HeroSection() {
                   setCurrentPage('templates')
                   window.scrollTo({ top: 0, behavior: 'smooth' })
                 }}
-                className="bg-[#00D1FF] hover:bg-[#00b8e6] text-[#000f22] font-semibold h-12 px-8 text-base"
+                className="bg-[#00D1FF] hover:bg-[#00b8e6] text-[#000f22] font-semibold h-10 px-6 text-sm"
               >
                 Browse Templates
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -61,23 +61,23 @@ export default function HeroSection() {
                   window.scrollTo({ top: 0, behavior: 'smooth' })
                 }}
                 variant="outline"
-                className="border-[#768dad] text-white hover:bg-[#0A2540] h-12 px-8 text-base"
+                className="border-[#768dad] text-white hover:bg-[#0A2540] h-10 px-6 text-sm"
               >
                 View Plans
               </Button>
             </div>
 
-            <div className="flex items-center gap-8 mt-10 pt-8 border-t border-[#768dad]/20">
+            <div className="flex items-center gap-6 mt-6 pt-6 border-t border-[#768dad]/20">
               <div>
-                <div className="text-2xl font-bold text-white">500+</div>
+                <div className="text-xl font-bold text-white">500+</div>
                 <div className="text-xs text-[#768dad]">Websites Built</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-white">98%</div>
+                <div className="text-xl font-bold text-white">98%</div>
                 <div className="text-xs text-[#768dad]">Client Satisfaction</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-white">24/7</div>
+                <div className="text-xl font-bold text-white">24/7</div>
                 <div className="text-xs text-[#768dad]">Support Available</div>
               </div>
             </div>
@@ -91,7 +91,7 @@ export default function HeroSection() {
                 <img
                   src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80"
                   alt="Professional Website Design"
-                  className="w-full h-[400px] object-cover"
+                  className="w-full h-[300px] object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#000f22]/60 to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6">

@@ -1,10 +1,18 @@
 import { NextResponse } from 'next/server'
-import { db } from '@/lib/db'
+import { fallbackFaqs } from '@/lib/fallback-data'
 
 export async function GET() {
-  const faqs = await db.fAQ.findMany({
-    where: { active: true },
-    orderBy: { order: 'asc' },
-  })
-  return NextResponse.json(faqs)
+  try {
+    const { db } = await import('@/lib/db')
+    const faqs = await db.fAQ.findMany({
+      where: { active: true },
+      orderBy: { order: 'asc' },
+    })
+    if (faqs.length > 0) {
+      return NextResponse.json(faqs)
+    }
+  } catch (e) {
+    // Database unavailable, use fallback
+  }
+  return NextResponse.json(fallbackFaqs)
 }

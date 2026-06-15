@@ -1,15 +1,18 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { db } from '@/lib/db'
+import { NextResponse } from 'next/server'
+import { fallbackSocialLinks } from '@/lib/fallback-data'
 
 export async function GET() {
-  const links = await db.socialLink.findMany({
-    orderBy: { order: 'asc' },
-  })
-  return NextResponse.json(links)
-}
-
-export async function POST(req: NextRequest) {
-  const body = await req.json()
-  const link = await db.socialLink.create({ data: body })
-  return NextResponse.json(link)
+  try {
+    const { db } = await import('@/lib/db')
+    const socialLinks = await db.socialLink.findMany({
+      where: { active: true },
+      orderBy: { order: 'asc' },
+    })
+    if (socialLinks.length > 0) {
+      return NextResponse.json(socialLinks)
+    }
+  } catch (e) {
+    // Database unavailable, use fallback
+  }
+  return NextResponse.json(fallbackSocialLinks)
 }

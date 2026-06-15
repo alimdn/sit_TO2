@@ -61,7 +61,7 @@ export default function HeroSection() {
                   window.scrollTo({ top: 0, behavior: 'smooth' })
                 }}
                 variant="outline"
-                className="border-[#768dad] text-white hover:bg-[#0A2540] h-10 px-6 text-sm"
+                className="border-[#00D1FF]/50 text-[#00D1FF] hover:bg-[#00D1FF]/10 hover:border-[#00D1FF] h-10 px-6 text-sm"
               >
                 View Plans
               </Button>

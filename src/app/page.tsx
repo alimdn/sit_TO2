@@ -1,7 +1,8 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useAppStore } from '@/lib/store'
+import { X, AlertTriangle } from 'lucide-react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import HeroSection from '@/components/home/HeroSection'
@@ -249,8 +250,27 @@ export default function Home() {
     }
   }
 
+  const [showBanner, setShowBanner] = useState(true)
+
   return (
     <div className="min-h-screen flex flex-col bg-[#f7fafd]">
+      {/* E-commerce Suspension Alert Banner */}
+      {showBanner && (
+        <div className="bg-gradient-to-r from-[#dc2626] via-[#ef4444] to-[#dc2626] text-white relative z-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-center gap-3">
+            <AlertTriangle className="h-4 w-4 flex-shrink-0 animate-pulse" />
+            <p className="text-sm font-medium text-center">
+              <span className="font-bold">Notice:</span> E-commerce store services are currently suspended. We apologize for the inconvenience — normal service will resume soon.
+            </p>
+            <button
+              onClick={() => setShowBanner(false)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        </div>
+      )}
       <Header />
       <main className="flex-1">
         {renderPage()}

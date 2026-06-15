@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Check, ArrowLeft, CreditCard, ShieldCheck, Lock, AlertCircle, LayoutDashboard, Clock } from 'lucide-react'
+import { Check, ArrowLeft, CreditCard, ShieldCheck, Lock, AlertCircle, LayoutDashboard, Clock, Globe } from 'lucide-react'
 
 const ADD_ON_NAMES: Record<string, string> = {
   seo: 'Advanced SEO Package',
@@ -53,7 +53,7 @@ export default function CheckoutPage() {
     )
   }
 
-  const { templateTitle, templateImage, templateCategory, templateFeatures, billing, selectedAddOns } = checkoutData
+  const { templateTitle, templateImage, templateCategory, templateFeatures, billing, selectedAddOns, domain, domainPrice } = checkoutData
 
   const basePrice = billing === 'monthly' ? 30 : 300
   const addOnUnitCost = billing === 'monthly' ? 3 : 36
@@ -61,7 +61,13 @@ export default function CheckoutPage() {
   const extraFeaturesCount = Math.max(0, templateFeatures.length - FREE_FEATURES_LIMIT)
   const extraFeatureUnitCost = billing === 'monthly' ? 3 : 36
   const extraFeatureTotal = extraFeaturesCount * extraFeatureUnitCost
-  const total = basePrice + addOnTotal + extraFeatureTotal
+  // Domain cost calculation
+  const domainBaseIncluded = 50
+  const domainExcess = domainPrice ? Math.max(0, domainPrice - domainBaseIncluded) : 0
+  const domainMonthlyInstallment = domainExcess > 0 ? 3 : 0
+  const domainInstallmentMonths = domainMonthlyInstallment > 0 ? Math.ceil(domainExcess / domainMonthlyInstallment) : 0
+  const domainInstallmentTotal = billing === 'monthly' ? domainMonthlyInstallment : domainMonthlyInstallment * 12
+  const total = basePrice + addOnTotal + extraFeatureTotal + domainInstallmentTotal
   const period = billing === 'monthly' ? 'mo' : 'yr'
 
   const handlePayment = async () => {
@@ -83,6 +89,8 @@ export default function CheckoutPage() {
           additionalInfo: checkoutData.additionalInfo || null,
           similarSiteUrl: checkoutData.similarSiteUrl || null,
           similarSiteCriteria: JSON.stringify(checkoutData.similarSiteCriteria || []),
+          domain: domain || null,
+          domainPrice: domainPrice || null,
         }),
       })
     } catch {
@@ -156,6 +164,13 @@ export default function CheckoutPage() {
                   <p className="text-[10px] text-[#F59E0B] mt-2">
                     {extraFeaturesCount} extra feature{extraFeaturesCount > 1 ? 's' : ''} beyond the {FREE_FEATURES_LIMIT} free included
                   </p>
+                )}
+                {domain && (
+                  <div className="mt-2 flex items-center gap-1.5 p-2 rounded-lg bg-[#FF6B35]/5 border border-[#FF6B35]/20">
+                    <Globe className="h-3.5 w-3.5 text-[#FF6B35]" />
+                    <span className="text-xs font-medium text-[#FF6B35]">{domain}</span>
+                    <span className="text-[10px] text-[#74777e]">${domainPrice?.toFixed(2)}/yr</span>
+                  </div>
                 )}
               </div>
             </div>
@@ -310,7 +325,14 @@ export default function CheckoutPage() {
                 </div>
               )}
 
-              {(extraFeaturesCount > 0 || selectedAddOns.length > 0) && (
+              {domain && domainMonthlyInstallment > 0 && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-[#768dad]">Domain installment ({domainInstallmentMonths} × $3)</span>
+                  <span className="font-medium text-[#FF6B35]">+${domainInstallmentTotal}.00/{period}</span>
+                </div>
+              )}
+
+              {(extraFeaturesCount > 0 || selectedAddOns.length > 0 || (domain && domainMonthlyInstallment > 0)) && (
                 <div className="p-2.5 rounded-lg bg-[#10B981]/10 border border-[#10B981]/20">
                   <p className="text-[10px] text-[#10B981] leading-relaxed">
                     <span className="font-semibold">After year 1:</span> Renewal at ${basePrice}/{period} only (extra features & add-ons charges apply first year)

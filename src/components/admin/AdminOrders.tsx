@@ -56,6 +56,8 @@ interface Order {
   additionalInfo: string | null
   similarSiteUrl: string | null
   similarSiteCriteria: string | null
+  domain: string | null
+  domainPrice: number | null
   createdAt: string
   user: { name: string; email: string }
 }
@@ -252,6 +254,21 @@ export default function AdminOrders() {
           const label = SIMILARITY_LABELS[c]
           return label ? `${label.ar} (${label.en})` : c
         }).join(', ')}`)
+      }
+      lines.push('')
+    }
+
+    if (order.domain) {
+      lines.push('── Domain ──')
+      lines.push(`  Domain: ${order.domain}`)
+      lines.push(`  Price: $${order.domainPrice?.toFixed(2) || '0.00'}/yr`)
+      const baseIncluded = 50
+      const excess = (order.domainPrice || 0) - baseIncluded
+      if (excess > 0) {
+        const months = Math.ceil(excess / 3)
+        lines.push(`  Note: $${baseIncluded} included + $${excess.toFixed(2)} split at $3/mo for ${months} months`)
+      } else {
+        lines.push('  Note: Included free (under $50)')
       }
       lines.push('')
     }
@@ -652,6 +669,26 @@ export default function AdminOrders() {
                         })}
                       </div>
                     )}
+                  </div>
+                )}
+
+                {/* Domain */}
+                {selected.domain && (
+                  <div className="p-3 bg-[#FF6B35]/5 rounded-xl border border-[#FF6B35]/10">
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                      <Globe className="h-3.5 w-3.5 text-[#FF6B35]" />
+                      <span className="text-xs font-semibold text-[#000f22]">Domain</span>
+                    </div>
+                    <p className="text-sm font-bold text-[#FF6B35]">{selected.domain}</p>
+                    <p className="text-[10px] text-[#43474d] mt-0.5">
+                      ${selected.domainPrice?.toFixed(2) || '0.00'}/yr
+                      {selected.domainPrice && selected.domainPrice > 50 && (
+                        <> — $50 included + ${(selected.domainPrice - 50).toFixed(2)} split at $3/mo</>
+                      )}
+                      {selected.domainPrice && selected.domainPrice <= 50 && (
+                        <> — Included free</>
+                      )}
+                    </p>
                   </div>
                 )}
 

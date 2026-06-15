@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, ChevronDown, PenLine, LayoutDashboard, Clock } from 'lucide-react'
+import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, ChevronDown, PenLine, LayoutDashboard, Clock, Search, AlertTriangle } from 'lucide-react'
 
 interface Template {
   id: string
@@ -64,10 +64,16 @@ export default function TemplatePreview() {
   const [showFeaturePicker, setShowFeaturePicker] = useState(false)
   const [customFeatureInput, setCustomFeatureInput] = useState('')
 
-  // New: Additional info & similar site
+  // Additional info & similar site
   const [additionalInfo, setAdditionalInfo] = useState('')
   const [similarSiteUrl, setSimilarSiteUrl] = useState('')
   const [selectedSimilarities, setSelectedSimilarities] = useState<string[]>([])
+
+  // Domain search
+  const [domainQuery, setDomainQuery] = useState('')
+  const [domainResults, setDomainResults] = useState<any[]>([])
+  const [domainSearching, setDomainSearching] = useState(false)
+  const [selectedDomain, setSelectedDomain] = useState<{ domain: string; price: number } | null>(null)
 
   // Reset when template changes
   const prevTemplateRef = useState<string | null>(null)
@@ -80,6 +86,9 @@ export default function TemplatePreview() {
       setAdditionalInfo('')
       setSimilarSiteUrl('')
       setSelectedSimilarities([])
+      setDomainQuery('')
+      setDomainResults([])
+      setSelectedDomain(null)
     }
   }
 
@@ -113,7 +122,8 @@ export default function TemplatePreview() {
   const basePrice = billing === 'monthly' ? basePriceMonthly : basePriceAnnual
   const extraFeatureTotal = billing === 'monthly' ? extraFeatureCost : extraFeatureCost * 12
   const addOnTotal = billing === 'monthly' ? addOnCostMonthly : addOnCostAnnual
-  const total = basePrice + extraFeatureTotal + addOnTotal
+  const domainInstallmentTotal = billing === 'monthly' ? domainMonthlyInstallment : domainMonthlyInstallment * 12
+  const total = basePrice + extraFeatureTotal + addOnTotal + domainInstallmentTotal
   const period = billing === 'monthly' ? 'mo' : 'yr'
 
   const toggleAddOn = (id: string) => {
@@ -150,6 +160,44 @@ export default function TemplatePreview() {
     setSelectedSimilarities(prev => prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id])
   }
 
+  // Domain search
+  const handleDomainSearch = async () => {
+    if (!domainQuery.trim()) return
+    setDomainSearching(true)
+    setDomainResults([])
+    try {
+      const res = await fetch(`/api/domain-check?q=${encodeURIComponent(domainQuery.trim())}`)
+      const data = await res.json()
+      if (data.results) {
+        setDomainResults(data.results)
+      }
+    } catch {
+      setDomainResults([])
+    }
+    setDomainSearching(false)
+  }
+
+  const handleDomainKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      handleDomainSearch()
+    }
+  }
+
+  const selectDomain = (domain: string, price: number) => {
+    if (selectedDomain?.domain === domain) {
+      setSelectedDomain(null)
+    } else {
+      setSelectedDomain({ domain, price })
+    }
+  }
+
+  // Domain cost calculation
+  const domainBaseIncluded = 50
+  const domainExcess = selectedDomain ? Math.max(0, selectedDomain.price - domainBaseIncluded) : 0
+  const domainMonthlyInstallment = domainExcess > 0 ? 3 : 0
+  const domainInstallmentMonths = domainMonthlyInstallment > 0 ? Math.ceil(domainExcess / domainMonthlyInstallment) : 0
+
   const availableFeatures = EXTRA_FEATURES_POOL.filter(f => !selectedFeatures.includes(f))
 
   const handleProceedToCheckout = () => {
@@ -169,6 +217,8 @@ export default function TemplatePreview() {
       additionalInfo,
       similarSiteUrl,
       similarSiteCriteria: selectedSimilarities,
+      domain: selectedDomain?.domain || null,
+      domainPrice: selectedDomain?.price || null,
     })
     setPreviewTemplate(null)
     setCurrentPage('checkout')
@@ -442,6 +492,137 @@ export default function TemplatePreview() {
                   </div>
                 )}
               </div>
+
+              {/* Domain Search */}
+              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-7 h-7 rounded-lg bg-[#FF6B35]/10 flex items-center justify-center">
+                    <Globe className="h-4 w-4 text-[#FF6B35]" />
+                  </div>
+                  <div>
+                    <h2 className="text-sm font-bold text-[#000f22]">Search Domain</h2>
+                    <p className="text-[11px] text-[#74777e]">Find & add a domain to your order</p>
+                  </div>
+                </div>
+
+                {/* Search input */}
+                <div className="flex gap-2 mb-3">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#74777e]" />
+                    <input
+                      type="text"
+                      value={domainQuery}
+                      onChange={(e) => setDomainQuery(e.target.value)}
+                      onKeyDown={handleDomainKeyDown}
+                      placeholder="e.g. mybusiness.com or mybrand"
+                      className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-[#e6ebf1] bg-[#f7fafd] text-sm text-[#000f22] placeholder:text-[#74777e] focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/20 focus:border-[#FF6B35] transition-all"
+                    />
+                  </div>
+                  <Button
+                    onClick={handleDomainSearch}
+                    disabled={domainSearching || !domainQuery.trim()}
+                    className="h-auto px-4 bg-[#FF6B35] hover:bg-[#e55a2b] text-white font-semibold text-xs disabled:opacity-50"
+                  >
+                    {domainSearching ? (
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <Search className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+
+                {/* Pricing notice */}
+                <div className="flex items-start gap-2 p-2.5 rounded-lg bg-[#FFF8E1] border border-[#FFE082] mb-3">
+                  <AlertTriangle className="h-3.5 w-3.5 text-[#F59E0B] flex-shrink-0 mt-0.5" />
+                  <p className="text-[10px] text-[#92400E] leading-relaxed">
+                    <span className="font-semibold">Domain pricing:</span> Up to $50 is included free. Any amount exceeding $50 is split into <span className="font-semibold">$3/month</span> installments added to your billing.
+                  </p>
+                </div>
+
+                {/* Search results */}
+                {domainResults.length > 0 && (
+                  <div className="space-y-1.5 mb-3">
+                    <p className="text-[10px] font-semibold text-[#43474d] uppercase tracking-wide">Search Results</p>
+                    {domainResults.map((result, i) => (
+                      <button
+                        key={i}
+                        onClick={() => result.available && selectDomain(result.domain, result.price)}
+                        className={`w-full text-left p-2.5 rounded-xl border transition-all duration-200 flex items-center gap-3 ${
+                          !result.available
+                            ? 'border-[#fecaca] bg-[#fef2f2] opacity-60 cursor-not-allowed'
+                            : selectedDomain?.domain === result.domain
+                              ? 'border-[#FF6B35] bg-[#FF6B35]/5 ring-1 ring-[#FF6B35]/30'
+                              : 'border-[#e6ebf1] hover:border-[#FF6B35]/40 hover:bg-[#f7fafd] cursor-pointer'
+                        }`}
+                      >
+                        <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
+                          !result.available
+                            ? 'bg-[#ef4444]/10'
+                            : selectedDomain?.domain === result.domain
+                              ? 'bg-[#FF6B35] text-white'
+                              : 'bg-[#10B981]/10'
+                        }`}>
+                          {!result.available ? (
+                            <X className="h-3.5 w-3.5 text-[#ef4444]" />
+                          ) : selectedDomain?.domain === result.domain ? (
+                            <Check className="h-3.5 w-3.5" />
+                          ) : (
+                            <Check className="h-3.5 w-3.5 text-[#10B981]" />
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <span className={`text-xs font-medium truncate ${
+                              !result.available ? 'text-[#74777e] line-through' : 'text-[#000f22]'
+                            }`}>
+                              {result.domain}
+                            </span>
+                            <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-[#f1f4f7] text-[#74777e] uppercase font-medium">
+                              {result.tld}
+                            </span>
+                          </div>
+                          <p className="text-[10px] text-[#74777e]">
+                            {result.available ? 'Available' : 'Taken'}
+                          </p>
+                        </div>
+                        {result.available && (
+                          <span className={`text-xs font-bold flex-shrink-0 ${
+                            selectedDomain?.domain === result.domain ? 'text-[#FF6B35]' : 'text-[#000f22]'
+                          }`}>
+                            ${result.price.toFixed(2)}/yr
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {/* Selected domain summary */}
+                {selectedDomain && (
+                  <div className="p-3 rounded-xl bg-[#FF6B35]/5 border border-[#FF6B35]/20">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-semibold text-[#000f22]">Selected Domain</span>
+                      <button
+                        onClick={() => setSelectedDomain(null)}
+                        className="w-4 h-4 rounded-full bg-[#ef4444]/10 hover:bg-[#ef4444]/20 flex items-center justify-center"
+                      >
+                        <X className="h-2.5 w-2.5 text-[#ef4444]" />
+                      </button>
+                    </div>
+                    <p className="text-sm font-bold text-[#FF6B35]">{selectedDomain.domain}</p>
+                    <div className="mt-1.5 text-[10px] text-[#43474d] space-y-0.5">
+                      <p>Domain cost: <span className="font-semibold">${selectedDomain.price.toFixed(2)}/yr</span></p>
+                      {selectedDomain.price <= domainBaseIncluded ? (
+                        <p className="text-[#10B981] font-medium">Included free (under ${domainBaseIncluded})</p>
+                      ) : (
+                        <p className="text-[#F59E0B] font-medium">
+                          ${domainBaseIncluded} included + ${domainExcess.toFixed(2)} split into $3/{period} for {domainInstallmentMonths} months
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Right: Pricing & Add-ons (1 column) */}
@@ -511,9 +692,21 @@ export default function TemplatePreview() {
                     ) : null
                   })}
 
+                  {selectedDomain && domainMonthlyInstallment > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-[#768dad]">Domain installment ({domainInstallmentMonths} × $3)</span>
+                      <span className="text-[#FF6B35]">+${domainInstallmentTotal}/{period}</span>
+                    </div>
+                  )}
+
                   {/* Similar site & notes indicators */}
-                  {(similarSiteUrl || additionalInfo) && (
+                  {(similarSiteUrl || additionalInfo || selectedDomain) && (
                     <div className="flex flex-wrap gap-1.5 pt-2">
+                      {selectedDomain && (
+                        <span className="text-[9px] px-2 py-0.5 rounded-full bg-[#FF6B35]/20 text-[#ffb899] flex items-center gap-1">
+                          <Globe className="h-2.5 w-2.5" /> {selectedDomain.domain}
+                        </span>
+                      )}
                       {similarSiteUrl && (
                         <span className="text-[9px] px-2 py-0.5 rounded-full bg-[#7C3AED]/20 text-[#c4b5fd] flex items-center gap-1">
                           <Globe className="h-2.5 w-2.5" /> Ref site added

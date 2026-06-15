@@ -25,6 +25,8 @@ export interface CheckoutData {
   additionalInfo?: string
   similarSiteUrl?: string
   similarSiteCriteria?: string[]
+  domain?: string | null
+  domainPrice?: number | null
 }
 
 interface AppStore {

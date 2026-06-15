@@ -48,11 +48,11 @@ const EXTRA_FEATURES_POOL = [
 const FREE_FEATURES_LIMIT = 5
 
 const SIMILARITY_OPTIONS = [
-  { id: 'layout', label: 'Layout', labelAr: 'الشكل', icon: '🏗️' },
-  { id: 'features', label: 'Features', labelAr: 'الميزة', icon: '⚙️' },
-  { id: 'colors', label: 'Colors', labelAr: 'الألوان', icon: '🎨' },
-  { id: 'images', label: 'Image Density', labelAr: 'كثافة الصور', icon: '🖼️' },
-  { id: 'structure', label: 'Structure', labelAr: 'ترتيب الموقع', icon: '📐' },
+  { id: 'layout', label: 'Layout', icon: '🏗️' },
+  { id: 'features', label: 'Features', icon: '⚙️' },
+  { id: 'colors', label: 'Colors', icon: '🎨' },
+  { id: 'images', label: 'Image Density', icon: '🖼️' },
+  { id: 'structure', label: 'Structure', icon: '📐' },
 ]
 
 export default function TemplatePreview() {
@@ -463,8 +463,7 @@ export default function TemplatePreview() {
                           }`}
                         >
                           <span>{option.icon}</span>
-                          <span>{option.labelAr}</span>
-                          <span className="text-[#74777e]">({option.label})</span>
+                          <span>{option.label}</span>
                           {isSelected && <Check className="h-3 w-3 ml-0.5" />}
                         </button>
                       )

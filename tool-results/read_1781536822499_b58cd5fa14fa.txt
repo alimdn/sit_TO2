@@ -1,0 +1,783 @@
+     1→     1→'use client'
+     2→     2→
+     3→     3→import { useEffect, useState } from 'react'
+     4→     4→import { useAppStore } from '@/lib/store'
+     5→     5→import { Button } from '@/components/ui/button'
+     6→     6→import { Badge } from '@/components/ui/badge'
+     7→     7→import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, ChevronDown, PenLine, LayoutDashboard, Clock, Search, AlertTriangle } from 'lucide-react'
+     8→     8→
+     9→     9→interface Template {
+    10→    10→  id: string
+    11→    11→  title: string
+    12→    12→  description: string
+    13→    13→  category: string
+    14→    14→  image: string
+    15→    15→  features: string
+    16→    16→  industries: string
+    17→    17→  featured: boolean
+    18→    18→}
+    19→    19→
+    20→    20→const ADD_ONS = [
+    21→    21→  { id: 'seo', name: 'Advanced SEO Package', description: 'Optimized meta tags, sitemap, schema markup & weekly SEO reports' },
+    22→    22→  { id: 'analytics', name: 'Analytics Dashboard', description: 'Real-time visitor tracking, conversion funnels & custom reports' },
+    23→    23→  { id: 'multilang', name: 'Multi-Language Support', description: 'Translate your website into up to 5 languages with auto-detection' },
+    24→    24→  { id: 'ecommerce', name: 'E-Commerce Module', description: 'Product catalog, shopping cart, payment integration & inventory' },
+    25→    25→  { id: 'blog', name: 'Blog & Content Studio', description: 'Full blogging platform with categories, tags, scheduling & newsletter' },
+    26→    26→  { id: 'social', name: 'Social Media Integration', description: 'Auto-post, social feeds, share buttons & analytics tracking' },
+    27→    27→  { id: 'chat', name: 'Live Chat Widget', description: 'Real-time chat with visitors, automated greetings & chatbot support' },
+    28→    28→  { id: 'security', name: 'Advanced Security Suite', description: 'DDoS protection, malware scanning, 2FA & security monitoring' },
+    29→    29→  { id: 'backup', name: 'Automated Backups', description: 'Daily backups with one-click restore & 30-day retention' },
+    30→    30→  { id: 'speed', name: 'Performance Booster', description: 'CDN, image optimization, lazy loading & Core Web Vitals tuning' },
+    31→    31→]
+    32→    32→
+    33→    33→const EXTRA_FEATURES_POOL = [
+    34→    34→  'Responsive Design', 'SEO Optimized', 'Contact Forms', 'Analytics Integration',
+    35→    35→  'Multi-page Layout', 'Newsletter Signup', 'Image Gallery', 'Video Support',
+    36→    36→  'Smooth Animations', 'Project Pages', 'About Section', 'Client Testimonials',
+    37→    37→  'Product Catalog', 'Shopping Cart', 'Secure Checkout', 'Inventory Management',
+    38→    38→  'Customer Reviews', 'Payment Integration', 'Content Management', 'Categories & Tags',
+    39→    39→  'Social Sharing', 'Comments System', 'Search Functionality', 'RSS Feed',
+    40→    40→  'Dashboard Layout', 'Data Visualization', 'User Management', 'API Integration',
+    41→    41→  'Authentication', 'Billing Pages', 'Team Pages', 'Service Showcases',
+    42→    42→  'Case Studies', 'Client Portal', 'Multi-language', 'CRM Integration',
+    43→    43→  'Menu Display', 'Online Reservations', 'Photo Gallery', 'Location Map',
+    44→    44→  'Opening Hours', 'Online Ordering', 'Landing Pages', 'Feature Grid',
+    45→    45→  'Pricing Tables', 'Waitlist Signup', 'Product Demo', 'Documentation',
+    46→    46→]
+    47→    47→
+    48→    48→const FREE_FEATURES_LIMIT = 5
+    49→    49→
+    50→    50→const SIMILARITY_OPTIONS = [
+    51→    51→  { id: 'layout', label: 'Layout', labelAr: 'الشكل', icon: '🏗️' },
+    52→    52→  { id: 'features', label: 'Features', labelAr: 'الميزة', icon: '⚙️' },
+    53→    53→  { id: 'colors', label: 'Colors', labelAr: 'الألوان', icon: '🎨' },
+    54→    54→  { id: 'images', label: 'Image Density', labelAr: 'كثافة الصور', icon: '🖼️' },
+    55→    55→  { id: 'structure', label: 'Structure', labelAr: 'ترتيب الموقع', icon: '📐' },
+    56→    56→]
+    57→    57→
+    58→    58→export default function TemplatePreview() {
+    59→    59→  const { previewTemplate, setPreviewTemplate, setCurrentPage, user, setCheckoutData } = useAppStore()
+    60→    60→  const [template, setTemplate] = useState<Template | null>(null)
+    61→    61→  const [selectedAddOns, setSelectedAddOns] = useState<string[]>([])
+    62→    62→  const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly')
+    63→    63→  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])
+    64→    64→  const [showFeaturePicker, setShowFeaturePicker] = useState(false)
+    65→    65→  const [customFeatureInput, setCustomFeatureInput] = useState('')
+    66→    66→
+    67→    67→  // Additional info & similar site
+    68→    68→  const [additionalInfo, setAdditionalInfo] = useState('')
+    69→    69→  const [similarSiteUrl, setSimilarSiteUrl] = useState('')
+    70→    70→  const [selectedSimilarities, setSelectedSimilarities] = useState<string[]>([])
+    71→    71→
+    72→    72→  // Domain search
+    73→    73→  const [domainQuery, setDomainQuery] = useState('')
+    74→    74→  const [domainResults, setDomainResults] = useState<any[]>([])
+    75→    75→  const [domainSearching, setDomainSearching] = useState(false)
+    76→    76→  const [selectedDomain, setSelectedDomain] = useState<{ domain: string; price: number } | null>(null)
+    77→    77→
+    78→    78→  // Reset when template changes
+    79→    79→  const prevTemplateRef = useState<string | null>(null)
+    80→    80→  if (prevTemplateRef[0] !== previewTemplate) {
+    81→    81→    prevTemplateRef[1](previewTemplate)
+    82→    82→    if (previewTemplate) {
+    83→    83→      setSelectedAddOns([])
+    84→    84→      setBilling('monthly')
+    85→    85→      setShowFeaturePicker(false)
+    86→    86→      setAdditionalInfo('')
+    87→    87→      setSimilarSiteUrl('')
+    88→    88→      setSelectedSimilarities([])
+    89→    89→      setDomainQuery('')
+    90→    90→      setDomainResults([])
+    91→    91→      setSelectedDomain(null)
+    92→    92→    }
+    93→    93→  }
+    94→    94→
+    95→    95→  useEffect(() => {
+    96→    96→    if (!previewTemplate) return
+    97→    97→    let cancelled = false
+    98→    98→    fetch(`/api/templates/${previewTemplate}`)
+    99→    99→      .then(res => res.json())
+   100→   100→      .then(data => {
+   101→   101→        if (!cancelled) {
+   102→   102→          setTemplate(data)
+   103→   103→          const templateFeatures: string[] = data?.features ? JSON.parse(data.features) : []
+   104→   104→          setSelectedFeatures(templateFeatures)
+   105→   105→        }
+   106→   106→      })
+   107→   107→      .catch(() => { if (!cancelled) setTemplate(null) })
+   108→   108→    return () => { cancelled = true; setTemplate(null) }
+   109→   109→  }, [previewTemplate])
+   110→   110→
+   111→   111→  if (!previewTemplate) return null
+   112→   112→
+   113→   113→  const industries: string[] = template?.industries ? JSON.parse(template.industries) : []
+   114→   114→
+   115→   115→  const basePriceMonthly = 30
+   116→   116→  const basePriceAnnual = 300
+   117→   117→  const extraFeaturesCount = Math.max(0, selectedFeatures.length - FREE_FEATURES_LIMIT)
+   118→   118→  const extraFeatureCost = extraFeaturesCount * 3
+   119→   119→  const addOnCostMonthly = selectedAddOns.length * 3
+   120→   120→  const addOnCostAnnual = selectedAddOns.length * 36
+   121→   121→
+   122→   122→  const basePrice = billing === 'monthly' ? basePriceMonthly : basePriceAnnual
+   123→   123→  const extraFeatureTotal = billing === 'monthly' ? extraFeatureCost : extraFeatureCost * 12
+   124→   124→  const addOnTotal = billing === 'monthly' ? addOnCostMonthly : addOnCostAnnual
+   125→   125→  const domainInstallmentTotal = billing === 'monthly' ? domainMonthlyInstallment : domainMonthlyInstallment * 12
+   126→   126→  const total = basePrice + extraFeatureTotal + addOnTotal + domainInstallmentTotal
+   127→   127→  const period = billing === 'monthly' ? 'mo' : 'yr'
+   128→   128→
+   129→   129→  const toggleAddOn = (id: string) => {
+   130→   130→    setSelectedAddOns(prev => prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id])
+   131→   131→  }
+   132→   132→
+   133→   133→  const removeFeature = (feature: string) => {
+   134→   134→    setSelectedFeatures(prev => prev.filter(f => f !== feature))
+   135→   135→  }
+   136→   136→
+   137→   137→  const addFeature = (feature: string) => {
+   138→   138→    if (!selectedFeatures.includes(feature)) {
+   139→   139→      setSelectedFeatures(prev => [...prev, feature])
+   140→   140→    }
+   141→   141→    setShowFeaturePicker(false)
+   142→   142→  }
+   143→   143→
+   144→   144→  const addCustomFeature = () => {
+   145→   145→    const trimmed = customFeatureInput.trim()
+   146→   146→    if (trimmed && !selectedFeatures.includes(trimmed)) {
+   147→   147→      setSelectedFeatures(prev => [...prev, trimmed])
+   148→   148→    }
+   149→   149→    setCustomFeatureInput('')
+   150→   150→  }
+   151→   151→
+   152→   152→  const handleCustomFeatureKeyDown = (e: React.KeyboardEvent) => {
+   153→   153→    if (e.key === 'Enter') {
+   154→   154→      e.preventDefault()
+   155→   155→      addCustomFeature()
+   156→   156→    }
+   157→   157→  }
+   158→   158→
+   159→   159→  const toggleSimilarity = (id: string) => {
+   160→   160→    setSelectedSimilarities(prev => prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id])
+   161→   161→  }
+   162→   162→
+   163→   163→  // Domain search
+   164→   164→  const handleDomainSearch = async () => {
+   165→   165→    if (!domainQuery.trim()) return
+   166→   166→    setDomainSearching(true)
+   167→   167→    setDomainResults([])
+   168→   168→    try {
+   169→   169→      const res = await fetch(`/api/domain-check?q=${encodeURIComponent(domainQuery.trim())}`)
+   170→   170→      const data = await res.json()
+   171→   171→      if (data.results) {
+   172→   172→        setDomainResults(data.results)
+   173→   173→      }
+   174→   174→    } catch {
+   175→   175→      setDomainResults([])
+   176→   176→    }
+   177→   177→    setDomainSearching(false)
+   178→   178→  }
+   179→   179→
+   180→   180→  const handleDomainKeyDown = (e: React.KeyboardEvent) => {
+   181→   181→    if (e.key === 'Enter') {
+   182→   182→      e.preventDefault()
+   183→   183→      handleDomainSearch()
+   184→   184→    }
+   185→   185→  }
+   186→   186→
+   187→   187→  const selectDomain = (domain: string, price: number) => {
+   188→   188→    if (selectedDomain?.domain === domain) {
+   189→   189→      setSelectedDomain(null)
+   190→   190→    } else {
+   191→   191→      setSelectedDomain({ domain, price })
+   192→   192→    }
+   193→   193→  }
+   194→   194→
+   195→   195→  // Domain cost calculation
+   196→   196→  const domainBaseIncluded = 50
+   197→   197→  const domainExcess = selectedDomain ? Math.max(0, selectedDomain.price - domainBaseIncluded) : 0
+   198→   198→  const domainMonthlyInstallment = domainExcess > 0 ? 3 : 0
+   199→   199→  const domainInstallmentMonths = domainMonthlyInstallment > 0 ? Math.ceil(domainExcess / domainMonthlyInstallment) : 0
+   200→   200→
+   201→   201→  const availableFeatures = EXTRA_FEATURES_POOL.filter(f => !selectedFeatures.includes(f))
+   202→   202→
+   203→   203→  const handleProceedToCheckout = () => {
+   204→   204→    if (!template) return
+   205→   205→    if (!user) {
+   206→   206→      setCurrentPage('login')
+   207→   207→      return
+   208→   208→    }
+   209→   209→    setCheckoutData({
+   210→   210→      templateId: template.id,
+   211→   211→      templateTitle: template.title,
+   212→   212→      templateImage: template.image,
+   213→   213→      templateCategory: template.category,
+   214→   214→      templateFeatures: selectedFeatures,
+   215→   215→      billing,
+   216→   216→      selectedAddOns,
+   217→   217→      additionalInfo,
+   218→   218→      similarSiteUrl,
+   219→   219→      similarSiteCriteria: selectedSimilarities,
+   220→   220→      domain: selectedDomain?.domain || null,
+   221→   221→      domainPrice: selectedDomain?.price || null,
+   222→   222→    })
+   223→   223→    setPreviewTemplate(null)
+   224→   224→    setCurrentPage('checkout')
+   225→   225→    window.scrollTo({ top: 0, behavior: 'smooth' })
+   226→   226→  }
+   227→   227→
+   228→   228→  return (
+   229→   229→    <div className="fixed inset-0 z-50 bg-[#f7fafd] overflow-y-auto">
+   230→   230→      {/* Top bar */}
+   231→   231→      <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-[#e6ebf1]">
+   232→   232→        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+   233→   233→          <button
+   234→   234→            onClick={() => setPreviewTemplate(null)}
+   235→   235→            className="flex items-center gap-2 text-sm font-medium text-[#43474d] hover:text-[#000f22] transition-colors"
+   236→   236→          >
+   237→   237→            <ArrowLeft className="h-4 w-4" />
+   238→   238→            Back to Templates
+   239→   239→          </button>
+   240→   240→          {template && (
+   241→   241→            <div className="flex items-center gap-3">
+   242→   242→              <Badge className="bg-[#f1f4f7] text-[#4F5B76] hover:bg-[#e5e8eb] text-xs">
+   243→   243→                {template.category}
+   244→   244→              </Badge>
+   245→   245→              {template.featured && (
+   246→   246→                <Badge className="bg-[#00D1FF]/10 text-[#00D1FF] text-xs">
+   247→   247→                  <Sparkles className="h-3 w-3 mr-1" /> Featured
+   248→   248→                </Badge>
+   249→   249→              )}
+   250→   250→            </div>
+   251→   251→          )}
+   252→   252→        </div>
+   253→   253→      </div>
+   254→   254→
+   255→   255→      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+   256→   256→        {template ? (
+   257→   257→          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+   258→   258→            {/* Left: Preview, Features, Notes, Similar Site (2 columns) */}
+   259→   259→            <div className="lg:col-span-2 space-y-6">
+   260→   260→              {/* Preview image */}
+   261→   261→              <div>
+   262→   262→                <h1 className="text-2xl sm:text-3xl font-bold text-[#000f22] mb-4" style={{ letterSpacing: '-0.02em' }}>
+   263→   263→                  {template.title}
+   264→   264→                </h1>
+   265→   265→                <p className="text-[#4F5B76] mb-6 leading-relaxed">{template.description}</p>
+   266→   266→                <div className="rounded-2xl overflow-hidden border border-[#e6ebf1] shadow-card">
+   267→   267→                  <img src={template.image} alt={template.title} className="w-full object-cover" />
+   268→   268→                </div>
+   269→   269→              </div>
+   270→   270→
+   271→   271→              {/* Features - compact */}
+   272→   272→              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
+   273→   273→                <div className="flex items-center justify-between mb-2">
+   274→   274→                  <h2 className="text-base font-bold text-[#000f22]">Features</h2>
+   275→   275→                  <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[#f1f4f7] text-[#4F5B76]">
+   276→   276→                    {selectedFeatures.length} selected · {FREE_FEATURES_LIMIT} free
+   277→   277→                  </span>
+   278→   278→                </div>
+   279→   279→                <p className="text-xs text-[#4F5B76] mb-3">
+   280→   280→                  First {FREE_FEATURES_LIMIT} free. Extra: <span className="font-semibold text-[#000f22]">+$3/{period}</span> each.
+   281→   281→                </p>
+   282→   282→
+   283→   283→                {/* Selected features - compact grid */}
+   284→   284→                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
+   285→   285→                  {selectedFeatures.map((feature, i) => {
+   286→   286→                    const isFree = i < FREE_FEATURES_LIMIT
+   287→   287→                    return (
+   288→   288→                      <div key={i} className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg border text-xs transition-all ${
+   289→   289→                        isFree ? 'bg-[#f7fafd] border-transparent' : 'bg-[#FFF8E1] border-[#FFE082]'
+   290→   290→                      }`}>
+   291→   291→                        <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${
+   292→   292→                          isFree ? 'bg-[#10B981]/10' : 'bg-[#F59E0B]/10'
+   293→   293→                        }`}>
+   294→   294→                          <Check className={`h-2.5 w-2.5 ${isFree ? 'text-[#10B981]' : 'text-[#F59E0B]'}`} />
+   295→   295→                        </div>
+   296→   296→                        <span className="text-[#43474d] flex-1 truncate">{feature}</span>
+   297→   297→                        {!isFree && (
+   298→   298→                          <span className="text-[9px] font-bold text-[#F59E0B]">+$3</span>
+   299→   299→                        )}
+   300→   300→                        <button
+   301→   301→                          onClick={() => removeFeature(feature)}
+   302→   302→                          className="w-4 h-4 rounded-full bg-[#ef4444]/10 hover:bg-[#ef4444]/20 flex items-center justify-center flex-shrink-0"
+   303→   303→                        >
+   304→   304→                          <X className="h-2.5 w-2.5 text-[#ef4444]" />
+   305→   305→                        </button>
+   306→   306→                      </div>
+   307→   307→                    )
+   308→   308→                  })}
+   309→   309→                </div>
+   310→   310→
+   311→   311→                {/* Add feature from pool */}
+   312→   312→                <div className="relative mb-2">
+   313→   313→                  <Button
+   314→   314→                    variant="outline"
+   315→   315→                    onClick={() => setShowFeaturePicker(!showFeaturePicker)}
+   316→   316→                    className="w-full border-dashed border-[#c4c6ce] hover:border-[#00D1FF] hover:bg-[#00D1FF]/5 text-[#74777e] hover:text-[#00D1FF] h-8 text-xs"
+   317→   317→                  >
+   318→   318→                    <Plus className="h-3.5 w-3.5 mr-1.5" />
+   319→   319→                    {selectedFeatures.length < FREE_FEATURES_LIMIT
+   320→   320→                      ? `Add Feature (${FREE_FEATURES_LIMIT - selectedFeatures.length} free left)`
+   321→   321→                      : 'Add Feature (+$3 each)'
+   322→   322→                    }
+   323→   323→                  </Button>
+   324→   324→
+   325→   325→                  {showFeaturePicker && (
+   326→   326→                    <div className="absolute left-0 right-0 top-10 z-20 bg-white rounded-xl border border-[#e6ebf1] shadow-lg max-h-48 overflow-y-auto">
+   327→   327→                      <div className="p-2">
+   328→   328→                        <div className="space-y-0.5">
+   329→   329→                          {availableFeatures.map((feature, i) => (
+   330→   330→                            <button
+   331→   331→                              key={i}
+   332→   332→                              onClick={() => addFeature(feature)}
+   333→   333→                              className="w-full text-left px-3 py-2 rounded-lg text-xs text-[#43474d] hover:bg-[#00D1FF]/5 hover:text-[#000f22] transition-colors flex items-center gap-2"
+   334→   334→                            >
+   335→   335→                              <Plus className="h-3 w-3 text-[#00D1FF]" />
+   336→   336→                              {feature}
+   337→   337→                            </button>
+   338→   338→                          ))}
+   339→   339→                        </div>
+   340→   340→                        {availableFeatures.length === 0 && (
+   341→   341→                          <p className="text-xs text-[#74777e] text-center py-2">All features selected</p>
+   342→   342→                        )}
+   343→   343→                      </div>
+   344→   344→                    </div>
+   345→   345→                  )}
+   346→   346→                </div>
+   347→   347→
+   348→   348→                {/* Custom feature input */}
+   349→   349→                <div className="relative">
+   350→   350→                  <div className="flex items-center gap-2">
+   351→   351→                    <div className="relative flex-1">
+   352→   352→                      <PenLine className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#74777e]" />
+   353→   353→                      <input
+   354→   354→                        type="text"
+   355→   355→                        value={customFeatureInput}
+   356→   356→                        onChange={(e) => setCustomFeatureInput(e.target.value)}
+   357→   357→                        onKeyDown={handleCustomFeatureKeyDown}
+   358→   358→                        placeholder="Type your own feature..."
+   359→   359→                        className="w-full pl-9 pr-3 py-2 rounded-lg border border-dashed border-[#c4c6ce] bg-[#f7fafd] text-xs text-[#000f22] placeholder:text-[#74777e] focus:outline-none focus:ring-2 focus:ring-[#00D1FF]/20 focus:border-[#00D1FF] transition-all"
+   360→   360→                      />
+   361→   361→                    </div>
+   362→   362→                    <Button
+   363→   363→                      variant="outline"
+   364→   364→                      onClick={addCustomFeature}
+   365→   365→                      disabled={!customFeatureInput.trim()}
+   366→   366→                      className="h-8 px-3 border-[#00D1FF] text-[#00D1FF] hover:bg-[#00D1FF] hover:text-[#000f22] disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-[#00D1FF] text-xs flex-shrink-0"
+   367→   367→                    >
+   368→   368→                      <Plus className="h-3.5 w-3.5 mr-1" />
+   369→   369→                      Add
+   370→   370→                    </Button>
+   371→   371→                  </div>
+   372→   372→                  {selectedFeatures.length >= FREE_FEATURES_LIMIT && customFeatureInput.trim() && (
+   373→   373→                    <p className="text-[10px] text-[#F59E0B] mt-1 flex items-center gap-1">
+   374→   374→                      <span className="font-semibold">+$3/{period}</span> — exceeds free feature limit
+   375→   375→                    </p>
+   376→   376→                  )}
+   377→   377→                </div>
+   378→   378→              </div>
+   379→   379→
+   380→   380→              {/* Suitable Industries - compact */}
+   381→   381→              {industries.length > 0 && (
+   382→   382→                <div className="bg-white rounded-2xl p-4 border border-[#e6ebf1] shadow-card">
+   383→   383→                  <h2 className="text-sm font-bold text-[#000f22] mb-2">Suitable For</h2>
+   384→   384→                  <div className="flex flex-wrap gap-1.5">
+   385→   385→                    {industries.map((industry, i) => (
+   386→   386→                      <Badge key={i} variant="outline" className="text-xs border-[#e6ebf1] text-[#4F5B76] py-1 px-2.5">
+   387→   387→                        {industry}
+   388→   388→                      </Badge>
+   389→   389→                    ))}
+   390→   390→                  </div>
+   391→   391→                </div>
+   392→   392→              )}
+   393→   393→
+   394→   394→              {/* Additional Notes */}
+   395→   395→              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
+   396→   396→                <div className="flex items-center gap-2 mb-3">
+   397→   397→                  <div className="w-7 h-7 rounded-lg bg-[#00D1FF]/10 flex items-center justify-center">
+   398→   398→                    <MessageSquare className="h-4 w-4 text-[#00D1FF]" />
+   399→   399→                  </div>
+   400→   400→                  <div>
+   401→   401→                    <h2 className="text-sm font-bold text-[#000f22]">Additional Information</h2>
+   402→   402→                    <p className="text-[11px] text-[#74777e]">Share any details or special requests for your website</p>
+   403→   403→                  </div>
+   404→   404→                </div>
+   405→   405→                <textarea
+   406→   406→                  value={additionalInfo}
+   407→   407→                  onChange={(e) => setAdditionalInfo(e.target.value)}
+   408→   408→                  placeholder="e.g., I want a modern look with blue accents, need Arabic language support, prefer a minimalist homepage..."
+   409→   409→                  className="w-full px-4 py-3 rounded-xl border border-[#e6ebf1] bg-[#f7fafd] text-sm text-[#000f22] placeholder:text-[#74777e] focus:outline-none focus:ring-2 focus:ring-[#00D1FF]/30 focus:border-[#00D1FF] resize-none transition-all"
+   410→   410→                  rows={4}
+   411→   411→                />
+   412→   412→                {additionalInfo.length > 0 && (
+   413→   413→                  <p className="text-[10px] text-[#74777e] mt-1.5 text-right">{additionalInfo.length} characters</p>
+   414→   414→                )}
+   415→   415→              </div>
+   416→   416→
+   417→   417→              {/* Similar Website Reference */}
+   418→   418→              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
+   419→   419→                <div className="flex items-center gap-2 mb-3">
+   420→   420→                  <div className="w-7 h-7 rounded-lg bg-[#7C3AED]/10 flex items-center justify-center">
+   421→   421→                    <Globe className="h-4 w-4 text-[#7C3AED]" />
+   422→   422→                  </div>
+   423→   423→                  <div>
+   424→   424→                    <h2 className="text-sm font-bold text-[#000f22]">Similar Website</h2>
+   425→   425→                    <p className="text-[11px] text-[#74777e]">Optional — reference a website you like</p>
+   426→   426→                  </div>
+   427→   427→                </div>
+   428→   428→
+   429→   429→                {/* URL input */}
+   430→   430→                <div className="relative mb-4">
+   431→   431→                  <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#74777e]" />
+   432→   432→                  <input
+   433→   433→                    type="url"
+   434→   434→                    value={similarSiteUrl}
+   435→   435→                    onChange={(e) => setSimilarSiteUrl(e.target.value)}
+   436→   436→                    placeholder="https://example.com"
+   437→   437→                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#e6ebf1] bg-[#f7fafd] text-sm text-[#000f22] placeholder:text-[#74777e] focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all"
+   438→   438→                  />
+   439→   439→                  {similarSiteUrl && (
+   440→   440→                    <button
+   441→   441→                      onClick={() => setSimilarSiteUrl('')}
+   442→   442→                      className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#ef4444]/10 hover:bg-[#ef4444]/20 flex items-center justify-center"
+   443→   443→                    >
+   444→   444→                      <X className="h-3 w-3 text-[#ef4444]" />
+   445→   445→                    </button>
+   446→   446→                  )}
+   447→   447→                </div>
+   448→   448→
+   449→   449→                {/* Similarity options - multi-select */}
+   450→   450→                <div>
+   451→   451→                  <p className="text-xs font-medium text-[#43474d] mb-2">What do you like about it? <span className="text-[#74777e] font-normal">(select all that apply)</span></p>
+   452→   452→                  <div className="flex flex-wrap gap-2">
+   453→   453→                    {SIMILARITY_OPTIONS.map((option) => {
+   454→   454→                      const isSelected = selectedSimilarities.includes(option.id)
+   455→   455→                      return (
+   456→   456→                        <button
+   457→   457→                          key={option.id}
+   458→   458→                          onClick={() => toggleSimilarity(option.id)}
+   459→   459→                          className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border text-xs font-medium transition-all duration-200 ${
+   460→   460→                            isSelected
+   461→   461→                              ? 'border-[#7C3AED] bg-[#7C3AED]/5 ring-1 ring-[#7C3AED]/30 text-[#7C3AED]'
+   462→   462→                              : 'border-[#e6ebf1] text-[#4F5B76] hover:border-[#c4c6ce] hover:bg-[#f7fafd]'
+   463→   463→                          }`}
+   464→   464→                        >
+   465→   465→                          <span>{option.icon}</span>
+   466→   466→                          <span>{option.labelAr}</span>
+   467→   467→                          <span className="text-[#74777e]">({option.label})</span>
+   468→   468→                          {isSelected && <Check className="h-3 w-3 ml-0.5" />}
+   469→   469→                        </button>
+   470→   470→                      )
+   471→   471→                    })}
+   472→   472→                  </div>
+   473→   473→                </div>
+   474→   474→
+   475→   475→                {/* Preview link */}
+   476→   476→                {similarSiteUrl && (
+   477→   477→                  <div className="mt-3 p-2.5 rounded-lg bg-[#7C3AED]/5 border border-[#7C3AED]/10 flex items-center gap-2">
+   478→   478→                    <Globe className="h-3.5 w-3.5 text-[#7C3AED] flex-shrink-0" />
+   479→   479→                    <a
+   480→   480→                      href={similarSiteUrl.startsWith('http') ? similarSiteUrl : `https://${similarSiteUrl}`}
+   481→   481→                      target="_blank"
+   482→   482→                      rel="noopener noreferrer"
+   483→   483→                      className="text-xs text-[#7C3AED] hover:underline truncate"
+   484→   484→                    >
+   485→   485→                      {similarSiteUrl}
+   486→   486→                    </a>
+   487→   487→                    {selectedSimilarities.length > 0 && (
+   488→   488→                      <span className="text-[10px] text-[#74777e] ml-auto flex-shrink-0">
+   489→   489→                        {selectedSimilarities.length} similarity{selectedSimilarities.length > 1 ? 'ies' : 'y'}
+   490→   490→                      </span>
+   491→   491→                    )}
+   492→   492→                  </div>
+   493→   493→                )}
+   494→   494→              </div>
+   495→   495→
+   496→   496→              {/* Domain Search */}
+   497→   497→              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
+   498→   498→                <div className="flex items-center gap-2 mb-3">
+   499→   499→                  <div className="w-7 h-7 rounded-lg bg-[#FF6B35]/10 flex items-center justify-center">
+   500→   500→                    <Globe className="h-4 w-4 text-[#FF6B35]" />
+   501→   501→                  </div>
+   502→   502→                  <div>
+   503→   503→                    <h2 className="text-sm font-bold text-[#000f22]">Search Domain</h2>
+   504→   504→                    <p className="text-[11px] text-[#74777e]">Find & add a domain to your order</p>
+   505→   505→                  </div>
+   506→   506→                </div>
+   507→   507→
+   508→   508→                {/* Search input */}
+   509→   509→                <div className="flex gap-2 mb-3">
+   510→   510→                  <div className="relative flex-1">
+   511→   511→                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#74777e]" />
+   512→   512→                    <input
+   513→   513→                      type="text"
+   514→   514→                      value={domainQuery}
+   515→   515→                      onChange={(e) => setDomainQuery(e.target.value)}
+   516→   516→                      onKeyDown={handleDomainKeyDown}
+   517→   517→                      placeholder="e.g. mybusiness.com or mybrand"
+   518→   518→                      className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-[#e6ebf1] bg-[#f7fafd] text-sm text-[#000f22] placeholder:text-[#74777e] focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/20 focus:border-[#FF6B35] transition-all"
+   519→   519→                    />
+   520→   520→                  </div>
+   521→   521→                  <Button
+   522→   522→                    onClick={handleDomainSearch}
+   523→   523→                    disabled={domainSearching || !domainQuery.trim()}
+   524→   524→                    className="h-auto px-4 bg-[#FF6B35] hover:bg-[#e55a2b] text-white font-semibold text-xs disabled:opacity-50"
+   525→   525→                  >
+   526→   526→                    {domainSearching ? (
+   527→   527→                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+   528→   528→                    ) : (
+   529→   529→                      <Search className="h-4 w-4" />
+   530→   530→                    )}
+   531→   531→                  </Button>
+   532→   532→                </div>
+   533→   533→
+   534→   534→                {/* Pricing notice */}
+   535→   535→                <div className="flex items-start gap-2 p-2.5 rounded-lg bg-[#FFF8E1] border border-[#FFE082] mb-3">
+   536→   536→                  <AlertTriangle className="h-3.5 w-3.5 text-[#F59E0B] flex-shrink-0 mt-0.5" />
+   537→   537→                  <p className="text-[10px] text-[#92400E] leading-relaxed">
+   538→   538→                    <span className="font-semibold">Domain pricing:</span> Up to $50 is included free. Any amount exceeding $50 is split into <span className="font-semibold">$3/month</span> installments added to your billing.
+   539→   539→                  </p>
+   540→   540→                </div>
+   541→   541→
+   542→   542→                {/* Search results */}
+   543→   543→                {domainResults.length > 0 && (
+   544→   544→                  <div className="space-y-1.5 mb-3">
+   545→   545→                    <p className="text-[10px] font-semibold text-[#43474d] uppercase tracking-wide">Search Results</p>
+   546→   546→                    {domainResults.map((result, i) => (
+   547→   547→                      <button
+   548→   548→                        key={i}
+   549→   549→                        onClick={() => result.available && selectDomain(result.domain, result.price)}
+   550→   550→                        className={`w-full text-left p-2.5 rounded-xl border transition-all duration-200 flex items-center gap-3 ${
+   551→   551→                          !result.available
+   552→   552→                            ? 'border-[#fecaca] bg-[#fef2f2] opacity-60 cursor-not-allowed'
+   553→   553→                            : selectedDomain?.domain === result.domain
+   554→   554→                              ? 'border-[#FF6B35] bg-[#FF6B35]/5 ring-1 ring-[#FF6B35]/30'
+   555→   555→                              : 'border-[#e6ebf1] hover:border-[#FF6B35]/40 hover:bg-[#f7fafd] cursor-pointer'
+   556→   556→                        }`}
+   557→   557→                      >
+   558→   558→                        <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
+   559→   559→                          !result.available
+   560→   560→                            ? 'bg-[#ef4444]/10'
+   561→   561→                            : selectedDomain?.domain === result.domain
+   562→   562→                              ? 'bg-[#FF6B35] text-white'
+   563→   563→                              : 'bg-[#10B981]/10'
+   564→   564→                        }`}>
+   565→   565→                          {!result.available ? (
+   566→   566→                            <X className="h-3.5 w-3.5 text-[#ef4444]" />
+   567→   567→                          ) : selectedDomain?.domain === result.domain ? (
+   568→   568→                            <Check className="h-3.5 w-3.5" />
+   569→   569→                          ) : (
+   570→   570→                            <Check className="h-3.5 w-3.5 text-[#10B981]" />
+   571→   571→                          )}
+   572→   572→                        </div>
+   573→   573→                        <div className="flex-1 min-w-0">
+   574→   574→                          <div className="flex items-center gap-2">
+   575→   575→                            <span className={`text-xs font-medium truncate ${
+   576→   576→                              !result.available ? 'text-[#74777e] line-through' : 'text-[#000f22]'
+   577→   577→                            }`}>
+   578→   578→                              {result.domain}
+   579→   579→                            </span>
+   580→   580→                            <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-[#f1f4f7] text-[#74777e] uppercase font-medium">
+   581→   581→                              {result.tld}
+   582→   582→                            </span>
+   583→   583→                          </div>
+   584→   584→                          <p className="text-[10px] text-[#74777e]">
+   585→   585→                            {result.available ? 'Available' : 'Taken'}
+   586→   586→                          </p>
+   587→   587→                        </div>
+   588→   588→                        {result.available && (
+   589→   589→                          <span className={`text-xs font-bold flex-shrink-0 ${
+   590→   590→                            selectedDomain?.domain === result.domain ? 'text-[#FF6B35]' : 'text-[#000f22]'
+   591→   591→                          }`}>
+   592→   592→                            ${result.price.toFixed(2)}/yr
+   593→   593→                          </span>
+   594→   594→                        )}
+   595→   595→                      </button>
+   596→   596→                    ))}
+   597→   597→                  </div>
+   598→   598→                )}
+   599→   599→
+   600→   600→                {/* Selected domain summary */}
+   601→   601→                {selectedDomain && (
+   602→   602→                  <div className="p-3 rounded-xl bg-[#FF6B35]/5 border border-[#FF6B35]/20">
+   603→   603→                    <div className="flex items-center justify-between mb-1">
+   604→   604→                      <span className="text-xs font-semibold text-[#000f22]">Selected Domain</span>
+   605→   605→                      <button
+   606→   606→                        onClick={() => setSelectedDomain(null)}
+   607→   607→                        className="w-4 h-4 rounded-full bg-[#ef4444]/10 hover:bg-[#ef4444]/20 flex items-center justify-center"
+   608→   608→                      >
+   609→   609→                        <X className="h-2.5 w-2.5 text-[#ef4444]" />
+   610→   610→                      </button>
+   611→   611→                    </div>
+   612→   612→                    <p className="text-sm font-bold text-[#FF6B35]">{selectedDomain.domain}</p>
+   613→   613→                    <div className="mt-1.5 text-[10px] text-[#43474d] space-y-0.5">
+   614→   614→                      <p>Domain cost: <span className="font-semibold">${selectedDomain.price.toFixed(2)}/yr</span></p>
+   615→   615→                      {selectedDomain.price <= domainBaseIncluded ? (
+   616→   616→                        <p className="text-[#10B981] font-medium">Included free (under ${domainBaseIncluded})</p>
+   617→   617→                      ) : (
+   618→   618→                        <p className="text-[#F59E0B] font-medium">
+   619→   619→                          ${domainBaseIncluded} included + ${domainExcess.toFixed(2)} split into $3/{period} for {domainInstallmentMonths} months
+   620→   620→                        </p>
+   621→   621→                      )}
+   622→   622→                    </div>
+   623→   623→                  </div>
+   624→   624→                )}
+   625→   625→              </div>
+   626→   626→            </div>
+   627→   627→
+   628→   628→            {/* Right: Pricing & Add-ons (1 column) */}
+   629→   629→            <div className="space-y-6">
+   630→   630→              {/* Price summary with billing toggle */}
+   631→   631→              <div className="bg-gradient-to-br from-[#000f22] via-[#0A2540] to-[#0A2540] rounded-2xl text-white sticky top-36 overflow-hidden">
+   632→   632→                {/* Billing toggle */}
+   633→   633→                <div className="px-6 pt-5 pb-4 border-b border-[#768dad]/20">
+   634→   634→                  <div className="flex items-center gap-2 mb-3">
+   635→   635→                    <ShoppingCart className="h-5 w-5 text-[#00D1FF]" />
+   636→   636→                    <span className="font-semibold">Choose your plan</span>
+   637→   637→                  </div>
+   638→   638→                  <div className="flex bg-white/10 rounded-xl p-1 gap-1">
+   639→   639→                    <button
+   640→   640→                      onClick={() => setBilling('monthly')}
+   641→   641→                      className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
+   642→   642→                        billing === 'monthly' ? 'bg-[#00D1FF] text-[#000f22] shadow-md' : 'text-[#768dad] hover:text-white'
+   643→   643→                      }`}
+   644→   644→                    >
+   645→   645→                      Monthly — $30/mo
+   646→   646→                    </button>
+   647→   647→                    <button
+   648→   648→                      onClick={() => setBilling('annual')}
+   649→   649→                      className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-1.5 ${
+   650→   650→                        billing === 'annual' ? 'bg-[#00D1FF] text-[#000f22] shadow-md' : 'text-[#768dad] hover:text-white'
+   651→   651→                      }`}
+   652→   652→                    >
+   653→   653→                      Annual — $300/yr
+   654→   654→                      <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
+   655→   655→                        billing === 'annual' ? 'bg-[#000f22] text-[#00D1FF]' : 'bg-[#10B981]/20 text-[#10B981]'
+   656→   656→                      }`}>
+   657→   657→                        -17%
+   658→   658→                      </span>
+   659→   659→                    </button>
+   660→   660→                  </div>
+   661→   661→                </div>
+   662→   662→
+   663→   663→                {/* Order details */}
+   664→   664→                <div className="p-6 space-y-2.5 pb-4 border-b border-[#768dad]/20">
+   665→   665→                  <div className="flex items-center gap-3">
+   666→   666→                    <img src={template.image} alt="" className="w-12 h-12 rounded-lg object-cover flex-shrink-0" />
+   667→   667→                    <div className="flex-1 min-w-0">
+   668→   668→                      <p className="text-sm font-medium truncate">{template.title}</p>
+   669→   669→                      <p className="text-xs text-[#768dad]">{template.category}</p>
+   670→   670→                    </div>
+   671→   671→                  </div>
+   672→   672→
+   673→   673→                  <div className="flex justify-between text-sm pt-2">
+   674→   674→                    <span className="text-[#768dad]">Plan ({billing === 'monthly' ? 'Monthly' : 'Annual'})</span>
+   675→   675→                    <span>${basePrice}/{period}</span>
+   676→   676→                  </div>
+   677→   677→
+   678→   678→                  {extraFeaturesCount > 0 && (
+   679→   679→                    <div className="flex justify-between text-sm">
+   680→   680→                      <span className="text-[#768dad]">Extra features ({extraFeaturesCount} × $3)</span>
+   681→   681→                      <span className="text-[#F59E0B]">+${extraFeatureTotal}/{period}</span>
+   682→   682→                    </div>
+   683→   683→                  )}
+   684→   684→
+   685→   685→                  {selectedAddOns.map((addOnId) => {
+   686→   686→                    const addOn = ADD_ONS.find(a => a.id === addOnId)
+   687→   687→                    return addOn ? (
+   688→   688→                      <div key={addOnId} className="flex justify-between text-sm">
+   689→   689→                        <span className="text-[#768dad] truncate mr-2">{addOn.name}</span>
+   690→   690→                        <span className="text-[#00D1FF] flex-shrink-0">+{billing === 'monthly' ? '$3/mo' : '$36/yr'}</span>
+   691→   691→                      </div>
+   692→   692→                    ) : null
+   693→   693→                  })}
+   694→   694→
+   695→   695→                  {selectedDomain && domainMonthlyInstallment > 0 && (
+   696→   696→                    <div className="flex justify-between text-sm">
+   697→   697→                      <span className="text-[#768dad]">Domain installment ({domainInstallmentMonths} × $3)</span>
+   698→   698→                      <span className="text-[#FF6B35]">+${domainInstallmentTotal}/{period}</span>
+   699→   699→                    </div>
+   700→   700→                  )}
+   701→   701→
+   702→   702→                  {/* Similar site & notes indicators */}
+   703→   703→                  {(similarSiteUrl || additionalInfo || selectedDomain) && (
+   704→   704→                    <div className="flex flex-wrap gap-1.5 pt-2">
+   705→   705→                      {selectedDomain && (
+   706→   706→                        <span className="text-[9px] px-2 py-0.5 rounded-full bg-[#FF6B35]/20 text-[#ffb899] flex items-center gap-1">
+   707→   707→                          <Globe className="h-2.5 w-2.5" /> {selectedDomain.domain}
+   708→   708→                        </span>
+   709→   709→                      )}
+   710→   710→                      {similarSiteUrl && (
+   711→   711→                        <span className="text-[9px] px-2 py-0.5 rounded-full bg-[#7C3AED]/20 text-[#c4b5fd] flex items-center gap-1">
+   712→   712→                          <Globe className="h-2.5 w-2.5" /> Ref site added
+   713→   713→                        </span>
+   714→   714→                      )}
+   715→   715→                      {additionalInfo && (
+   716→   716→                        <span className="text-[9px] px-2 py-0.5 rounded-full bg-[#00D1FF]/20 text-[#67e8f9] flex items-center gap-1">
+   717→   717→                          <MessageSquare className="h-2.5 w-2.5" /> Notes added
+   718→   718→                        </span>
+   719→   719→                      )}
+   720→   720→                    </div>
+   721→   721→                  )}
+   722→   722→                </div>
+   723→   723→
+   724→   724→                <div className="px-6 pt-4 pb-6">
+   725→   725→                  <div className="flex justify-between items-baseline mb-2">
+   726→   726→                    <span className="text-[#768dad] text-sm">Total</span>
+   727→   727→                    <div className="text-right">
+   728→   728→                      <span className="text-3xl font-bold">${total}</span>
+   729→   729→                      <span className="text-[#768dad] text-sm">/{period}</span>
+   730→   730→                    </div>
+   731→   731→                  </div>
+   732→   732→
+   733→   733→                  {(extraFeaturesCount > 0 || selectedAddOns.length > 0) && (
+   734→   734→                    <p className="text-[10px] text-[#768dad] mb-4 leading-relaxed">
+   735→   735→                      * Extra features & add-ons fees apply for the first year only
+   736→   736→                    </p>
+   737→   737→                  )}
+   738→   738→
+   739→   739→                  {/* Delivery & Dashboard alerts */}
+   740→   740→                  <div className="space-y-2 mb-4">
+   741→   741→                    <div className="flex items-start gap-2.5 p-2.5 rounded-lg bg-[#10B981]/10 border border-[#10B981]/20">
+   742→   742→                      <LayoutDashboard className="h-4 w-4 text-[#10B981] flex-shrink-0 mt-0.5" />
+   743→   743→                      <p className="text-[11px] text-[#10B981] leading-relaxed">
+   744→   744→                        <span className="font-semibold">Website Control Panel Included</span> — You&apos;ll get a full dashboard to manage your website content, pages, and settings.
+   745→   745→                      </p>
+   746→   746→                    </div>
+   747→   747→                    <div className="flex items-start gap-2.5 p-2.5 rounded-lg bg-[#00D1FF]/10 border border-[#00D1FF]/20">
+   748→   748→                      <Clock className="h-4 w-4 text-[#00D1FF] flex-shrink-0 mt-0.5" />
+   749→   749→                      <p className="text-[11px] text-[#67e8f9] leading-relaxed">
+   750→   750→                        <span className="font-semibold">Delivery: 5-7 Business Days</span> — Your website will be ready within 5 to 7 business days after order confirmation.
+   751→   751→                      </p>
+   752→   752→                    </div>
+   753→   753→                  </div>
+   754→   754→
+   755→   755→                  <Button
+   756→   756→                    onClick={handleProceedToCheckout}
+   757→   757→                    className="w-full bg-[#00D1FF] hover:bg-[#00b8e6] text-[#000f22] font-semibold h-11"
+   758→   758→                  >
+   759→   759→                    Proceed to Checkout
+   760→   760→                    <ArrowRight className="ml-2 h-4 w-4" />
+   761→   761→                  </Button>
+   762→   762→
+   763→   763→                  {!user && (
+   764→   764→                    <p className="text-[10px] text-[#768dad] text-center mt-2">
+   765→   765→                      You&apos;ll need to sign in to complete your purchase
+   766→   766→                    </p>
+   767→   767→                  )}
+   768→   768→                </div>
+   769→   769→              </div>
+   770→   770→
+   771→   771→              {/* Add-ons list — hidden from sidebar, features section under image is sufficient */}
+   772→   772→            </div>
+   773→   773→          </div>
+   774→   774→        ) : (
+   775→   775→          <div className="flex items-center justify-center py-32">
+   776→   776→            <div className="w-8 h-8 border-3 border-[#00D1FF] border-t-transparent rounded-full animate-spin" />
+   777→   777→          </div>
+   778→   778→        )}
+   779→   779→      </div>
+   780→   780→    </div>
+   781→   781→  )
+   782→   782→}
+   783→   783→

@@ -37,17 +37,17 @@ export default function Header() {
   }
 
   return (
-    <header className="glass-header sticky top-0 z-50 border-b border-[#e6ebf1]" style={{ height: '72px' }}>
+    <header className="glass-header sticky top-0 z-50 border-b border-[#e6ebf1]" style={{ height: '54px' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
         {/* Logo */}
         <button
           onClick={() => handleNav('home')}
           className="flex items-center gap-2 hover:opacity-80 transition-opacity"
         >
-          <div className="w-8 h-8 bg-[#000f22] rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">W</span>
+          <div className="w-7 h-7 bg-[#000f22] rounded-md flex items-center justify-center">
+            <span className="text-white font-bold text-xs">W</span>
           </div>
-          <span className="font-bold text-lg text-[#000f22]">
+          <span className="font-bold text-base text-[#000f22]">
             WebFlow<span className="text-[#00D1FF]">Sub</span>
           </span>
         </button>
@@ -58,7 +58,7 @@ export default function Header() {
             <button
               key={item.page}
               onClick={() => handleNav(item.page)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                 currentPage === item.page
                   ? 'bg-[#000f22] text-white'
                   : 'text-[#43474d] hover:bg-[#f1f4f7] hover:text-[#000f22]'
@@ -74,9 +74,9 @@ export default function Header() {
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-[#f1f4f7] transition-colors">
-                  <Avatar className="w-8 h-8">
-                    <AvatarFallback className="bg-[#000f22] text-white text-xs">
+                <button className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-[#f1f4f7] transition-colors">
+                  <Avatar className="w-7 h-7">
+                    <AvatarFallback className="bg-[#000f22] text-white text-[10px]">
                       {user.name.split(' ').map(n => n[0]).join('')}
                     </AvatarFallback>
                   </Avatar>
@@ -104,7 +104,7 @@ export default function Header() {
           ) : (
             <Button
               onClick={() => handleNav('login')}
-              className="bg-[#000f22] hover:bg-[#0A2540] text-white"
+              className="bg-[#000f22] hover:bg-[#0A2540] text-white h-8 text-sm"
             >
               Sign In
             </Button>

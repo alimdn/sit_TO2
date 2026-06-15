@@ -28,6 +28,7 @@ import AdminSocial from '@/components/admin/AdminSocial'
 import AdminPayments from '@/components/admin/AdminPayments'
 import AdminSettings from '@/components/admin/AdminSettings'
 import CheckoutPage from '@/components/checkout/CheckoutPage'
+import { Button } from '@/components/ui/button'
 
 function HomePage() {
   return (

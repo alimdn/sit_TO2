@@ -1,0 +1,192 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String
+  password      String
+  role          String    @default("user") // "user" | "admin"
+  avatar        String?
+  phone         String?
+  company       String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  subscriptions Subscription[]
+  orders        Order[]
+  supportTickets SupportTicket[]
+  messages      Message[]
+}
+
+model Template {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  category    String
+  image       String
+  previewUrl  String?
+  features    String   // JSON string of features
+  industries  String   // JSON string of industries
+  livePreview String?  // URL for live demo
+  featured    Boolean  @default(false)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SubscriptionPlan {
+  id            String         @id @default(cuid())
+  name          String         // "Monthly" | "Annual"
+  price         Float
+  currency      String         @default("USD")
+  interval      String         // "monthly" | "annual"
+  features      String         // JSON string of features
+  popular       Boolean        @default(false)
+  active        Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  id           String   @id @default(cuid())
+  userId       String
+  planId       String
+  status       String   @default("active") // "active" | "grace" | "terminated"
+  startDate    DateTime
+  endDate      DateTime?
+  lastPayment  DateTime?
+  templateId   String?
+  websiteUrl   String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user         User              @relation(fields: [userId], references: [id])
+  plan         SubscriptionPlan  @relation(fields: [planId], references: [id])
+  payments     Payment[]
+}
+
+model Payment {
+  id             String       @id @default(cuid())
+  subscriptionId String
+  amount         Float
+  currency       String       @default("USD")
+  status         String       @default("pending") // "pending" | "completed" | "failed"
+  method         String       // "card" | "paypal" | "bank"
+  transactionId  String?
+  createdAt      DateTime     @default(now())
+
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id])
+}
+
+model Order {
+  id          String   @id @default(cuid())
+  userId      String
+  templateId  String?
+  planId      String?
+  status      String   @default("pending") // "pending" | "in_progress" | "review" | "completed"
+  progress    Int      @default(0) // 0-100
+  milestones  String   // JSON string of milestones
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model SupportTicket {
+  id          String   @id @default(cuid())
+  userId      String
+  subject     String
+  category    String   // "suggestion" | "general" | "technical" | "business"
+  status      String   @default("open") // "open" | "in_progress" | "resolved" | "closed"
+  priority    String   @default("medium") // "low" | "medium" | "high"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id])
+  messages    Message[]
+}
+
+model Message {
+  id         String         @id @default(cuid())
+  ticketId   String?
+  senderId   String
+  content    String
+  isRead     Boolean        @default(false)
+  createdAt  DateTime       @default(now())
+
+  sender     User           @relation(fields: [senderId], references: [id])
+  ticket     SupportTicket? @relation(fields: [ticketId], references: [id])
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  category  String   // "suggestion" | "general" | "technical" | "business"
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model SiteSetting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+}
+
+model SocialLink {
+  id        String   @id @default(cuid())
+  platform  String   // "facebook" | "twitter" | "instagram" | "linkedin" | "youtube"
+  url       String
+  icon      String?
+  active    Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  role      String
+  company   String?
+  content   String
+  avatar    String?
+  rating    Int      @default(5)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model FAQ {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model PaymentGateway {
+  id          String   @id @default(cuid())
+  name        String   // "Stripe" | "PayPal" | "Bank Transfer"
+  provider    String   // "stripe" | "paypal" | "bank"
+  apiKey      String?
+  secretKey   String?
+  webhookUrl  String?
+  active      Boolean  @default(false)
+  testMode    Boolean  @default(true)
+  config      String?  // JSON string of additional config
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

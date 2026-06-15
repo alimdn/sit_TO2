@@ -1,0 +1,1844 @@
+<!-- User Dashboard - WebFlow Sub -->
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WebFlow Sub | Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#5d5f5f",
+                        "error": "#ba1a1a",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#e0e3e6",
+                        "on-tertiary-fixed-variant": "#394955",
+                        "on-secondary-fixed-variant": "#454747",
+                        "surface-tint": "#49607e",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#eef1f4",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "background": "#f7fafd",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#dfe0e0",
+                        "on-primary-fixed": "#001c37",
+                        "surface-container-high": "#e5e8eb",
+                        "tertiary-fixed-dim": "#b8c8d8",
+                        "surface-bright": "#f7fafd",
+                        "surface-container-low": "#f1f4f7",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#7d8d9c",
+                        "on-surface": "#181c1e",
+                        "surface": "#f7fafd",
+                        "on-primary-fixed-variant": "#314865",
+                        "secondary-fixed": "#e2e2e2",
+                        "primary-fixed": "#d2e4ff",
+                        "surface-container": "#ebeef1",
+                        "on-surface-variant": "#43474d",
+                        "on-tertiary-fixed": "#0d1d29",
+                        "inverse-primary": "#b0c8eb",
+                        "inverse-surface": "#2d3133",
+                        "tertiary": "#01101c",
+                        "tertiary-fixed": "#d4e5f5",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#768dad",
+                        "outline": "#74777e",
+                        "surface-dim": "#d7dadd",
+                        "on-background": "#181c1e",
+                        "on-secondary-container": "#616363",
+                        "primary": "#000f22",
+                        "primary-fixed-dim": "#b0c8eb",
+                        "outline-variant": "#c4c6ce",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "surface-variant": "#e0e3e6",
+                        "primary-container": "#0a2540",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#162632"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "xs": "4px",
+                        "md": "24px",
+                        "lg": "48px",
+                        "xl": "80px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "display-lg-mobile": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "caption": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg-mobile": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "caption": ["12px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fafd;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-shadow {
+            box-shadow: 0px 4px 12px rgba(10, 37, 64, 0.05);
+        }
+        .custom-shadow-hover:hover {
+            box-shadow: 0px 12px 24px rgba(10, 37, 64, 0.10);
+        }
+        .glass-header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+        }
+        /* Custom scrollbar for minimalist feel */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f4f7; }
+        ::-webkit-scrollbar-thumb { background: #c4c6ce; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a0a2aa; }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- Header (Sticky) -->
+<header class="fixed top-0 w-full z-50 glass-header border-b border-outline-variant/30 h-[72px]">
+<div class="max-w-container-max mx-auto px-md h-full flex items-center justify-between">
+<div class="flex items-center gap-base">
+<span class="font-headline-sm text-headline-sm font-bold text-primary">WebFlow Sub</span>
+<span class="bg-primary-container text-on-primary-container px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">Dashboard</span>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex items-center gap-sm text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="material-symbols-outlined text-[20px]">help_outline</span>
+</div>
+<div class="flex items-center gap-sm pl-md border-l border-outline-variant/30">
+<div class="text-right hidden sm:block">
+<p class="font-label-md text-label-md text-primary">Alex Sterling</p>
+<p class="font-caption text-caption text-secondary">Pro Plan Member</p>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold overflow-hidden border border-outline-variant">
+<img alt="Profile" data-alt="A professional headshot of a young entrepreneur in a minimalist office setting. The lighting is soft and bright, following a light-mode corporate aesthetic. The subject has a confident expression, wearing a dark navy blue blazer that contrasts with the clean white background. High-fidelity photography style with shallow depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2oi0qCGHmu4vvVhvTTGIl5TGDpH5BncEUtlA82WKpXzoiVaZjiYQnnyQgEuB4gPqWQDMoTiX4OE6FUs4kTC9aFO9GsIGvw8tbYwWEwhXpGh36BDLgB97zzOrVJV7IAaFJALhhYUFood2HjbeCn76jcrXw1dXuHCkGTuy-mV5F1B9WjPIoSd76D3cudYGlZb9ZGmdfWrNbueAi8KK_CDCe7E1WB4Izb6r5zbB5E4JgjiUn4G54ccaqJUwVzbHlLjldKVKFipLycqO2"/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="flex pt-[72px] min-h-screen">
+<!-- Sidebar Navigation -->
+<aside class="w-64 bg-surface-container-lowest border-r border-outline-variant/30 hidden md:flex flex-col sticky top-[72px] h-[calc(100vh-72px)]">
+<nav class="flex-1 py-lg px-md flex flex-col gap-xs">
+<a class="flex items-center gap-sm p-sm rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-sm p-sm rounded-lg text-on-surface-variant hover:bg-primary/5 transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span>Orders</span>
+</a>
+<a class="flex items-center gap-sm p-sm rounded-lg text-on-surface-variant hover:bg-primary/5 transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">support_agent</span>
+<span>Support</span>
+</a>
+<a class="flex items-center gap-sm p-sm rounded-lg text-on-surface-variant hover:bg-primary/5 transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="p-md">
+<div class="bg-surface-container-low rounded-xl p-md border border-outline-variant/20">
+<p class="font-label-md text-label-md text-primary mb-xs">Storage Used</p>
+<div class="w-full bg-outline-variant/30 h-1.5 rounded-full overflow-hidden mb-sm">
+<div class="bg-primary h-full w-[65%]"></div>
+</div>
+<p class="font-caption text-caption text-secondary">1.3 GB of 2 GB</p>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 p-md md:p-lg overflow-x-hidden">
+<div class="max-w-5xl mx-auto space-y-lg">
+<!-- Welcome Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h1 class="font-display-lg-mobile md:font-headline-md text-display-lg-mobile md:text-headline-md text-primary">Welcome back, Alex.</h1>
+<p class="font-body-md text-body-md text-secondary mt-xs">Here's what's happening with your projects today.</p>
+</div>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-lg font-label-md text-label-md hover:opacity-90 active:scale-95 transition-all inline-flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                        New Project
+                    </button>
+</div>
+<!-- Bento Grid: Stats & Info -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Active Subscription Card -->
+<div class="md:col-span-1 bg-surface-container-lowest p-lg rounded-xl custom-shadow border border-outline-variant/20 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-lg">
+<span class="bg-primary-container text-on-primary-container px-sm py-1 rounded-full text-[10px] font-bold uppercase">Active</span>
+<span class="material-symbols-outlined text-primary-container">verified</span>
+</div>
+<h2 class="font-label-md text-label-md text-secondary uppercase tracking-widest">Current Plan</h2>
+<p class="font-headline-sm text-headline-sm text-primary mt-xs">Business Pro</p>
+</div>
+<div class="mt-xl pt-md border-t border-outline-variant/30">
+<div class="flex justify-between items-center">
+<span class="font-caption text-caption text-secondary">Next bill: $149.00</span>
+<a class="font-label-md text-label-md text-primary hover:underline" href="#">Manage</a>
+</div>
+</div>
+</div>
+<!-- Website Info Card -->
+<div class="md:col-span-2 bg-surface-container-lowest rounded-xl custom-shadow border border-outline-variant/20 overflow-hidden flex flex-col md:flex-row">
+<div class="md:w-1/2 p-lg">
+<h2 class="font-label-md text-label-md text-secondary uppercase tracking-widest mb-md">Website Details</h2>
+<div class="space-y-md">
+<div>
+<p class="font-caption text-caption text-secondary">Domain</p>
+<p class="font-body-md text-body-md text-primary font-semibold">sterling-digital.webflow.io</p>
+</div>
+<div>
+<p class="font-caption text-caption text-secondary">Current Template</p>
+<p class="font-body-md text-body-md text-primary">Nova Architecture Portfolio</p>
+</div>
+<div class="flex gap-sm pt-sm">
+<button class="border border-outline-variant px-md py-sm rounded-lg font-label-md text-label-md text-primary hover:bg-surface transition-colors">Edit Site</button>
+<button class="border border-outline-variant px-md py-sm rounded-lg font-label-md text-label-md text-primary hover:bg-surface transition-colors">Settings</button>
+</div>
+</div>
+</div>
+<div class="md:w-1/2 bg-surface-container relative min-h-[200px]">
+<img alt="Website Preview" class="absolute inset-0 w-full h-full object-cover" data-alt="A sleek and modern architecture portfolio website displayed on a high-resolution laptop screen. The website design features clean lines, expansive whitespace, and sophisticated monochromatic typography. The environment is a brightly lit, minimalist home office with a soft-focus background. High-end corporate minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD51H2VUiwXZWaxID9ofr7OCvOK_sIeG8N1S3KELf7FH6E7Su0ChRGXTJNqc6ksHf-gRKe-awaMTyfhkqQImDsOKklJUVRBWccCiZvPboWKdCkkzA2tBN7O5so9vpgzgGZmxIzT_w8dIBdrOkMhj_WNwCRddHaMar2C5iWgFjI27ClX-5L7aZosu_8Fa-jiXzjO4cQ-c_-hetj0vsJnlgpeLx8At0UDBuruXx7IocpDSKLj0-gjb-eU85W8y84iPc_Aejxh0YKpCSgL"/>
+<div class="absolute inset-0 bg-primary/10 flex items-center justify-center backdrop-blur-sm opacity-0 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="bg-surface-container-lowest text-primary px-lg py-sm rounded-full font-label-md text-label-md shadow-lg">Preview Site</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Order Progress Tracker -->
+<section class="bg-surface-container-lowest p-lg rounded-xl custom-shadow border border-outline-variant/20">
+<div class="flex items-center justify-between mb-lg">
+<h2 class="font-headline-sm text-headline-sm text-primary">Active Order: #WF-9842</h2>
+<span class="text-on-secondary-container font-label-md text-label-md">Status: In Development</span>
+</div>
+<div class="relative pt-md pb-lg">
+<!-- Progress Line -->
+<div class="absolute top-[52px] left-[5%] right-[5%] h-0.5 bg-outline-variant/30 z-0"></div>
+<div class="absolute top-[52px] left-[5%] w-[45%] h-0.5 bg-primary z-0 transition-all duration-1000"></div>
+<div class="grid grid-cols-4 relative z-10">
+<!-- Design -->
+<div class="flex flex-col items-center text-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-[20px]">check</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-primary">Design</p>
+<p class="font-caption text-caption text-secondary">Completed</p>
+</div>
+</div>
+<!-- Development -->
+<div class="flex flex-col items-center text-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-md ring-4 ring-primary-fixed">
+<span class="material-symbols-outlined text-[20px]">engineering</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-primary">Development</p>
+<p class="font-caption text-caption text-primary font-bold">In Progress</p>
+</div>
+</div>
+<!-- Testing -->
+<div class="flex flex-col items-center text-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">bug_report</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant">Testing</p>
+<p class="font-caption text-caption text-secondary">Pending</p>
+</div>
+</div>
+<!-- Live -->
+<div class="flex flex-col items-center text-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">rocket_launch</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant">Live</p>
+<p class="font-caption text-caption text-secondary">Queue</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Payment History Table -->
+<section class="bg-surface-container-lowest rounded-xl custom-shadow border border-outline-variant/20 overflow-hidden">
+<div class="p-lg border-b border-outline-variant/30 flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm text-primary">Renewal & Payments</h2>
+<button class="text-primary font-label-md text-label-md hover:underline inline-flex items-center gap-xs">
+                            View All <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low">
+<th class="px-lg py-md font-label-md text-label-md text-secondary uppercase tracking-wider">Invoice</th>
+<th class="px-lg py-md font-label-md text-label-md text-secondary uppercase tracking-wider">Date</th>
+<th class="px-lg py-md font-label-md text-label-md text-secondary uppercase tracking-wider">Amount</th>
+<th class="px-lg py-md font-label-md text-label-md text-secondary uppercase tracking-wider">Status</th>
+<th class="px-lg py-md font-label-md text-label-md text-secondary uppercase tracking-wider text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<tr class="hover:bg-surface-container/30 transition-colors">
+<td class="px-lg py-md font-body-md text-body-md text-primary font-medium">INV-2024-001</td>
+<td class="px-lg py-md font-body-md text-body-md text-on-surface-variant">May 12, 2024</td>
+<td class="px-lg py-md font-body-md text-body-md text-primary">$149.00</td>
+<td class="px-lg py-md">
+<span class="inline-flex items-center px-sm py-1 rounded-full bg-green-100 text-green-700 text-[12px] font-bold">Paid</span>
+</td>
+<td class="px-lg py-md text-right">
+<button class="material-symbols-outlined text-secondary hover:text-primary transition-colors">download</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container/30 transition-colors">
+<td class="px-lg py-md font-body-md text-body-md text-primary font-medium">INV-2024-002</td>
+<td class="px-lg py-md font-body-md text-body-md text-on-surface-variant">Apr 12, 2024</td>
+<td class="px-lg py-md font-body-md text-body-md text-primary">$149.00</td>
+<td class="px-lg py-md">
+<span class="inline-flex items-center px-sm py-1 rounded-full bg-green-100 text-green-700 text-[12px] font-bold">Paid</span>
+</td>
+<td class="px-lg py-md text-right">
+<button class="material-symbols-outlined text-secondary hover:text-primary transition-colors">download</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container/30 transition-colors">
+<td class="px-lg py-md font-body-md text-body-md text-primary font-medium">INV-2024-003</td>
+<td class="px-lg py-md font-body-md text-body-md text-on-surface-variant">Mar 12, 2024</td>
+<td class="px-lg py-md font-body-md text-body-md text-primary">$149.00</td>
+<td class="px-lg py-md">
+<span class="inline-flex items-center px-sm py-1 rounded-full bg-green-100 text-green-700 text-[12px] font-bold">Paid</span>
+</td>
+<td class="px-lg py-md text-right">
+<button class="material-symbols-outlined text-secondary hover:text-primary transition-colors">download</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="w-full py-xl bg-surface-container-lowest border-t border-outline-variant">
+<div class="max-w-container-max mx-auto px-md grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="col-span-1 md:col-span-1">
+<span class="font-headline-sm text-headline-sm font-bold text-primary">WebFlow Sub</span>
+<p class="font-body-md text-body-md text-secondary mt-sm max-w-xs">Elevating digital presence through high-fidelity, subscription-based web design.</p>
+</div>
+<div class="grid grid-cols-2 col-span-1 md:col-span-2 gap-md mt-lg md:mt-0">
+<div class="flex flex-col gap-sm">
+<p class="font-label-md text-label-md text-primary uppercase">Resources</p>
+<a class="font-body-md text-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Terms of Service</a>
+</div>
+<div class="flex flex-col gap-sm">
+<p class="font-label-md text-label-md text-primary uppercase">Support</p>
+<a class="font-body-md text-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Help Center</a>
+<a class="font-body-md text-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Career</a>
+</div>
+</div>
+<div class="col-span-1 flex flex-col gap-sm mt-lg md:mt-0 md:items-end">
+<p class="font-caption text-caption text-secondary">© 2024 WebFlow Sub. All rights reserved.</p>
+<div class="flex gap-md mt-sm">
+<a class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-primary hover:text-on-primary transition-all" href="#">
+<span class="material-symbols-outlined text-[18px]">share</span>
+</a>
+<a class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-primary hover:text-on-primary transition-all" href="#">
+<span class="material-symbols-outlined text-[18px]">public</span>
+</a>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions and effects
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.custom-shadow');
+            cards.forEach(card => {
+                card.classList.add('transition-all', 'duration-300');
+                card.addEventListener('mouseenter', () => {
+                    card.classList.add('custom-shadow-hover', '-translate-y-1');
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.classList.remove('custom-shadow-hover', '-translate-y-1');
+                });
+            });
+
+            // Simulate progress bar width animation on load
+            const progressBar = document.querySelector('.bg-primary.h-full');
+            if (progressBar) {
+                setTimeout(() => {
+                    progressBar.style.width = '65%';
+                }, 100);
+            }
+        });
+    </script>
+</body></html>
+
+<!-- Home - WebFlow Sub -->
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WebFlow Sub - Professional Website Subscriptions</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary": "#5d5f5f",
+                      "error": "#ba1a1a",
+                      "on-primary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "surface-container-highest": "#e0e3e6",
+                      "on-tertiary-fixed-variant": "#394955",
+                      "on-secondary-fixed-variant": "#454747",
+                      "surface-tint": "#49607e",
+                      "on-error": "#ffffff",
+                      "inverse-on-surface": "#eef1f4",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "background": "#f7fafd",
+                      "on-tertiary": "#ffffff",
+                      "secondary-container": "#dfe0e0",
+                      "on-primary-fixed": "#001c37",
+                      "surface-container-high": "#e5e8eb",
+                      "tertiary-fixed-dim": "#b8c8d8",
+                      "surface-bright": "#f7fafd",
+                      "surface-container-low": "#f1f4f7",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-container": "#7d8d9c",
+                      "on-surface": "#181c1e",
+                      "surface": "#f7fafd",
+                      "on-primary-fixed-variant": "#314865",
+                      "secondary-fixed": "#e2e2e2",
+                      "primary-fixed": "#d2e4ff",
+                      "surface-container": "#ebeef1",
+                      "on-surface-variant": "#43474d",
+                      "on-tertiary-fixed": "#0d1d29",
+                      "inverse-primary": "#b0c8eb",
+                      "inverse-surface": "#2d3133",
+                      "tertiary": "#01101c",
+                      "tertiary-fixed": "#d4e5f5",
+                      "on-secondary": "#ffffff",
+                      "on-primary-container": "#768dad",
+                      "outline": "#74777e",
+                      "surface-dim": "#d7dadd",
+                      "on-background": "#181c1e",
+                      "on-secondary-container": "#616363",
+                      "primary": "#000f22",
+                      "primary-fixed-dim": "#b0c8eb",
+                      "outline-variant": "#c4c6ce",
+                      "secondary-fixed-dim": "#c6c6c7",
+                      "surface-variant": "#e0e3e6",
+                      "primary-container": "#0a2540",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-container": "#162632"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "base": "8px",
+                      "xs": "4px",
+                      "md": "24px",
+                      "lg": "48px",
+                      "xl": "80px",
+                      "gutter": "24px",
+                      "container-max": "1280px",
+                      "sm": "12px"
+              },
+              "fontFamily": {
+                      "display-lg-mobile": ["Inter"],
+                      "label-md": ["Inter"],
+                      "body-md": ["Inter"],
+                      "caption": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "headline-sm": ["Inter"],
+                      "headline-md": ["Inter"]
+              },
+              "fontSize": {
+                      "display-lg-mobile": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "caption": ["12px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                      "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                      "headline-md": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .shadow-level-1 { box-shadow: 0px 4px 12px rgba(10, 37, 64, 0.05); border: 1px solid #E6EBF1; }
+        .shadow-level-2 { box-shadow: 0px 12px 24px rgba(10, 37, 64, 0.10); }
+        .shadow-level-3 { box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.08); }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-container/80 backdrop-blur-md shadow-sm border-b border-outline-variant/30">
+<div class="max-w-container-max mx-auto px-md h-[72px] flex items-center justify-between">
+<div class="font-headline-sm text-headline-sm font-bold text-primary dark:text-primary-fixed">
+                WebFlow Sub
+            </div>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="font-label-md text-label-md text-primary dark:text-primary-fixed border-b-2 border-primary pb-1" href="#">Home</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors" href="#">Templates</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors" href="#">Subscription Plans</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Us</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors" href="#">Login</a>
+</nav>
+<button class="bg-primary-container text-on-primary font-label-md text-label-md px-md py-sm rounded-lg active:scale-95 transition-all duration-300 hover:bg-primary">
+                Get Started
+            </button>
+</div>
+</header>
+<main class="pt-[72px]">
+<!-- Hero Section -->
+<section class="relative h-[800px] flex items-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover grayscale-[20%] opacity-90" data-alt="A professional, modern office workspace featuring clean wooden desks, minimalist ergonomic chairs, and large windows with soft natural light. The aesthetic is corporate minimalist with a high-fidelity feel, incorporating a sophisticated color palette of whites, deep blues, and slate grays. The atmosphere is productive, organized, and reflects high-end institutional trust." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy_rT1YsXm2M4yxLmDYPchNGqk75BMsHr44JG1Nmeuv-NFpDqJrlxwnWwXuH6frCwEzreJHfd1Z9kJfeh_xYf9ORQ4-O_NaB_DSUaOQYvd6_wmrQQD4wL9oROthmyHuG1sSGXk3CIUAJKOSfC5WrePKWz8qkXj_FUFH8cY-pcFHO5ZiFVKdLGB4crElDKM6saV-usN5HsAIiwO93icFPhrY-DrlyHG3qh0eM1eAesPNxnQGIdtI9_kDcb5--M_ylCRqIJTWwrVzY5I"/>
+<div class="absolute inset-0 bg-gradient-to-r from-surface via-surface/80 to-transparent"></div>
+</div>
+<div class="relative z-10 max-w-container-max mx-auto px-md w-full">
+<div class="max-w-2xl">
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-md leading-tight">
+                        Build Your Perfect Website with Ease
+                    </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-lg max-w-xl">
+                        Access professionally designed websites tailored to your business needs with flexible subscription plans. No hidden costs, just pure performance.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-md">
+<button class="bg-primary-container text-on-primary px-lg py-md rounded-lg font-label-md text-label-md hover:scale-105 transition-transform shadow-level-2">
+                            Browse Templates
+                        </button>
+<button class="bg-surface border-2 border-primary-container text-primary-container px-lg py-md rounded-lg font-label-md text-label-md hover:bg-primary/5 transition-colors">
+                            View Plans
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Bento Grid -->
+<section class="py-xl bg-background">
+<div class="max-w-container-max mx-auto px-md">
+<div class="text-center mb-xl">
+<h2 class="font-headline-md text-headline-md text-primary mb-xs">Scale with Confidence</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Everything you need to launch and manage your digital presence.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Large Feature -->
+<div class="md:col-span-8 group p-lg rounded-xl bg-surface shadow-level-1 hover:shadow-level-2 transition-all duration-300">
+<div class="flex flex-col h-full justify-between">
+<div>
+<div class="w-12 h-12 bg-primary-container/10 rounded-lg flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-primary text-3xl">brush</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-sm">Professional Designs</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Access a curated library of high-conversion templates designed by industry experts. Each layout is optimized for speed, SEO, and user experience across all devices.</p>
+</div>
+<div class="mt-lg rounded-lg overflow-hidden h-48 bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="A clean, minimalist UI dashboard displayed on a high-resolution screen. The design features sophisticated typography, generous whitespace, and a monochromatic color palette with deep navy accents. The overall aesthetic is professional, data-driven, and evokes a sense of high-fidelity precision and technological reliability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYcMdjvt1Xn56Siw1GZDseVsA_VsSaVkYGXC8SY8j3cLc-OiLn6lL66TbFvPhVsUCsSycmbfmQ1mM4gkzkBYQU4kNkFi6waSKzIDpETRcuH2QlIp-WpVYpsWxD65-e_HE02cNoDtHbNfGTxKTKAcNwxyUKvIaEalglLm_smFfUEELBrkOMe3XaECqrZYSK871tmlzDDrTaVsK9MOb_WYeUakpRfL0Oajvx5LYqGoyIrYPZR-SSYASDBzWVZxgJYE6GzpujZ6DHbcwl"/>
+</div>
+</div>
+</div>
+<!-- Small Feature -->
+<div class="md:col-span-4 p-lg rounded-xl bg-surface shadow-level-1 hover:shadow-level-2 transition-all duration-300">
+<div class="w-12 h-12 bg-primary-container/10 rounded-lg flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-primary text-3xl">cloud_done</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-sm">Hosting Included</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Enterprise-grade cloud hosting comes standard. We handle the servers, you handle the business.</p>
+</div>
+<!-- Small Feature -->
+<div class="md:col-span-4 p-lg rounded-xl bg-surface shadow-level-1 hover:shadow-level-2 transition-all duration-300">
+<div class="w-12 h-12 bg-primary-container/10 rounded-lg flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-primary text-3xl">database</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-sm">Database Setup</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Fully managed data structures tailored to your specific application needs from day one.</p>
+</div>
+<!-- Small Feature -->
+<div class="md:col-span-4 p-lg rounded-xl bg-surface shadow-level-1 hover:shadow-level-2 transition-all duration-300">
+<div class="w-12 h-12 bg-primary-container/10 rounded-lg flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-primary text-3xl">support_agent</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-sm">Tech Support</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Direct access to our senior engineering team for troubleshooting and strategic consultation.</p>
+</div>
+<!-- Small Feature -->
+<div class="md:col-span-4 p-lg rounded-xl bg-surface shadow-level-1 hover:shadow-level-2 transition-all duration-300">
+<div class="w-12 h-12 bg-primary-container/10 rounded-lg flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-primary text-3xl">settings_input_component</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-sm">Easy Management</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">A centralized portal to update content, track performance, and manage your entire subscription.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works -->
+<section class="py-xl bg-surface-container-lowest overflow-hidden">
+<div class="max-w-container-max mx-auto px-md">
+<div class="text-center mb-xl">
+<h2 class="font-headline-md text-headline-md text-primary mb-xs">Launch in Record Time</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Our streamlined process takes you from idea to live in four simple steps.</p>
+</div>
+<div class="relative grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<!-- Step 1 -->
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-primary text-on-primary flex items-center justify-center font-headline-sm text-headline-sm mb-md shadow-level-2">1</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-xs">Choose Template</h4>
+<p class="font-body-md text-body-md text-on-surface-variant px-md">Browse our library and find the design that fits your brand.</p>
+</div>
+<!-- Step 2 -->
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-primary text-on-primary flex items-center justify-center font-headline-sm text-headline-sm mb-md shadow-level-2">2</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-xs">Select Plan</h4>
+<p class="font-body-md text-body-md text-on-surface-variant px-md">Pick a subscription level that scales with your growth.</p>
+</div>
+<!-- Step 3 -->
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-primary text-on-primary flex items-center justify-center font-headline-sm text-headline-sm mb-md shadow-level-2">3</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-xs">Submit Requirements</h4>
+<p class="font-body-md text-body-md text-on-surface-variant px-md">Give us your assets and specific needs via our portal.</p>
+</div>
+<!-- Step 4 -->
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-primary text-on-primary flex items-center justify-center font-headline-sm text-headline-sm mb-md shadow-level-2">4</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-xs">Launch</h4>
+<p class="font-body-md text-body-md text-on-surface-variant px-md">Go live within days with a fully optimized website.</p>
+</div>
+<!-- Decorative Line -->
+<div class="hidden md:block absolute top-8 left-1/4 right-1/4 h-0.5 bg-outline-variant/30 -z-0"></div>
+</div>
+</div>
+</section>
+<!-- Testimonials -->
+<section class="py-xl bg-background">
+<div class="max-w-container-max mx-auto px-md">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg items-center">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary mb-md">Trusted by Innovative Marketing Teams</h2>
+<div class="space-y-md">
+<div class="p-lg bg-surface rounded-xl shadow-level-1 border-l-4 border-primary">
+<p class="italic font-body-lg text-body-lg text-primary mb-md">"WebFlow Sub transformed our digital presence. We used to spend months on site updates; now everything is handled for us with professional precision."</p>
+<div class="flex items-center gap-sm">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="A professional portrait of a senior marketing executive in a modern office. The lighting is crisp and natural, following a corporate minimalist style with a clean background. The subject is wearing a professional navy blazer, embodying trust and corporate leadership." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDgL_N5pRO28-amz-3VIzMKSpUD7i-HQOl0jodyKeiJa0B9hQxFpmmgfc9ylh6HISrhCy5mCSVkXRMBtwX7nK6E4t31iEusy2-mo8EAiOTcnh8m0gjdlAIQTeSs-hAjABogKoxNgMi17xzk2rCtOjKFT_zcMet0gKcq36nqQE0K8n43zAmExGSztRJhyjJ2xlznXuiLLjmEgWR77D_ut9bQxXZXVhRZN5-2fxZuK-77-Y46swJ9Fhe8LDGk8xR2UhnGIi6ifyL2L79"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-primary">Marcus Thorne</p>
+<p class="font-caption text-caption text-on-surface-variant">Director of Marketing, AeroSystems</p>
+</div>
+</div>
+</div>
+<div class="p-lg bg-surface rounded-xl shadow-level-1 border-l-4 border-primary">
+<p class="italic font-body-lg text-body-lg text-primary mb-md">"The database integration was seamless. Our subscription pays for itself every month through the time saved by our internal team."</p>
+<div class="flex items-center gap-sm">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="A professional portrait of a female tech entrepreneur. She is smiling confidently in a high-end corporate environment. The photo is well-lit with high contrast and a professional color palette, reflecting corporate excellence and creative vision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDu99oQ-zt5bjjS40mkKjp3NRV73HGrn8hqJEqH-uDBBtLAddkuAXCtIvZH-mEr2ZhhO7d9_WyzYsSdFMhCwwzIY7RwBIR_Nsjj4oqs5f_pWU3T8CEpo10dhNI07TOQhMfMhmcfskMdVlhrkeKx01Y71wDebpgWDj8lPAXs4GhnByZPI9nVO5EytFydE4OzaCRt3Ar3x7QZoQADF9lSbwvoUVyCNea4znU41XFihb9CHSzanRqStMPvDwIWhHgAEhXVlaevJsplIEgp"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-primary">Sarah Jenkins</p>
+<p class="font-caption text-caption text-on-surface-variant">Founder, BrightScale Tech</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="hidden md:block">
+<div class="relative">
+<div class="absolute -top-12 -right-12 w-48 h-48 bg-primary/5 rounded-full blur-3xl"></div>
+<img class="rounded-2xl shadow-level-3 relative z-10" data-alt="A group of diverse professionals working together around a table in a bright, modern minimalist office space. They are focused on a collaborative project, with laptops and professional tools visible. The scene is illuminated by soft, high-key lighting, maintaining a premium corporate minimalist aesthetic with clean lines and a professional atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZYsT3bqNR5ml_EQ9Fn398PhCjim8tF7NCuSUz478TudT9rULn-fz8ENGSrlrJDB-Nrqc0gqRNc4Gr0G0GUs2oB_m8WzxIEN9b97ylwnt8vKOZUzfNQtDFznVJZoil1P28aCWdHFLWK8VIEY-Ksj6um55q4S5GwSbTrKmJR5KXaew21j2EVcw1Mv7r8Ztko6gp8dOxfmxdoSCc4Az_T7ExCUm9QqVWeoqRxb-AKXbdwuzZK2cwrz-ancVoiDAdCKePcK-jBj5U-2KA"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- FAQ Section -->
+<section class="py-xl bg-surface">
+<div class="max-w-3xl mx-auto px-md">
+<div class="text-center mb-xl">
+<h2 class="font-headline-md text-headline-md text-primary mb-xs">Common Inquiries</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Everything you need to know about our partnership model.</p>
+</div>
+<div class="space-y-md">
+<details class="group p-md bg-background rounded-lg border border-outline-variant/30 open:shadow-level-1 transition-all duration-300">
+<summary class="flex items-center justify-between cursor-pointer list-none">
+<span class="font-label-md text-label-md text-primary">How do subscriptions work?</span>
+<span class="material-symbols-outlined text-primary group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<p class="mt-md font-body-md text-body-md text-on-surface-variant">Our subscriptions are flat-fee monthly models. This includes design updates, hosting, maintenance, and technical support, allowing you to budget with certainty.</p>
+</details>
+<details class="group p-md bg-background rounded-lg border border-outline-variant/30 open:shadow-level-1 transition-all duration-300">
+<summary class="flex items-center justify-between cursor-pointer list-none">
+<span class="font-label-md text-label-md text-primary">Can I switch templates later?</span>
+<span class="material-symbols-outlined text-primary group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<p class="mt-md font-body-md text-body-md text-on-surface-variant">Absolutely. Depending on your plan, you can request periodic design refreshes or full template migrations to keep your brand modern.</p>
+</details>
+<details class="group p-md bg-background rounded-lg border border-outline-variant/30 open:shadow-level-1 transition-all duration-300">
+<summary class="flex items-center justify-between cursor-pointer list-none">
+<span class="font-label-md text-label-md text-primary">Is there a long-term commitment?</span>
+<span class="material-symbols-outlined text-primary group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<p class="mt-md font-body-md text-body-md text-on-surface-variant">We offer both monthly and annual plans. Annual plans come with significant savings, but we maintain flexibility for teams that need it.</p>
+</details>
+<details class="group p-md bg-background rounded-lg border border-outline-variant/30 open:shadow-level-1 transition-all duration-300">
+<summary class="flex items-center justify-between cursor-pointer list-none">
+<span class="font-label-md text-label-md text-primary">What happens to my data?</span>
+<span class="material-symbols-outlined text-primary group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<p class="mt-md font-body-md text-body-md text-on-surface-variant">You own your content. While we provide the infrastructure and design, the data remains your intellectual property and can be exported at any time.</p>
+</details>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-xl bg-primary text-on-primary">
+<div class="max-w-container-max mx-auto px-md text-center">
+<h2 class="font-display-lg text-display-lg-mobile md:text-headline-md mb-md">Ready to elevate your digital presence?</h2>
+<p class="font-body-lg text-body-lg opacity-80 mb-lg max-w-2xl mx-auto">Join hundreds of businesses scaling their impact with WebFlow Sub's managed website solutions.</p>
+<div class="flex flex-col sm:flex-row gap-md justify-center">
+<button class="bg-surface text-primary px-lg py-md rounded-lg font-label-md text-label-md hover:scale-105 transition-transform">
+                        Browse All Templates
+                    </button>
+<button class="border border-on-primary text-on-primary px-lg py-md rounded-lg font-label-md text-label-md hover:bg-on-primary/10 transition-colors">
+                        Talk to an Expert
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-highest w-full py-xl border-t border-outline-variant">
+<div class="max-w-container-max mx-auto px-md grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="md:col-span-1">
+<div class="font-headline-sm text-headline-sm font-bold text-primary dark:text-primary-fixed mb-md">
+                    WebFlow Sub
+                </div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">
+                    Professional subscription-based website design and management for growing brands.
+                </p>
+<div class="flex gap-md">
+<span class="material-symbols-outlined text-primary cursor-pointer hover:opacity-70">language</span>
+<span class="material-symbols-outlined text-primary cursor-pointer hover:opacity-70">share</span>
+<span class="material-symbols-outlined text-primary cursor-pointer hover:opacity-70">alternate_email</span>
+</div>
+</div>
+<div class="space-y-sm">
+<h5 class="font-label-md text-label-md text-primary mb-md">Company</h5>
+<nav class="flex flex-col gap-sm">
+<a class="font-body-md text-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">About Us</a>
+<a class="font-body-md text-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Career</a>
+<a class="font-body-md text-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Our Team</a>
+<a class="font-body-md text-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Press Kit</a>
+</nav>
+</div>
+<div class="space-y-sm">
+<h5 class="font-label-md text-label-md text-primary mb-md">Resources</h5>
+<nav class="flex flex-col gap-sm">
+<a class="font-body-md text-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Help Center</a>
+<a class="font-body-md text-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Documentation</a>
+<a class="font-body-md text-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Community</a>
+<a class="font-body-md text-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Privacy Policy</a>
+</nav>
+</div>
+<div class="space-y-sm">
+<h5 class="font-label-md text-label-md text-primary mb-md">Legal</h5>
+<nav class="flex flex-col gap-sm">
+<a class="font-body-md text-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-body-md text-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Cookie Settings</a>
+</nav>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-md mt-xl pt-md border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-md">
+<p class="font-body-md text-body-md text-on-surface-variant">© 2024 WebFlow Sub. All rights reserved.</p>
+<div class="flex gap-lg">
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary" href="#">English (US)</a>
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary" href="#">USD ($)</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction: Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+            } else {
+                header.classList.remove('shadow-md');
+            }
+        });
+
+        // Micro-interaction: Reveal animations on scroll
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-8');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section > div').forEach(el => {
+            el.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-8');
+            observer.observe(el);
+        });
+    </script>
+</body></html>
+
+<!-- Contact Us - WebFlow Sub -->
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Contact Us | WebFlow Sub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#5d5f5f",
+                        "error": "#ba1a1a",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#e0e3e6",
+                        "on-tertiary-fixed-variant": "#394955",
+                        "on-secondary-fixed-variant": "#454747",
+                        "surface-tint": "#49607e",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#eef1f4",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "background": "#f7fafd",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#dfe0e0",
+                        "on-primary-fixed": "#001c37",
+                        "surface-container-high": "#e5e8eb",
+                        "tertiary-fixed-dim": "#b8c8d8",
+                        "surface-bright": "#f7fafd",
+                        "surface-container-low": "#f1f4f7",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#7d8d9c",
+                        "on-surface": "#181c1e",
+                        "surface": "#f7fafd",
+                        "on-primary-fixed-variant": "#314865",
+                        "secondary-fixed": "#e2e2e2",
+                        "primary-fixed": "#d2e4ff",
+                        "surface-container": "#ebeef1",
+                        "on-surface-variant": "#43474d",
+                        "on-tertiary-fixed": "#0d1d29",
+                        "inverse-primary": "#b0c8eb",
+                        "inverse-surface": "#2d3133",
+                        "tertiary": "#01101c",
+                        "tertiary-fixed": "#d4e5f5",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#768dad",
+                        "outline": "#74777e",
+                        "surface-dim": "#d7dadd",
+                        "on-background": "#181c1e",
+                        "on-secondary-container": "#616363",
+                        "primary": "#000f22",
+                        "primary-fixed-dim": "#b0c8eb",
+                        "outline-variant": "#c4c6ce",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "surface-variant": "#e0e3e6",
+                        "primary-container": "#0a2540",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#162632"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "xs": "4px",
+                        "md": "24px",
+                        "lg": "48px",
+                        "xl": "80px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "display-lg-mobile": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "caption": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg-mobile": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "caption": ["12px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(230, 235, 241, 0.5);
+            box-shadow: 0px 4px 12px rgba(10, 37, 64, 0.05);
+        }
+        .form-input:focus {
+            border-color: #000f22;
+            box-shadow: 0 0 0 2px rgba(0, 15, 34, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md shadow-sm border-b border-outline-variant/30 h-[72px]">
+<div class="max-w-container-max mx-auto px-md h-full flex items-center justify-between">
+<div class="font-headline-sm text-headline-sm font-bold text-primary">WebFlow Sub</div>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Home</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Templates</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Subscription Plans</a>
+<a class="font-label-md text-label-md text-primary border-b-2 border-primary pb-1" href="#">Contact Us</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Login</a>
+</nav>
+<button class="bg-primary-container text-on-primary-container px-md py-sm rounded-lg font-label-md transition-transform active:scale-95 hover:shadow-md">
+                Get Started
+            </button>
+</div>
+</header>
+<main class="pt-[72px]">
+<!-- Hero Section -->
+<section class="relative py-xl overflow-hidden">
+<div class="max-w-container-max mx-auto px-md grid grid-cols-1 lg:grid-cols-2 gap-lg items-center relative z-10">
+<div class="space-y-md">
+<span class="bg-secondary-container text-on-secondary-container px-sm py-xs rounded-full font-label-md text-[12px] uppercase tracking-wider">Contact Support</span>
+<h1 class="font-display-lg text-display-lg font-bold text-primary leading-tight">Let's build something <span class="text-primary-container opacity-60">remarkable</span> together.</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">Whether you're seeking technical guidance or looking to scale your design operations, our team is ready to assist your growth.</p>
+</div>
+<div class="relative hidden lg:block h-[400px] rounded-xl overflow-hidden shadow-xl">
+<img alt="Office Interior" class="w-full h-full object-cover" data-alt="A sophisticated corporate office interior with clean lines and expansive windows overlooking a modern cityscape. The setting is bathed in soft, natural daylight, emphasizing a professional and trustworthy environment. Minimalist furniture and a neutral color palette of greys and whites create a high-fidelity, institutional atmosphere suitable for a premium design agency." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqpzlk5hzBzD7G2KGDCtNAqeiIleC5sZcnA340K91vqa4GttBqT3zmpCD7c0grbp69FcYXVKxhXcWZ8aQ7izHWBBul4HwdiCbaBU29AU-v7eGcvxrJVWZLLtmFrC8qTqAEz6XWdhFq8R3TXFeH9SaC32BehrPqBZhKtwouDojhYP7jkN7zUOvfXqHgye2YKGWverVW9coWvEaH-NiAzbILccG90Gix5rN0FWM4cSdtHLylis1nyo3NJEJ573_575H-5bUrWbBgqOn1"/>
+</div>
+</div>
+</section>
+<!-- Form & Details Section -->
+<section class="pb-xl">
+<div class="max-w-container-max mx-auto px-md">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left: Contact Form -->
+<div class="lg:col-span-7 bg-surface-container-lowest p-lg rounded-xl shadow-sm border border-outline-variant/30">
+<form class="space-y-md" onsubmit="event.preventDefault();">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="space-y-xs">
+<label class="font-label-md text-on-surface-variant" for="name">Full Name</label>
+<input class="w-full px-md py-sm rounded-lg border border-outline-variant focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all" id="name" placeholder="John Doe" type="text"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-on-surface-variant" for="email">Email Address</label>
+<input class="w-full px-md py-sm rounded-lg border border-outline-variant focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all" id="email" placeholder="john@company.com" type="email"/>
+</div>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-on-surface-variant" for="subject">Subject</label>
+<select class="w-full px-md py-sm rounded-lg border border-outline-variant focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all appearance-none bg-surface" id="subject">
+<option disabled="" selected="" value="">Select a topic</option>
+<option value="suggestions">Suggestions</option>
+<option value="general">General Inquiry</option>
+<option value="technical">Technical Support</option>
+<option value="business">Business Partnership</option>
+</select>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-on-surface-variant" for="message">Message</label>
+<textarea class="w-full px-md py-sm rounded-lg border border-outline-variant focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all resize-none" id="message" placeholder="How can we help you?" rows="5"></textarea>
+</div>
+<button class="w-full md:w-auto bg-primary text-on-primary px-lg py-sm rounded-lg font-label-md hover:shadow-lg transition-all active:scale-95" type="submit">
+                                Send Message
+                            </button>
+</form>
+</div>
+<!-- Right: Info Panels -->
+<div class="lg:col-span-5 space-y-gutter">
+<!-- Support Status Card -->
+<div class="bg-primary-container p-md rounded-xl text-on-primary-container flex items-center gap-md">
+<div class="bg-on-primary-container/10 p-sm rounded-lg">
+<span class="material-symbols-outlined text-headline-sm" style="font-variation-settings: 'FILL' 1;">speed</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-[18px]">Support Response Time</h3>
+<p class="font-body-md opacity-80">Within 24 hours</p>
+</div>
+</div>
+<!-- Contact Details -->
+<div class="bg-surface-container-low p-lg rounded-xl space-y-lg border border-outline-variant/20">
+<div class="flex items-start gap-md">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<div>
+<h4 class="font-label-md text-primary mb-xs">Headquarters</h4>
+<p class="text-on-surface-variant font-body-md">1280 Design District, Tech Plaza<br/>San Francisco, CA 94103</p>
+</div>
+</div>
+<div class="flex items-start gap-md">
+<span class="material-symbols-outlined text-primary">mail</span>
+<div>
+<h4 class="font-label-md text-primary mb-xs">Email Us</h4>
+<p class="text-on-surface-variant font-body-md">support@webflowsub.com<br/>partners@webflowsub.com</p>
+</div>
+</div>
+<div class="flex items-start gap-md">
+<span class="material-symbols-outlined text-primary">call</span>
+<div>
+<h4 class="font-label-md text-primary mb-xs">Direct Line</h4>
+<p class="text-on-surface-variant font-body-md">+1 (555) 000-8888<br/>Mon-Fri, 9am - 6pm PST</p>
+</div>
+</div>
+</div>
+<!-- Mini Map / Image Placeholder -->
+<div class="h-48 w-full rounded-xl overflow-hidden bg-surface-container-highest relative group">
+<div class="absolute inset-0 bg-primary/20 group-hover:bg-primary/10 transition-colors z-10 flex items-center justify-center">
+<span class="bg-surface-container-lowest/90 px-md py-sm rounded-full font-label-md text-primary shadow-sm border border-outline-variant/30">View on Map</span>
+</div>
+<img alt="Location Map" class="w-full h-full object-cover grayscale" data-alt="A stylized, clean aerial map view of a modern urban development area with organized streets and high-end architecture. The image is rendered in a minimalist monochromatic style with soft blue and grey tones, emphasizing precision and urban planning excellence, fitting the corporate minimalism brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTgHC-bHx5Sp3yX9fX9vg25NLq2iOi3A0NCdYLzjUFjcA3I6PoS52bRCjiY6bOzXfYTeoFCZNHOhQdYwiqdYURD-ZTaCYu-e7jS8_Wda873jeF-o3UZljNr9Ml2nk1KxBgSCjy554Jc1jdS5ySdMRj-96XGfEzxn5fgxSaBUeMeWCtWGKD81MHemCyIkKBDysfYm1F3Qqct2tBwrCedqE1RseYTPhmHCPT7nJUfme6sghm3ytGgw0w2Koa_iAnOa6gpNLJr8hMwoE1"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Newsletter / Secondary CTA -->
+<section class="bg-surface-container py-xl border-t border-outline-variant/30">
+<div class="max-w-container-max mx-auto px-md flex flex-col md:flex-row items-center justify-between gap-lg">
+<div class="text-center md:text-left">
+<h2 class="font-headline-md text-primary">Need a custom plan?</h2>
+<p class="font-body-md text-on-surface-variant">Tell us about your enterprise needs for a tailored solution.</p>
+</div>
+<button class="bg-surface-container-lowest text-primary border border-outline px-lg py-sm rounded-lg font-label-md hover:bg-primary hover:text-on-primary transition-all shadow-sm">
+                    Schedule a Call
+                </button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-highest w-full py-xl border-t border-outline-variant">
+<div class="max-w-container-max mx-auto px-md grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="space-y-md">
+<div class="font-headline-sm text-headline-sm font-bold text-primary">WebFlow Sub</div>
+<p class="font-body-md text-on-surface-variant max-w-xs">Elevating design standards through scalable subscription models and technical excellence.</p>
+</div>
+<div class="space-y-md">
+<h5 class="font-label-md text-on-surface uppercase tracking-widest text-[11px]">Resources</h5>
+<ul class="space-y-sm">
+<li><a class="font-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Templates</a></li>
+<li><a class="font-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Style Guide</a></li>
+<li><a class="font-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Documentation</a></li>
+</ul>
+</div>
+<div class="space-y-md">
+<h5 class="font-label-md text-on-surface uppercase tracking-widest text-[11px]">Company</h5>
+<ul class="space-y-sm">
+<li><a class="font-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Career</a></li>
+<li><a class="font-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Help Center</a></li>
+<li><a class="font-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="font-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div class="space-y-md">
+<h5 class="font-label-md text-on-surface uppercase tracking-widest text-[11px]">Contact</h5>
+<p class="font-body-md text-on-secondary-container">support@webflowsub.com</p>
+<div class="flex gap-md">
+<a class="text-on-secondary-container hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">share</span></a>
+<a class="text-on-secondary-container hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">rss_feed</span></a>
+</div>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-md mt-xl pt-lg border-t border-outline-variant/30 text-center">
+<p class="font-body-md text-on-surface-variant opacity-60">© 2024 WebFlow Sub. All rights reserved.</p>
+</div>
+</footer>
+<script>
+        // Simple form interaction
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                const btn = form.querySelector('button[type="submit"]');
+                const originalText = btn.innerText;
+                btn.innerText = 'Sending...';
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    btn.innerText = 'Message Sent!';
+                    btn.classList.replace('bg-primary', 'bg-green-600');
+                    form.reset();
+                    
+                    setTimeout(() => {
+                        btn.innerText = originalText;
+                        btn.classList.replace('bg-green-600', 'bg-primary');
+                        btn.disabled = false;
+                    }, 3000);
+                }, 1500);
+            });
+        }
+    </script>
+</body></html>
+
+<!-- Subscription Plans - WebFlow Sub -->
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Subscription Plans - WebFlow Sub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#5d5f5f",
+                    "error": "#ba1a1a",
+                    "on-primary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface-container-highest": "#e0e3e6",
+                    "on-tertiary-fixed-variant": "#394955",
+                    "on-secondary-fixed-variant": "#454747",
+                    "surface-tint": "#49607e",
+                    "on-error": "#ffffff",
+                    "inverse-on-surface": "#eef1f4",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "background": "#f7fafd",
+                    "on-tertiary": "#ffffff",
+                    "secondary-container": "#dfe0e0",
+                    "on-primary-fixed": "#001c37",
+                    "surface-container-high": "#e5e8eb",
+                    "tertiary-fixed-dim": "#b8c8d8",
+                    "surface-bright": "#f7fafd",
+                    "surface-container-low": "#f1f4f7",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-container": "#7d8d9c",
+                    "on-surface": "#181c1e",
+                    "surface": "#f7fafd",
+                    "on-primary-fixed-variant": "#314865",
+                    "secondary-fixed": "#e2e2e2",
+                    "primary-fixed": "#d2e4ff",
+                    "surface-container": "#ebeef1",
+                    "on-surface-variant": "#43474d",
+                    "on-tertiary-fixed": "#0d1d29",
+                    "inverse-primary": "#b0c8eb",
+                    "inverse-surface": "#2d3133",
+                    "tertiary": "#01101c",
+                    "tertiary-fixed": "#d4e5f5",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#768dad",
+                    "outline": "#74777e",
+                    "surface-dim": "#d7dadd",
+                    "on-background": "#181c1e",
+                    "on-secondary-container": "#616363",
+                    "primary": "#000f22",
+                    "primary-fixed-dim": "#b0c8eb",
+                    "outline-variant": "#c4c6ce",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "surface-variant": "#e0e3e6",
+                    "primary-container": "#0a2540",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-container": "#162632"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "xs": "4px",
+                    "md": "24px",
+                    "lg": "48px",
+                    "xl": "80px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "sm": "12px"
+            },
+            "fontFamily": {
+                    "display-lg-mobile": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "caption": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-sm": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "caption": ["12px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "headline-md": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .pricing-card-shadow {
+            box-shadow: 0px 4px 12px rgba(10, 37, 64, 0.05);
+        }
+        .pricing-card-hover:hover {
+            box-shadow: 0px 12px 24px rgba(10, 37, 64, 0.10);
+            transform: translateY(-4px);
+        }
+        .popular-plan-border {
+            border-top: 4px solid #0a2540;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md shadow-sm border-b border-outline-variant/30 h-[72px]">
+<div class="max-w-container-max mx-auto px-md h-full flex items-center justify-between">
+<div class="font-headline-sm text-headline-sm font-bold text-primary">WebFlow Sub</div>
+<nav class="hidden md:flex items-center space-x-lg">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Home</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Templates</a>
+<a class="font-label-md text-label-md text-primary border-b-2 border-primary pb-1" href="#">Subscription Plans</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Us</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Login</a>
+</nav>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-lg font-label-md active:scale-95 transition-transform hover:opacity-90">
+                Get Started
+            </button>
+</div>
+</header>
+<main class="pt-[72px]">
+<!-- Hero Section -->
+<section class="py-xl bg-surface-container-low overflow-hidden relative">
+<div class="max-w-container-max mx-auto px-md text-center relative z-10">
+<span class="inline-block bg-primary-container/10 text-primary-container px-sm py-xs rounded-full font-label-md mb-md">PRICING PLANS</span>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-md">Precision focus for <br class="hidden md:block"/>your digital presence.</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">Choose a plan that fits your production scale. High-output design partnership with transparent, fixed-cost subscriptions.</p>
+</div>
+<!-- Atmospheric background decoration -->
+<div class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
+</section>
+<!-- Pricing Section -->
+<section class="py-xl">
+<div class="max-w-container-max mx-auto px-md">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg max-w-5xl mx-auto">
+<!-- Monthly Plan Card -->
+<div class="bg-surface-container-lowest rounded-xl p-lg pricing-card-shadow pricing-card-hover transition-all duration-300 border border-outline-variant/30 flex flex-col">
+<div class="mb-md">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-xs">Monthly Plan</h3>
+<p class="text-on-surface-variant font-body-md">Flexible monthly design power.</p>
+</div>
+<div class="mb-lg">
+<span class="font-display-lg text-headline-md md:text-display-lg text-primary">$30</span>
+<span class="text-on-surface-variant font-body-md">/mo</span>
+</div>
+<ul class="space-y-md mb-xl flex-grow">
+<li class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
+<span class="font-body-md">Website design</span>
+</li>
+<li class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
+<span class="font-body-md">Hosting included</span>
+</li>
+<li class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
+<span class="font-body-md">Cloud Database</span>
+</li>
+<li class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
+<span class="font-body-md">Standard Support</span>
+</li>
+</ul>
+<button class="w-full bg-primary text-on-primary py-md rounded-lg font-label-md hover:bg-primary-container transition-colors">
+                            Get Started
+                        </button>
+</div>
+<!-- Annual Plan Card -->
+<div class="bg-surface-container-lowest rounded-xl p-lg pricing-card-shadow pricing-card-hover transition-all duration-300 border border-outline-variant/30 flex flex-col popular-plan-border relative">
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-on-primary px-md py-xs rounded-full text-caption font-bold">MOST POPULAR</div>
+<div class="mb-md">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-xs">Annual Plan</h3>
+<p class="text-on-surface-variant font-body-md">Complete long-term scalability.</p>
+</div>
+<div class="mb-lg">
+<span class="font-display-lg text-headline-md md:text-display-lg text-primary">$300</span>
+<span class="text-on-surface-variant font-body-md">/yr</span>
+</div>
+<ul class="space-y-md mb-xl flex-grow">
+<li class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-body-md font-bold">Everything in Monthly</span>
+</li>
+<li class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
+<span class="font-body-md">Domain registration</span>
+</li>
+<li class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
+<span class="font-body-md">Priority Assistance</span>
+</li>
+<li class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
+<span class="font-body-md">SEO Optimization</span>
+</li>
+</ul>
+<button class="w-full bg-primary text-on-primary py-md rounded-lg font-label-md hover:bg-primary-container transition-colors">
+                            Get Started
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Subscription Policies Section -->
+<section class="py-xl bg-surface-container-low">
+<div class="max-w-container-max mx-auto px-md">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-lg items-start">
+<div class="md:col-span-4">
+<h2 class="font-headline-md text-headline-md text-primary mb-sm">Subscription Policies</h2>
+<p class="text-on-surface-variant font-body-md">Transparent terms for a reliable partnership.</p>
+</div>
+<div class="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-gutter">
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant/30">
+<div class="w-12 h-12 bg-primary/5 rounded-lg flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-primary" data-icon="update">update</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-xs">Grace Periods</h4>
+<p class="text-on-surface-variant font-body-md">We offer a 1 month grace period for all active subscriptions. If a payment fails, your services remain active while our team works with you to resolve billing issues.</p>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant/30">
+<div class="w-12 h-12 bg-primary/5 rounded-lg flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-primary" data-icon="cancel">cancel</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-xs">Termination Rules</h4>
+<p class="text-on-surface-variant font-body-md">Commitment is key to quality. Contracts require a 6 months minimum term before termination notice can be served. Early exits may incur processing fees.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Visual Credibility Section (Bento Grid) -->
+<section class="py-xl">
+<div class="max-w-container-max mx-auto px-md">
+<div class="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-gutter h-auto md:h-[600px]">
+<div class="md:col-span-2 md:row-span-2 relative rounded-xl overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A clean and modern high-fidelity digital dashboard showing complex data visualizations and analytics in a minimalist interface. The image utilizes a sophisticated dark blue and slate gray palette with bright white accents. The lighting is soft and professional, reflecting a high-end corporate tech environment. The overall mood is focused, organized, and data-driven." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBX7uQfsjSp2dxJ3nU9KP4zzLpDE7amXm_mRqbNMwcEFZU6CHgffA7HSnd4kfc7yooUyEeZps1FLuAtG8JzPIjTFfaNQ3McPI6wD47FS_ki8VqRgA_evKDZ0efSk11mhw9119U6gQA2-jApyfdmrdyrehucI-GDH2-rF5-wljVUGaPJs56r08RxbXNrYBy5GslY9_mLttqxmsQyG5_jD45hZuK-pQX6H3HpZ8WpUaOPccIp3d9UjRMiTwzroqG-YFpzgNogfEu7E2SK"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent p-lg flex flex-col justify-end">
+<h4 class="text-on-primary font-headline-sm">Advanced Infrastructure</h4>
+<p class="text-on-primary/80 font-body-md">Scaling your business with enterprise-grade stability.</p>
+</div>
+</div>
+<div class="md:col-span-2 md:row-span-1 relative rounded-xl overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A bright and airy corporate workspace with minimalist furniture and high ceilings. Large windows allow natural light to flood the clean, white interior. A single high-end monitor displays sleek website templates. The aesthetic is extremely clean and professional, conveying a sense of transparency and modern creativity. The atmosphere is quiet and productive." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBP1uaXOngB_QrT5H25cTVCeD-Tr2e44qowDTwzbLEwgFOgOF9sHIHJ0htqp-wD1weekFkAl3MUReZw4dZl7aZn_N87n68cotahJnnxZIOySnjxO4vvYP9qhsiXlJeKe0qkY99MrF1r8-BMgdFFJx4e-C7XJc4rvLH1JqQ5iDCVmrdD1EsK-3vMPBiyaFRhe5AzglbNbSLuTu8SnSu9DYH7YFj8NNz5bHystEIHRhqBpUJOZllR1LzC5U075gfnPRhpkVBHLSRhaPyi"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent p-lg flex flex-col justify-end">
+<h4 class="text-on-primary font-headline-sm">Creative Freedom</h4>
+</div>
+</div>
+<div class="md:col-span-1 md:row-span-1 relative rounded-xl overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A close-up shot of professional high-tech equipment including a minimalist keyboard and a high-resolution screen showing code. The lighting is low-key with sharp highlights, emphasizing a focus on precision and technical mastery. The color scheme is dominated by deep navy blues and metallic grays, creating a feeling of institutional trust and sophisticated engineering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCf0-jjd5cEXLxhU-nayaQFmFlIA8h-wlDAFjcOQ2gYEzMfQiGheTF5TUhh6FGcwc_Gv4Cn4b9bUkGflc2XVXmz--e2aEi9Byd_GQW7RYdzkO8thIvhWFSaGDIJ4t862j1479TCMv20Ne_2t6yIR49eGw3yB2FI3CODCS_7XeIfXrL7MRzm08uDEG4fYrVoJjANEZI3SqTYgiWZ6VWMPBHQJlhEvxJcvtst3UQiPTGq0t2ci6-YYxXO2-kGzTjsWrvdEXRLVtCzxHHG"/>
+</div>
+<div class="md:col-span-1 md:row-span-1 bg-primary text-on-primary p-lg rounded-xl flex flex-col justify-center items-center text-center">
+<span class="font-display-lg text-headline-md block">99.9%</span>
+<p class="font-label-md uppercase tracking-widest">Uptime Guaranteed</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest w-full py-xl border-t border-outline-variant">
+<div class="max-w-container-max mx-auto px-md grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="flex flex-col gap-md">
+<div class="font-headline-sm text-headline-sm font-bold text-primary">WebFlow Sub</div>
+<p class="text-on-surface-variant font-body-md">Precision design and engineering for modern marketing teams.</p>
+</div>
+<div class="flex flex-col gap-sm">
+<h5 class="font-label-md text-primary mb-xs">Product</h5>
+<a class="font-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Home</a>
+<a class="font-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Templates</a>
+<a class="font-body-md text-primary font-bold" href="#">Subscription Plans</a>
+</div>
+<div class="flex flex-col gap-sm">
+<h5 class="font-label-md text-primary mb-xs">Company</h5>
+<a class="font-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Career</a>
+</div>
+<div class="flex flex-col gap-sm">
+<h5 class="font-label-md text-primary mb-xs">Support</h5>
+<a class="font-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Help Center</a>
+<a class="font-body-md text-on-secondary-container hover:text-primary transition-colors" href="#">Contact Us</a>
+<p class="text-on-surface-variant font-caption mt-md">© 2024 WebFlow Sub. All rights reserved.</p>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for primary buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.classList.add('scale-95');
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('scale-95');
+            });
+            button.addEventListener('mouseleave', () => {
+                button.classList.remove('scale-95');
+            });
+        });
+
+        // Sticky header transition on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+            } else {
+                header.classList.remove('shadow-md');
+            }
+        });
+    </script>
+</body></html>
+
+<!-- Templates - WebFlow Sub -->
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid #E6EBF1;
+        }
+        .premium-shadow {
+            box-shadow: 0px 4px 12px rgba(10, 37, 64, 0.05);
+        }
+        .premium-shadow-hover:hover {
+            box-shadow: 0px 12px 24px rgba(10, 37, 64, 0.10);
+            transform: translateY(-2px);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#5d5f5f",
+                    "error": "#ba1a1a",
+                    "on-primary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface-container-highest": "#e0e3e6",
+                    "on-tertiary-fixed-variant": "#394955",
+                    "on-secondary-fixed-variant": "#454747",
+                    "surface-tint": "#49607e",
+                    "on-error": "#ffffff",
+                    "inverse-on-surface": "#eef1f4",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "background": "#f7fafd",
+                    "on-tertiary": "#ffffff",
+                    "secondary-container": "#dfe0e0",
+                    "on-primary-fixed": "#001c37",
+                    "surface-container-high": "#e5e8eb",
+                    "tertiary-fixed-dim": "#b8c8d8",
+                    "surface-bright": "#f7fafd",
+                    "surface-container-low": "#f1f4f7",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-container": "#7d8d9c",
+                    "on-surface": "#181c1e",
+                    "surface": "#f7fafd",
+                    "on-primary-fixed-variant": "#314865",
+                    "secondary-fixed": "#e2e2e2",
+                    "primary-fixed": "#d2e4ff",
+                    "surface-container": "#ebeef1",
+                    "on-surface-variant": "#43474d",
+                    "on-tertiary-fixed": "#0d1d29",
+                    "inverse-primary": "#b0c8eb",
+                    "inverse-surface": "#2d3133",
+                    "tertiary": "#01101c",
+                    "tertiary-fixed": "#d4e5f5",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#768dad",
+                    "outline": "#74777e",
+                    "surface-dim": "#d7dadd",
+                    "on-background": "#181c1e",
+                    "on-secondary-container": "#616363",
+                    "primary": "#000f22",
+                    "primary-fixed-dim": "#b0c8eb",
+                    "outline-variant": "#c4c6ce",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "surface-variant": "#e0e3e6",
+                    "primary-container": "#0a2540",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-container": "#162632"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "xs": "4px",
+                    "md": "24px",
+                    "lg": "48px",
+                    "xl": "80px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "sm": "12px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "caption": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-sm": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "caption": ["12px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "headline-md": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-container/80 backdrop-blur-md shadow-sm border-b border-outline-variant/30">
+<nav class="max-w-container-max mx-auto px-md h-[72px] flex items-center justify-between">
+<div class="font-headline-sm text-headline-sm font-bold text-primary dark:text-primary-fixed">WebFlow Sub</div>
+<div class="hidden md:flex items-center space-x-lg">
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors" href="#">Home</a>
+<a class="font-label-md text-label-md text-primary dark:text-primary-fixed border-b-2 border-primary pb-1" href="#">Templates</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors" href="#">Subscription Plans</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Us</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors" href="#">Login</a>
+</div>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-lg font-label-md hover:bg-primary/90 active:scale-95 transition-all">Get Started</button>
+</nav>
+</header>
+<main class="pt-[72px] min-h-screen">
+<!-- Hero / Page Title Section -->
+<section class="max-w-container-max mx-auto px-md py-xl">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md border-b border-outline-variant/30 pb-lg">
+<div class="max-w-2xl">
+<h1 class="font-display-lg text-display-lg text-primary mb-base">Premium Templates</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Elevate your digital presence with our high-conversion, professional Webflow templates designed for scalability.</p>
+</div>
+<!-- Top Filter / Tabs -->
+<div class="flex flex-wrap gap-base">
+<button class="px-md py-xs rounded-full border border-primary bg-primary text-on-primary font-label-md text-label-md">All</button>
+<button class="px-md py-xs rounded-full border border-outline-variant hover:border-primary transition-colors font-label-md text-label-md">SaaS</button>
+<button class="px-md py-xs rounded-full border border-outline-variant hover:border-primary transition-colors font-label-md text-label-md">E-commerce</button>
+<button class="px-md py-xs rounded-full border border-outline-variant hover:border-primary transition-colors font-label-md text-label-md">Portfolio</button>
+<button class="px-md py-xs rounded-full border border-outline-variant hover:border-primary transition-colors font-label-md text-label-md">Agency</button>
+</div>
+</div>
+</section>
+<!-- Template Grid Section -->
+<section class="max-w-container-max mx-auto px-md pb-xl">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Card 1 -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden premium-shadow premium-shadow-hover transition-all duration-300">
+<div class="relative aspect-video overflow-hidden">
+<img alt="Template Preview" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-fidelity screenshot of a modern SaaS landing page template. The design features a clean white background with deep navy blue accents, sophisticated data visualization charts, and bold sans-serif typography. The aesthetic is corporate minimalist with generous white space and a crisp, professional lighting effect that highlights the UI precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNGi5asHGF092Hk6unjEeZX-kes5PjorpqO1HmRy9mK9uith83Gy7IIKiQ8Ide7IpAJxCI0PtgNcsCuEvUCzqezG3KmqyeEpjNiKmNtzS4tfIuVpvEdW_T3Fp-ez6x7n_8WcCyy25G-DGp_RLXXEsPMA4s-ozi_YHtK0dTwalgL_J6GJ3aGAzDubHo-4M9qSyfHPMBITKGzWAzJqbiu_ILx_7ZGLPPbdaQ93nbMfLLzaPicAMgcXYWzuCJZxjM0H_h2rfo6roaiOB6"/>
+<div class="absolute top-4 left-4">
+<span class="bg-surface-container-low/90 backdrop-blur px-sm py-xs rounded font-label-md text-[10px] uppercase tracking-widest text-primary border border-outline-variant/30">SaaS</span>
+</div>
+</div>
+<div class="p-lg">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-xs">Nova Dashboard</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg line-clamp-2">Complete admin panel and landing page for modern software solutions.</p>
+<button class="w-full py-sm rounded-lg border border-primary text-primary font-label-md hover:bg-primary/5 transition-colors flex items-center justify-center gap-xs" onclick="toggleDrawer(true)">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+                            Preview Template
+                        </button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden premium-shadow premium-shadow-hover transition-all duration-300">
+<div class="relative aspect-video overflow-hidden">
+<img alt="Template Preview" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A professional portfolio website template showcasing high-end photography. The layout uses an asymmetric grid with large, striking image containers and elegant, light-mode typography. The color scheme is a sophisticated blend of off-whites and cool grays, reflecting a luxurious and creative mood suitable for a premium design agency." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3BSAXpxHZV0qReLtH0_qHdWJBOeYQWbjUNyLpl8MwGXgG9isol-hfT_yEPBqf7hC4qp7zR7uLGr_38dd5jLpJUI9d-t9lzaLL0ovjaJbiFujvp409FegaxwOb_GJ_FsmcbjZYWIsHvWZ7QCIsTZIeaeAF3JVW4b6N-Mz9YaF4tXdtassoyxvZ9jVH1um9ma1o3-opWQC011pxGvAXU5xxr6I6xJ3ZLDyOhDEccekKDXyukS_Im6Z7ka_2qTg_SdSR_nH0DIvq2paj"/>
+<div class="absolute top-4 left-4">
+<span class="bg-surface-container-low/90 backdrop-blur px-sm py-xs rounded font-label-md text-[10px] uppercase tracking-widest text-primary border border-outline-variant/30">Portfolio</span>
+</div>
+</div>
+<div class="p-lg">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-xs">Aura Creative</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg line-clamp-2">Minimalist portfolio for high-output design teams and photographers.</p>
+<button class="w-full py-sm rounded-lg border border-primary text-primary font-label-md hover:bg-primary/5 transition-colors flex items-center justify-center gap-xs" onclick="toggleDrawer(true)">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+                            Preview Template
+                        </button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden premium-shadow premium-shadow-hover transition-all duration-300">
+<div class="relative aspect-video overflow-hidden">
+<img alt="Template Preview" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="An advanced e-commerce storefront template featuring a streamlined product catalog. The design uses a clean, light-mode interface with sharp product photography, intuitive navigation, and high-contrast checkout buttons in deep primary blue. The aesthetic conveys institutional trust and modern retail efficiency through a structured grid layout." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-ewM2dPsPcqR-pFmmGXNOTK-sue7KwIyfLQdvBY3fQFWxDw8cKbQAGkhpLF553KrfvWRGRqcVHuJfM0MYu-cC9GUzvvBjwLl7nubwZE--gvSAlxoievkbK8yk-ujzGng5tjbEoHBJUaMcm-u9rsSeIRu0VVXmg8PZf5US--wtQB6t7TmoN_mdLP0WGMIbf6oLOe2i17E4Xuw_B8ZF74ofD6824esv_wqsoNzrap2_Au1L3yM1huC9-qrCwDIk8pixN1G40vI7F284"/>
+<div class="absolute top-4 left-4">
+<span class="bg-surface-container-low/90 backdrop-blur px-sm py-xs rounded font-label-md text-[10px] uppercase tracking-widest text-primary border border-outline-variant/30">E-commerce</span>
+</div>
+</div>
+<div class="p-lg">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-xs">Stellar Shop</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg line-clamp-2">Optimized shopping experience with rapid load times and clean UI.</p>
+<button class="w-full py-sm rounded-lg border border-primary text-primary font-label-md hover:bg-primary/5 transition-colors flex items-center justify-center gap-xs" onclick="toggleDrawer(true)">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+                            Preview Template
+                        </button>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden premium-shadow premium-shadow-hover transition-all duration-300">
+<div class="relative aspect-video overflow-hidden">
+<img alt="Template Preview" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A sleek corporate agency website template highlighting service offerings and team profiles. The interface is dominated by professional architectural imagery and clean, white backgrounds. The layout is perfectly aligned with a 12-column grid, featuring subtle drop shadows and a high-fidelity, institutional feel that emphasizes business reliability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeyYAowWJfavrCq--2ZoBSpB0leAXxofatKce6bY-xFlkr1kuThpW54pm9dgC_-vVIs41otJI5LuwPOG_dxEq3o1KT-EKzKbNS4P-msPSqxVeb-g0vkEZRWsvJBMeD9nL0O6pK05xba9eRcRbMDiaJXjAnHOJPak6sdMTPjrvCjqigGZLwSSUSRJJ9F1CZMMc0tXMfWFlxBpG4w7FKRkrLKHtlwz6WhdxDFGKCLeofSRmaPl7PHtMDqwiw7-TCyl3pdqQkmtKbrJWL"/>
+<div class="absolute top-4 left-4">
+<span class="bg-surface-container-low/90 backdrop-blur px-sm py-xs rounded font-label-md text-[10px] uppercase tracking-widest text-primary border border-outline-variant/30">Agency</span>
+</div>
+</div>
+<div class="p-lg">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-xs">Summit Group</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg line-clamp-2">Institutional-grade template for consultancies and legal firms.</p>
+<button class="w-full py-sm rounded-lg border border-primary text-primary font-label-md hover:bg-primary/5 transition-colors flex items-center justify-center gap-xs" onclick="toggleDrawer(true)">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+                            Preview Template
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="bg-primary-container text-on-primary-fixed py-xl">
+<div class="max-w-container-max mx-auto px-md text-center">
+<h2 class="font-headline-md text-headline-md mb-md text-white">Need a custom template?</h2>
+<p class="font-body-lg text-body-lg text-on-primary-container mb-lg max-w-xl mx-auto">Our design team can craft a bespoke Webflow experience tailored exclusively to your brand requirements.</p>
+<button class="bg-on-primary text-primary px-xl py-md rounded-lg font-label-md hover:bg-surface transition-all active:scale-95">Inquire Now</button>
+</div>
+</section>
+</main>
+<!-- Side Drawer / Preview State -->
+<div class="fixed inset-0 z-[100] invisible transition-all duration-300" id="previewDrawer">
+<!-- Backdrop -->
+<div class="absolute inset-0 bg-primary/40 backdrop-blur-sm opacity-0 transition-opacity duration-300" id="drawerBackdrop" onclick="toggleDrawer(false)"></div>
+<!-- Drawer Content -->
+<div class="absolute right-0 top-0 h-full w-full md:w-[600px] bg-white shadow-2xl translate-x-full transition-transform duration-500 flex flex-col" id="drawerBody">
+<div class="flex items-center justify-between p-lg border-b border-outline-variant">
+<h2 class="font-headline-sm text-headline-sm text-primary">Template Preview</h2>
+<button class="p-xs hover:bg-surface-container rounded-full transition-colors" onclick="toggleDrawer(false)">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto p-lg">
+<div class="rounded-xl overflow-hidden mb-lg premium-shadow">
+<img alt="Main Preview" class="w-full object-cover" data-alt="A detailed, expansive view of a SaaS dashboard template. The UI shows complex analytical widgets with smooth line graphs and clean data tables. The background is a soft white, and the primary interactive elements are styled in deep corporate blue. The overall composition is balanced and communicates high-fidelity data visualization and technical precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuARLFEa0h3Mrf5JcEsbtG_8jerZ6bRmHwIAAyrraxrxbt_h5_TpbFYb79PsyGKZOM4U3801PQ8FDvgPoWEdyT7ckeCWQKIqieatRarMHzpPvqaQo3V9aGcHjM3CuqdgNeBC_x4P0FOEm7DZ43xtpvfpeYPelYL7t6sQhEYituRpm0Wxoq-K1a0eKwosQs-sosu431tZqPbBaEuKOBZKebqnrh1AW1t1KEUYxGE9DPcUX4wL6ULN3z__smb-d9RFdoYu00-695h_Jq1s"/>
+</div>
+<div class="mb-xl">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-md">Nova Dashboard Features</h3>
+<ul class="space-y-base">
+<li class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<p class="font-body-md text-body-md">Fully responsive layout with 30+ custom UI components</p>
+</li>
+<li class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<p class="font-body-md text-body-md">Dynamic CMS-driven blog and project pages</p>
+</li>
+<li class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<p class="font-body-md text-body-md">Integrated animations using Webflow Interactions</p>
+</li>
+<li class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<p class="font-body-md text-body-md">SEO optimized structure and high-performance assets</p>
+</li>
+</ul>
+</div>
+<div class="bg-surface-container-low p-lg rounded-xl border border-outline-variant/30">
+<h4 class="font-label-md text-label-md text-primary mb-xs uppercase tracking-widest">Pricing Plan</h4>
+<div class="flex items-baseline gap-xs mb-md">
+<span class="font-headline-md text-headline-md text-primary">$49</span>
+<span class="font-body-md text-on-surface-variant">/ month</span>
+</div>
+<p class="font-caption text-caption text-on-surface-variant mb-lg">Access all premium templates and weekly updates with our Professional Subscription.</p>
+<button class="w-full bg-primary text-on-primary py-md rounded-lg font-label-md hover:bg-primary/90 transition-all shadow-lg">Subscribe Now</button>
+<button class="w-full mt-base py-md rounded-lg text-primary font-label-md hover:bg-surface transition-all">Buy Individual Template ($129)</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-highest w-full py-xl border-t border-outline-variant">
+<div class="max-w-container-max mx-auto px-md grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="col-span-1 md:col-span-1">
+<div class="font-headline-sm text-headline-sm font-bold text-primary dark:text-primary-fixed mb-md">WebFlow Sub</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Institutional-grade design assets for the modern web.</p>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-primary mb-md">Platform</h4>
+<ul class="space-y-base">
+<li><a class="font-body-md text-body-md text-on-secondary-container dark:text-on-secondary-fixed-variant hover:text-primary transition-colors" href="#">Templates</a></li>
+<li><a class="font-body-md text-body-md text-on-secondary-container dark:text-on-secondary-fixed-variant hover:text-primary transition-colors" href="#">Pricing</a></li>
+<li><a class="font-body-md text-body-md text-on-secondary-container dark:text-on-secondary-fixed-variant hover:text-primary transition-colors" href="#">Showcase</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-primary mb-md">Company</h4>
+<ul class="space-y-base">
+<li><a class="font-body-md text-body-md text-on-secondary-container dark:text-on-secondary-fixed-variant hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="font-body-md text-body-md text-on-secondary-container dark:text-on-secondary-fixed-variant hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+<li><a class="font-body-md text-body-md text-on-secondary-container dark:text-on-secondary-fixed-variant hover:text-primary transition-colors" href="#">Career</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-primary mb-md">Support</h4>
+<ul class="space-y-base">
+<li><a class="font-body-md text-body-md text-on-secondary-container dark:text-on-secondary-fixed-variant hover:text-primary transition-colors" href="#">Help Center</a></li>
+<li><a class="font-body-md text-body-md text-on-secondary-container dark:text-on-secondary-fixed-variant hover:text-primary transition-colors" href="#">Contact Us</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-md mt-xl pt-lg border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-md">
+<p class="font-caption text-caption text-on-surface-variant">© 2024 WebFlow Sub. All rights reserved.</p>
+<div class="flex gap-lg">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">brand_family</span></a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">language</span></a>
+</div>
+</div>
+</footer>
+<script>
+        function toggleDrawer(open) {
+            const drawer = document.getElementById('previewDrawer');
+            const backdrop = document.getElementById('drawerBackdrop');
+            const body = document.getElementById('drawerBody');
+            
+            if (open) {
+                drawer.classList.remove('invisible');
+                setTimeout(() => {
+                    backdrop.classList.add('opacity-100');
+                    body.classList.remove('translate-x-full');
+                }, 10);
+                document.body.style.overflow = 'hidden';
+            } else {
+                backdrop.classList.remove('opacity-100');
+                body.classList.add('translate-x-full');
+                setTimeout(() => {
+                    drawer.classList.add('invisible');
+                }, 500);
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
+</body></html>

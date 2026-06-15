@@ -1,0 +1,117 @@
+'use client'
+
+import { useAppStore } from '@/lib/store'
+import { Button } from '@/components/ui/button'
+import { ArrowRight, Play } from 'lucide-react'
+
+export default function HeroSection() {
+  const { setCurrentPage } = useAppStore()
+
+  return (
+    <section className="relative overflow-hidden bg-gradient-to-br from-[#000f22] via-[#0A2540] to-[#000f22] min-h-[600px] flex items-center">
+      {/* Background pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-0 left-0 w-full h-full" style={{
+          backgroundImage: `radial-gradient(circle at 25% 25%, rgba(0, 209, 255, 0.15) 0%, transparent 50%),
+                           radial-gradient(circle at 75% 75%, rgba(0, 209, 255, 0.1) 0%, transparent 50%)`,
+        }} />
+      </div>
+
+      {/* Grid dots */}
+      <div className="absolute inset-0 opacity-5" style={{
+        backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
+        backgroundSize: '30px 30px',
+      }} />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="animate-fade-in-up">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00D1FF]/10 border border-[#00D1FF]/20 mb-6">
+              <span className="w-2 h-2 rounded-full bg-[#00D1FF] animate-pulse" />
+              <span className="text-[#00D1FF] text-xs font-medium">NEW: AI-Powered Design Tools</span>
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6" style={{ letterSpacing: '-0.02em' }}>
+              Build Your Perfect{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D1FF] to-[#10B981]">
+                Website
+              </span>{' '}
+              with Ease
+            </h1>
+
+            <p className="text-lg text-[#768dad] leading-relaxed mb-8 max-w-lg">
+              Professional website design on subscription. Choose from stunning templates, 
+              get expert setup, and enjoy ongoing support — all for a predictable monthly price.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button
+                onClick={() => {
+                  setCurrentPage('templates')
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+                className="bg-[#00D1FF] hover:bg-[#00b8e6] text-[#000f22] font-semibold h-12 px-8 text-base"
+              >
+                Browse Templates
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+              <Button
+                onClick={() => {
+                  setCurrentPage('plans')
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+                variant="outline"
+                className="border-[#768dad] text-white hover:bg-[#0A2540] h-12 px-8 text-base"
+              >
+                View Plans
+              </Button>
+            </div>
+
+            <div className="flex items-center gap-8 mt-10 pt-8 border-t border-[#768dad]/20">
+              <div>
+                <div className="text-2xl font-bold text-white">500+</div>
+                <div className="text-xs text-[#768dad]">Websites Built</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-white">98%</div>
+                <div className="text-xs text-[#768dad]">Client Satisfaction</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-white">24/7</div>
+                <div className="text-xs text-[#768dad]">Support Available</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Hero image */}
+          <div className="hidden lg:block animate-slide-in-right">
+            <div className="relative">
+              <div className="absolute -inset-4 bg-gradient-to-r from-[#00D1FF]/20 to-[#10B981]/20 rounded-2xl blur-xl" />
+              <div className="relative rounded-2xl overflow-hidden shadow-overlay border border-[#768dad]/20">
+                <img
+                  src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80"
+                  alt="Professional Website Design"
+                  className="w-full h-[400px] object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#000f22]/60 to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6">
+                  <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/10">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-[#00D1FF] flex items-center justify-center">
+                        <Play className="h-4 w-4 text-[#000f22] ml-0.5" />
+                      </div>
+                      <div>
+                        <div className="text-white text-sm font-medium">Watch Demo</div>
+                        <div className="text-[#768dad] text-xs">See how it works in 2 minutes</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}

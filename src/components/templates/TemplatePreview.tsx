@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Check, ArrowRight, ArrowLeft, Plus, Minus, ShoppingCart, Sparkles } from 'lucide-react'
+import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles } from 'lucide-react'
 
 interface Template {
   id: string
@@ -31,15 +31,19 @@ const ADD_ONS = [
 ]
 
 export default function TemplatePreview() {
-  const { previewTemplate, setPreviewTemplate, setCurrentPage } = useAppStore()
+  const { previewTemplate, setPreviewTemplate, setCurrentPage, user, setCheckoutData } = useAppStore()
   const [template, setTemplate] = useState<Template | null>(null)
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([])
+  const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly')
 
   // Reset add-ons when template changes
   const prevTemplateRef = useState<string | null>(null)
   if (prevTemplateRef[0] !== previewTemplate) {
     prevTemplateRef[1](previewTemplate)
-    if (previewTemplate) setSelectedAddOns([])
+    if (previewTemplate) {
+      setSelectedAddOns([])
+      setBilling('monthly')
+    }
   }
 
   useEffect(() => {
@@ -57,14 +61,40 @@ export default function TemplatePreview() {
   const features: string[] = template?.features ? JSON.parse(template.features) : []
   const industries: string[] = template?.industries ? JSON.parse(template.industries) : []
 
-  const basePrice = 30
-  const addOnCost = selectedAddOns.length * 3
-  const totalMonthly = basePrice + addOnCost
+  const basePriceMonthly = 30
+  const basePriceAnnual = 300
+  const addOnCostMonthly = selectedAddOns.length * 3
+  const addOnCostAnnual = selectedAddOns.length * 36 // $3/mo * 12 months for first year
+
+  const basePrice = billing === 'monthly' ? basePriceMonthly : basePriceAnnual
+  const addOnTotal = billing === 'monthly' ? addOnCostMonthly : addOnCostAnnual
+  const total = basePrice + addOnTotal
+  const period = billing === 'monthly' ? 'mo' : 'yr'
 
   const toggleAddOn = (id: string) => {
     setSelectedAddOns(prev =>
       prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id]
     )
+  }
+
+  const handleProceedToCheckout = () => {
+    if (!template) return
+    if (!user) {
+      setCurrentPage('login')
+      return
+    }
+    setCheckoutData({
+      templateId: template.id,
+      templateTitle: template.title,
+      templateImage: template.image,
+      templateCategory: template.category,
+      templateFeatures: features,
+      billing,
+      selectedAddOns,
+    })
+    setPreviewTemplate(null)
+    setCurrentPage('checkout')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
@@ -91,6 +121,45 @@ export default function TemplatePreview() {
               )}
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Billing Toggle Bar */}
+      <div className="bg-white border-b border-[#e6ebf1]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <ShoppingCart className="h-5 w-5 text-[#000f22]" />
+            <span className="font-semibold text-[#000f22]">Choose your plan</span>
+          </div>
+          <div className="inline-flex items-center bg-[#f1f4f7] rounded-xl p-1.5 gap-1">
+            <button
+              onClick={() => setBilling('monthly')}
+              className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                billing === 'monthly'
+                  ? 'bg-[#000f22] text-white shadow-md'
+                  : 'text-[#43474d] hover:text-[#000f22]'
+              }`}
+            >
+              Monthly — $30/mo
+            </button>
+            <button
+              onClick={() => setBilling('annual')}
+              className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
+                billing === 'annual'
+                  ? 'bg-[#000f22] text-white shadow-md'
+                  : 'text-[#43474d] hover:text-[#000f22]'
+              }`}
+            >
+              Annual — $300/yr
+              <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
+                billing === 'annual'
+                  ? 'bg-[#00D1FF] text-[#000f22]'
+                  : 'bg-[#10B981]/10 text-[#10B981]'
+              }`}>
+                Save 17%
+              </span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -148,54 +217,82 @@ export default function TemplatePreview() {
             {/* Right: Add-ons & Pricing (1 column) */}
             <div className="space-y-6">
               {/* Price summary */}
-              <div className="bg-gradient-to-br from-[#000f22] via-[#0A2540] to-[#0A2540] rounded-2xl p-6 text-white sticky top-20">
+              <div className="bg-gradient-to-br from-[#000f22] via-[#0A2540] to-[#0A2540] rounded-2xl p-6 text-white sticky top-36">
                 <div className="flex items-center gap-2 mb-4">
                   <ShoppingCart className="h-5 w-5 text-[#00D1FF]" />
-                  <h3 className="font-semibold">Your Plan</h3>
+                  <h3 className="font-semibold">Order Summary</h3>
                 </div>
 
-                <div className="space-y-2 mb-4 pb-4 border-b border-[#768dad]/20">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-[#768dad]">Base Plan</span>
-                    <span>${basePrice}/mo</span>
+                <div className="space-y-2.5 mb-4 pb-4 border-b border-[#768dad]/20">
+                  {/* Template */}
+                  <div className="flex items-center gap-3">
+                    <img src={template.image} alt="" className="w-12 h-12 rounded-lg object-cover flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium truncate">{template.title}</p>
+                      <p className="text-xs text-[#768dad]">{template.category}</p>
+                    </div>
                   </div>
+
+                  {/* Base plan */}
+                  <div className="flex justify-between text-sm pt-2">
+                    <span className="text-[#768dad]">
+                      Plan ({billing === 'monthly' ? 'Monthly' : 'Annual'})
+                    </span>
+                    <span>${basePrice}/{period}</span>
+                  </div>
+
+                  {/* Add-ons */}
                   {selectedAddOns.map((addOnId) => {
                     const addOn = ADD_ONS.find(a => a.id === addOnId)
                     return addOn ? (
                       <div key={addOnId} className="flex justify-between text-sm">
                         <span className="text-[#768dad] truncate mr-2">{addOn.name}</span>
-                        <span className="text-[#00D1FF] flex-shrink-0">+$3/mo</span>
+                        <span className="text-[#00D1FF] flex-shrink-0">
+                          +{billing === 'monthly' ? '$3/mo' : '$36/yr'}
+                        </span>
                       </div>
                     ) : null
                   })}
                 </div>
 
-                <div className="flex justify-between items-baseline mb-6">
+                <div className="flex justify-between items-baseline mb-2">
                   <span className="text-[#768dad] text-sm">Total</span>
                   <div className="text-right">
-                    <span className="text-3xl font-bold">${totalMonthly}</span>
-                    <span className="text-[#768dad] text-sm">/mo</span>
+                    <span className="text-3xl font-bold">${total}</span>
+                    <span className="text-[#768dad] text-sm">/{period}</span>
                   </div>
                 </div>
 
+                {selectedAddOns.length > 0 && (
+                  <p className="text-[10px] text-[#768dad] mb-4 leading-relaxed">
+                    * Add-ons fees are charged for the first year only
+                  </p>
+                )}
+
                 <Button
-                  onClick={() => {
-                    setPreviewTemplate(null)
-                    setCurrentPage('plans')
-                    window.scrollTo({ top: 0, behavior: 'smooth' })
-                  }}
+                  onClick={handleProceedToCheckout}
                   className="w-full bg-[#00D1FF] hover:bg-[#00b8e6] text-[#000f22] font-semibold h-11"
                 >
-                  Subscribe Now
+                  Proceed to Checkout
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
+
+                {!user && (
+                  <p className="text-[10px] text-[#768dad] text-center mt-2">
+                    You&apos;ll need to sign in to complete your purchase
+                  </p>
+                )}
               </div>
 
               {/* Add-ons list */}
               <div className="bg-white rounded-2xl p-6 border border-[#e6ebf1] shadow-card">
                 <div className="mb-5">
                   <h3 className="font-bold text-[#000f22] mb-1">Add-Ons</h3>
-                  <p className="text-xs text-[#4F5B76]">Enhance your website with extra features — <span className="font-semibold text-[#000f22]">+$3/month</span> each</p>
+                  <p className="text-xs text-[#4F5B76]">
+                    Enhance your website — <span className="font-semibold text-[#000f22]">+$3/month</span> each
+                    <br />
+                    <span className="text-[#74777e]">(Add-ons fees apply for the first year only)</span>
+                  </p>
                 </div>
                 <div className="space-y-2">
                   {ADD_ONS.map((addOn) => {

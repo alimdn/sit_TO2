@@ -27,6 +27,7 @@ import AdminMessages from '@/components/admin/AdminMessages'
 import AdminSocial from '@/components/admin/AdminSocial'
 import AdminPayments from '@/components/admin/AdminPayments'
 import AdminSettings from '@/components/admin/AdminSettings'
+import CheckoutPage from '@/components/checkout/CheckoutPage'
 
 function HomePage() {
   return (
@@ -93,6 +94,38 @@ function LoginPage() {
   return (
     <div className="page-enter">
       <LoginForm />
+    </div>
+  )
+}
+
+function CheckoutPageRoute() {
+  const { user, setCurrentPage } = useAppStore()
+
+  if (!user) {
+    return (
+      <div className="min-h-[50vh] flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-4">
+          <div className="w-16 h-16 rounded-full bg-[#FFF8E1] flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-[#F59E0B]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+          </div>
+          <h2 className="text-xl font-bold text-[#000f22] mb-2">Sign In Required</h2>
+          <p className="text-[#4F5B76] mb-6">You need to create an account or sign in to complete your purchase and proceed to payment.</p>
+          <Button
+            onClick={() => setCurrentPage('login')}
+            className="bg-[#000f22] hover:bg-[#0A2540] text-white font-semibold h-11 px-8"
+          >
+            Sign In to Continue
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="page-enter py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <CheckoutPage />
+      </div>
     </div>
   )
 }
@@ -210,6 +243,7 @@ export default function Home() {
       case 'login': return <LoginPage />
       case 'dashboard': return <DashboardPage />
       case 'admin': return <AdminPage />
+      case 'checkout': return <CheckoutPageRoute />
       default: return <HomePage />
     }
   }

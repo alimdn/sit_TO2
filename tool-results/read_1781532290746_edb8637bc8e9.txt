@@ -1,0 +1,567 @@
+     1→     1→'use client'
+     2→     2→
+     3→     3→import { useEffect, useState } from 'react'
+     4→     4→import { useAppStore } from '@/lib/store'
+     5→     5→import { Button } from '@/components/ui/button'
+     6→     6→import { Badge } from '@/components/ui/badge'
+     7→     7→import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, ChevronDown } from 'lucide-react'
+     8→     8→
+     9→     9→interface Template {
+    10→    10→  id: string
+    11→    11→  title: string
+    12→    12→  description: string
+    13→    13→  category: string
+    14→    14→  image: string
+    15→    15→  features: string
+    16→    16→  industries: string
+    17→    17→  featured: boolean
+    18→    18→}
+    19→    19→
+    20→    20→const ADD_ONS = [
+    21→    21→  { id: 'seo', name: 'Advanced SEO Package', description: 'Optimized meta tags, sitemap, schema markup & weekly SEO reports' },
+    22→    22→  { id: 'analytics', name: 'Analytics Dashboard', description: 'Real-time visitor tracking, conversion funnels & custom reports' },
+    23→    23→  { id: 'multilang', name: 'Multi-Language Support', description: 'Translate your website into up to 5 languages with auto-detection' },
+    24→    24→  { id: 'ecommerce', name: 'E-Commerce Module', description: 'Product catalog, shopping cart, payment integration & inventory' },
+    25→    25→  { id: 'blog', name: 'Blog & Content Studio', description: 'Full blogging platform with categories, tags, scheduling & newsletter' },
+    26→    26→  { id: 'social', name: 'Social Media Integration', description: 'Auto-post, social feeds, share buttons & analytics tracking' },
+    27→    27→  { id: 'chat', name: 'Live Chat Widget', description: 'Real-time chat with visitors, automated greetings & chatbot support' },
+    28→    28→  { id: 'security', name: 'Advanced Security Suite', description: 'DDoS protection, malware scanning, 2FA & security monitoring' },
+    29→    29→  { id: 'backup', name: 'Automated Backups', description: 'Daily backups with one-click restore & 30-day retention' },
+    30→    30→  { id: 'speed', name: 'Performance Booster', description: 'CDN, image optimization, lazy loading & Core Web Vitals tuning' },
+    31→    31→]
+    32→    32→
+    33→    33→const EXTRA_FEATURES_POOL = [
+    34→    34→  'Responsive Design', 'SEO Optimized', 'Contact Forms', 'Analytics Integration',
+    35→    35→  'Multi-page Layout', 'Newsletter Signup', 'Image Gallery', 'Video Support',
+    36→    36→  'Smooth Animations', 'Project Pages', 'About Section', 'Client Testimonials',
+    37→    37→  'Product Catalog', 'Shopping Cart', 'Secure Checkout', 'Inventory Management',
+    38→    38→  'Customer Reviews', 'Payment Integration', 'Content Management', 'Categories & Tags',
+    39→    39→  'Social Sharing', 'Comments System', 'Search Functionality', 'RSS Feed',
+    40→    40→  'Dashboard Layout', 'Data Visualization', 'User Management', 'API Integration',
+    41→    41→  'Authentication', 'Billing Pages', 'Team Pages', 'Service Showcases',
+    42→    42→  'Case Studies', 'Client Portal', 'Multi-language', 'CRM Integration',
+    43→    43→  'Menu Display', 'Online Reservations', 'Photo Gallery', 'Location Map',
+    44→    44→  'Opening Hours', 'Online Ordering', 'Landing Pages', 'Feature Grid',
+    45→    45→  'Pricing Tables', 'Waitlist Signup', 'Product Demo', 'Documentation',
+    46→    46→]
+    47→    47→
+    48→    48→const FREE_FEATURES_LIMIT = 5
+    49→    49→
+    50→    50→const SIMILARITY_OPTIONS = [
+    51→    51→  { id: 'layout', label: 'Layout', labelAr: 'الشكل', icon: '🏗️' },
+    52→    52→  { id: 'features', label: 'Features', labelAr: 'الميزة', icon: '⚙️' },
+    53→    53→  { id: 'colors', label: 'Colors', labelAr: 'الألوان', icon: '🎨' },
+    54→    54→  { id: 'images', label: 'Image Density', labelAr: 'كثافة الصور', icon: '🖼️' },
+    55→    55→  { id: 'structure', label: 'Structure', labelAr: 'ترتيب الموقع', icon: '📐' },
+    56→    56→]
+    57→    57→
+    58→    58→export default function TemplatePreview() {
+    59→    59→  const { previewTemplate, setPreviewTemplate, setCurrentPage, user, setCheckoutData } = useAppStore()
+    60→    60→  const [template, setTemplate] = useState<Template | null>(null)
+    61→    61→  const [selectedAddOns, setSelectedAddOns] = useState<string[]>([])
+    62→    62→  const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly')
+    63→    63→  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])
+    64→    64→  const [showFeaturePicker, setShowFeaturePicker] = useState(false)
+    65→    65→
+    66→    66→  // New: Additional info & similar site
+    67→    67→  const [additionalInfo, setAdditionalInfo] = useState('')
+    68→    68→  const [similarSiteUrl, setSimilarSiteUrl] = useState('')
+    69→    69→  const [selectedSimilarities, setSelectedSimilarities] = useState<string[]>([])
+    70→    70→
+    71→    71→  // Reset when template changes
+    72→    72→  const prevTemplateRef = useState<string | null>(null)
+    73→    73→  if (prevTemplateRef[0] !== previewTemplate) {
+    74→    74→    prevTemplateRef[1](previewTemplate)
+    75→    75→    if (previewTemplate) {
+    76→    76→      setSelectedAddOns([])
+    77→    77→      setBilling('monthly')
+    78→    78→      setShowFeaturePicker(false)
+    79→    79→      setAdditionalInfo('')
+    80→    80→      setSimilarSiteUrl('')
+    81→    81→      setSelectedSimilarities([])
+    82→    82→    }
+    83→    83→  }
+    84→    84→
+    85→    85→  useEffect(() => {
+    86→    86→    if (!previewTemplate) return
+    87→    87→    let cancelled = false
+    88→    88→    fetch(`/api/templates/${previewTemplate}`)
+    89→    89→      .then(res => res.json())
+    90→    90→      .then(data => {
+    91→    91→        if (!cancelled) {
+    92→    92→          setTemplate(data)
+    93→    93→          const templateFeatures: string[] = data?.features ? JSON.parse(data.features) : []
+    94→    94→          setSelectedFeatures(templateFeatures)
+    95→    95→        }
+    96→    96→      })
+    97→    97→      .catch(() => { if (!cancelled) setTemplate(null) })
+    98→    98→    return () => { cancelled = true; setTemplate(null) }
+    99→    99→  }, [previewTemplate])
+   100→   100→
+   101→   101→  if (!previewTemplate) return null
+   102→   102→
+   103→   103→  const industries: string[] = template?.industries ? JSON.parse(template.industries) : []
+   104→   104→
+   105→   105→  const basePriceMonthly = 30
+   106→   106→  const basePriceAnnual = 300
+   107→   107→  const extraFeaturesCount = Math.max(0, selectedFeatures.length - FREE_FEATURES_LIMIT)
+   108→   108→  const extraFeatureCost = extraFeaturesCount * 3
+   109→   109→  const addOnCostMonthly = selectedAddOns.length * 3
+   110→   110→  const addOnCostAnnual = selectedAddOns.length * 36
+   111→   111→
+   112→   112→  const basePrice = billing === 'monthly' ? basePriceMonthly : basePriceAnnual
+   113→   113→  const extraFeatureTotal = billing === 'monthly' ? extraFeatureCost : extraFeatureCost * 12
+   114→   114→  const addOnTotal = billing === 'monthly' ? addOnCostMonthly : addOnCostAnnual
+   115→   115→  const total = basePrice + extraFeatureTotal + addOnTotal
+   116→   116→  const period = billing === 'monthly' ? 'mo' : 'yr'
+   117→   117→
+   118→   118→  const toggleAddOn = (id: string) => {
+   119→   119→    setSelectedAddOns(prev => prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id])
+   120→   120→  }
+   121→   121→
+   122→   122→  const removeFeature = (feature: string) => {
+   123→   123→    setSelectedFeatures(prev => prev.filter(f => f !== feature))
+   124→   124→  }
+   125→   125→
+   126→   126→  const addFeature = (feature: string) => {
+   127→   127→    if (!selectedFeatures.includes(feature)) {
+   128→   128→      setSelectedFeatures(prev => [...prev, feature])
+   129→   129→    }
+   130→   130→    setShowFeaturePicker(false)
+   131→   131→  }
+   132→   132→
+   133→   133→  const toggleSimilarity = (id: string) => {
+   134→   134→    setSelectedSimilarities(prev => prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id])
+   135→   135→  }
+   136→   136→
+   137→   137→  const availableFeatures = EXTRA_FEATURES_POOL.filter(f => !selectedFeatures.includes(f))
+   138→   138→
+   139→   139→  const handleProceedToCheckout = () => {
+   140→   140→    if (!template) return
+   141→   141→    if (!user) {
+   142→   142→      setCurrentPage('login')
+   143→   143→      return
+   144→   144→    }
+   145→   145→    setCheckoutData({
+   146→   146→      templateId: template.id,
+   147→   147→      templateTitle: template.title,
+   148→   148→      templateImage: template.image,
+   149→   149→      templateCategory: template.category,
+   150→   150→      templateFeatures: selectedFeatures,
+   151→   151→      billing,
+   152→   152→      selectedAddOns,
+   153→   153→    })
+   154→   154→    setPreviewTemplate(null)
+   155→   155→    setCurrentPage('checkout')
+   156→   156→    window.scrollTo({ top: 0, behavior: 'smooth' })
+   157→   157→  }
+   158→   158→
+   159→   159→  return (
+   160→   160→    <div className="fixed inset-0 z-50 bg-[#f7fafd] overflow-y-auto">
+   161→   161→      {/* Top bar */}
+   162→   162→      <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-[#e6ebf1]">
+   163→   163→        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+   164→   164→          <button
+   165→   165→            onClick={() => setPreviewTemplate(null)}
+   166→   166→            className="flex items-center gap-2 text-sm font-medium text-[#43474d] hover:text-[#000f22] transition-colors"
+   167→   167→          >
+   168→   168→            <ArrowLeft className="h-4 w-4" />
+   169→   169→            Back to Templates
+   170→   170→          </button>
+   171→   171→          {template && (
+   172→   172→            <div className="flex items-center gap-3">
+   173→   173→              <Badge className="bg-[#f1f4f7] text-[#4F5B76] hover:bg-[#e5e8eb] text-xs">
+   174→   174→                {template.category}
+   175→   175→              </Badge>
+   176→   176→              {template.featured && (
+   177→   177→                <Badge className="bg-[#00D1FF]/10 text-[#00D1FF] text-xs">
+   178→   178→                  <Sparkles className="h-3 w-3 mr-1" /> Featured
+   179→   179→                </Badge>
+   180→   180→              )}
+   181→   181→            </div>
+   182→   182→          )}
+   183→   183→        </div>
+   184→   184→      </div>
+   185→   185→
+   186→   186→      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+   187→   187→        {template ? (
+   188→   188→          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+   189→   189→            {/* Left: Preview, Features, Notes, Similar Site (2 columns) */}
+   190→   190→            <div className="lg:col-span-2 space-y-6">
+   191→   191→              {/* Preview image */}
+   192→   192→              <div>
+   193→   193→                <h1 className="text-2xl sm:text-3xl font-bold text-[#000f22] mb-4" style={{ letterSpacing: '-0.02em' }}>
+   194→   194→                  {template.title}
+   195→   195→                </h1>
+   196→   196→                <p className="text-[#4F5B76] mb-6 leading-relaxed">{template.description}</p>
+   197→   197→                <div className="rounded-2xl overflow-hidden border border-[#e6ebf1] shadow-card">
+   198→   198→                  <img src={template.image} alt={template.title} className="w-full object-cover" />
+   199→   199→                </div>
+   200→   200→              </div>
+   201→   201→
+   202→   202→              {/* Features - compact */}
+   203→   203→              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
+   204→   204→                <div className="flex items-center justify-between mb-2">
+   205→   205→                  <h2 className="text-base font-bold text-[#000f22]">Features</h2>
+   206→   206→                  <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[#f1f4f7] text-[#4F5B76]">
+   207→   207→                    {selectedFeatures.length} selected · {FREE_FEATURES_LIMIT} free
+   208→   208→                  </span>
+   209→   209→                </div>
+   210→   210→                <p className="text-xs text-[#4F5B76] mb-3">
+   211→   211→                  First {FREE_FEATURES_LIMIT} free. Extra: <span className="font-semibold text-[#000f22]">+$3/{period}</span> each.
+   212→   212→                </p>
+   213→   213→
+   214→   214→                {/* Selected features - compact grid */}
+   215→   215→                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
+   216→   216→                  {selectedFeatures.map((feature, i) => {
+   217→   217→                    const isFree = i < FREE_FEATURES_LIMIT
+   218→   218→                    return (
+   219→   219→                      <div key={i} className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg border text-xs transition-all ${
+   220→   220→                        isFree ? 'bg-[#f7fafd] border-transparent' : 'bg-[#FFF8E1] border-[#FFE082]'
+   221→   221→                      }`}>
+   222→   222→                        <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${
+   223→   223→                          isFree ? 'bg-[#10B981]/10' : 'bg-[#F59E0B]/10'
+   224→   224→                        }`}>
+   225→   225→                          <Check className={`h-2.5 w-2.5 ${isFree ? 'text-[#10B981]' : 'text-[#F59E0B]'}`} />
+   226→   226→                        </div>
+   227→   227→                        <span className="text-[#43474d] flex-1 truncate">{feature}</span>
+   228→   228→                        {!isFree && (
+   229→   229→                          <span className="text-[9px] font-bold text-[#F59E0B]">+$3</span>
+   230→   230→                        )}
+   231→   231→                        <button
+   232→   232→                          onClick={() => removeFeature(feature)}
+   233→   233→                          className="w-4 h-4 rounded-full bg-[#ef4444]/10 hover:bg-[#ef4444]/20 flex items-center justify-center flex-shrink-0"
+   234→   234→                        >
+   235→   235→                          <X className="h-2.5 w-2.5 text-[#ef4444]" />
+   236→   236→                        </button>
+   237→   237→                      </div>
+   238→   238→                    )
+   239→   239→                  })}
+   240→   240→                </div>
+   241→   241→
+   242→   242→                {/* Add feature */}
+   243→   243→                <div className="relative">
+   244→   244→                  <Button
+   245→   245→                    variant="outline"
+   246→   246→                    onClick={() => setShowFeaturePicker(!showFeaturePicker)}
+   247→   247→                    className="w-full border-dashed border-[#c4c6ce] hover:border-[#00D1FF] hover:bg-[#00D1FF]/5 text-[#74777e] hover:text-[#00D1FF] h-8 text-xs"
+   248→   248→                  >
+   249→   249→                    <Plus className="h-3.5 w-3.5 mr-1.5" />
+   250→   250→                    {selectedFeatures.length < FREE_FEATURES_LIMIT
+   251→   251→                      ? `Add Feature (${FREE_FEATURES_LIMIT - selectedFeatures.length} free left)`
+   252→   252→                      : 'Add Feature (+$3 each)'
+   253→   253→                    }
+   254→   254→                  </Button>
+   255→   255→
+   256→   256→                  {showFeaturePicker && (
+   257→   257→                    <div className="absolute left-0 right-0 top-10 z-20 bg-white rounded-xl border border-[#e6ebf1] shadow-lg max-h-48 overflow-y-auto">
+   258→   258→                      <div className="p-2">
+   259→   259→                        <div className="space-y-0.5">
+   260→   260→                          {availableFeatures.map((feature, i) => (
+   261→   261→                            <button
+   262→   262→                              key={i}
+   263→   263→                              onClick={() => addFeature(feature)}
+   264→   264→                              className="w-full text-left px-3 py-2 rounded-lg text-xs text-[#43474d] hover:bg-[#00D1FF]/5 hover:text-[#000f22] transition-colors flex items-center gap-2"
+   265→   265→                            >
+   266→   266→                              <Plus className="h-3 w-3 text-[#00D1FF]" />
+   267→   267→                              {feature}
+   268→   268→                            </button>
+   269→   269→                          ))}
+   270→   270→                        </div>
+   271→   271→                        {availableFeatures.length === 0 && (
+   272→   272→                          <p className="text-xs text-[#74777e] text-center py-2">All features selected</p>
+   273→   273→                        )}
+   274→   274→                      </div>
+   275→   275→                    </div>
+   276→   276→                  )}
+   277→   277→                </div>
+   278→   278→              </div>
+   279→   279→
+   280→   280→              {/* Suitable Industries - compact */}
+   281→   281→              {industries.length > 0 && (
+   282→   282→                <div className="bg-white rounded-2xl p-4 border border-[#e6ebf1] shadow-card">
+   283→   283→                  <h2 className="text-sm font-bold text-[#000f22] mb-2">Suitable For</h2>
+   284→   284→                  <div className="flex flex-wrap gap-1.5">
+   285→   285→                    {industries.map((industry, i) => (
+   286→   286→                      <Badge key={i} variant="outline" className="text-xs border-[#e6ebf1] text-[#4F5B76] py-1 px-2.5">
+   287→   287→                        {industry}
+   288→   288→                      </Badge>
+   289→   289→                    ))}
+   290→   290→                  </div>
+   291→   291→                </div>
+   292→   292→              )}
+   293→   293→
+   294→   294→              {/* Additional Notes */}
+   295→   295→              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
+   296→   296→                <div className="flex items-center gap-2 mb-3">
+   297→   297→                  <div className="w-7 h-7 rounded-lg bg-[#00D1FF]/10 flex items-center justify-center">
+   298→   298→                    <MessageSquare className="h-4 w-4 text-[#00D1FF]" />
+   299→   299→                  </div>
+   300→   300→                  <div>
+   301→   301→                    <h2 className="text-sm font-bold text-[#000f22]">Additional Information</h2>
+   302→   302→                    <p className="text-[11px] text-[#74777e]">Share any details or special requests for your website</p>
+   303→   303→                  </div>
+   304→   304→                </div>
+   305→   305→                <textarea
+   306→   306→                  value={additionalInfo}
+   307→   307→                  onChange={(e) => setAdditionalInfo(e.target.value)}
+   308→   308→                  placeholder="e.g., I want a modern look with blue accents, need Arabic language support, prefer a minimalist homepage..."
+   309→   309→                  className="w-full px-4 py-3 rounded-xl border border-[#e6ebf1] bg-[#f7fafd] text-sm text-[#000f22] placeholder:text-[#74777e] focus:outline-none focus:ring-2 focus:ring-[#00D1FF]/30 focus:border-[#00D1FF] resize-none transition-all"
+   310→   310→                  rows={4}
+   311→   311→                />
+   312→   312→                {additionalInfo.length > 0 && (
+   313→   313→                  <p className="text-[10px] text-[#74777e] mt-1.5 text-right">{additionalInfo.length} characters</p>
+   314→   314→                )}
+   315→   315→              </div>
+   316→   316→
+   317→   317→              {/* Similar Website Reference */}
+   318→   318→              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
+   319→   319→                <div className="flex items-center gap-2 mb-3">
+   320→   320→                  <div className="w-7 h-7 rounded-lg bg-[#7C3AED]/10 flex items-center justify-center">
+   321→   321→                    <Globe className="h-4 w-4 text-[#7C3AED]" />
+   322→   322→                  </div>
+   323→   323→                  <div>
+   324→   324→                    <h2 className="text-sm font-bold text-[#000f22]">Similar Website</h2>
+   325→   325→                    <p className="text-[11px] text-[#74777e]">Optional — reference a website you like</p>
+   326→   326→                  </div>
+   327→   327→                </div>
+   328→   328→
+   329→   329→                {/* URL input */}
+   330→   330→                <div className="relative mb-4">
+   331→   331→                  <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#74777e]" />
+   332→   332→                  <input
+   333→   333→                    type="url"
+   334→   334→                    value={similarSiteUrl}
+   335→   335→                    onChange={(e) => setSimilarSiteUrl(e.target.value)}
+   336→   336→                    placeholder="https://example.com"
+   337→   337→                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#e6ebf1] bg-[#f7fafd] text-sm text-[#000f22] placeholder:text-[#74777e] focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all"
+   338→   338→                  />
+   339→   339→                  {similarSiteUrl && (
+   340→   340→                    <button
+   341→   341→                      onClick={() => setSimilarSiteUrl('')}
+   342→   342→                      className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#ef4444]/10 hover:bg-[#ef4444]/20 flex items-center justify-center"
+   343→   343→                    >
+   344→   344→                      <X className="h-3 w-3 text-[#ef4444]" />
+   345→   345→                    </button>
+   346→   346→                  )}
+   347→   347→                </div>
+   348→   348→
+   349→   349→                {/* Similarity options - multi-select */}
+   350→   350→                <div>
+   351→   351→                  <p className="text-xs font-medium text-[#43474d] mb-2">What do you like about it? <span className="text-[#74777e] font-normal">(select all that apply)</span></p>
+   352→   352→                  <div className="flex flex-wrap gap-2">
+   353→   353→                    {SIMILARITY_OPTIONS.map((option) => {
+   354→   354→                      const isSelected = selectedSimilarities.includes(option.id)
+   355→   355→                      return (
+   356→   356→                        <button
+   357→   357→                          key={option.id}
+   358→   358→                          onClick={() => toggleSimilarity(option.id)}
+   359→   359→                          className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border text-xs font-medium transition-all duration-200 ${
+   360→   360→                            isSelected
+   361→   361→                              ? 'border-[#7C3AED] bg-[#7C3AED]/5 ring-1 ring-[#7C3AED]/30 text-[#7C3AED]'
+   362→   362→                              : 'border-[#e6ebf1] text-[#4F5B76] hover:border-[#c4c6ce] hover:bg-[#f7fafd]'
+   363→   363→                          }`}
+   364→   364→                        >
+   365→   365→                          <span>{option.icon}</span>
+   366→   366→                          <span>{option.labelAr}</span>
+   367→   367→                          <span className="text-[#74777e]">({option.label})</span>
+   368→   368→                          {isSelected && <Check className="h-3 w-3 ml-0.5" />}
+   369→   369→                        </button>
+   370→   370→                      )
+   371→   371→                    })}
+   372→   372→                  </div>
+   373→   373→                </div>
+   374→   374→
+   375→   375→                {/* Preview link */}
+   376→   376→                {similarSiteUrl && (
+   377→   377→                  <div className="mt-3 p-2.5 rounded-lg bg-[#7C3AED]/5 border border-[#7C3AED]/10 flex items-center gap-2">
+   378→   378→                    <Globe className="h-3.5 w-3.5 text-[#7C3AED] flex-shrink-0" />
+   379→   379→                    <a
+   380→   380→                      href={similarSiteUrl.startsWith('http') ? similarSiteUrl : `https://${similarSiteUrl}`}
+   381→   381→                      target="_blank"
+   382→   382→                      rel="noopener noreferrer"
+   383→   383→                      className="text-xs text-[#7C3AED] hover:underline truncate"
+   384→   384→                    >
+   385→   385→                      {similarSiteUrl}
+   386→   386→                    </a>
+   387→   387→                    {selectedSimilarities.length > 0 && (
+   388→   388→                      <span className="text-[10px] text-[#74777e] ml-auto flex-shrink-0">
+   389→   389→                        {selectedSimilarities.length} similarity{selectedSimilarities.length > 1 ? 'ies' : 'y'}
+   390→   390→                      </span>
+   391→   391→                    )}
+   392→   392→                  </div>
+   393→   393→                )}
+   394→   394→              </div>
+   395→   395→            </div>
+   396→   396→
+   397→   397→            {/* Right: Pricing & Add-ons (1 column) */}
+   398→   398→            <div className="space-y-6">
+   399→   399→              {/* Price summary with billing toggle */}
+   400→   400→              <div className="bg-gradient-to-br from-[#000f22] via-[#0A2540] to-[#0A2540] rounded-2xl text-white sticky top-36 overflow-hidden">
+   401→   401→                {/* Billing toggle */}
+   402→   402→                <div className="px-6 pt-5 pb-4 border-b border-[#768dad]/20">
+   403→   403→                  <div className="flex items-center gap-2 mb-3">
+   404→   404→                    <ShoppingCart className="h-5 w-5 text-[#00D1FF]" />
+   405→   405→                    <span className="font-semibold">Choose your plan</span>
+   406→   406→                  </div>
+   407→   407→                  <div className="flex bg-white/10 rounded-xl p-1 gap-1">
+   408→   408→                    <button
+   409→   409→                      onClick={() => setBilling('monthly')}
+   410→   410→                      className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
+   411→   411→                        billing === 'monthly' ? 'bg-[#00D1FF] text-[#000f22] shadow-md' : 'text-[#768dad] hover:text-white'
+   412→   412→                      }`}
+   413→   413→                    >
+   414→   414→                      Monthly — $30/mo
+   415→   415→                    </button>
+   416→   416→                    <button
+   417→   417→                      onClick={() => setBilling('annual')}
+   418→   418→                      className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-1.5 ${
+   419→   419→                        billing === 'annual' ? 'bg-[#00D1FF] text-[#000f22] shadow-md' : 'text-[#768dad] hover:text-white'
+   420→   420→                      }`}
+   421→   421→                    >
+   422→   422→                      Annual — $300/yr
+   423→   423→                      <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
+   424→   424→                        billing === 'annual' ? 'bg-[#000f22] text-[#00D1FF]' : 'bg-[#10B981]/20 text-[#10B981]'
+   425→   425→                      }`}>
+   426→   426→                        -17%
+   427→   427→                      </span>
+   428→   428→                    </button>
+   429→   429→                  </div>
+   430→   430→                </div>
+   431→   431→
+   432→   432→                {/* Order details */}
+   433→   433→                <div className="p-6 space-y-2.5 pb-4 border-b border-[#768dad]/20">
+   434→   434→                  <div className="flex items-center gap-3">
+   435→   435→                    <img src={template.image} alt="" className="w-12 h-12 rounded-lg object-cover flex-shrink-0" />
+   436→   436→                    <div className="flex-1 min-w-0">
+   437→   437→                      <p className="text-sm font-medium truncate">{template.title}</p>
+   438→   438→                      <p className="text-xs text-[#768dad]">{template.category}</p>
+   439→   439→                    </div>
+   440→   440→                  </div>
+   441→   441→
+   442→   442→                  <div className="flex justify-between text-sm pt-2">
+   443→   443→                    <span className="text-[#768dad]">Plan ({billing === 'monthly' ? 'Monthly' : 'Annual'})</span>
+   444→   444→                    <span>${basePrice}/{period}</span>
+   445→   445→                  </div>
+   446→   446→
+   447→   447→                  {extraFeaturesCount > 0 && (
+   448→   448→                    <div className="flex justify-between text-sm">
+   449→   449→                      <span className="text-[#768dad]">Extra features ({extraFeaturesCount} × $3)</span>
+   450→   450→                      <span className="text-[#F59E0B]">+${extraFeatureTotal}/{period}</span>
+   451→   451→                    </div>
+   452→   452→                  )}
+   453→   453→
+   454→   454→                  {selectedAddOns.map((addOnId) => {
+   455→   455→                    const addOn = ADD_ONS.find(a => a.id === addOnId)
+   456→   456→                    return addOn ? (
+   457→   457→                      <div key={addOnId} className="flex justify-between text-sm">
+   458→   458→                        <span className="text-[#768dad] truncate mr-2">{addOn.name}</span>
+   459→   459→                        <span className="text-[#00D1FF] flex-shrink-0">+{billing === 'monthly' ? '$3/mo' : '$36/yr'}</span>
+   460→   460→                      </div>
+   461→   461→                    ) : null
+   462→   462→                  })}
+   463→   463→
+   464→   464→                  {/* Similar site & notes indicators */}
+   465→   465→                  {(similarSiteUrl || additionalInfo) && (
+   466→   466→                    <div className="flex flex-wrap gap-1.5 pt-2">
+   467→   467→                      {similarSiteUrl && (
+   468→   468→                        <span className="text-[9px] px-2 py-0.5 rounded-full bg-[#7C3AED]/20 text-[#c4b5fd] flex items-center gap-1">
+   469→   469→                          <Globe className="h-2.5 w-2.5" /> Ref site added
+   470→   470→                        </span>
+   471→   471→                      )}
+   472→   472→                      {additionalInfo && (
+   473→   473→                        <span className="text-[9px] px-2 py-0.5 rounded-full bg-[#00D1FF]/20 text-[#67e8f9] flex items-center gap-1">
+   474→   474→                          <MessageSquare className="h-2.5 w-2.5" /> Notes added
+   475→   475→                        </span>
+   476→   476→                      )}
+   477→   477→                    </div>
+   478→   478→                  )}
+   479→   479→                </div>
+   480→   480→
+   481→   481→                <div className="px-6 pt-4 pb-6">
+   482→   482→                  <div className="flex justify-between items-baseline mb-2">
+   483→   483→                    <span className="text-[#768dad] text-sm">Total</span>
+   484→   484→                    <div className="text-right">
+   485→   485→                      <span className="text-3xl font-bold">${total}</span>
+   486→   486→                      <span className="text-[#768dad] text-sm">/{period}</span>
+   487→   487→                    </div>
+   488→   488→                  </div>
+   489→   489→
+   490→   490→                  {(extraFeaturesCount > 0 || selectedAddOns.length > 0) && (
+   491→   491→                    <p className="text-[10px] text-[#768dad] mb-4 leading-relaxed">
+   492→   492→                      * Extra features & add-ons fees apply for the first year only
+   493→   493→                    </p>
+   494→   494→                  )}
+   495→   495→
+   496→   496→                  <Button
+   497→   497→                    onClick={handleProceedToCheckout}
+   498→   498→                    className="w-full bg-[#00D1FF] hover:bg-[#00b8e6] text-[#000f22] font-semibold h-11"
+   499→   499→                  >
+   500→   500→                    Proceed to Checkout
+   501→   501→                    <ArrowRight className="ml-2 h-4 w-4" />
+   502→   502→                  </Button>
+   503→   503→
+   504→   504→                  {!user && (
+   505→   505→                    <p className="text-[10px] text-[#768dad] text-center mt-2">
+   506→   506→                      You&apos;ll need to sign in to complete your purchase
+   507→   507→                    </p>
+   508→   508→                  )}
+   509→   509→                </div>
+   510→   510→              </div>
+   511→   511→
+   512→   512→              {/* Add-ons list */}
+   513→   513→              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
+   514→   514→                <div className="mb-4">
+   515→   515→                  <h3 className="font-bold text-[#000f22] mb-1 text-sm">Add-Ons</h3>
+   516→   516→                  <p className="text-[11px] text-[#4F5B76]">
+   517→   517→                    Enhance your website — <span className="font-semibold text-[#000f22]">+$3/month</span> each
+   518→   518→                    <span className="text-[#74777e]"> (first year only)</span>
+   519→   519→                  </p>
+   520→   520→                </div>
+   521→   521→                <div className="space-y-2">
+   522→   522→                  {ADD_ONS.map((addOn) => {
+   523→   523→                    const isSelected = selectedAddOns.includes(addOn.id)
+   524→   524→                    return (
+   525→   525→                      <button
+   526→   526→                        key={addOn.id}
+   527→   527→                        onClick={() => toggleAddOn(addOn.id)}
+   528→   528→                        className={`w-full text-left p-3 rounded-xl border transition-all duration-200 ${
+   529→   529→                          isSelected
+   530→   530→                            ? 'border-[#00D1FF] bg-[#00D1FF]/5 ring-1 ring-[#00D1FF]/30'
+   531→   531→                            : 'border-[#e6ebf1] hover:border-[#c4c6ce] hover:bg-[#f7fafd]'
+   532→   532→                        }`}
+   533→   533→                      >
+   534→   534→                        <div className="flex items-center gap-2.5">
+   535→   535→                          <div className={`w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 transition-colors ${
+   536→   536→                            isSelected ? 'bg-[#00D1FF] text-[#000f22]' : 'bg-[#f1f4f7] text-[#74777e]'
+   537→   537→                          }`}>
+   538→   538→                            {isSelected ? <Check className="h-3 w-3" /> : <Plus className="h-3 w-3" />}
+   539→   539→                          </div>
+   540→   540→                          <div className="flex-1 min-w-0">
+   541→   541→                            <div className="flex items-center justify-between gap-2">
+   542→   542→                              <span className={`text-xs font-medium ${isSelected ? 'text-[#000f22]' : 'text-[#43474d]'}`}>
+   543→   543→                                {addOn.name}
+   544→   544→                              </span>
+   545→   545→                              <span className={`text-[11px] font-semibold flex-shrink-0 ${isSelected ? 'text-[#00D1FF]' : 'text-[#74777e]'}`}>
+   546→   546→                                +$3/mo
+   547→   547→                              </span>
+   548→   548→                            </div>
+   549→   549→                          </div>
+   550→   550→                        </div>
+   551→   551→                      </button>
+   552→   552→                    )
+   553→   553→                  })}
+   554→   554→                </div>
+   555→   555→              </div>
+   556→   556→            </div>
+   557→   557→          </div>
+   558→   558→        ) : (
+   559→   559→          <div className="flex items-center justify-center py-32">
+   560→   560→            <div className="w-8 h-8 border-3 border-[#00D1FF] border-t-transparent rounded-full animate-spin" />
+   561→   561→          </div>
+   562→   562→        )}
+   563→   563→      </div>
+   564→   564→    </div>
+   565→   565→  )
+   566→   566→}
+   567→   567→

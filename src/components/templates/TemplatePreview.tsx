@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, ChevronDown } from 'lucide-react'
+import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, ChevronDown, PenLine } from 'lucide-react'
 
 interface Template {
   id: string
@@ -62,6 +62,7 @@ export default function TemplatePreview() {
   const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly')
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])
   const [showFeaturePicker, setShowFeaturePicker] = useState(false)
+  const [customFeatureInput, setCustomFeatureInput] = useState('')
 
   // New: Additional info & similar site
   const [additionalInfo, setAdditionalInfo] = useState('')
@@ -128,6 +129,21 @@ export default function TemplatePreview() {
       setSelectedFeatures(prev => [...prev, feature])
     }
     setShowFeaturePicker(false)
+  }
+
+  const addCustomFeature = () => {
+    const trimmed = customFeatureInput.trim()
+    if (trimmed && !selectedFeatures.includes(trimmed)) {
+      setSelectedFeatures(prev => [...prev, trimmed])
+    }
+    setCustomFeatureInput('')
+  }
+
+  const handleCustomFeatureKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      addCustomFeature()
+    }
   }
 
   const toggleSimilarity = (id: string) => {
@@ -239,8 +255,8 @@ export default function TemplatePreview() {
                   })}
                 </div>
 
-                {/* Add feature */}
-                <div className="relative">
+                {/* Add feature from pool */}
+                <div className="relative mb-2">
                   <Button
                     variant="outline"
                     onClick={() => setShowFeaturePicker(!showFeaturePicker)}
@@ -273,6 +289,37 @@ export default function TemplatePreview() {
                         )}
                       </div>
                     </div>
+                  )}
+                </div>
+
+                {/* Custom feature input */}
+                <div className="relative">
+                  <div className="flex items-center gap-2">
+                    <div className="relative flex-1">
+                      <PenLine className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#74777e]" />
+                      <input
+                        type="text"
+                        value={customFeatureInput}
+                        onChange={(e) => setCustomFeatureInput(e.target.value)}
+                        onKeyDown={handleCustomFeatureKeyDown}
+                        placeholder="Type your own feature..."
+                        className="w-full pl-9 pr-3 py-2 rounded-lg border border-dashed border-[#c4c6ce] bg-[#f7fafd] text-xs text-[#000f22] placeholder:text-[#74777e] focus:outline-none focus:ring-2 focus:ring-[#00D1FF]/20 focus:border-[#00D1FF] transition-all"
+                      />
+                    </div>
+                    <Button
+                      variant="outline"
+                      onClick={addCustomFeature}
+                      disabled={!customFeatureInput.trim()}
+                      className="h-8 px-3 border-[#00D1FF] text-[#00D1FF] hover:bg-[#00D1FF] hover:text-[#000f22] disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-[#00D1FF] text-xs flex-shrink-0"
+                    >
+                      <Plus className="h-3.5 w-3.5 mr-1" />
+                      Add
+                    </Button>
+                  </div>
+                  {selectedFeatures.length >= FREE_FEATURES_LIMIT && customFeatureInput.trim() && (
+                    <p className="text-[10px] text-[#F59E0B] mt-1 flex items-center gap-1">
+                      <span className="font-semibold">+$3/{period}</span> — exceeds free feature limit
+                    </p>
                   )}
                 </div>
               </div>

@@ -28,7 +28,7 @@ export default function HeroSection() {
           <div className="animate-fade-in-up">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00D1FF]/10 border border-[#00D1FF]/20 mb-6">
               <span className="w-2 h-2 rounded-full bg-[#00D1FF] animate-pulse" />
-              <span className="text-[#00D1FF] text-xs font-medium">NEW: AI-Powered Design Tools</span>
+              <span className="text-[#00D1FF] text-xs font-medium">AI-Powered</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-4" style={{ letterSpacing: '-0.02em' }}>

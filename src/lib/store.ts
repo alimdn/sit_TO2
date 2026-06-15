@@ -39,8 +39,6 @@ interface AppStore {
   setUser: (user: AppUser | null) => void
   checkoutData: CheckoutData | null
   setCheckoutData: (data: CheckoutData | null) => void
-  showProjectFiles: boolean
-  setShowProjectFiles: (show: boolean) => void
 }
 
 export const useAppStore = create<AppStore>((set) => ({
@@ -58,6 +56,4 @@ export const useAppStore = create<AppStore>((set) => ({
   setUser: (user) => set({ user }),
   checkoutData: null,
   setCheckoutData: (data) => set({ checkoutData: data }),
-  showProjectFiles: false,
-  setShowProjectFiles: (show) => set({ showProjectFiles: show }),
 }))

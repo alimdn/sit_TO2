@@ -28,7 +28,6 @@ import AdminSocial from '@/components/admin/AdminSocial'
 import AdminPayments from '@/components/admin/AdminPayments'
 import AdminSettings from '@/components/admin/AdminSettings'
 import CheckoutPage from '@/components/checkout/CheckoutPage'
-import ProjectFilesModal from '@/components/ProjectFilesModal'
 import { Button } from '@/components/ui/button'
 
 function HomePage() {
@@ -257,7 +256,6 @@ export default function Home() {
         {renderPage()}
       </main>
       <Footer />
-      <ProjectFilesModal />
     </div>
   )
 }

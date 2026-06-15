@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, ChevronDown, PenLine, LayoutDashboard, Clock, Search, AlertTriangle } from 'lucide-react'
+import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, ChevronDown, PenLine, LayoutDashboard, Clock, Search, AlertTriangle, ExternalLink } from 'lucide-react'
 
 interface Template {
   id: string
@@ -263,8 +263,34 @@ export default function TemplatePreview() {
                   {template.title}
                 </h1>
                 <p className="text-[#4F5B76] mb-6 leading-relaxed">{template.description}</p>
-                <div className="rounded-2xl overflow-hidden border border-[#e6ebf1] shadow-card">
-                  <img src={template.image} alt={template.title} className="w-full object-cover" />
+                <div className="rounded-2xl overflow-hidden border border-[#e6ebf1] shadow-card relative group/img">
+                  <img src={template.image} alt={template.title} className="w-full object-cover transition-transform duration-500 group-hover/img:scale-[1.02]" />
+                  {/* Live Preview overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#000f22]/70 via-transparent to-transparent opacity-0 group-hover/img:opacity-100 transition-all duration-300 flex items-end justify-center pb-5">
+                    <a
+                      href={template.image}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 bg-[#00D1FF] hover:bg-[#00b8e6] text-[#000f22] font-semibold px-6 py-2.5 rounded-xl text-sm shadow-lg shadow-[#00D1FF]/25 transition-all duration-200 translate-y-2 group-hover/img:translate-y-0"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                      Live Preview
+                    </a>
+                  </div>
+                </div>
+                {/* Live Preview action bar */}
+                <div className="mt-3 flex items-center gap-3">
+                  <a
+                    href={template.image}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#000f22] hover:bg-[#0A2540] text-white text-xs font-medium transition-colors relative overflow-hidden group/lp"
+                  >
+                    <span className="absolute inset-0 bg-gradient-to-r from-[#00D1FF]/0 via-[#00D1FF]/10 to-[#00D1FF]/0 translate-x-[-100%] group-hover/lp:translate-x-[100%] transition-transform duration-700" />
+                    <ExternalLink className="h-3.5 w-3.5 relative z-10" />
+                    <span className="relative z-10">Open Full Preview</span>
+                  </a>
+                  <span className="text-[10px] text-[#74777e]">Opens in a new tab</span>
                 </div>
               </div>
 

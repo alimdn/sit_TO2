@@ -53,3 +53,4 @@ server.log
 # Skills directory
 /skills/db/
 tool-results/
+skills/

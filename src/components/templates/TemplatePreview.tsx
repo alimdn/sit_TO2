@@ -75,6 +75,9 @@ export default function TemplatePreview() {
   const [domainSearching, setDomainSearching] = useState(false)
   const [selectedDomain, setSelectedDomain] = useState<{ domain: string; price: number } | null>(null)
 
+  // Full screen preview
+  const [showFullPreview, setShowFullPreview] = useState(false)
+
   // Reset when template changes
   const prevTemplateRef = useState<string | null>(null)
   if (prevTemplateRef[0] !== previewTemplate) {
@@ -268,17 +271,15 @@ export default function TemplatePreview() {
                 </div>
                 {/* Live Preview action bar */}
                 <div className="mt-3 flex items-center gap-3">
-                  <a
-                    href={template.image}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={() => setShowFullPreview(true)}
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#000f22] hover:bg-[#0A2540] text-white text-xs font-medium transition-colors relative overflow-hidden group/lp"
                   >
                     <span className="absolute inset-0 bg-gradient-to-r from-[#00D1FF]/0 via-[#00D1FF]/10 to-[#00D1FF]/0 translate-x-[-100%] group-hover/lp:translate-x-[100%] transition-transform duration-700" />
                     <ExternalLink className="h-3.5 w-3.5 relative z-10" />
                     <span className="relative z-10">Open Full Preview</span>
-                  </a>
-                  <span className="text-[10px] text-[#74777e]">Opens in a new tab</span>
+                  </button>
+                  <span className="text-[10px] text-[#74777e]">View template in full screen</span>
                 </div>
               </div>
 
@@ -790,6 +791,42 @@ export default function TemplatePreview() {
           </div>
         )}
       </div>
+
+      {/* Full Screen Preview Overlay */}
+      {showFullPreview && template && (
+        <div className="fixed inset-0 z-[60] bg-[#000f22] flex flex-col">
+          {/* Top bar */}
+          <div className="flex items-center justify-between px-4 sm:px-6 h-14 bg-[#0A2540] border-b border-[#768dad]/20 flex-shrink-0">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setShowFullPreview(false)}
+                className="flex items-center gap-2 text-sm font-medium text-[#768dad] hover:text-white transition-colors"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Back to Template
+              </button>
+              <div className="w-px h-5 bg-[#768dad]/30" />
+              <span className="text-sm font-semibold text-white truncate">{template.title}</span>
+              <Badge className="bg-[#f1f4f7]/10 text-[#768dad] text-xs hidden sm:inline-flex">{template.category}</Badge>
+            </div>
+            <button
+              onClick={() => setShowFullPreview(false)}
+              className="w-8 h-8 rounded-lg bg-[#768dad]/10 hover:bg-[#768dad]/20 flex items-center justify-center text-[#768dad] hover:text-white transition-colors"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+          {/* Image */}
+          <div className="flex-1 overflow-auto flex items-start justify-center p-4 sm:p-8">
+            <img
+              src={template.image}
+              alt={template.title}
+              className="max-w-full rounded-xl shadow-2xl border border-[#768dad]/20"
+              style={{ maxHeight: 'calc(100vh - 6rem)' }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

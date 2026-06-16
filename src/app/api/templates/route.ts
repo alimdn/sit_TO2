@@ -2,19 +2,37 @@ import { NextRequest, NextResponse } from 'next/server'
 import { fallbackTemplates } from '@/lib/fallback-data'
 
 export async function GET() {
+  let dbTemplates: any[] = []
+  let useFallback = false
+
   try {
     const { db } = await import('@/lib/db')
-    const templates = await db.template.findMany({
+    dbTemplates = await db.template.findMany({
       where: { active: true },
       orderBy: { createdAt: 'desc' },
     })
-    if (templates.length > 0) {
-      return NextResponse.json(templates)
+    if (dbTemplates.length === 0) {
+      useFallback = true
     }
   } catch (e) {
-    // Database unavailable, use fallback
+    useFallback = true
   }
-  return NextResponse.json(fallbackTemplates)
+
+  if (useFallback) {
+    return NextResponse.json(fallbackTemplates)
+  }
+
+  // Merge fallback templates that have livePreview and aren't already in DB results
+  const dbTitles = new Set(dbTemplates.map((t: any) => t.title))
+  const missingFallback = fallbackTemplates.filter(
+    (ft: any) => !dbTitles.has(ft.title) && (ft.livePreview || ft.previewUrl)
+  )
+
+  if (missingFallback.length > 0) {
+    return NextResponse.json([...dbTemplates, ...missingFallback])
+  }
+
+  return NextResponse.json(dbTemplates)
 }
 
 export async function POST(req: NextRequest) {

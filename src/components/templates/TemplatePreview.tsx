@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, ChevronDown, PenLine, LayoutDashboard, Clock, Search, AlertTriangle, ExternalLink } from 'lucide-react'
+import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, ChevronDown, PenLine, LayoutDashboard, Clock, Search, AlertTriangle, ExternalLink, RotateCw } from 'lucide-react'
 
 interface Template {
   id: string
@@ -792,23 +792,21 @@ export default function TemplatePreview() {
         )}
       </div>
 
-      {/* Full Screen Preview Overlay */}
+      {/* Full Screen Live Preview Overlay */}
       {showFullPreview && template && (
-        <div className="fixed inset-0 z-[60] bg-[#000f22] flex flex-col">
-          {/* Top bar */}
+        <div className="fixed inset-0 z-[60] bg-[#1a1a2e] flex flex-col">
+          {/* Top navigation bar */}
           <div className="flex items-center justify-between px-4 sm:px-6 h-14 bg-[#0A2540] border-b border-[#768dad]/20 flex-shrink-0">
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setShowFullPreview(false)}
-                className="flex items-center gap-2 text-sm font-medium text-[#768dad] hover:text-white transition-colors"
+                className="flex items-center gap-2 text-sm font-medium text-[#768dad] hover:text-white transition-colors bg-[#768dad]/10 hover:bg-[#768dad]/20 px-3 py-1.5 rounded-lg"
               >
                 <ArrowLeft className="h-4 w-4" />
                 Back to Template
               </button>
-              <div className="w-px h-5 bg-[#768dad]/30" />
-              <span className="text-sm font-semibold text-white truncate">{template.title}</span>
-              <Badge className="bg-[#f1f4f7]/10 text-[#768dad] text-xs hidden sm:inline-flex">{template.category}</Badge>
             </div>
+            <span className="text-sm font-semibold text-white truncate hidden sm:block">{template.title} — Live Preview</span>
             <button
               onClick={() => setShowFullPreview(false)}
               className="w-8 h-8 rounded-lg bg-[#768dad]/10 hover:bg-[#768dad]/20 flex items-center justify-center text-[#768dad] hover:text-white transition-colors"
@@ -816,14 +814,47 @@ export default function TemplatePreview() {
               <X className="h-4 w-4" />
             </button>
           </div>
-          {/* Image */}
-          <div className="flex-1 overflow-auto flex items-start justify-center p-4 sm:p-8">
-            <img
-              src={template.image}
-              alt={template.title}
-              className="max-w-full rounded-xl shadow-2xl border border-[#768dad]/20"
-              style={{ maxHeight: 'calc(100vh - 6rem)' }}
-            />
+
+          {/* Browser frame */}
+          <div className="flex-1 overflow-hidden flex flex-col bg-[#2a2a3e] m-3 sm:m-5 rounded-xl border border-[#768dad]/20 shadow-2xl">
+            {/* Browser address bar */}
+            <div className="flex items-center gap-3 px-4 h-10 bg-[#1e1e32] border-b border-[#768dad]/15 flex-shrink-0 rounded-t-xl">
+              {/* Traffic lights */}
+              <div className="flex items-center gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+              </div>
+              {/* Navigation buttons */}
+              <div className="flex items-center gap-1 ml-2">
+                <div className="w-6 h-6 rounded flex items-center justify-center text-[#768dad]">
+                  <ArrowLeft className="h-3 w-3" />
+                </div>
+                <div className="w-6 h-6 rounded flex items-center justify-center text-[#768dad]">
+                  <ArrowRight className="h-3 w-3" />
+                </div>
+                <div className="w-6 h-6 rounded flex items-center justify-center text-[#768dad]">
+                  <RotateCw className="h-3 w-3" />
+                </div>
+              </div>
+              {/* URL bar */}
+              <div className="flex-1 flex items-center gap-2 bg-[#0A2540] rounded-lg px-3 py-1.5 max-w-lg mx-auto">
+                <div className="w-3 h-3 rounded-full border border-[#10B981] flex items-center justify-center">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
+                </div>
+                <span className="text-xs text-[#768dad] truncate">
+                  https://{selectedDomain?.domain || template.title.toLowerCase().replace(/\s+/g, '') + '.com'}
+                </span>
+              </div>
+            </div>
+            {/* Browser content area */}
+            <div className="flex-1 overflow-auto bg-white">
+              <img
+                src={template.image}
+                alt={template.title}
+                className="w-full object-cover"
+              />
+            </div>
           </div>
         </div>
       )}

@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل المواقع المتميز</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap');
+
+        :root {
+            --tier1-bg: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            --tier1-accent: #f7971e;
+            --tier1-glow: rgba(247, 151, 30, 0.3);
+            --tier2-bg: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            --tier2-accent: #00d2ff;
+            --tier2-glow: rgba(0, 210, 255, 0.3);
+            --tier3-bg: linear-gradient(135deg, #1b1b2f, #162447, #1f4068);
+            --tier3-accent: #52d681;
+            --tier3-glow: rgba(82, 214, 129, 0.3);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-hover: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --danger: #ff4757;
+            --success: #2ed573;
+            --overlay: rgba(0, 0, 0, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #0a0a1a;
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-animation .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .bg-animation .orb:nth-child(1) {
+            width: 600px;
+            height: 600px;
+            background: #f7971e;
+            top: -200px;
+            right: -200px;
+            animation-delay: 0s;
+        }
+
+        .bg-animation .orb:nth-child(2) {
+            width: 500px;
+            height: 500px;
+            background: #00d2ff;
+            bottom: -150px;
+            left: -150px;
+            animation-delay: -7s;
+        }
+
+        .bg-animation .orb:nth-child(3) {
+            width: 400px;
+            height: 400px;
+            background: #52d681;
+            top: 50%;
+            left: 50%;
+            animation-delay: -14s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(100px, -50px) scale(1.1); }
+            50% { transform: translate(-50px, 100px) scale(0.9); }
+            75% { transform: translate(50px, 50px) scale(1.05); }
+        }
+
+        /* Header */
+        header {
+            position: relative;
+            z-index: 10;
+            padding: 30px 40px;
+            background: rgba(10, 10, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--tier1-accent), #ff6b6b);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 20px rgba(247, 151, 30, 0.3);
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 10px 40px 10px 16px;
+            color: white;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            width: 280px;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--tier1-accent);
+            box-shadow: 0 0 20px rgba(247, 151, 30, 0.15);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .search-box input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .search-box .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--tier1-accent), #ffd200);
+            color: #1a1a2e;
+            box-shadow: 0 4px 15px rgba(247, 151, 30, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(247, 151, 30, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            position: relative;
+            z-index: 10;
+            padding: 15px 40px;
+            background: rgba(10, 10, 26, 0.5);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .stat-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .stat-dot.gold { background: var(--tier1-accent); box-shadow: 0 0 10px var(--tier1-glow); }
+        .stat-dot.blue { background: var(--tier2-accent); box-shadow: 0 0 10px var(--tier2-glow); }
+        .stat-dot.green { background: var(--tier3-accent); box-shadow: 0 0 10px var(--tier3-glow); }
+
+        .stat-count {
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+        }
+
+        /* Main Content */
+        main {
+            position: relative;
+            z-index: 10;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 30px 40px;
+        }
+
+        /* Tier Sections */
+        .tier-section {
+            margin-bottom: 40px;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .tier-header {
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tier-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.1;
+        }
+
+        .tier1 .tier-header { background: linear-gradient(135deg, rgba(247, 151, 30, 0.15), rgba(255, 210, 0, 0.05)); }
+        .tier2 .tier-header { background: linear-gradient(135deg, rgba(0, 210, 255, 0.15), rgba(0, 150, 255, 0.05)); }
+        .tier3 .tier-header { background: linear-gradient(135deg, rgba(82, 214, 129, 0.15), rgba(46, 213, 115, 0.05)); }
+
+        .tier-title-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .tier-badge {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .tier1 .tier-badge {
+            background: linear-gradient(135deg, var(--tier1-accent), #ffd200);
+            color: #1a1a2e;
+            box-shadow: 0 4px 15px var(--tier1-glow);
+        }
+
+        .tier2 .tier-badge {
+            background: linear-gradient(135deg, var(--tier2-accent), #0099ff);
+            color: #1a1a2e;
+            box-shadow: 0 4px 15px var(--tier2-glow);
+        }
+
+        .tier3 .tier-badge {
+            background: linear-gradient(135deg, var(--tier3-accent), #2ed573);
+            color: #1a1a2e;
+            box-shadow: 0 4px 15px var(--tier3-glow);
+        }
+
+        .tier-title h2 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .tier-title p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .tier1 .tier-title h2 { color: var(--tier1-accent); }
+        .tier2 .tier-title h2 { color: var(--tier2-accent); }
+        .tier3 .tier-title h2 { color: var(--tier3-accent); }
+
+        .tier-count {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .tier-toggle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            transition: transform 0.3s;
+        }
+
+        .tier-section.collapsed .tier-toggle {
+            transform: rotate(180deg);
+        }
+
+        .tier-section.collapsed .tier-grid {
+            display: none;
+        }
+
+        /* Website Grid */
+        .tier-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+            padding: 24px;
+        }
+
+        .tier1 .tier-grid { background: rgba(15, 12, 41, 0.4); }
+        .tier2 .tier-grid { background: rgba(26, 26, 46, 0.4); }
+        .tier3 .tier-grid { background: rgba(27, 27, 47, 0.4); }
+
+        /* Website Card */
+        .website-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 18px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .website-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tier1 .website-card::before { background: linear-gradient(90deg, var(--tier1-accent), #ffd200); }
+        .tier2 .website-card::before { background: linear-gradient(90deg, var(--tier2-accent), #0099ff); }
+        .tier3 .website-card::before { background: linear-gradient(90deg, var(--tier3-accent), #2ed573); }
+
+        .website-card:hover {
+            background: var(--card-hover);
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .website-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .website-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            flex-shrink: 0;
+            color: white;
+        }
+
+        .tier1 .website-icon { background: linear-gradient(135deg, rgba(247, 151, 30, 0.3), rgba(255, 210, 0, 0.1)); border: 1px solid rgba(247, 151, 30, 0.3); }
+        .tier2 .website-icon { background: linear-gradient(135deg, rgba(0, 210, 255, 0.3), rgba(0, 150, 255, 0.1)); border: 1px solid rgba(0, 210, 255, 0.3); }
+        .tier3 .website-icon { background: linear-gradient(135deg, rgba(82, 214, 129, 0.3), rgba(46, 213, 115, 0.1)); border: 1px solid rgba(82, 214, 129, 0.3); }
+
+        .website-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .website-name {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .website-category {
+            font-size: 11px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .website-url {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            direction: ltr;
+            text-align: right;
+            margin-bottom: 12px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .card-btn {
+            padding: 5px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-family: 'Cairo', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .card-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+
+        .card-btn.copy-btn:hover { border-color: var(--tier2-accent); color: var(--tier2-accent); }
+        .card-btn.edit-btn:hover { border-color: var(--tier1-accent); color: var(--tier1-accent); }
+        .card-btn.move-btn:hover { border-color: var(--tier3-accent); color: var(--tier3-accent); }
+        .card-btn.delete-btn:hover { border-color: var(--danger); color: var(--danger); }
+        .card-btn.visit-btn:hover { border-color: var(--success); color: var(--success); }
+
+        /* Move Dropdown */
+        .move-dropdown {
+            position: absolute;
+            bottom: calc(100% + 5px);
+            right: 0;
+            background: #1e1e3a;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 8px;
+            z-index: 100;
+            min-width: 160px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            display: none;
+        }
+
+        .move-dropdown.show {
+            display: block;
+        }
+
+        .move-dropdown-item {
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .move-dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .move-dropdown-item.to-tier1 { color: var(--tier1-accent); }
+        .move-dropdown-item.to-tier2 { color: var(--tier2-accent); }
+        .move-dropdown-item.to-tier3 { color: var(--tier3-accent); }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--overlay);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #1a1a35;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from { transform: scale(0.9) translateY(20px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .modal h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: white;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--tier1-accent);
+            box-shadow: 0 0 15px rgba(247, 151, 30, 0.15);
+        }
+
+        .form-group select option {
+            background: #1a1a35;
+            color: white;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .modal-actions .btn {
+            flex: 1;
+            justify-content: center;
+            padding: 12px;
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .toast {
+            background: #1e1e3a;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-family: 'Cairo', sans-serif;
+            animation: toastIn 0.3s ease, toastOut 0.3s ease 2.5s forwards;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toast.success { border-color: var(--success); }
+        .toast.info { border-color: var(--tier2-accent); }
+
+        @keyframes toastIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes toastOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        /* Drag & Drop */
+        .website-card.dragging {
+            opacity: 0.5;
+            transform: scale(0.95);
+        }
+
+        .tier-grid.drag-over {
+            background: rgba(255, 255, 255, 0.05) !important;
+            outline: 2px dashed var(--tier2-accent);
+            outline-offset: -4px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            .header-content { flex-direction: column; align-items: stretch; }
+            .search-box input { width: 100%; }
+            main { padding: 20px; }
+            .tier-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); padding: 16px; gap: 12px; }
+            .stats-bar { gap: 20px; padding: 15px 20px; }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.25); }
+
+        /* Category colors */
+        .cat-social { color: #4facfe; }
+        .cat-search { color: #43e97b; }
+        .cat-video { color: #fa709a; }
+        .cat-shop { color: #fee140; }
+        .cat-news { color: #a18cd1; }
+        .cat-dev { color: #fbc2eb; }
+        .cat-cloud { color: #84fab0; }
+        .cat-ai { color: #ff9a9e; }
+        .cat-edu { color: #a1c4fd; }
+        .cat-email { color: #f6d365; }
+        .cat-music { color: #f093fb; }
+        .cat-work { color: #4facfe; }
+        .cat-design { color: #f5576c; }
+        .cat-security { color: #43e97b; }
+        .cat-finance { color: #ffd200; }
+        .cat-gaming { color: #667eea; }
+        .cat-travel { color: #89f7fe; }
+        .cat-food { color: #fdd6bd; }
+        .cat-health { color: #96e6a1; }
+        .cat-maps { color: #84fab0; }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Background Animation -->
+<div class="bg-animation">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Header -->
+<header>
+    <div class="header-content">
+        <div class="logo">
+            <div class="logo-icon">&#127760;</div>
+            <div>
+                <h1>دليل المواقع المتميز</h1>
+                <p>أكثر من 100 موقع مصنف حسب الجودة والأهمية</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <div class="search-box">
+                <span class="search-icon">&#128269;</span>
+                <input type="text" id="searchInput" placeholder="ابحث عن موقع..." oninput="filterWebsites()">
+            </div>
+            <select class="btn btn-secondary" id="categoryFilter" onchange="filterWebsites()" style="cursor:pointer;">
+                <option value="">كل التصنيفات</option>
+            </select>
+            <button class="btn btn-primary" onclick="openAddModal()">
+                <span>+</span> إضافة موقع
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+    <div class="stat-item">
+        <span class="stat-dot gold"></span>
+        <span class="stat-count" id="tier1Count">0</span>
+        <span class="stat-label">الطبقة الماسية</span>
+    </div>
+    <div class="stat-item">
+        <span class="stat-dot blue"></span>
+        <span class="stat-count" id="tier2Count">0</span>
+        <span class="stat-label">الطبقة الفضية</span>
+    </div>
+    <div class="stat-item">
+        <span class="stat-dot green"></span>
+        <span class="stat-count" id="tier3Count">0</span>
+        <span class="stat-label">الطبقة البرونزية</span>
+    </div>
+    <div class="stat-item">
+        <span class="stat-count" id="totalCount" style="color:#ffd200;">0</span>
+        <span class="stat-label">إجمالي المواقع</span>
+    </div>
+</div>
+
+<!-- Main Content -->
+<main id="mainContent"></main>
+
+<!-- Add/Edit Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+    <div class="modal">
+        <h3 id="modalTitle">&#10010; إضافة موقع جديد</h3>
+        <div class="form-group">
+            <label>اسم الموقع</label>
+            <input type="text" id="siteName" placeholder="مثال: جوجل">
+        </div>
+        <div class="form-group">
+            <label>رابط الموقع</label>
+            <input type="url" id="siteUrl" placeholder="https://example.com" dir="ltr">
+        </div>
+        <div class="form-group">
+            <label>التصنيف</label>
+            <select id="siteCategory">
+                <option value="تواصل اجتماعي">تواصل اجتماعي</option>
+                <option value="محركات بحث">محركات بحث</option>
+                <option value="فيديو وبث">فيديو وبث</option>
+                <option value="تسوق وأسواق">تسوق وأسواق</option>
+                <option value="أخبار وإعلام">أخبار وإعلام</option>
+                <option value="تطوير وبرمجة">تطوير وبرمجة</option>
+                <option value="تخزين سحابي">تخزين سحابي</option>
+                <option value="ذكاء اصطناعي">ذكاء اصطناعي</option>
+                <option value="تعليم ومعرفة">تعليم ومعرفة</option>
+                <option value="بريد إلكتروني">بريد إلكتروني</option>
+                <option value="موسيقى وصوت">موسيقى وصوت</option>
+                <option value="أعمال وإنتاجية">أعمال وإنتاجية</option>
+                <option value="تصميم وإبداع">تصميم وإبداع</option>
+                <option value="أمان وخصوصية">أمان وخصوصية</option>
+                <option value="مالية وتجارة">مالية وتجارة</option>
+                <option value="ألعاب وترفيه">ألعاب وترفيه</option>
+                <option value="سفر وسياحة">سفر وسياحة</option>
+                <option value="طعام ومطاعم">طعام ومطاعم</option>
+                <option value="صحة ولياقة">صحة ولياقة</option>
+                <option value="خرائط وملاحة">خرائط وملاحة</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>الطبقة</label>
+            <select id="siteTier">
+                <option value="1">الطبقة الماسية (الأفضل)</option>
+                <option value="2">الطبقة الفضية (جيد جداً)</option>
+                <option value="3">الطبقة البرونزية (جيد)</option>
+            </select>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-primary" onclick="saveSite()">حفظ</button>
+            <button class="btn btn-secondary" onclick="closeModal()">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ========== Website Data ==========
+const initialWebsites = [
+    // === Tier 1 - الماسية (40 sites) ===
+    { name: "جوجل", url: "https://www.google.com", category: "محركات بحث", tier: 1 },
+    { name: "يوتيوب", url: "https://www.youtube.com", category: "فيديو وبث", tier: 1 },
+    { name: "فيسبوك", url: "https://www.facebook.com", category: "تواصل اجتماعي", tier: 1 },
+    { name: "تويتر / X", url: "https://www.twitter.com", category: "تواصل اجتماعي", tier: 1 },
+    { name: "ويكيبيديا", url: "https://www.wikipedia.org", category: "تعليم ومعرفة", tier: 1 },
+    { name: "أمازون", url: "https://www.amazon.com", category: "تسوق وأسواق", tier: 1 },
+    { name: "جي ميل", url: "https://mail.google.com", category: "بريد إلكتروني", tier: 1 },
+    { name: "جيت هب", url: "https://github.com", category: "تطوير وبرمجة", tier: 1 },
+    { name: "ستاك أوفلو", url: "https://stackoverflow.com", category: "تطوير وبرمجة", tier: 1 },
+    { name: "تشات جي بي تي", url: "https://chat.openai.com", category: "ذكاء اصطناعي", tier: 1 },
+    { name: "مايكروسوفت", url: "https://www.microsoft.com", category: "أعمال وإنتاجية", tier: 1 },
+    { name: "أبل", url: "https://www.apple.com", category: "تسوق وأسواق", tier: 1 },
+    { name: "إنستغرام", url: "https://www.instagram.com", category: "تواصل اجتماعي", tier: 1 },
+    { name: "لينكد إن", url: "https://www.linkedin.com", category: "أعمال وإنتاجية", tier: 1 },
+    { name: "ريديت", url: "https://www.reddit.com", category: "تواصل اجتماعي", tier: 1 },
+    { name: "نتفليكس", url: "https://www.netflix.com", category: "فيديو وبث", tier: 1 },
+    { name: "سبوتيفاي", url: "https://www.spotify.com", category: "موسيقى وصوت", tier: 1 },
+    { name: "درايف جوجل", url: "https://drive.google.com", category: "تخزين سحابي", tier: 1 },
+    { name: "فايرفوكس", url: "https://www.mozilla.org", category: "أمان وخصوصية", tier: 1 },
+    { name: "إبي", url: "https://www.ebay.com", category: "تسوق وأسواق", tier: 1 },
+    { name: "ديسكورد", url: "https://discord.com", category: "تواصل اجتماعي", tier: 1 },
+    { name: "فigma", url: "https://www.figma.com", category: "تصميم وإبداع", tier: 1 },
+    { name: "كانفا", url: "https://www.canva.com", category: "تصميم وإبداع", tier: 1 },
+    { name: "نوتيون", url: "https://www.notion.so", category: "أعمال وإنتاجية", tier: 1 },
+    { name: "كلود AI", url: "https://claude.ai", category: "ذكاء اصطناعي", tier: 1 },
+    { name: "CNN", url: "https://www.cnn.com", category: "أخبار وإعلام", tier: 1 },
+    { name: "BBC", url: "https://www.bbc.com", category: "أخبار وإعلام", tier: 1 },
+    { name: "وايرد", url: "https://www.wired.com", category: "أخبار وإعلام", tier: 1 },
+    { name: "تيندر", url: "https://tinder.com", category: "تواصل اجتماعي", tier: 1 },
+    { name: "نيفي", url: "https://www.naver.com", category: "محركات بحث", tier: 1 },
+    { name: "أليبايا", url: "https://www.alibaba.com", category: "تسوق وأسواق", tier: 1 },
+    { name: "سلاك", url: "https://slack.com", category: "أعمال وإنتاجية", tier: 1 },
+    { name: "زد هب", url: "https://zeit.co", category: "تطوير وبرمجة", tier: 1 },
+    { name: "دريبيل", url: "https://dribbble.com", category: "تصميم وإبداع", tier: 1 },
+    { name: "بيهانس", url: "https://www.behance.net", category: "تصميم وإبداع", tier: 1 },
+    { name: "تريلو", url: "https://trello.com", category: "أعمال وإنتاجية", tier: 1 },
+    { name: "إكس بوكس", url: "https://www.xbox.com", category: "ألعاب وترفيه", tier: 1 },
+    { name: "بلايستيشن", url: "https://www.playstation.com", category: "ألعاب وترفيه", tier: 1 },
+    { name: "ستيم", url: "https://store.steampowered.com", category: "ألعاب وترفيه", tier: 1 },
+    { name: "جوجل مابس", url: "https://maps.google.com", category: "خرائط وملاحة", tier: 1 },
+
+    // === Tier 2 - الفضية (40 sites) ===
+    { name: "بينغ", url: "https://www.bing.com", category: "محركات بحث", tier: 2 },
+    { name: "دك دك جو", url: "https://duckduckgo.com", category: "محركات بحث", tier: 2 },
+    { name: "ياهو", url: "https://www.yahoo.com", category: "محركات بحث", tier: 2 },
+    { name: "تيك توك", url: "https://www.tiktok.com", category: "فيديو وبث", tier: 2 },
+    { name: "تويتش", url: "https://www.twitch.tv", category: "فيديو وبث", tier: 2 },
+    { name: "فيمو", url: "https://vimeo.com", category: "فيديو وبث", tier: 2 },
+    { name: "سناب شات", url: "https://www.snapchat.com", category: "تواصل اجتماعي", tier: 2 },
+    { name: "بينترست", url: "https://www.pinterest.com", category: "تواصل اجتماعي", tier: 2 },
+    { name: "تامبلر", url: "https://www.tumblr.com", category: "تواصل اجتماعي", tier: 2 },
+    { name: "علي إكسبرس", url: "https://www.aliexpress.com", category: "تسوق وأسواق", tier: 2 },
+    { name: "إتسي", url: "https://www.etsy.com", category: "تسوق وأسواق", tier: 2 },
+    { name: "وول مارت", url: "https://www.walmart.com", category: "تسوق وأسواق", tier: 2 },
+    { name: "تارجت", url: "https://www.target.com", category: "تسوق وأسواق", tier: 2 },
+    { name: "ووردبريس", url: "https://wordpress.com", category: "تطوير وبرمجة", tier: 2 },
+    { name: "هيروكو", url: "https://www.heroku.com", category: "تطوير وبرمجة", tier: 2 },
+    { name: "فيرسل", url: "https://vercel.com", category: "تطوير وبرمجة", tier: 2 },
+    { name: "نيتليفاي", url: "https://www.netlify.com", category: "تطوير وبرمجة", tier: 2 },
+    { name: "ديب إي", url: "https://www.deeplearning.ai", category: "ذكاء اصطناعي", tier: 2 },
+    { name: "ميد جورني", url: "https://www.midjourney.com", category: "ذكاء اصطناعي", tier: 2 },
+    { name: "هوجين فيس", url: "https://huggingface.co", category: "ذكاء اصطناعي", tier: 2 },
+    { name: "كورسيرا", url: "https://www.coursera.org", category: "تعليم ومعرفة", tier: 2 },
+    { name: "يوديمي", url: "https://www.udemy.com", category: "تعليم ومعرفة", tier: 2 },
+    { name: "إدكس", url: "https://www.edx.org", category: "تعليم ومعرفة", tier: 2 },
+    { name: "خان أكاديمي", url: "https://www.khanacademy.org", category: "تعليم ومعرفة", tier: 2 },
+    { name: "أوت لوك", url: "https://outlook.live.com", category: "بريد إلكتروني", tier: 2 },
+    { name: "بروتون ميل", url: "https://proton.me", category: "بريد إلكتروني", tier: 2 },
+    { name: "دراجون بول", url: "https://drobox.com", category: "تخزين سحابي", tier: 2 },
+    { name: "ون درايف", url: "https://onedrive.live.com", category: "تخزين سحابي", tier: 2 },
+    { name: "آي كلاود", url: "https://www.icloud.com", category: "تخزين سحابي", tier: 2 },
+    { name: "ساوند كلاود", url: "https://soundcloud.com", category: "موسيقى وصوت", tier: 2 },
+    { name: "أبل ميوزك", url: "https://music.apple.com", category: "موسيقى وصوت", tier: 2 },
+    { name: "جيميفاي", url: "https://www.gemify.com", category: "موسيقى وصوت", tier: 2 },
+    { name: "زوم", url: "https://zoom.us", category: "أعمال وإنتاجية", tier: 2 },
+    { name: "غوغل ميت", url: "https://meet.google.com", category: "أعمال وإنتاجية", tier: 2 },
+    { name: "إير بي إن بي", url: "https://www.airbnb.com", category: "سفر وسياحة", tier: 2 },
+    { name: "بوكينج", url: "https://www.booking.com", category: "سفر وسياحة", tier: 2 },
+    { name: "تريب أدفايزر", url: "https://www.tripadvisor.com", category: "سفر وسياحة", tier: 2 },
+    { name: "أوبر", url: "https://www.uber.com", category: "سفر وسياحة", tier: 2 },
+    { name: "كريم", url: "https://www.careem.com", category: "سفر وسياحة", tier: 2 },
+    { name: "سكاي سكنر", url: "https://www.skyscanner.com", category: "سفر وسياحة", tier: 2 },
+
+    // === Tier 3 - البرونزية (40+ sites) ===
+    { name: "ياندكس", url: "https://www.yandex.com", category: "محركات بحث", tier: 3 },
+    { name: "باريت", url: "https://search.brave.com", category: "محركات بحث", tier: 3 },
+    { name: "إكوزيا", url: "https://www.ecosia.org", category: "محركات بحث", tier: 3 },
+    { name: "ستارت بيج", url: "https://www.startpage.com", category: "محركات بحث", tier: 3 },
+    { name: "ديلي موشن", url: "https://www.dailymotion.com", category: "فيديو وبث", tier: 3 },
+    { name: "ستريم يارد", url: "https://streamyard.com", category: "فيديو وبث", tier: 3 },
+    { name: "لومن فايف", url: "https://lumen5.com", category: "فيديو وبث", tier: 3 },
+    { name: "كواي", url: "https://www.kwai.com", category: "فيديو وبث", tier: 3 },
+    { name: "ماستودون", url: "https://mastodon.social", category: "تواصل اجتماعي", tier: 3 },
+    { name: "لينكسدين", url: "https://lichess.org", category: "ألعاب وترفيه", tier: 3 },
+    { name: "مي وي", url: "https://myanimelist.net", category: "ألعاب وترفيه", tier: 3 },
+    { name: "ويت", url: "https://wetransfer.com", category: "تخزين سحابي", tier: 3 },
+    { name: "ميغا", url: "https://mega.nz", category: "تخزين سحابي", tier: 3 },
+    { name: "بيكسا", url: "https://pixabay.com", category: "تصميم وإبداع", tier: 3 },
+    { name: "أنسبلاش", url: "https://unsplash.com", category: "تصميم وإبداع", tier: 3 },
+    { name: "بيكسلز", url: "https://www.pexels.com", category: "تصميم وإبداع", tier: 3 },
+    { name: "آي ستوك", url: "https://www.istockphoto.com", category: "تصميم وإبداع", tier: 3 },
+    { name: "فونت أوسوم", url: "https://fontawesome.com", category: "تصميم وإبداع", tier: 3 },
+    { name: "جوجل فونتس", url: "https://fonts.google.com", category: "تصميم وإبداع", tier: 3 },
+    { name: "فودان", url: "https://www.fiverr.com", category: "أعمال وإنتاجية", tier: 3 },
+    { name: "أبو ورك", url: "https://www.upwork.com", category: "أعمال وإنتاجية", tier: 3 },
+    { name: "فري لانسر", url: "https://www.freelancer.com", category: "أعمال وإنتاجية", tier: 3 },
+    { name: "فينانس ياهو", url: "https://finance.yahoo.com", category: "مالية وتجارة", tier: 3 },
+    { name: "كوين ماركت كاب", url: "https://coinmarketcap.com", category: "مالية وتجارة", tier: 3 },
+    { name: "تريدنج فيو", url: "https://www.tradingview.com", category: "مالية وتجارة", tier: 3 },
+    { name: "باي بال", url: "https://www.paypal.com", category: "مالية وتجارة", tier: 3 },
+    { name: "سترايب", url: "https://stripe.com", category: "مالية وتجارة", tier: 3 },
+    { name: "بينانس", url: "https://www.binance.com", category: "مالية وتجارة", tier: 3 },
+    { name: "فجن برو", url: "https://www.nordvpn.com", category: "أمان وخصوصية", tier: 3 },
+    { name: "إكسبرس في بي إن", url: "https://www.expressvpn.com", category: "أمان وخصوصية", tier: 3 },
+    { name: "لاست باس", url: "https://www.lastpass.com", category: "أمان وخصوصية", tier: 3 },
+    { name: "بيت ووردن", url: "https://bitwarden.com", category: "أمان وخصوصية", tier: 3 },
+    { name: "هيفينو", url: "https://haveibeenpwned.com", category: "أمان وخصوصية", tier: 3 },
+    { name: "فيرقاس", url: "https://www.virustotal.com", category: "أمان وخصوصية", tier: 3 },
+    { name: "زومبا", url: "https://www.zomato.com", category: "طعام ومطاعم", tier: 3 },
+    { name: "أوبر إيتس", url: "https://www.ubereats.com", category: "طعام ومطاعم", tier: 3 },
+    { name: "دورماتو", url: "https://www.doordash.com", category: "طعام ومطاعم", tier: 3 },
+    { name: "ماي فتنس بال", url: "https://www.myfitnesspal.com", category: "صحة ولياقة", tier: 3 },
+    { name: "هيد سبيس", url: "https://www.headspace.com", category: "صحة ولياقة", tier: 3 },
+    { name: "كالم", url: "https://www.calm.com", category: "صحة ولياقة", tier: 3 },
+    { name: "واتساب ويب", url: "https://web.whatsapp.com", category: "تواصل اجتماعي", tier: 3 },
+    { name: "تليغرام ويب", url: "https://web.telegram.org", category: "تواصل اجتماعي", tier: 3 },
+    { name: "سيتريكس", url: "https://www.citrus.com", category: "أعمال وإنتاجية", tier: 3 },
+    { name: "أسبانا", url: "https://asana.com", category: "أعمال وإنتاجية", tier: 3 },
+    { name: "مونك داي", url: "https://monday.com", category: "أعمال وإنتاجية", tier: 3 },
+];
+
+// ========== State ==========
+let websites = JSON.parse(localStorage.getItem('websitesDir')) || JSON.parse(JSON.stringify(initialWebsites));
+let editingIndex = -1;
+let openDropdownId = null;
+
+// ========== Category CSS class mapping ==========
+const categoryClassMap = {
+    "تواصل اجتماعي": "cat-social",
+    "محركات بحث": "cat-search",
+    "فيديو وبث": "cat-video",
+    "تسوق وأسواق": "cat-shop",
+    "أخبار وإعلام": "cat-news",
+    "تطوير وبرمجة": "cat-dev",
+    "تخزين سحابي": "cat-cloud",
+    "ذكاء اصطناعي": "cat-ai",
+    "تعليم ومعرفة": "cat-edu",
+    "بريد إلكتروني": "cat-email",
+    "موسيقى وصوت": "cat-music",
+    "أعمال وإنتاجية": "cat-work",
+    "تصميم وإبداع": "cat-design",
+    "أمان وخصوصية": "cat-security",
+    "مالية وتجارة": "cat-finance",
+    "ألعاب وترفيه": "cat-gaming",
+    "سفر وسياحة": "cat-travel",
+    "طعام ومطاعم": "cat-food",
+    "صحة ولياقة": "cat-health",
+    "خرائط وملاحة": "cat-maps",
+};
+
+// ========== Render ==========
+function render() {
+    const main = document.getElementById('mainContent');
+    main.innerHTML = '';
+
+    const tiers = [
+        { num: 1, name: "الطبقة الماسية", desc: "أفضل وأهم المواقع عالمياً", icon: "&#128142;" },
+        { num: 2, name: "الطبقة الفضية", desc: "مواقع ممتازة وعالية الجودة", icon: "&#129751;" },
+        { num: 3, name: "الطبقة البرونزية", desc: "مواقع جيدة ومفيدة", icon: "&#129752;" },
+    ];
+
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const catFilter = document.getElementById('categoryFilter').value;
+
+    tiers.forEach(tier => {
+        const filtered = websites.filter(w => {
+            if (w.tier !== tier.num) return false;
+            if (search && !w.name.toLowerCase().includes(search) && !w.url.toLowerCase().includes(search) && !w.category.includes(search)) return false;
+            if (catFilter && w.category !== catFilter) return false;
+            return true;
+        });
+
+        const section = document.createElement('div');
+        section.className = `tier-section tier${tier.num}`;
+        section.id = `tier${tier.num}`;
+
+        section.innerHTML = `
+            <div class="tier-header" onclick="toggleTier(${tier.num})">
+                <div class="tier-title-area">
+                    <div class="tier-badge">${tier.icon}</div>
+                    <div class="tier-title">
+                        <h2>${tier.name}</h2>
+                        <p>${tier.desc}</p>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <span class="tier-count">${filtered.length} موقع</span>
+                    <span class="tier-toggle">&#9650;</span>
+                </div>
+            </div>
+            <div class="tier-grid" id="tierGrid${tier.num}"
+                 ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, ${tier.num})">
+                ${filtered.length === 0 ? '<div class="empty-state">لا توجد مواقع في هذه الطبقة</div>' : ''}
+                ${filtered.map((w, i) => {
+                    const globalIdx = websites.indexOf(w);
+                    const catClass = categoryClassMap[w.category] || '';
+                    const initial = w.name.charAt(0);
+                    return `
+                    <div class="website-card" draggable="true" data-index="${globalIdx}"
+                         ondragstart="handleDragStart(event, ${globalIdx})" ondragend="handleDragEnd(event)">
+                        <div class="card-top">
+                            <div class="website-icon">${initial}</div>
+                            <div class="website-info">
+                                <div class="website-name">${w.name}</div>
+                                <div class="website-category ${catClass}">&#8226; ${w.category}</div>
+                            </div>
+                        </div>
+                        <div class="website-url">${w.url}</div>
+                        <div class="card-actions" style="position:relative;">
+                            <button class="card-btn visit-btn" onclick="visitSite('${w.url}')">&#128279; زيارة</button>
+                            <button class="card-btn copy-btn" onclick="copyUrl('${w.url}')">&#128203; نسخ</button>
+                            <button class="card-btn edit-btn" onclick="editSite(${globalIdx})">&#9998; تعديل</button>
+                            <button class="card-btn move-btn" onclick="toggleMoveDropdown(event, ${globalIdx})">&#8597; نقل</button>
+                            <button class="card-btn delete-btn" onclick="deleteSite(${globalIdx})">&#128465; حذف</button>
+                            <div class="move-dropdown" id="moveDropdown${globalIdx}">
+                                ${tier.num !== 1 ? `<div class="move-dropdown-item to-tier1" onclick="moveSite(${globalIdx}, 1)">&#128142; الماسية</div>` : ''}
+                                ${tier.num !== 2 ? `<div class="move-dropdown-item to-tier2" onclick="moveSite(${globalIdx}, 2)">&#129751; الفضية</div>` : ''}
+                                ${tier.num !== 3 ? `<div class="move-dropdown-item to-tier3" onclick="moveSite(${globalIdx}, 3)">&#129752; البرونزية</div>` : ''}
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('')}
+            </div>
+        `;
+
+        main.appendChild(section);
+    });
+
+    updateStats();
+    updateCategoryFilter();
+    saveData();
+}
+
+function updateStats() {
+    const t1 = websites.filter(w => w.tier === 1).length;
+    const t2 = websites.filter(w => w.tier === 2).length;
+    const t3 = websites.filter(w => w.tier === 3).length;
+    document.getElementById('tier1Count').textContent = t1;
+    document.getElementById('tier2Count').textContent = t2;
+    document.getElementById('tier3Count').textContent = t3;
+    document.getElementById('totalCount').textContent = t1 + t2 + t3;
+}
+
+function updateCategoryFilter() {
+    const select = document.getElementById('categoryFilter');
+    const current = select.value;
+    const categories = [...new Set(websites.map(w => w.category))].sort();
+    select.innerHTML = '<option value="">كل التصنيفات</option>';
+    categories.forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat;
+        opt.textContent = cat;
+        if (cat === current) opt.selected = true;
+        select.appendChild(opt);
+    });
+}
+
+// ========== Actions ==========
+function copyUrl(url) {
+    navigator.clipboard.writeText(url).then(() => {
+        showToast('تم نسخ الرابط بنجاح!', 'success');
+    }).catch(() => {
+        // Fallback
+        const ta = document.createElement('textarea');
+        ta.value = url;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast('تم نسخ الرابط بنجاح!', 'success');
+    });
+}
+
+function visitSite(url) {
+    window.open(url, '_blank');
+}
+
+function toggleMoveDropdown(event, index) {
+    event.stopPropagation();
+    const dropdown = document.getElementById(`moveDropdown${index}`);
+    if (openDropdownId && openDropdownId !== index) {
+        const prev = document.getElementById(`moveDropdown${openDropdownId}`);
+        if (prev) prev.classList.remove('show');
+    }
+    dropdown.classList.toggle('show');
+    openDropdownId = dropdown.classList.contains('show') ? index : null;
+}
+
+function moveSite(index, newTier) {
+    websites[index].tier = newTier;
+    openDropdownId = null;
+    const tierNames = { 1: 'الماسية', 2: 'الفضية', 3: 'البرونزية' };
+    showToast(`تم نقل الموقع إلى الطبقة ${tierNames[newTier]}`, 'info');
+    render();
+}
+
+function deleteSite(index) {
+    if (confirm(`هل تريد حذف "${websites[index].name}"؟`)) {
+        websites.splice(index, 1);
+        showToast('تم حذف الموقع', 'info');
+        render();
+    }
+}
+
+function editSite(index) {
+    editingIndex = index;
+    const site = websites[index];
+    document.getElementById('modalTitle').innerHTML = '&#9998; تعديل الموقع';
+    document.getElementById('siteName').value = site.name;
+    document.getElementById('siteUrl').value = site.url;
+    document.getElementById('siteCategory').value = site.category;
+    document.getElementById('siteTier').value = site.tier;
+    document.getElementById('modalOverlay').classList.add('active');
+}
+
+function openAddModal() {
+    editingIndex = -1;
+    document.getElementById('modalTitle').innerHTML = '&#10010; إضافة موقع جديد';
+    document.getElementById('siteName').value = '';
+    document.getElementById('siteUrl').value = '';
+    document.getElementById('siteCategory').value = 'تواصل اجتماعي';
+    document.getElementById('siteTier').value = '3';
+    document.getElementById('modalOverlay').classList.add('active');
+}
+
+function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('active');
+    editingIndex = -1;
+}
+
+function closeModalOutside(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function saveSite() {
+    const name = document.getElementById('siteName').value.trim();
+    const url = document.getElementById('siteUrl').value.trim();
+    const category = document.getElementById('siteCategory').value;
+    const tier = parseInt(document.getElementById('siteTier').value);
+
+    if (!name || !url) {
+        showToast('يرجى ملء جميع الحقول', 'info');
+        return;
+    }
+
+    if (editingIndex >= 0) {
+        websites[editingIndex] = { name, url, category, tier };
+        showToast('تم تحديث الموقع بنجاح', 'success');
+    } else {
+        websites.push({ name, url, category, tier });
+        showToast('تم إضافة الموقع بنجاح', 'success');
+    }
+
+    closeModal();
+    render();
+}
+
+function toggleTier(num) {
+    const section = document.getElementById(`tier${num}`);
+    section.classList.toggle('collapsed');
+}
+
+function filterWebsites() {
+    render();
+}
+
+// ========== Drag & Drop ==========
+let draggedIndex = null;
+
+function handleDragStart(e, index) {
+    draggedIndex = index;
+    e.target.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+}
+
+function handleDragEnd(e) {
+    e.target.classList.remove('dragging');
+    document.querySelectorAll('.tier-grid').forEach(g => g.classList.remove('drag-over'));
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+    e.currentTarget.classList.add('drag-over');
+}
+
+function handleDragLeave(e) {
+    e.currentTarget.classList.remove('drag-over');
+}
+
+function handleDrop(e, newTier) {
+    e.preventDefault();
+    e.currentTarget.classList.remove('drag-over');
+    if (draggedIndex !== null && websites[draggedIndex].tier !== newTier) {
+        websites[draggedIndex].tier = newTier;
+        const tierNames = { 1: 'الماسية', 2: 'الفضية', 3: 'البرونزية' };
+        showToast(`تم نقل الموقع إلى الطبقة ${tierNames[newTier]}`, 'info');
+        render();
+    }
+    draggedIndex = null;
+}
+
+// ========== Toast ==========
+function showToast(message, type = 'info') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    const icon = type === 'success' ? '&#10003;' : '&#9432;';
+    toast.innerHTML = `<span>${icon}</span> ${message}`;
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+}
+
+// ========== Save/Load ==========
+function saveData() {
+    localStorage.setItem('websitesDir', JSON.stringify(websites));
+}
+
+// ========== Close dropdowns on outside click ==========
+document.addEventListener('click', (e) => {
+    if (openDropdownId !== null && !e.target.closest('.move-btn') && !e.target.closest('.move-dropdown')) {
+        const dropdown = document.getElementById(`moveDropdown${openDropdownId}`);
+        if (dropdown) dropdown.classList.remove('show');
+        openDropdownId = null;
+    }
+});
+
+// ========== Keyboard shortcut ==========
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeModal();
+    }
+    // Ctrl+K for search
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        document.getElementById('searchInput').focus();
+    }
+});
+
+// ========== Init ==========
+render();
+</script>
+</body>
+</html>

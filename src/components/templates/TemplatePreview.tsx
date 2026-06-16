@@ -263,20 +263,8 @@ export default function TemplatePreview() {
                   {template.title}
                 </h1>
                 <p className="text-[#4F5B76] mb-6 leading-relaxed">{template.description}</p>
-                <div className="rounded-2xl overflow-hidden border border-[#e6ebf1] shadow-card relative group/img">
-                  <img src={template.image} alt={template.title} className="w-full object-cover transition-transform duration-500 group-hover/img:scale-[1.02]" />
-                  {/* Live Preview overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#000f22]/70 via-transparent to-transparent opacity-0 group-hover/img:opacity-100 transition-all duration-300 flex items-end justify-center pb-5">
-                    <a
-                      href={template.image}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 bg-[#00D1FF] hover:bg-[#00b8e6] text-[#000f22] font-semibold px-6 py-2.5 rounded-xl text-sm shadow-lg shadow-[#00D1FF]/25 transition-all duration-200 translate-y-2 group-hover/img:translate-y-0"
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                      Live Preview
-                    </a>
-                  </div>
+                <div className="rounded-2xl overflow-hidden border border-[#e6ebf1] shadow-card">
+                  <img src={template.image} alt={template.title} className="w-full object-cover" />
                 </div>
                 {/* Live Preview action bar */}
                 <div className="mt-3 flex items-center gap-3">

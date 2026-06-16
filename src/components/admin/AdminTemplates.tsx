@@ -27,7 +27,7 @@ interface Template {
   active: boolean
 }
 
-const categories = ['Business', 'Portfolio', 'E-commerce', 'Blog', 'SaaS']
+const categories = ['Education', 'Business', 'Portfolio', 'E-commerce', 'Blog', 'SaaS']
 
 export default function AdminTemplates() {
   const [templates, setTemplates] = useState<Template[]>([])

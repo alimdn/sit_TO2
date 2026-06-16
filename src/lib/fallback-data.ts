@@ -97,6 +97,20 @@ export const fallbackTemplates = [
     active: true,
     createdAt: new Date().toISOString(),
   },
+  {
+    id: '9',
+    title: 'EduMentor — Course Platform',
+    description: 'A comprehensive e-learning platform template for selling online courses. Features include course pages with video previews, interactive syllabus with accordion modules, quiz system with instant feedback, progress tracking with timers, instructor profiles, and a complete Material Design system built with Tailwind CSS. Perfect for online academies, training centers, and educational institutions.',
+    category: 'Education',
+    image: '/images/template-education.png',
+    previewUrl: '/templates/edumentor-course-platform.html',
+    features: JSON.stringify(['Video Course Player', 'Interactive Syllabus', 'Quiz System', 'Progress Tracking', 'Student Dashboard', 'Instructor Profiles', 'Responsive Design', 'Material Design System', 'Accordion Modules', 'Timer & Countdown']),
+    industries: JSON.stringify(['Education', 'E-Learning', 'Training', 'Academy', 'Online Courses', 'Corporate Training']),
+    livePreview: '/templates/edumentor-course-platform.html',
+    featured: true,
+    active: true,
+    createdAt: new Date().toISOString(),
+  },
 ]
 
 export const fallbackPlans = [

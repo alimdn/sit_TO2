@@ -19,7 +19,7 @@ interface Template {
   active: boolean
 }
 
-const categories = ['All', 'Business', 'Portfolio', 'E-commerce', 'Blog', 'SaaS']
+const categories = ['All', 'Education', 'Business', 'Portfolio', 'E-commerce', 'Blog', 'SaaS']
 
 export default function TemplateGrid() {
   const { setCurrentPage } = useAppStore()

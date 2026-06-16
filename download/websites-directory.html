@@ -5,942 +5,794 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>دليل النشاطات والمحلات</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap');
 
         :root {
-            --tier1-accent: #f7971e;
-            --tier1-glow: rgba(247, 151, 30, 0.3);
-            --tier2-accent: #00d2ff;
-            --tier2-glow: rgba(0, 210, 255, 0.3);
-            --tier3-accent: #52d681;
-            --tier3-glow: rgba(82, 214, 129, 0.3);
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --card-hover: rgba(255, 255, 255, 0.1);
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.7);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --danger: #ff4757;
-            --success: #2ed573;
-            --overlay: rgba(0, 0, 0, 0.7);
+            --bg-primary: #06060f;
+            --bg-secondary: #0c0c1d;
+            --bg-card: rgba(255,255,255,0.03);
+            --bg-card-hover: rgba(255,255,255,0.07);
+            --glass: rgba(255,255,255,0.04);
+            --glass-border: rgba(255,255,255,0.06);
+            --text: #f0f0f5;
+            --text-dim: rgba(255,255,255,0.5);
+            --text-muted: rgba(255,255,255,0.3);
+            --tier1: #f59e0b;
+            --tier1-soft: rgba(245,158,11,0.12);
+            --tier1-glow: rgba(245,158,11,0.25);
+            --tier2: #06b6d4;
+            --tier2-soft: rgba(6,182,212,0.12);
+            --tier2-glow: rgba(6,182,212,0.25);
+            --tier3: #10b981;
+            --tier3-soft: rgba(16,185,129,0.12);
+            --tier3-glow: rgba(16,185,129,0.25);
+            --danger: #ef4444;
+            --radius: 16px;
+            --radius-sm: 10px;
+            --radius-xs: 6px;
+            --shadow: 0 8px 32px rgba(0,0,0,0.4);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin:0; padding:0; box-sizing:border-box; }
 
         body {
-            font-family: 'Cairo', sans-serif;
-            background: #0a0a1a;
-            color: var(--text-primary);
+            font-family: 'Tajawal', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        .bg-animation {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0; overflow: hidden;
+        /* === Ambient Background === */
+        .ambient {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
         }
-        .bg-animation .orb {
-            position: absolute; border-radius: 50%; filter: blur(80px);
-            opacity: 0.12; animation: float 20s ease-in-out infinite;
+        .ambient .blob {
+            position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.07;
+            animation: drift 25s ease-in-out infinite alternate;
         }
-        .bg-animation .orb:nth-child(1) { width: 600px; height: 600px; background: #f7971e; top: -200px; right: -200px; }
-        .bg-animation .orb:nth-child(2) { width: 500px; height: 500px; background: #00d2ff; bottom: -150px; left: -150px; animation-delay: -7s; }
-        .bg-animation .orb:nth-child(3) { width: 400px; height: 400px; background: #52d681; top: 50%; left: 50%; animation-delay: -14s; }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(100px, -50px) scale(1.1); }
-            50% { transform: translate(-50px, 100px) scale(0.9); }
-            75% { transform: translate(50px, 50px) scale(1.05); }
+        .ambient .blob:nth-child(1) { width:800px; height:800px; background:var(--tier1); top:-300px; right:-200px; }
+        .ambient .blob:nth-child(2) { width:600px; height:600px; background:var(--tier2); bottom:-200px; left:-100px; animation-delay:-10s; }
+        .ambient .blob:nth-child(3) { width:500px; height:500px; background:var(--tier3); top:40%; left:30%; animation-delay:-18s; }
+        @keyframes drift {
+            0% { transform: translate(0,0) scale(1); }
+            100% { transform: translate(80px,60px) scale(1.15); }
         }
 
-        /* Header */
+        /* === Noise Overlay === */
+        .noise {
+            position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 128px 128px;
+        }
+
+        /* === Header === */
         header {
-            position: relative; z-index: 10; padding: 24px 30px;
-            background: rgba(10, 10, 26, 0.85); backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(6,6,15,0.8); backdrop-filter: blur(24px) saturate(1.4);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 16px 32px;
         }
-        .header-content {
-            max-width: 1600px; margin: 0 auto;
-            display: flex; justify-content: space-between; align-items: center;
-            flex-wrap: wrap; gap: 16px;
+        .header-inner {
+            max-width: 1500px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
         }
-        .logo { display: flex; align-items: center; gap: 14px; }
-        .logo-icon {
-            width: 50px; height: 50px;
-            background: linear-gradient(135deg, var(--tier1-accent), #ff6b6b);
-            border-radius: 14px; display: flex; align-items: center; justify-content: center;
-            font-size: 26px; box-shadow: 0 4px 20px rgba(247, 151, 30, 0.3);
+        .brand { display: flex; align-items: center; gap: 14px; }
+        .brand-mark {
+            width: 46px; height: 46px; border-radius: 13px;
+            background: linear-gradient(135deg, var(--tier1), #ef4444);
+            display: grid; place-items: center; font-size: 22px;
+            box-shadow: 0 0 24px var(--tier1-glow);
         }
-        .logo h1 {
-            font-size: 26px; font-weight: 800;
-            background: linear-gradient(135deg, #f7971e, #ffd200);
+        .brand h1 {
+            font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #fff 40%, var(--tier1));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
-        .logo p { font-size: 13px; color: var(--text-secondary); font-weight: 300; }
-        .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .brand p { font-size: 12px; color: var(--text-dim); font-weight: 400; margin-top: -2px; }
 
-        .search-box { position: relative; }
-        .search-box input {
-            background: rgba(255,255,255,0.08); border: 1px solid var(--border-color);
-            border-radius: 12px; padding: 10px 40px 10px 16px; color: white;
-            font-family: 'Cairo'; font-size: 14px; width: 260px; transition: all 0.3s;
+        .toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+        .search-wrap {
+            position: relative;
+            background: var(--glass); border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm); overflow: hidden;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
-        .search-box input:focus {
-            outline: none; border-color: var(--tier1-accent);
-            box-shadow: 0 0 20px rgba(247,151,30,0.15); background: rgba(255,255,255,0.12);
+        .search-wrap:focus-within {
+            border-color: rgba(245,158,11,0.3);
+            box-shadow: 0 0 20px rgba(245,158,11,0.08);
         }
-        .search-box input::placeholder { color: rgba(255,255,255,0.4); }
-        .search-box .search-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); }
+        .search-wrap input {
+            background: transparent; border: none; outline: none;
+            padding: 9px 14px 9px 36px; color: var(--text);
+            font-family: 'Tajawal'; font-size: 14px; width: 240px;
+        }
+        .search-wrap input::placeholder { color: var(--text-muted); }
+        .search-wrap .s-ico { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 14px; }
+
+        .pill-select {
+            background: var(--glass); border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm); padding: 9px 14px;
+            color: var(--text-dim); font-family: 'Tajawal'; font-size: 13px;
+            cursor: pointer; transition: all 0.3s; appearance: none; -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='rgba(255,255,255,0.3)' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: 12px center; padding-left: 30px;
+        }
+        .pill-select:focus { outline: none; border-color: rgba(245,158,11,0.3); }
+        .pill-select option { background: #1a1a2e; color: white; }
 
         .btn {
-            padding: 10px 20px; border: none; border-radius: 12px;
-            font-family: 'Cairo'; font-size: 14px; font-weight: 600;
-            cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 8px;
+            padding: 9px 18px; border: none; border-radius: var(--radius-sm);
+            font-family: 'Tajawal'; font-size: 13px; font-weight: 700;
+            cursor: pointer; transition: all 0.25s; display: inline-flex;
+            align-items: center; gap: 6px; white-space: nowrap;
         }
-        .btn-primary {
-            background: linear-gradient(135deg, var(--tier1-accent), #ffd200);
-            color: #1a1a2e; box-shadow: 0 4px 15px rgba(247,151,30,0.3);
+        .btn-accent {
+            background: linear-gradient(135deg, var(--tier1), #d97706);
+            color: #000; box-shadow: 0 2px 12px var(--tier1-glow);
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(247,151,30,0.4); }
-        .btn-secondary { background: rgba(255,255,255,0.08); color: white; border: 1px solid var(--border-color); }
-        .btn-secondary:hover { background: rgba(255,255,255,0.15); }
-        .btn-reset { background: rgba(255,71,87,0.15); color: #ff4757; border: 1px solid rgba(255,71,87,0.3); }
-        .btn-reset:hover { background: rgba(255,71,87,0.25); }
-
-        /* Stats Bar */
-        .stats-bar {
-            position: relative; z-index: 10; padding: 14px 30px;
-            background: rgba(10,10,26,0.5); backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-color);
-            display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;
+        .btn-accent:hover { transform: translateY(-1px); box-shadow: 0 4px 20px var(--tier1-glow); }
+        .btn-ghost {
+            background: var(--glass); border: 1px solid var(--glass-border); color: var(--text-dim);
         }
-        .stat-item { display: flex; align-items: center; gap: 8px; font-size: 14px; }
-        .stat-dot { width: 10px; height: 10px; border-radius: 50%; }
-        .stat-dot.gold { background: var(--tier1-accent); box-shadow: 0 0 10px var(--tier1-glow); }
-        .stat-dot.blue { background: var(--tier2-accent); box-shadow: 0 0 10px var(--tier2-glow); }
-        .stat-dot.green { background: var(--tier3-accent); box-shadow: 0 0 10px var(--tier3-glow); }
-        .stat-count { font-weight: 700; font-size: 18px; }
-        .stat-label { color: var(--text-secondary); }
-
-        /* Main Content */
-        main { position: relative; z-index: 10; max-width: 1600px; margin: 0 auto; padding: 25px 30px; }
-
-        /* Tier Sections */
-        .tier-section { margin-bottom: 35px; border-radius: 20px; overflow: hidden; transition: all 0.3s; }
-        .tier-header {
-            padding: 18px 28px; display: flex; justify-content: space-between;
-            align-items: center; cursor: pointer; position: relative; overflow: hidden;
+        .btn-ghost:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+        .btn-danger-ghost {
+            background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); color: #f87171;
         }
-        .tier1 .tier-header { background: linear-gradient(135deg, rgba(247,151,30,0.15), rgba(255,210,0,0.05)); }
-        .tier2 .tier-header { background: linear-gradient(135deg, rgba(0,210,255,0.15), rgba(0,150,255,0.05)); }
-        .tier3 .tier-header { background: linear-gradient(135deg, rgba(82,214,129,0.15), rgba(46,213,115,0.05)); }
+        .btn-danger-ghost:hover { background: rgba(239,68,68,0.15); }
 
-        .tier-title-area { display: flex; align-items: center; gap: 14px; }
-        .tier-badge {
-            width: 48px; height: 48px; border-radius: 14px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 22px; font-weight: 800;
+        /* === Stats === */
+        .stats {
+            position: relative; z-index: 10;
+            display: flex; justify-content: center; gap: 32px; flex-wrap: wrap;
+            padding: 14px 32px;
+            background: rgba(6,6,15,0.4); border-bottom: 1px solid var(--glass-border);
         }
-        .tier1 .tier-badge { background: linear-gradient(135deg, var(--tier1-accent), #ffd200); color: #1a1a2e; box-shadow: 0 4px 15px var(--tier1-glow); }
-        .tier2 .tier-badge { background: linear-gradient(135deg, var(--tier2-accent), #0099ff); color: #1a1a2e; box-shadow: 0 4px 15px var(--tier2-glow); }
-        .tier3 .tier-badge { background: linear-gradient(135deg, var(--tier3-accent), #2ed573); color: #1a1a2e; box-shadow: 0 4px 15px var(--tier3-glow); }
+        .stat { display: flex; align-items: center; gap: 8px; }
+        .stat-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .stat-dot.d1 { background: var(--tier1); box-shadow: 0 0 8px var(--tier1-glow); }
+        .stat-dot.d2 { background: var(--tier2); box-shadow: 0 0 8px var(--tier2-glow); }
+        .stat-dot.d3 { background: var(--tier3); box-shadow: 0 0 8px var(--tier3-glow); }
+        .stat b { font-size: 17px; }
+        .stat span { font-size: 12px; color: var(--text-dim); }
 
-        .tier-title h2 { font-size: 20px; font-weight: 700; }
-        .tier-title p { font-size: 12px; color: var(--text-secondary); }
-        .tier1 .tier-title h2 { color: var(--tier1-accent); }
-        .tier2 .tier-title h2 { color: var(--tier2-accent); }
-        .tier3 .tier-title h2 { color: var(--tier3-accent); }
+        /* === Main === */
+        main { position: relative; z-index: 10; max-width: 1500px; margin: 0 auto; padding: 24px 32px 60px; }
 
-        .tier-count { background: rgba(255,255,255,0.08); padding: 6px 16px; border-radius: 20px; font-size: 13px; color: var(--text-secondary); }
-        .tier-toggle { font-size: 20px; color: var(--text-secondary); transition: transform 0.3s; }
-        .tier-section.collapsed .tier-toggle { transform: rotate(180deg); }
-        .tier-section.collapsed .tier-grid { display: none; }
-
-        /* Website Grid */
-        .tier-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-            gap: 14px; padding: 22px;
+        /* === Tier === */
+        .tier { margin-bottom: 32px; }
+        .tier-head {
+            padding: 16px 24px; border-radius: var(--radius) var(--radius) 0 0;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; user-select: none; transition: background 0.3s;
         }
-        .tier1 .tier-grid { background: rgba(15,12,41,0.4); }
-        .tier2 .tier-grid { background: rgba(26,26,46,0.4); }
-        .tier3 .tier-grid { background: rgba(27,27,47,0.4); }
+        .tier-head:hover { filter: brightness(1.1); }
+        .tier1 .tier-head { background: linear-gradient(135deg, var(--tier1-soft), transparent 80%); }
+        .tier2 .tier-head { background: linear-gradient(135deg, var(--tier2-soft), transparent 80%); }
+        .tier3 .tier-head { background: linear-gradient(135deg, var(--tier3-soft), transparent 80%); }
 
-        /* Website Card */
-        .website-card {
-            background: var(--card-bg); border: 1px solid var(--border-color);
-            border-radius: 16px; padding: 16px; transition: all 0.3s;
-            position: relative; overflow: hidden;
+        .tier-left { display: flex; align-items: center; gap: 14px; }
+        .tier-icon {
+            width: 44px; height: 44px; border-radius: 12px;
+            display: grid; place-items: center; font-size: 20px;
         }
-        .website-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0;
-            height: 3px; opacity: 0; transition: opacity 0.3s;
-        }
-        .tier1 .website-card::before { background: linear-gradient(90deg, var(--tier1-accent), #ffd200); }
-        .tier2 .website-card::before { background: linear-gradient(90deg, var(--tier2-accent), #0099ff); }
-        .tier3 .website-card::before { background: linear-gradient(90deg, var(--tier3-accent), #2ed573); }
+        .tier1 .tier-icon { background: linear-gradient(135deg, var(--tier1), #d97706); color: #000; }
+        .tier2 .tier-icon { background: linear-gradient(135deg, var(--tier2), #0891b2); color: #000; }
+        .tier3 .tier-icon { background: linear-gradient(135deg, var(--tier3), #059669); color: #000; }
+        .tier-label h2 { font-size: 18px; font-weight: 700; }
+        .tier-label p { font-size: 11px; color: var(--text-dim); }
+        .tier1 .tier-label h2 { color: var(--tier1); }
+        .tier2 .tier-label h2 { color: var(--tier2); }
+        .tier3 .tier-label h2 { color: var(--tier3); }
 
-        .website-card:hover { background: var(--card-hover); transform: translateY(-3px); border-color: rgba(255,255,255,0.2); }
-        .website-card:hover::before { opacity: 1; }
+        .tier-right { display: flex; align-items: center; gap: 10px; }
+        .tier-cnt {
+            background: var(--glass); border: 1px solid var(--glass-border);
+            padding: 4px 14px; border-radius: 20px; font-size: 12px; color: var(--text-dim);
+        }
+        .tier-chevron { color: var(--text-muted); transition: transform 0.3s; font-size: 14px; }
+        .tier.collapsed .tier-chevron { transform: rotate(180deg); }
+        .tier.collapsed .tier-body { display: none; }
+
+        /* === Grid === */
+        .tier-body { padding: 20px; }
+        .tier1 .tier-body { background: rgba(245,158,11,0.02); border-radius: 0 0 var(--radius) var(--radius); }
+        .tier2 .tier-body { background: rgba(6,182,212,0.02); border-radius: 0 0 var(--radius) var(--radius); }
+        .tier3 .tier-body { background: rgba(16,185,129,0.02); border-radius: 0 0 var(--radius) var(--radius); }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 14px;
+        }
+
+        /* === Card === */
+        .card {
+            background: var(--bg-card); border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm); padding: 16px; position: relative;
+            transition: all 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+            overflow: hidden;
+        }
+        .card::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .tier1 .card::after { background: linear-gradient(90deg, var(--tier1), transparent); }
+        .tier2 .card::after { background: linear-gradient(90deg, var(--tier2), transparent); }
+        .tier3 .card::after { background: linear-gradient(90deg, var(--tier3), transparent); }
+
+        .card:hover { background: var(--bg-card-hover); transform: translateY(-2px); border-color: rgba(255,255,255,0.1); }
+        .card:hover::after { opacity: 1; }
 
         .card-top { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
-
-        .website-icon {
-            width: 44px; height: 44px; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 20px; flex-shrink: 0;
+        .card-ico {
+            width: 42px; height: 42px; border-radius: 10px;
+            display: grid; place-items: center; font-size: 18px; flex-shrink: 0;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
         }
-        .tier1 .website-icon { background: linear-gradient(135deg, rgba(247,151,30,0.25), rgba(255,210,0,0.08)); border: 1px solid rgba(247,151,30,0.25); }
-        .tier2 .website-icon { background: linear-gradient(135deg, rgba(0,210,255,0.25), rgba(0,150,255,0.08)); border: 1px solid rgba(0,210,255,0.25); }
-        .tier3 .website-icon { background: linear-gradient(135deg, rgba(82,214,129,0.25), rgba(46,213,115,0.08)); border: 1px solid rgba(82,214,129,0.25); }
-
-        .website-info { flex: 1; min-width: 0; }
-        .website-name { font-size: 15px; font-weight: 700; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .website-category { font-size: 11px; color: var(--text-secondary); display: flex; align-items: center; gap: 4px; }
-        .website-desc { font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 8px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .website-url { font-size: 11px; color: rgba(255,255,255,0.4); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; direction: ltr; text-align: right; margin-bottom: 10px; }
-
-        .card-actions { display: flex; gap: 5px; flex-wrap: wrap; position: relative; }
-
-        .card-btn {
-            padding: 5px 9px; border: 1px solid var(--border-color); border-radius: 8px;
-            background: rgba(255,255,255,0.05); color: var(--text-secondary);
-            font-size: 11px; font-family: 'Cairo'; cursor: pointer; transition: all 0.2s;
-            display: flex; align-items: center; gap: 3px;
+        .card-info { flex: 1; min-width: 0; }
+        .card-name { font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-cat { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+        .card-desc {
+            font-size: 11px; color: var(--text-muted); line-height: 1.6; margin-bottom: 8px;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
         }
-        .card-btn:hover { background: rgba(255,255,255,0.15); color: white; }
-        .card-btn.copy-btn:hover { border-color: var(--tier2-accent); color: var(--tier2-accent); }
-        .card-btn.edit-btn:hover { border-color: var(--tier1-accent); color: var(--tier1-accent); }
-        .card-btn.move-btn:hover { border-color: var(--tier3-accent); color: var(--tier3-accent); }
-        .card-btn.delete-btn:hover { border-color: var(--danger); color: var(--danger); }
-        .card-btn.visit-btn:hover { border-color: var(--success); color: var(--success); }
-
-        /* Rating Stars */
-        .stars { font-size: 12px; letter-spacing: 1px; margin-bottom: 8px; }
-        .stars .filled { color: #ffd200; }
-        .stars .empty { color: rgba(255,255,255,0.15); }
-
-        /* Move Dropdown */
-        .move-dropdown {
-            position: absolute; bottom: calc(100% + 5px); right: 0;
-            background: #1e1e3a; border: 1px solid var(--border-color); border-radius: 12px;
-            padding: 8px; z-index: 100; min-width: 160px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5); display: none;
+        .card-stars { font-size: 11px; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .card-stars .on { color: #facc15; }
+        .card-stars .off { color: rgba(255,255,255,0.1); }
+        .card-url {
+            font-size: 10px; color: var(--text-muted); white-space: nowrap; overflow: hidden;
+            text-overflow: ellipsis; direction: ltr; text-align: right; margin-bottom: 10px;
         }
-        .move-dropdown.show { display: block; }
-        .move-dropdown-item {
-            padding: 8px 12px; border-radius: 8px; cursor: pointer;
-            font-size: 13px; transition: all 0.2s; display: flex; align-items: center; gap: 8px;
+        .card-btns { display: flex; gap: 4px; flex-wrap: wrap; position: relative; }
+        .cb {
+            padding: 4px 8px; border-radius: var(--radius-xs);
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+            color: var(--text-dim); font-size: 10px; font-family: 'Tajawal'; font-weight: 500;
+            cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 3px;
         }
-        .move-dropdown-item:hover { background: rgba(255,255,255,0.1); }
-        .move-dropdown-item.to-tier1 { color: var(--tier1-accent); }
-        .move-dropdown-item.to-tier2 { color: var(--tier2-accent); }
-        .move-dropdown-item.to-tier3 { color: var(--tier3-accent); }
+        .cb:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+        .cb.cp:hover { border-color: var(--tier2); color: var(--tier2); }
+        .cb.ed:hover { border-color: var(--tier1); color: var(--tier1); }
+        .cb.mv:hover { border-color: var(--tier3); color: var(--tier3); }
+        .cb.dl:hover { border-color: var(--danger); color: var(--danger); }
+        .cb.vi:hover { border-color: #22c55e; color: #22c55e; }
 
-        /* Modal */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: var(--overlay); backdrop-filter: blur(10px);
-            z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px;
+        /* === Move Dropdown === */
+        .mv-dd {
+            position: absolute; bottom: calc(100% + 4px); right: 0;
+            background: #151528; border: 1px solid var(--glass-border); border-radius: var(--radius-sm);
+            padding: 6px; z-index: 200; min-width: 150px; box-shadow: var(--shadow);
+            display: none; animation: popIn 0.15s ease;
         }
-        .modal-overlay.active { display: flex; }
+        .mv-dd.open { display: block; }
+        @keyframes popIn { from { opacity:0; transform:scale(0.95) translateY(4px); } to { opacity:1; transform:scale(1) translateY(0); } }
+        .mv-dd-item {
+            padding: 7px 10px; border-radius: var(--radius-xs); cursor: pointer;
+            font-size: 12px; display: flex; align-items: center; gap: 6px; transition: background 0.2s;
+        }
+        .mv-dd-item:hover { background: rgba(255,255,255,0.06); }
+        .mv-dd-item.t1 { color: var(--tier1); }
+        .mv-dd-item.t2 { color: var(--tier2); }
+        .mv-dd-item.t3 { color: var(--tier3); }
 
+        /* === Modal === */
+        .overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(12px); z-index: 500;
+            display: none; place-items: center; padding: 20px;
+        }
+        .overlay.on { display: grid; }
         .modal {
-            background: #1a1a35; border: 1px solid var(--border-color);
-            border-radius: 20px; width: 100%; max-width: 520px; padding: 28px;
-            animation: modalIn 0.3s ease; max-height: 90vh; overflow-y: auto;
+            background: #12122a; border: 1px solid var(--glass-border);
+            border-radius: 20px; width: 100%; max-width: 480px; padding: 28px;
+            animation: modalUp 0.25s ease; max-height: 90vh; overflow-y: auto;
         }
-        @keyframes modalIn {
-            from { transform: scale(0.9) translateY(20px); opacity: 0; }
-            to { transform: scale(1) translateY(0); opacity: 1; }
+        @keyframes modalUp { from { opacity:0; transform:translateY(16px) scale(0.97); } to { opacity:1; transform:none; } }
+        .modal h3 { font-size: 18px; font-weight: 700; margin-bottom: 18px; }
+        .fg { margin-bottom: 12px; }
+        .fg label { display: block; font-size: 12px; color: var(--text-dim); margin-bottom: 4px; font-weight: 600; }
+        .fg input, .fg select, .fg textarea {
+            width: 100%; padding: 9px 12px; background: rgba(255,255,255,0.04);
+            border: 1px solid var(--glass-border); border-radius: var(--radius-xs);
+            color: var(--text); font-family: 'Tajawal'; font-size: 13px; transition: border-color 0.3s;
         }
-        .modal h3 { font-size: 20px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .fg input:focus, .fg select:focus, .fg textarea:focus {
+            outline: none; border-color: rgba(245,158,11,0.4);
+        }
+        .fg textarea { resize: vertical; min-height: 50px; }
+        .fg select option { background: #12122a; }
+        .modal-btns { display: flex; gap: 8px; margin-top: 18px; }
+        .modal-btns .btn { flex: 1; justify-content: center; padding: 11px; }
 
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 5px; font-weight: 600; }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.06);
-            border: 1px solid var(--border-color); border-radius: 10px;
-            color: white; font-family: 'Cairo'; font-size: 14px; transition: all 0.3s;
-        }
-        .form-group textarea { resize: vertical; min-height: 60px; }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            outline: none; border-color: var(--tier1-accent);
-            box-shadow: 0 0 15px rgba(247,151,30,0.15);
-        }
-        .form-group select option { background: #1a1a35; color: white; }
-
-        .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
-        .modal-actions .btn { flex: 1; justify-content: center; padding: 12px; }
-
-        /* Toast */
-        .toast-container {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            z-index: 2000; display: flex; flex-direction: column; gap: 10px; align-items: center;
-        }
+        /* === Toast === */
+        .toasts { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 999; display: flex; flex-direction: column; gap: 8px; align-items: center; }
         .toast {
-            background: #1e1e3a; border: 1px solid var(--border-color); border-radius: 12px;
-            padding: 12px 24px; font-size: 14px; font-family: 'Cairo';
-            animation: toastIn 0.3s ease, toastOut 0.3s ease 2.5s forwards;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 8px;
+            background: #1a1a35; border: 1px solid var(--glass-border); border-radius: var(--radius-sm);
+            padding: 10px 20px; font-size: 13px; font-family: 'Tajawal';
+            box-shadow: var(--shadow); display: flex; align-items: center; gap: 6px;
+            animation: tIn 0.2s ease, tOut 0.3s ease 2.5s forwards;
         }
-        .toast.success { border-color: var(--success); }
-        .toast.info { border-color: var(--tier2-accent); }
+        .toast.ok { border-color: #22c55e; }
+        .toast.nfo { border-color: var(--tier2); }
+        @keyframes tIn { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:none; } }
+        @keyframes tOut { to { opacity:0; transform:translateY(-8px); } }
 
-        @keyframes toastIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
+        /* === Drag === */
+        .card.dragging { opacity: 0.4; transform: scale(0.96); }
+        .grid.dragover { outline: 2px dashed var(--tier2); outline-offset: -4px; background: rgba(6,182,212,0.03) !important; }
 
-        /* Drag & Drop */
-        .website-card.dragging { opacity: 0.5; transform: scale(0.95); }
-        .tier-grid.drag-over { background: rgba(255,255,255,0.05) !important; outline: 2px dashed var(--tier2-accent); outline-offset: -4px; }
+        .empty { text-align: center; padding: 36px; color: var(--text-muted); font-size: 13px; }
 
-        /* Category tag colors */
-        .cat-tag { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; }
-        .cat-halqa { background: rgba(247,151,30,0.2); color: #f7971e; }
-        .cat-clinic { background: rgba(0,210,255,0.2); color: #00d2ff; }
-        .cat-dental { background: rgba(255,107,107,0.2); color: #ff6b6b; }
-        .cat-farm { background: rgba(82,214,129,0.2); color: #52d681; }
-        .cat-fruit { background: rgba(255,165,0,0.2); color: #ffa500; }
-        .cat-grocery { background: rgba(255,210,0,0.2); color: #ffd200; }
-        .cat-restaurant { background: rgba(240,98,146,0.2); color: #f06292; }
-        .cat-cafe { background: rgba(161,140,209,0.2); color: #a18cd1; }
-        .cat-pharmacy { background: rgba(0,230,118,0.2); color: #00e676; }
-        .cat-car { background: rgba(100,181,246,0.2); color: #64b5f6; }
-        .cat-laundry { background: rgba(77,208,225,0.2); color: #4dd0e1; }
-        .cat-flower { background: rgba(240,147,251,0.2); color: #f093fb; }
-        .cat-book { background: rgba(255,183,77,0.2); color: #ffb74d; }
-        .cat-beauty { background: rgba(236,64,122,0.2); color: #ec407a; }
-        .cat-realestate { background: rgba(38,198,218,0.2); color: #26c6da; }
-        .cat-transport { background: rgba(92,107,192,0.2); color: #5c6bc0; }
-        .cat-education { background: rgba(255,138,101,0.2); color: #ff8a65; }
-        .cat-bakery { background: rgba(215,204,200,0.2); color: #d7ccc8; }
-        .cat-home { background: rgba(129,199,132,0.2); color: #81c784; }
-        .cat-electronics { background: rgba(66,165,245,0.2); color: #42a5f5; }
-        .cat-clothes { background: rgba(171,71,188,0.2); color: #ab47bc; }
-        .cat-sport { background: rgba(76,175,80,0.2); color: #4caf50; }
-        .cat-photo { background: rgba(255,112,67,0.2); color: #ff7043; }
-        .cat-pet { background: rgba(255,213,79,0.2); color: #ffd54f; }
-        .cat-tailor { background: rgba(179,157,219,0.2); color: #b39ddb; }
-        .cat-plumber { background: rgba(77,182,172,0.2); color: #4db6ac; }
-        .cat-electrician { background: rgba(255,235,59,0.2); color: #ffeb3b; }
-        .cat-carpet { background: rgba(188,170,164,0.2); color: #bcaaa4; }
-        .cat-optics { background: rgba(3,169,244,0.2); color: #03a9f4; }
-
-        .empty-state { text-align: center; padding: 40px; color: var(--text-secondary); font-size: 14px; }
-
-        /* Responsive */
+        /* === Responsive === */
         @media (max-width: 768px) {
-            header { padding: 16px; }
-            .header-content { flex-direction: column; align-items: stretch; }
-            .search-box input { width: 100%; }
+            header { padding: 14px 16px; }
+            .header-inner { flex-direction: column; align-items: stretch; }
+            .search-wrap input { width: 100%; }
             main { padding: 16px; }
-            .tier-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); padding: 14px; gap: 10px; }
-            .stats-bar { gap: 15px; padding: 12px 16px; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+            .stats { gap: 16px; padding: 12px 16px; }
         }
 
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 10px; }
     </style>
 </head>
 <body>
 
-<div class="bg-animation">
-    <div class="orb"></div><div class="orb"></div><div class="orb"></div>
-</div>
-
-<div class="toast-container" id="toastContainer"></div>
+<div class="ambient"><div class="blob"></div><div class="blob"></div><div class="blob"></div></div>
+<div class="noise"></div>
+<div class="toasts" id="toasts"></div>
 
 <header>
-    <div class="header-content">
-        <div class="logo">
-            <div class="logo-icon">&#127978;</div>
+    <div class="header-inner">
+        <div class="brand">
+            <div class="brand-mark">&#127978;</div>
             <div>
                 <h1>دليل النشاطات والمحلات</h1>
-                <p>أكثر من 100 نشاط ومحل مصنف حسب الجودة والتقييم</p>
+                <p>مواقع حقيقية مصنفة حسب الجودة</p>
             </div>
         </div>
-        <div class="header-actions">
-            <div class="search-box">
-                <span class="search-icon">&#128269;</span>
-                <input type="text" id="searchInput" placeholder="ابحث عن نشاط أو محل..." oninput="filterWebsites()">
+        <div class="toolbar">
+            <div class="search-wrap">
+                <span class="s-ico">&#128269;</span>
+                <input type="text" id="searchInput" placeholder="ابحث..." oninput="render()">
             </div>
-            <select class="btn btn-secondary" id="categoryFilter" onchange="filterWebsites()" style="cursor:pointer;">
+            <select class="pill-select" id="catFilter" onchange="render()">
                 <option value="">كل الأنشطة</option>
             </select>
-            <button class="btn btn-primary" onclick="openAddModal()">+ إضافة نشاط</button>
-            <button class="btn btn-reset" onclick="resetData()">&#128260; إعادة تعيين</button>
+            <button class="btn btn-accent" onclick="openAdd()">+ إضافة</button>
+            <button class="btn btn-danger-ghost" onclick="resetAll()">&#128260;</button>
         </div>
     </div>
 </header>
 
-<div class="stats-bar">
-    <div class="stat-item">
-        <span class="stat-dot gold"></span>
-        <span class="stat-count" id="tier1Count">0</span>
-        <span class="stat-label">المميزة</span>
-    </div>
-    <div class="stat-item">
-        <span class="stat-dot blue"></span>
-        <span class="stat-count" id="tier2Count">0</span>
-        <span class="stat-label">الجيدة جداً</span>
-    </div>
-    <div class="stat-item">
-        <span class="stat-dot green"></span>
-        <span class="stat-count" id="tier3Count">0</span>
-        <span class="stat-label">الجيدة</span>
-    </div>
-    <div class="stat-item">
-        <span class="stat-count" id="totalCount" style="color:#ffd200;">0</span>
-        <span class="stat-label">إجمالي الأنشطة</span>
-    </div>
+<div class="stats">
+    <div class="stat"><span class="stat-dot d1"></span><b id="c1">0</b><span>مميزة</span></div>
+    <div class="stat"><span class="stat-dot d2"></span><b id="c2">0</b><span>جيدة جداً</span></div>
+    <div class="stat"><span class="stat-dot d3"></span><b id="c3">0</b><span>جيدة</span></div>
+    <div class="stat"><b id="ct" style="color:var(--tier1)">0</b><span>إجمالي</span></div>
 </div>
 
-<main id="mainContent"></main>
+<main id="app"></main>
 
-<!-- Add/Edit Modal -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+<!-- Modal -->
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
     <div class="modal">
-        <h3 id="modalTitle">&#10010; إضافة نشاط جديد</h3>
-        <div class="form-group">
-            <label>اسم النشاط / المحل</label>
-            <input type="text" id="siteName" placeholder="مثال: صالون الأناقة">
-        </div>
-        <div class="form-group">
-            <label>الموقع الإلكتروني (اختياري)</label>
-            <input type="url" id="siteUrl" placeholder="https://example.com" dir="ltr">
-        </div>
-        <div class="form-group">
+        <h3 id="mTitle">&#10010; إضافة نشاط</h3>
+        <div class="fg"><label>الاسم</label><input id="mName" placeholder="مثال: صالون الأناقة"></div>
+        <div class="fg"><label>الرابط</label><input id="mUrl" placeholder="https://example.com" dir="ltr"></div>
+        <div class="fg">
             <label>التصنيف</label>
-            <select id="siteCategory">
-                <option value="حلاقة وتجميل رجالي">حلاقة وتجميل رجالي</option>
-                <option value="عيادة طبية">عيادة طبية</option>
-                <option value="عيادة أسنان">عيادة أسنان</option>
-                <option value="مزرعة ومنتجات زراعية">مزرعة ومنتجات زراعية</option>
-                <option value="بائع فواكه وخضار">بائع فواكه وخضار</option>
-                <option value="بقالة ومتجر">بقالة ومتجر</option>
-                <option value="مطعم ومأكولات">مطعم ومأكولات</option>
-                <option value="مقهى ومشروبات">مقهى ومشروبات</option>
-                <option value="صيدلية">صيدلية</option>
-                <option value="ورشة سيارات">ورشة سيارات</option>
-                <option value="مغسلة ملابس">مغسلة ملابس</option>
-                <option value="محل زهور">محل زهور</option>
-                <option value="مكتبة">مكتبة</option>
-                <option value="صالون تجميل نسائي">صالون تجميل نسائي</option>
-                <option value="مكتب عقاري">مكتب عقاري</option>
+            <select id="mCat">
+                <option value="حلاقة وتجميل">حلاقة وتجميل</option>
+                <option value="عيادات طبية">عيادات طبية</option>
+                <option value="عيادات أسنان">عيادات أسنان</option>
+                <option value="مزارع ومنتجات">مزارع ومنتجات</option>
+                <option value="فواكه وخضار">فواكه وخضار</option>
+                <option value="بقالة وتسوق">بقالة وتسوق</option>
+                <option value="مطاعم">مطاعم</option>
+                <option value="مقاهي ومشروبات">مقاهي ومشروبات</option>
+                <option value="صيدليات">صيدليات</option>
+                <option value="سيارات">سيارات</option>
+                <option value="مغاسل">مغاسل</option>
+                <option value="زهور">زهور</option>
+                <option value="مكتبات">مكتبات</option>
+                <option value="تجميل نسائي">تجميل نسائي</option>
+                <option value="عقارات">عقارات</option>
                 <option value="نقل وشحن">نقل وشحن</option>
-                <option value="تعليم وتدريب">تعليم وتدريب</option>
-                <option value="فرن ومخبز">فرن ومخبز</option>
+                <option value="تعليم">تعليم</option>
+                <option value="أفران ومخابز">أفران ومخابز</option>
                 <option value="خدمات منزلية">خدمات منزلية</option>
                 <option value="إلكترونيات">إلكترونيات</option>
                 <option value="ملابس وأزياء">ملابس وأزياء</option>
-                <option value="رياضة ولياقة">رياضة ولياقة</option>
-                <option value="تصوير فوتوغرافي">تصوير فوتوغرافي</option>
-                <option value="مستلزمات حيوانات">مستلزمات حيوانات</option>
-                <option value="خياطة وتفصيل">خياطة وتفصيل</option>
-                <option value="سباكة">سباكة</option>
-                <option value="كهرباء">كهرباء</option>
+                <option value="رياضة">رياضة</option>
+                <option value="تصوير">تصوير</option>
+                <option value="حيوانات أليفة">حيوانات أليفة</option>
+                <option value="خياطة">خياطة</option>
+                <option value="سباكة وصيانة">سباكة وصيانة</option>
                 <option value="سجاد ومفروشات">سجاد ومفروشات</option>
-                <option value="نظارات وبصريات">نظارات وبصريات</option>
+                <option value="نظارات">نظارات</option>
             </select>
         </div>
-        <div class="form-group">
-            <label>وصف مختصر</label>
-            <textarea id="siteDesc" placeholder="وصف بسيط عن النشاط أو المحل..."></textarea>
-        </div>
-        <div class="form-group">
+        <div class="fg"><label>وصف</label><textarea id="mDesc" placeholder="وصف بسيط..."></textarea></div>
+        <div class="fg">
             <label>الطبقة</label>
-            <select id="siteTier">
-                <option value="1">المميزة (الأعلى تقييماً)</option>
+            <select id="mTier">
+                <option value="1">المميزة</option>
                 <option value="2">الجيدة جداً</option>
                 <option value="3">الجيدة</option>
             </select>
         </div>
-        <div class="modal-actions">
-            <button class="btn btn-primary" onclick="saveSite()">حفظ</button>
-            <button class="btn btn-secondary" onclick="closeModal()">إلغاء</button>
+        <div class="modal-btns">
+            <button class="btn btn-accent" onclick="saveSite()">حفظ</button>
+            <button class="btn btn-ghost" onclick="closeModal()">إلغاء</button>
         </div>
     </div>
 </div>
 
 <script>
-// ========== Business Data ==========
-const initialWebsites = [
-    // ===== Tier 1 - المميزة (40 نشاط) =====
-    { name: "صالون الأناقة للحلاقة", url: "https://salon-alaqa.com", category: "حلاقة وتجميل رجالي", tier: 1, desc: "أفضل صالون حلاقة في المنطقة مع خدمات تنعيم وصبغة وتصفيف شعر احترافي", stars: 5 },
-    { name: "عيادة الشفاء الطبية", url: "https://clinic-shifa.com", category: "عيادة طبية", tier: 1, desc: "عيادة متكاملة بأطباء متخصصين في الطب العام والباطنية والجلدية", stars: 5 },
-    { name: "مركز الابتسامة لطب الأسنان", url: "https://smile-dental.com", category: "عيادة أسنان", tier: 1, desc: "تقنيات حديثة في تبييض وتقويم وزراعة الأسنان مع أطباء ذوي خبرة عالية", stars: 5 },
-    { name: "مزرعة السعادة العضوية", url: "https://saada-farm.com", category: "مزرعة ومنتجات زراعية", tier: 1, desc: "منتجات زراعية عضوية طازجة مع خدمة التوصيل المنزلي واشتراكات شهرية", stars: 5 },
-    { name: "بقالة الأخوة المركزية", url: "https://akhwa-grocery.com", category: "بقالة ومتجر", tier: 1, desc: "بقالة شاملة مع تشكيلة واسعة من المواد الغذائية والمستلزمات اليومية", stars: 5 },
-    { name: "مطعم دار الشرق", url: "https://dar-sharq.com", category: "مطعم ومأكولات", tier: 1, desc: "أطباق شرقية أصيلة مع جلسات عائلية وخدمة توصيل سريعة", stars: 5 },
-    { name: "صيدلية النهار", url: "https://nahar-pharmacy.com", category: "صيدلية", tier: 1, desc: "صيدلية تعمل 24 ساعة مع خدمة توصيل الأدوية وصيدلي متخصص للاستشارات", stars: 5 },
-    { name: "ورشة الأمان لصيانة السيارات", url: "https://aman-auto.com", category: "ورشة سيارات", tier: 1, desc: "صيانة شاملة وإصلاح أعطال وغسيل وتلميع مع قطع غيار أصلية مضمونة", stars: 5 },
-    { name: "مقهى الفنون", url: "https://fonun-cafe.com", category: "مقهى ومشروبات", tier: 1, desc: "أجواء هادئة مع قهوة مختصة ومعجنات طازجة وإنترنت مجاني سريع", stars: 5 },
-    { name: "صالون نواعم للجمال", url: "https://nawaeem-beauty.com", category: "صالون تجميل نسائي", tier: 1, desc: "خدمات تجليل وعناية بالبشرة والشعر مع خبيرة تجميل معتمدة", stars: 5 },
-    { name: "مكتب الدار العقاري", url: "https://aldar-realestate.com", category: "مكتب عقاري", tier: 1, desc: "بيع وإيجار العقارات مع استشارات مجانية وإدارة أملاك احترافية", stars: 5 },
-    { name: "مغسلة النقاء", url: "httpsnaqaa-laundry.com", category: "مغسلة ملابس", tier: 1, desc: "غسيل وتنظيف جاف مع كي وتوصيل مجاني داخل المدينة", stars: 5 },
-    { name: "فرن السعادة", url: "https://saada-bakery.com", category: "فرن ومخبز", tier: 1, desc: "خبز طازج يومياً ومعجنات وكيك للمناسبات مع حشوات متنوعة", stars: 5 },
-    { name: "محل زهور الربيع", url: "https://rabi-flowers.com", category: "محل زهور", tier: 1, desc: "باقات زهور وتنسيقات للأفراح والمناسبات مع توصيل سريع", stars: 5 },
-    { name: "مركز اللياقة الذهبي", url: "https://golden-fitness.com", category: "رياضة ولياقة", tier: 1, desc: "صالة رياضية مجهزة بالكامل مع مدربين معتمدين وبرامج شخصية", stars: 5 },
-    { name: "مكتبة المعرفة", url: "https://maarifa-books.com", category: "مكتبة", tier: 1, desc: "تشكيلة واسعة من الكتب والمجلات وقرطاسية مع قسم أطفال مميز", stars: 5 },
-    { name: "ستوديو اللحظة للتصوير", url: "https://lahza-photo.com", category: "تصوير فوتوغرافي", tier: 1, desc: "تصوير أفراح ومناسبات مع مونتاج احترافي وستوديو داخلي", stars: 5 },
-    { name: "مدرسة النور التعليمية", url: "https://noor-education.com", category: "تعليم وتدريب", tier: 1, desc: "دروس خصوصية ودورات تقوية في جميع المواد مع معلمين متميزين", stars: 5 },
-    { name: "مؤسسة النقل السريع", url: "https://saree-transport.com", category: "نقل وشحن", tier: 1, desc: "نقل أثاث وبضائع مع تغليف وتأمين وعمالة مدربة وأسعار منافسة", stars: 5 },
-    { name: "متجر الإلكترونيات الحديثة", url: "https://hadith-electronics.com", category: "إلكترونيات", tier: 1, desc: "أجهزة كهربائية وإلكترونيات مع ضمان وصيانة وأقساط مريحة", stars: 5 },
-    { name: "بازار الحرير للملابس", url: "https://hareer-clothes.com", category: "ملابس وأزياء", tier: 1, desc: "أحدث الموضات والتصاميم للرجال والنساء والأطفال مع تفصيل حسب الطلب", stars: 5 },
-    { name: "محل فواكه الخير", url: "https://khair-fruits.com", category: "بائع فواكه وخضار", tier: 1, desc: "فواكه وخضار طازجة يومياً مع عصائر طبيعية وتوصيل مجاني", stars: 5 },
-    { name: "عيادة البشرة والتجميل", url: "https://bashara-clinic.com", category: "عيادة طبية", tier: 1, desc: "علاج الأمراض الجلدية وإجراءات التجميل بالليزر مع أطباء استشاريين", stars: 5 },
-    { name: "خدمات المنزل الموثوقة", url: "https://mothuqa-home.com", category: "خدمات منزلية", tier: 1, desc: "نظافة وصيانة وترميم منازل مع فريق محترف ومواد آمنة وصديقة للبيئة", stars: 5 },
-    { name: "متجر الحيوانات الأليفة", url: "https://pets-hayawanaat.com", category: "مستلزمات حيوانات", tier: 1, desc: "أعلاف ومستلزمات ورعاية بيطرية مع خدمة استضافة وتنظيف الحيوانات", stars: 5 },
-    { name: "مزرعة الزيتون الذهبية", url: "https://zaytoun-farm.com", category: "مزرعة ومنتجات زراعية", tier: 1, desc: "زيت زيتون بكر ممتاز وزيتون ومعجون طبيعي من أجود الأصناف", stars: 5 },
-    { name: "خياط الأناقة", url: "https://khayat-alaqa.com", category: "خياطة وتفصيل", tier: 1, desc: "تفصيل بدلات وثياب عربية على المقاس مع أقمشة فاخرة وجودة عالية", stars: 5 },
-    { name: "معرض السجاد الفاخر", url: "https://fakhir-carpets.com", category: "سجاد ومفروشات", tier: 1, desc: "سجاد إيراني وتركي ومحلي مع مفروشات وتنظيف سجاد خدمة منزلية", stars: 5 },
-    { name: "مركز البصرة للنظارات", url: "https://basra-optics.com", category: "نظارات وبصريات", tier: 1, desc: "نظارات طبية وشمسية مع فحص نظر مجاني وإطارات عالمية مضمونة", stars: 5 },
-    { name: "سباكة المحترف", url: "https://muhannid-plumbing.com", category: "سباكة", tier: 1, desc: "تصليح أعطال وتوصيلات مياه مع صيانة خزانات وتسريب وتركيب طلمبات", stars: 5 },
-    { name: "كهرباء البيت الآمن", url: "https://safe-electric.com", category: "كهرباء", tier: 1, desc: "تمديدات كهربائية وتركيب إنارة وإصلاح أعطال مع فنيين معتمدين", stars: 5 },
-    { name: "حلاقة الذوق الرفيع", url: "https://dhouq-barber.com", category: "حلاقة وتجميل رجالي", tier: 1, desc: "حلاقة تقليدية وحديثة مع مساج للوجه وعناية بالبشرة واللحية", stars: 5 },
-    { name: "عيادة القلب التخصصية", url: "https://qalb-clinic.com", category: "عيادة طبية", tier: 1, desc: "فحص وعلاج أمراض القلب والأوعية الدموية مع أجهزة تشخيص حديثة", stars: 5 },
-    { name: "مطعم البيت العراقي", url: "https://iraqi-house.com", category: "مطعم ومأكولات", tier: 1, desc: "مائدة عراقية أصيلة مع كباب وتشة وبرياني ودولمة بيد أمهر الطهاة", stars: 5 },
-    { name: "مخبز أم العبد", url: "https://umm-abd-bakery.com", category: "فرن ومخبز", tier: 1, desc: "خبز تنور وكليجة وبقلاوة وكعك عراقي تقليدي مع حشوات مميزة", stars: 5 },
-    { name: "مركز العين لطب الأسنان", url: "https://alain-dental.com", category: "عيادة أسنان", tier: 1, desc: "زراعة أسنان وتقويم شفاف وحشوات تجميلية مع تعقيم طبي متقدم", stars: 5 },
-    { name: "صالون ريم للسيدات", url: "https://reem-salon.com", category: "صالون تجميل نسائي", tier: 1, desc: "قص وتصفيف وصبغة شعر مع مكياج عرائس وعناية بالأظافر والبشرة", stars: 5 },
-    { name: "ورشة الفرسان للسيارات", url: "https://fursan-auto.com", category: "ورشة سيارات", tier: 1, desc: "فحص شامل وصيانة دورية وعفري وتنظيف مع فنيين بخبرة أكثر من 20 سنة", stars: 5 },
-    { name: "بقالة الحارة", url: "https://hara-grocery.com", category: "بقالة ومتجر", tier: 1, desc: "مواد غذائية طازجة ومعلبات ومشروبات مع خدمة توصيل سريعة للحي", stars: 5 },
-    { name: "صيدلية الحياة", url: "https://hayat-pharmacy.com", category: "صيدلية", tier: 1, desc: "أدوية ومكملات غذائية ومستلزمات طبية مع خصومات وعضوية مميزة", stars: 5 },
+const DATA = [
+    // ===================== TIER 1 - المميزة =====================
+    // حلاقة وتجميل
+    {name:"Booksy",url:"https://booksy.com",category:"حلاقة وتجميل",tier:1,desc:"منصة حجز مواقع الحلاقة والصالونات عالمياً مع تقييمات حقيقية",stars:5,emoji:"&#9986;"},
+    {name:"Squire",url:"https://www.squire.co",category:"حلاقة وتجميل",tier:1,desc:"تطبيق إدارة صالونات الحلاقة وحجز المواعيد بسهولة",stars:5,emoji:"&#9986;"},
+    {name:"Fresha",url:"https://www.fresha.com",category:"تجميل نسائي",tier:1,desc:"منصة حجز عالمية لصالونات التجميل والسبا مع عروض خاصة",stars:5,emoji:"&#128132;"},
+    // عيادات طبية
+    {name:"Zocdoc",url:"https://www.zocdoc.com",category:"عيادات طبية",tier:1,desc:"حجز مواعيد الأطباء والعيادات في أمريكا مع تقييمات المرضى",stars:5,emoji:"&#129657;"},
+    {name:"Vezeeta",url:"https://www.vezeeta.com",category:"عيادات طبية",tier:1,desc:"حجز مواعيد الأطباء في الشرق الأوسط مع استشارات أونلاين",stars:5,emoji:"&#129657;"},
+    {name:"Altibbi",url:"https://www.altibbi.com",category:"عيادات طبية",tier:1,desc:"استشارات طبية عبر الإنترنت ودليل أطباء شامل بالعربية",stars:5,emoji:"&#129657;"},
+    {name:"WebTeb",url:"https://www.webteb.com",category:"عيادات طبية",tier:1,desc:"موقع طبي عربي شامل مع استشارات ومقالات صحية موثوقة",stars:4,emoji:"&#129657;"},
+    {name:"DoctorCareAnywhere",url:"https://www.doctorcareanywhere.com",category:"عيادات طبية",tier:1,desc:"استشارات طبية عن بعد مع أطباء معتمدين في المملكة المتحدة",stars:4,emoji:"&#129657;"},
+    // عيادات أسنان
+    {name:"SmileDirectClub",url:"https://www.smiledirectclub.com",category:"عيادات أسنان",tier:1,desc:"تقويم أسنان شفاف من المنزل مع متابعة طبية عن بعد",stars:5,emoji:"&#129463;"},
+    {name:"DentalCare",url:"https://www.dentalcare.com",category:"عيادات أسنان",tier:1,desc:"دليل عيادات الأسنان والموارد التعليمية من Colgate",stars:4,emoji:"&#129463;"},
+    {name:"1-800-DENTIST",url:"https://www.1800dentist.com",category:"عيادات أسنان",tier:1,desc:"البحث عن طبيب أسنان قريب مع حجز مواعيد فوري",stars:4,emoji:"&#129463;"},
+    // مزارع
+    {name:"LocalHarvest",url:"https://www.localharvest.org",category:"مزارع ومنتجات",tier:1,desc:"دليل المزارع المحلية والأسواق العضوية في أمريكا",stars:5,emoji:"&#127806;"},
+    {name:"FarmDrop",url:"https://www.farmdrop.com",category:"مزارع ومنتجات",tier:1,desc:"طلب منتجات مزارع طازجة مباشرة من المزرعة للباب",stars:5,emoji:"&#127806;"},
+    {name:"CrowdFarming",url:"https://www.crowdfarming.com",category:"مزارع ومنتجات",tier:1,desc:"تبني شجرة من مزرعة أوروبية واحصل على محصولك طازجاً",stars:5,emoji:"&#127806;"},
+    {name:"Misfits Market",url:"https://www.misfitsmarket.com",category:"فواكه وخضار",tier:1,desc:"توصيل فواكه وخضار عضوية بتخفيضات كبيرة للبيت",stars:5,emoji:"&#127815;"},
+    // بقالة وتسوق
+    {name:"Instacart",url:"https://www.instacart.com",category:"بقالة وتسوق",tier:1,desc:"طلب بقالة من متاجر قريبة مع توصيل في ساعة واحدة",stars:5,emoji:"&#128722;"},
+    {name:"Carrefour",url:"https://www.carrefour.com",category:"بقالة وتسوق",tier:1,desc:"هايبر ماركت عالمي مع توصيل منزلي وعروض أسبوعية",stars:5,emoji:"&#128722;"},
+    {name:"Lulu Hypermarket",url:"https://www.luluhypermarket.com",category:"بقالة وتسوق",tier:1,desc:"سلسلة هايبر ماركت كبرى في الخليج مع طلب أونلاين",stars:5,emoji:"&#128722;"},
+    {name:"Waitrose",url:"https://www.waitrose.com",category:"بقالة وتسوق",tier:1,desc:"سوبر ماركت بريطاني فاخر مع توصيل بقالة عالي الجودة",stars:4,emoji:"&#128722;"},
+    // مطاعم
+    {name:"Talabat",url:"https://www.talabat.com",category:"مطاعم",tier:1,desc:"أكبر منصة طلب طعام في الخليج مع آلاف المطاعم",stars:5,emoji:"&#127869;"},
+    {name:"Careem Food",url:"https://www.careem.com",category:"مطاعم",tier:1,desc:"طلب طعام وطلب سيارات وحزم إنترنت كلها في تطبيق واحد",stars:5,emoji:"&#127869;"},
+    {name:"DoorDash",url:"https://www.doordash.com",category:"مطاعم",tier:1,desc:"توصيل طعام من أفضل المطاعم في أمريكا وكندا",stars:5,emoji:"&#127869;"},
+    {name:"Uber Eats",url:"https://www.ubereats.com",category:"مطاعم",tier:1,desc:"طلب طعام من مطاعمك المفضلة مع توصيل سريع",stars:5,emoji:"&#127869;"},
+    {name:"Deliveroo",url:"https://www.deliveroo.com",category:"مطاعم",tier:1,desc:"توصيل طعام من مطاعم راقية في أوروبا والخليج",stars:5,emoji:"&#127869;"},
+    // مقاهي
+    {name:"Starbucks",url:"https://www.starbucks.com",category:"مقاهي ومشروبات",tier:1,desc:"أكبر سلسلة مقاهي عالمية مع طلب مسبق وجوائز",stars:5,emoji:"&#9749;"},
+    {name:"Costa Coffee",url:"https://www.costa.co.uk",category:"مقاهي ومشروبات",tier:1,desc:"سلسلة مقاهي بريطانية شهيرة مع تشكيلة مشروبات متنوعة",stars:5,emoji:"&#9749;"},
+    // صيدليات
+    {name:"Al-Dawaa",url:"https://www.al-dawaa.com",category:"صيدليات",tier:1,desc:"سلسلة صيدليات كبرى في السعودية مع توصيل أدوية",stars:5,emoji:"&#128138;"},
+    {name:"Nahdi Medical",url:"https://www.nahdi.com",category:"صيدليات",tier:1,desc:"أكبر سلسلة صيدليات في السعودية مع متجر إلكتروني",stars:5,emoji:"&#128138;"},
+    {name:"CVS Pharmacy",url:"https://www.cvs.com",category:"صيدليات",tier:1,desc:"أكبر سلسلة صيدليات في أمريكا مع توصيل وصفات طبية",stars:5,emoji:"&#128138;"},
+    {name:"Boots",url:"https://www.boots.com",category:"صيدليات",tier:1,desc:"صيدليات بريطانية مع مستحضرات تجميل وأدوية وصحة",stars:4,emoji:"&#128138;"},
+    // سيارات
+    {name:"YourMechanic",url:"https://www.yourmechanic.com",category:"سيارات",tier:1,desc:"صيانة وإصلاح سيارات في مكانك مع فنيين معتمدين",stars:5,emoji:"&#128663;"},
+    {name:"RepairPal",url:"https://www.repairpal.com",category:"سيارات",tier:1,desc:"تقدير تكاليف إصلاح السيارات والعثور على ورش موثوقة",stars:5,emoji:"&#128663;"},
+    {name:"Jiffy Lube",url:"https://www.jiffylube.com",category:"سيارات",tier:1,desc:"صيانة سريعة للسيارات تبديل زيت وفحوصات دورية",stars:4,emoji:"&#128663;"},
+    // أخرى
+    {name:"TaskRabbit",url:"https://www.taskrabbit.com",category:"خدمات منزلية",tier:1,desc:"حجز مساعدين لأي مهمة منزلية تنظيف تركيب نقل",stars:5,emoji:"&#128736;"},
+    {name:"Thumbtack",url:"https://www.thumbtack.com",category:"خدمات منزلية",tier:1,desc:"البحث عن محترفين محليين لكل الخدمات المنزلية",stars:5,emoji:"&#128736;"},
+    {name:"Bayut",url:"https://www.bayut.com",category:"عقارات",tier:1,desc:"أكبر منصة عقارات في الإمارات بيع إيجار بحث متقدم",stars:5,emoji:"&#127968;"},
+    {name:"Property Finder",url:"https://www.propertyfinder.ae",category:"عقارات",tier:1,desc:"بحث عن عقارات في الخليج مع جولات افتراضية",stars:5,emoji:"&#127968;"},
+    {name:"Gold's Gym",url:"https://www.goldsgym.com",category:"رياضة",tier:1,desc:"أشهر صالات رياضية عالمية مع مدربين وبرامج متخصصة",stars:5,emoji:"&#127947;"},
+    {name:"Peloton",url:"https://www.onepeloton.com",category:"رياضة",tier:1,desc:"تمارين ركوب وجري تفاعلية من المنزل مع مدربين مباشر",stars:5,emoji:"&#127947;"},
+    {name:"Coursera",url:"https://www.coursera.org",category:"تعليم",tier:1,desc:"دورات من أفضل الجامعات عالمياً مع شهادات معتمدة",stars:5,emoji:"&#128218;"},
+    {name:"Udemy",url:"https://www.udemy.com",category:"تعليم",tier:1,desc:"آلاف الدورات في كل المجالات بأسعار منافسة",stars:5,emoji:"&#128218;"},
+    {name:"Shutterfly",url:"https://www.shutterfly.com",category:"تصوير",tier:1,desc:"طباعة صور وهدايا وكتب صور وألبومات احترافية",stars:4,emoji:"&#128247;"},
+    {name:"Chewy",url:"https://www.chewy.com",category:"حيوانات أليفة",tier:1,desc:"أكبر متجر مستلزمات حيوانات أونلاين مع توصيل تلقائي",stars:5,emoji:"&#128054;"},
+    {name:"1-800-Flowers",url:"https://www.1800flowers.com",category:"زهور",tier:1,desc:"إرسال باقات زهور وهدايا في نفس اليوم لأي مكان",stars:5,emoji:"&#127801;"},
+    {name:"Zenni Optical",url:"https://www.zennioptical.com",category:"نظارات",tier:1,desc:"نظارات طبية وشمسية أونلاين بأسعار تبدأ من 6 دولار",stars:5,emoji:"&#128374;"},
+    {name:"Wayfair",url:"https://www.wayfair.com",category:"سجاد ومفروشات",tier:1,desc:"أثاث ومفروشات وسجاد من آلاف العلامات التجارية",stars:5,emoji:"&#127967;"},
+    {name:"Rinse",url:"https://www.rinse.com",category:"مغاسل",tier:1,desc:"خدمة غسيل وتنظيف جاف مع استلام وتوصيل للباب",stars:4,emoji:"&#128703;"},
+    {name:"Stitch Fix",url:"https://www.stitchfix.com",category:"ملابس وأزياء",tier:1,desc:"صندوق ملابس مخصص حسب ذوقك مع مصمم شخصي",stars:5,emoji:"&#128085;"},
+    {name:"Best Buy",url:"https://www.bestbuy.com",category:"إلكترونيات",tier:1,desc:"أكبر متجر إلكترونيات مع ضمان وصيانة وعروض",stars:5,emoji:"&#128187;"},
+    {name:"CargoX",url:"https://cargox.com",category:"نقل وشحن",tier:1,desc:"شحن بضائع دولي سريع مع تتبع مباشر وتأمين كامل",stars:4,emoji:"&#128666;"},
+    {name:"Panera Bread",url:"https://www.panerabread.com",category:"أفران ومخابز",tier:1,desc:"مخبز ومطعم أمريكي شهير مع طلب أونلاين وتوصيل",stars:4,emoji:"&#127838;"},
+    {name:"Barnes & Noble",url:"https://www.barnesandnoble.com",category:"مكتبات",tier:1,desc:"أكبر سلسلة مكتبات أمريكية مع كتب إلكترونية وورقية",stars:5,emoji:"&#128218;"},
 
-    // ===== Tier 2 - الجيدة جداً (40 نشاط) =====
-    { name: "حلاقة الشباب", url: "https://shabab-barber.com", category: "حلاقة وتجميل رجالي", tier: 2, desc: "حلاقة عصرية مع تسريحات حديثة وعناية باللحية بأسعار مناسبة", stars: 4 },
-    { name: "عيادة الصحة العامة", url: "https://sihha-clinic.com", category: "عيادة طبية", tier: 2, desc: "كشف وعلاج عام مع تحاليل مخبرية واستشارات طبية ميسورة التكاليف", stars: 4 },
-    { name: "عيادة الأسنان المريحة", url: "https://muriha-dental.com", category: "عيادة أسنان", tier: 2, desc: "خلع وحشو وتنظيف أسنان مع أجهزة حديثة وأجواء مريحة للمريض", stars: 4 },
-    { name: "مزرعة البركة", url: "https://baraka-farm.com", category: "مزرعة ومنتجات زراعية", tier: 2, desc: "بيض بلدي ودجاج طازج ومنتجات ألبان مع توريد أسبوعي منتظم", stars: 4 },
-    { name: "سوق الخضار المركزي", url: "https://souq-vegetables.com", category: "بائع فواكه وخضار", tier: 2, desc: "خضار وفواكه موسمية بأسعار جملة مع توصيل للمطاعم والمحلات", stars: 4 },
-    { name: "بقالة النور", url: "https://noor-grocery.com", category: "بقالة ومتجر", tier: 2, desc: "مواد غذائية ومنظفات وحلويات مع عروض شهرية وخدمة توصيل", stars: 4 },
-    { name: "مطعم الوجبة السريعة", url: "https://wajba-fastfood.com", category: "مطعم ومأكولات", tier: 2, desc: "برجر وشارورما وبيتزا مع توصيل سريع وطلبات أونلاين", stars: 4 },
-    { name: "مقهى الشباب", url: "https://shabab-cafe.com", category: "مقهى ومشروبات", tier: 2, desc: "مشروبات باردة وساخنة مع ألعاب فيديو وبلياردو وأجواء شبابية", stars: 4 },
-    { name: "صيدلية الشفاء", url: "https://shifa-pharmacy.com", category: "صيدلية", tier: 2, desc: "أدوية ومستحضرات تجميل وعناية شخصية مع أسعار مخفضة", stars: 4 },
-    { name: "ورشة الصنديد للسيارات", url: "https://sandid-auto.com", category: "ورشة سيارات", tier: 2, desc: "سمكرة وبوية وفرش سيارات مع خبرة في جميع الماركات", stars: 4 },
-    { name: "مغسلة البياض", url: "https://bayad-laundry.com", category: "مغسلة ملابس", tier: 2, desc: "غسيل وتنظيف ملابس ومفروشات مع أسعار خاصة للمشتركين", stars: 4 },
-    { name: "محل زهور الواحة", url: "https://waha-flowers.com", category: "محل زهور", tier: 2, desc: "تنسيق زهور للهدايا والمناسبات مع نباتات داخلية وخارجية", stars: 4 },
-    { name: "مكتبة الفكر", url: "https://fikr-books.com", category: "مكتبة", tier: 2, desc: "كتب متنوعة وقرطاسية ومستلزمات مدرسية مع تخفيضات موسمية", stars: 4 },
-    { name: "صالون زهور للسيدات", url: "https:zuhour-salon.com", category: "صالون تجميل نسائي", tier: 2, desc: "قص وتصفيف ومكياج مع عروض خاصة للأعراس والمناسبات", stars: 4 },
-    { name: "مكتب الأمانة العقاري", url: "https://amana-realestate.com", category: "مكتب عقاري", tier: 2, desc: "وساطة بيع وإيجار مع تقييم عقاري وخدمات قانونية ميسورة", stars: 4 },
-    { name: "شركة النقل الأمين", url: "https://amin-transport.com", category: "نقل وشحن", tier: 2, desc: "نقل أثاث منزلي ومكتبي مع تغليف وتفكيك وتركيب احترافي", stars: 4 },
-    { name: "أكاديمية المستقبل", url: "https://mustaqbal-academy.com", category: "تعليم وتدريب", tier: 2, desc: "دورات حاسوب ولغات ومهارات مهنية مع شهادات معتمدة", stars: 4 },
-    { name: "فرن الصباح", url: "https://sabah-bakery.com", category: "فرن ومخبز", tier: 2, desc: "خبز صاج وصمون ومعجنات متنوعة مع حشوات شهية كل صباح", stars: 4 },
-    { name: "خدمات المنزل السريعة", url: "https://saree-home.com", category: "خدمات منزلية", tier: 2, desc: "نظافة وصيانة خفيفة وتركيب ستائر وأرفف مع حجز مسبق", stars: 4 },
-    { name: "متجر التكنو", url: "https://techno-store.com", category: "إلكترونيات", tier: 2, desc: "هواتف وإكسسوارات ولابتوبات مع ضمان وخدمة ما بعد البيع", stars: 4 },
-    { name: "بوتيك الأنوثة", url: "https://anotha-boutique.com", category: "ملابس وأزياء", tier: 2, desc: "أزياء نسائية عصرية مع أحذية وحقائب وإكسسوارات متنوعة", stars: 4 },
-    { name: "نادي القوة الرياضي", url: "https://quwa-sport.com", category: "رياضة ولياقة", tier: 2, desc: "تمارين بناء أجسام وكارديو مع مدربين وبرامج غذائية", stars: 4 },
-    { name: "استديو الذكرى", url: "https:thikra-studio.com", category: "تصوير فوتوغرافي", tier: 2, desc: "تصوير مناسبات وبورتريه مع طباعة وتأطير صور احترافية", stars: 4 },
-    { name: "عالم الحيوانات", url: "https://animal-world.com", category: "مستلزمات حيوانات", tier: 2, desc: "أعلاف وأدوية ومستلزمات لجميع أنواع الحيوانات والطيور", stars: 4 },
-    { name: "خياط الموضة", url: "https://mouda-tailor.com", category: "خياطة وتفصيل", tier: 2, desc: "تفصيل ثياب عراقية وبدلات رسمية مع إصلاح وتعديل الملابس", stars: 4 },
-    { name: "سباكة الفنان", url: "https://fannan-plumbing.com", category: "سباكة", tier: 2, desc: "تصليح تسربات وتركيب خلاطات وصيانة سخانات مياه", stars: 4 },
-    { name: "كهرباء الفجر", url: "https://fajr-electric.com", category: "كهرباء", tier: 2, desc: "تركيب لوحات كهربائية وإنارة حدائق وصيانة مولدات", stars: 4 },
-    { name: "سجاد المنزل", url: "https://manzel-carpets.com", category: "سجاد ومفروشات", tier: 2, desc: "سجاد وموكيت ومفروشات بتصاميم حديثة وكلاسيكية بأسعار متنوعة", stars: 4 },
-    { name: "نظارات الأناقة", url: "https://alaqa-optics.com", category: "نظارات وبصريات", tier: 2, desc: "نظارات طبية وشمسية مع فحص نظر وتعديل نظارات مجاناً", stars: 4 },
-    { name: "مزرعة العسل الطبيعي", url: "https://asal-farm.com", category: "مزرعة ومنتجات زراعية", tier: 2, desc: "عسل طبيعي وشمع عسل ومنتجات نحل مع ضمان الجودة والأصالة", stars: 4 },
-    { name: "مطعم الشاورما اللذيذة", url: "https://lathitha-shawarma.com", category: "مطعم ومأكولات", tier: 2, desc: "شاورما وفلافل وفتة حمص مع عصائر طازجة وأسعار اقتصادية", stars: 4 },
-    { name: "عيادة الأسنان الجميلة", url: "https://jamila-dental.com", category: "عيادة أسنان", tier: 2, desc: "تجميل الأسنان وفينير وتبييض مع تقسيط المبالغ وعروض موسمية", stars: 4 },
-    { name: "صالون ياسمين للسيدات", url: "https://yasmin-salon.com", category: "صالون تجميل نسائي", tier: 2, desc: "عناية بالشعر والبشرة مع سبا ومساج وحمام مغربي", stars: 4 },
-    { name: "بقالة الجار", url: "https://jar-grocery.com", category: "بقالة ومتجر", tier: 2, desc: "مواد غذائية أساسية ومنظفات وحليب أطفال مع توصيل سريع", stars: 4 },
-    { name: "فرن الحي", url: "https://hay-bakery.com", category: "فرن ومخبز", tier: 2, desc: "خبز طازج طوال اليوم مع سمون وكعرات وبقلاوة محلية الصنع", stars: 4 },
-    { name: "مقهى الحكايات", url: "https://hikayat-cafe.com", category: "مقهى ومشروبات", tier: 2, desc: "شاي وقهوة عربية مع جلسات خارجية وهميشة وأرجيلة", stars: 4 },
-    { name: "ورشة الحداد للسيارات", url: "https://haddad-auto.com", category: "ورشة سيارات", tier: 2, desc: "إصلاح مكينات وفرامل وتبريد سيارات مع فحص كمبيوتر", stars: 4 },
-    { name: "صيدلية الرعاية", url: "https:riaya-pharmacy.com", category: "صيدلية", tier: 2, desc: "أدوية ومستلزمات طبية ومنظفات مع استشارات صيدلانية مجانية", stars: 4 },
-    { name: "مكتبة الناشئين", url: "https://nashiin-books.com", category: "مكتبة", tier: 2, desc: "كتب أطفال وقصص وموسوعات مع قرطاسية وأدوات رسم", stars: 4 },
-    { name: "عيادة العظام والحركة", url: "https://itham-clinic.com", category: "عيادة طبية", tier: 2, desc: "علاج آلام المفاصل والعمود الفقري مع علاج طبيعي وتأهيل", stars: 4 },
+    // ===================== TIER 2 - الجيدة جداً =====================
+    {name:"Great Clips",url:"https://www.greatclips.com",category:"حلاقة وتجميل",tier:2,desc:"سلسلة صالونات حلاقة أمريكية مع حجز أونلاين وأسعار مناسبة",stars:4,emoji:"&#9986;"},
+    {name:"Sport Clips",url:"https://www.sportclips.com",category:"حلاقة وتجميل",tier:2,desc:"صالونات حلاقة رياضية الطابع مع شاشات رياضية",stars:4,emoji:"&#9986;"},
+    {name:"SuperCuts",url:"https://www.supercuts.com",category:"حلاقة وتجميل",tier:2,desc:"سلسلة حلاقة أمريكية مع فروع كثيرة وأسعار مخفضة",stars:4,emoji:"&#9986;"},
+    {name:"Lemonaid Health",url:"https://www.lemonaidhealth.com",category:"عيادات طبية",tier:2,desc:"استشارات طبية أونلاين ووصفات طبية من المنزل",stars:4,emoji:"&#129657;"},
+    {name:"PlushCare",url:"https://www.plushcare.com",category:"عيادات طبية",tier:2,desc:"حجز مواعيد مع أطباء أكفاء عبر الإنترنت بسهولة",stars:4,emoji:"&#129657;"},
+    {name:"Hims",url:"https://www.forhims.com",category:"عيادات طبية",tier:2,desc:"علاجات طبية للرجال أونلاين مع توصيل منزلي سري",stars:4,emoji:"&#129657;"},
+    {name:"Hers",url:"https://www.forhers.com",category:"تجميل نسائي",tier:2,desc:"علاجات بشرة وشعر وصحة المرأة مع توصيل منزلي",stars:4,emoji:"&#128132;"},
+    {name:"Bright Now Dental",url:"https://www.brightnow.com",category:"عيادات أسنان",tier:2,desc:"سلسلة عيادات أسنان مع حجز سهل وأسعار شفافة",stars:4,emoji:"&#129463;"},
+    {name:"Aspen Dental",url:"https://www.aspendental.com",category:"عيادات أسنان",tier:2,desc:"عيادات أسنان مع فروع كثيرة وعروض وخطط دفع",stars:4,emoji:"&#129463;"},
+    {name:"Imperfect Foods",url:"https://www.imperfectfoods.com",category:"فواكه وخضار",tier:2,desc:"توصيل فواكه وخضار ومنتجات بأسعار مخفضة ومكافحة الهدر",stars:4,emoji:"&#127815;"},
+    {name:"Farmigo",url:"https://www.farmigo.com",category:"مزارع ومنتجات",tier:2,desc:"شراء مباشر من المزارع المحلية مع توصيل مجتمعي",stars:4,emoji:"&#127806;"},
+    {name:"Hungryroot",url:"https://www.hungryroot.com",category:"بقالة وتسوق",tier:2,desc:"بقالة ذكية تختار لك وصفات وتوصلك المكونات",stars:4,emoji:"&#128722;"},
+    {name:"Thrive Market",url:"https://www.thrivemarket.com",category:"بقالة وتسوق",tier:2,desc:"منتجات عضوية وصحية بالجملة مع توصيل مجاني",stars:4,emoji:"&#128722;"},
+    {name:"Shipt",url:"https://www.shipt.com",category:"بقالة وتسوق",tier:2,desc:"خدمة تسوق وتوصيل بقالة من متاجر قريبة لك",stars:4,emoji:"&#128722;"},
+    {name:"Grubhub",url:"https://www.grubhub.com",category:"مطاعم",tier:2,desc:"طلب طعام من آلاف المطاعم المحلية مع عروض يومية",stars:4,emoji:"&#127869;"},
+    {name:"Postmates",url:"https://postmates.com",category:"مطاعم",tier:2,desc:"توصيل طعام ومشتريات من أي مكان في مدينتك",stars:4,emoji:"&#127869;"},
+    {name:"HungerStation",url:"https://www.hungerstation.com",category:"مطاعم",tier:2,desc:"طلب طعام في السعودية مع خيارات متنوعة وعروض",stars:4,emoji:"&#127869;"},
+    {name:"Dunkin'",url:"https://www.dunkindonuts.com",category:"مقاهي ومشروبات",tier:2,desc:"سلسلة قهوة ودونات عالمية مع طلب مسبق عبر التطبيق",stars:4,emoji:"&#9749;"},
+    {name:"Pret A Manger",url:"https://www.pret.com",category:"مقاهي ومشروبات",tier:2,desc:"مقاهي مع سندويشات طازجة وقهوة مميزة يومياً",stars:4,emoji:"&#9749;"},
+    {name:"Walgreens",url:"https://www.walgreens.com",category:"صيدليات",tier:2,desc:"صيدليات أمريكية مع متجر أونلاين وخدمة صور",stars:4,emoji:"&#128138;"},
+    {name:"Rite Aid",url:"https://www.riteaid.com",category:"صيدليات",tier:2,desc:"صيدليات ومنتجات صحية مع وصفات طبية أونلاين",stars:4,emoji:"&#128138;"},
+    {name:"Pep Boys",url:"https://www.pepboys.com",category:"سيارات",tier:2,desc:"قطع غيار وصيانة سيارات مع حجز مواعيد أونلاين",stars:4,emoji:"&#128663;"},
+    {name:"AutoZone",url:"https://www.autozone.com",category:"سيارات",tier:2,desc:"أكبر متجر قطع غيار سيارات مع نصائح فنية مجانية",stars:4,emoji:"&#128663;"},
+    {name:"Handy",url:"https://www.handy.com",category:"خدمات منزلية",tier:2,desc:"حجز خدمات تنظيف وإصلاح منزلي مع عمال محترفين",stars:4,emoji:"&#128736;"},
+    {name:"Angi",url:"https://www.angi.com",category:"خدمات منزلية",tier:2,desc:"البحث عن مقاولين محليين لأي مشروع منزلي",stars:4,emoji:"&#128736;"},
+    {name:"Zillow",url:"https://www.zillow.com",category:"عقارات",tier:2,desc:"بحث عقارات في أمريكا مع تقديرات أسعار وتفاصيل",stars:4,emoji:"&#127968;"},
+    {name:"Realtor.com",url:"https://www.realtor.com",category:"عقارات",tier:2,desc:"منصة عقارات أمريكية مع قوائم حديثة يومياً",stars:4,emoji:"&#127968;"},
+    {name:"Anytime Fitness",url:"https://www.anytimefitness.com",category:"رياضة",tier:2,desc:"صالات رياضية مفتوحة 24/7 مع فروع كثيرة",stars:4,emoji:"&#127947;"},
+    {name:"Planet Fitness",url:"https://www.planetfitness.com",category:"رياضة",tier:2,desc:"صالات رياضية بأسعار منخفضة جداً مع بيئة ترحيبية",stars:4,emoji:"&#127947;"},
+    {name:"Skillshare",url:"https://www.skillshare.com",category:"تعليم",tier:2,desc:"دورات إبداعية في التصميم والتصوير والكتابة",stars:4,emoji:"&#128218;"},
+    {name:"Khan Academy",url:"https://www.khanacademy.org",category:"تعليم",tier:2,desc:"دروس مجانية في الرياضات والعلوم لكل المراحل",stars:5,emoji:"&#128218;"},
+    {name:"Snapfish",url:"https://www.snapfish.com",category:"تصوير",tier:2,desc:"طباعة صور وهدايا شخصية بتصاميم جميلة وأسعار جيدة",stars:4,emoji:"&#128247;"},
+    {name:"Petco",url:"https://www.petco.com",category:"حيوانات أليفة",tier:2,desc:"مستلزمات حيوانات وعيادة بيطرية مع توصيل أونلاين",stars:4,emoji:"&#128054;"},
+    {name:"PetSmart",url:"https://www.petsmart.com",category:"حيوانات أليفة",tier:2,desc:"أكبر سلسلة مستلزمات حيوانات مع خدمات العناية",stars:4,emoji:"&#128054;"},
+    {name:"Ferns N Petals",url:"https://www.fnp.com",category:"زهور",tier:2,desc:"إرسال زهور وهدايا في الهند ودول الخليج والدول العربية",stars:4,emoji:"&#127801;"},
+    {name:"ProFlowers",url:"https://www.proflowers.com",category:"زهور",tier:2,desc:"توصيل باقات زهور طازجة من مزارع محلية",stars:4,emoji:"&#127801;"},
+    {name:"EyeBuyDirect",url:"https://www.eyebuydirect.com",category:"نظارات",tier:2,desc:"نظارات طبية أنيقة أونلاين مع تجربة افتراضية",stars:4,emoji:"&#128374;"},
+    {name:"IKEA",url:"https://www.ikea.com",category:"سجاد ومفروشات",tier:2,desc:"أثاث ومفروشات وسجاد سويدي بتصاميم عصرية وأسعار مناسبة",stars:5,emoji:"&#127967;"},
+    {name:"Laundrapp",url:"https://www.laundrapp.com",category:"مغاسل",tier:2,desc:"خدمة غسيل وتنظيف جاف عبر التطبيق مع توصيل",stars:4,emoji:"&#128703;"},
+    {name:"ASOS",url:"https://www.asos.com",category:"ملابس وأزياء",tier:2,desc:"متجر أزياء عالمي شامل مع أكثر من 850 ماركة",stars:4,emoji:"&#128085;"},
+    {name:"Newegg",url:"https://www.newegg.com",category:"إلكترونيات",tier:2,desc:"متجر إلكترونيات وكمبيوترات مع عروض يومية وتخفيضات",stars:4,emoji:"&#128187;"},
+    {name:"FedEx",url:"https://www.fedex.com",category:"نقل وشحن",tier:2,desc:"شحن دولي سريع مع تتبع مباشر وخيارات متعددة",stars:4,emoji:"&#128666;"},
+    {name:"Panera At Home",url:"https://paneraathome.com",category:"أفران ومخابز",tier:2,desc:"منتجات مخبز بانيرا في المتاجر مع وصفات خبز منزلي",stars:4,emoji:"&#127838;"},
+    {name:"ThriftBooks",url:"https://www.thriftbooks.com",category:"مكتبات",tier:2,desc:"كتب مستعملة بحالة ممتازة بأسعار تبدأ من 4 دولار",stars:4,emoji:"&#128218;"},
+    {name:"Tailor Brands",url:"https://www.tailorbrands.com",category:"خياطة",tier:2,desc:"تصميم شعارات وهوية بصرية أونلاين بتقنية الذكاء الاصطناعي",stars:4,emoji:"&#129531;"},
+    {name:"HomeAdvisor",url:"https://www.homeadvisor.com",category:"سباكة وصيانة",tier:2,desc:"البحث عن سباكين وفنيين محليين مع تقييمات حقيقية",stars:4,emoji:"&#128688;"},
+    {name:"Uber Freight",url:"https://www.uber.com/freight",category:"نقل وشحن",tier:2,desc:"شحن بضائع بالشاحنات مع أسعار شفافة وحجز فوري",stars:4,emoji:"&#128666;"},
 
-    // ===== Tier 3 - الجيدة (45 نشاط) =====
-    { name: "حلاقة الجار", url: "https://jar-barber.com", category: "حلاقة وتجميل رجالي", tier: 3, desc: "حلاقة بسيطة وسريعة بأسعار اقتصادية قريبة من الحي", stars: 3 },
-    { name: "عيادة الحي الطبية", url: "https://hay-clinic.com", category: "عيادة طبية", tier: 3, desc: "طبيب عام للكشف اليومي مع تحويل للحالات التخصصية", stars: 3 },
-    { name: "عيادة أسنان الأمل", url: "https://amal-dental.com", category: "عيادة أسنان", tier: 3, desc: "خدمات أسنان أساسية بخلع وحشو وتنظيف بأسعار منخفضة", stars: 3 },
-    { name: "مزرعة البيت", url: "https://bayt-farm.com", category: "مزرعة ومنتجات زراعية", tier: 3, desc: "خضار موسمية وبقوليات محلية مع بيع من المزرعة مباشرة", stars: 3 },
-    { name: "عربة الفواكه الطازجة", url: "https://araba-fruits.com", category: "بائع فواكه وخضار", tier: 3, desc: "فواكه موسمية طازجة من المزارع المحلية بأسعار تنافسية", stars: 3 },
-    { name: "بقالة أبو علي", url: "https://abuali-grocery.com", category: "بقالة ومتجر", tier: 3, desc: "بقالة صغيرة للمستلزمات اليومية والمعجنات والمشروبات", stars: 3 },
-    { name: "مطعم البيت الدافئ", url: "https://daafi-restaurant.com", category: "مطعم ومأكولات", tier: 3, desc: "وجبات منزلية بسيطة مع مرق ورز ومقبلات بأسعار شعبية", stars: 3 },
-    { name: "مقهى الجيران", url: "https:jiyran-cafe.com", category: "مقهى ومشروبات", tier: 3, desc: "شاي وقهوة بسيطة مع جلسات شعبية وداما وطاولة", stars: 3 },
-    { name: "صيدلية الحارة", url: "https://hara-pharmacy.com", category: "صيدلية", tier: 3, desc: "أدوية أساسية وإسعافات أولية مع خدمة ليلية محدودة", stars: 3 },
-    { name: "ورشة أبو خالد", url: "https://abukhaled-auto.com", category: "ورشة سيارات", tier: 3, desc: "تصليح بسيط وتبديل زيت وبطاريات مع أسعار ودية", stars: 3 },
-    { name: "مغسلة الحي", url: "https://hay-laundry.com", category: "مغسلة ملابس", tier: 3, desc: "غسيل وكوي ملابس عادي بأسعار اقتصادية مع خدمة استلام", stars: 3 },
-    { name: "محل زهور البستان", url: "https://bustan-flowers.com", category: "محل زهور", tier: 3, desc: "زهور طازجة وباقات بسيطة مع نباتات زينة للمنزل", stars: 3 },
-    { name: "مكتبة الأمل", url: "https://amal-books.com", category: "مكتبة", tier: 3, desc: "كتب مستعملة وجديدة ومستلزمات مدرسية بأسعار منخفضة", stars: 3 },
-    { name: "صالون سارة للسيدات", url: "https://sara-salon.com", category: "صالون تجميل نسائي", tier: 3, desc: "قص شعر وتصفيف بسيط مع مناكير وبديكير بأسعار مناسبة", stars: 3 },
-    { name: "مكتب الرافدين العقاري", url: "https://rafidain-real.com", category: "مكتب عقاري", tier: 3, desc: "وساطة بسيطة في بيع وإيجار المنازل المحلية", stars: 3 },
-    { name: "نقل أبو سعيد", url: "https://abusaid-transport.com", category: "نقل وشحن", tier: 3, desc: "نقل خفيف بسيارة صغيرة مع عمالة للتحميل والتنزيل", stars: 3 },
-    { name: "دروس الأستاذ أحمد", url: "https://ahmad-tutor.com", category: "تعليم وتدريب", tier: 3, desc: "دروس خصوصية في المنزل للمواد العلمية والأدبية", stars: 3 },
-    { name: "فرن أم كريم", url: "https://umkarim-bakery.com", category: "فرن ومخبز", tier: 3, desc: "خبز تنور تقليدي وكليجة منزلية بأيدي محلية خبيرة", stars: 3 },
-    { name: "خدمات المنزل الشعبية", url: "https://shabi-home.com", category: "خدمات منزلية", tier: 3, desc: "نظافة منازل وغسيل سجاد بالبخار مع أسعار مخفضة", stars: 3 },
-    { name: "متجر الهاتف الذكي", url: "https://smart-phone.com", category: "إلكترونيات", tier: 3, desc: "إصلاح هواتف وبيع إكسسوارات مع تفليش وتحميل برامج", stars: 3 },
-    { name: "محل الملابس الشعبية", url: "https://shabi-clothes.com", category: "ملابس وأزياء", tier: 3, desc: "ملابس عملية بأسعار اقتصادية للعائلات والأطفال", stars: 3 },
-    { name: "ملعب الحي الرياضي", url: "https://hay-sport.com", category: "رياضة ولياقة", tier: 3, desc: "ملعب كرة قدم خماسي مع أجهزة رياضية بسيطة وميسورة", stars: 3 },
-    { name: "تصوير أبو سامي", url: "https://abusami-photo.com", category: "تصوير فوتوغرافي", tier: 3, desc: "تصوير بطاقات ووثائق مع طباعة صور وألبومات بسيطة", stars: 3 },
-    { name: "طيور وحشان", url: "https://hishan-birds.com", category: "مستلزمات حيوانات", tier: 3, desc: "طيور زينة وأقفاص وأعلاف مع أسماك زينة وأحواض", stars: 3 },
-    { name: "خياطة أم حسن", url: "https://umhassan-tailor.com", category: "خياطة وتفصيل", tier: 3, desc: "خياطة وتعديل ثياب نسائية وستائر منزلية بأسعار شعبية", stars: 3 },
-    { name: "أبو السباك", url: "https://abuspa-plumbing.com", category: "سباكة", tier: 3, desc: "تصليح تسربات بسيطة وفتح مجاري وتركيب خلاطات", stars: 3 },
-    { name: "أبو الكهرباء", url: "https://abuelec-electric.com", category: "كهرباء", tier: 3, desc: "تصليح أعطال كهربائية وتركيب مروحات وإنارة بسيطة", stars: 3 },
-    { name: "سجاد أم سالم", url: "https://umsalim-carpets.com", category: "سجاد ومفروشات", tier: 3, desc: "سجاد مستعمل وموكيت اقتصادي مع تنظيف سجاد منزلي", stars: 3 },
-    { name: "نظارات المدينة", url: "https://madina-optics.com", category: "نظارات وبصريات", tier: 3, desc: "نظارات بأسعار اقتصادية مع فحص نظر بسيط وإطارات متوفرة", stars: 3 },
-    { name: "بائع العصير الطازج", url: "https://fresh-juice.com", category: "بائع فواكه وخضار", tier: 3, desc: "عصائر طبيعية طازجة وفواكه مقطعة وسلطات جاهزة", stars: 3 },
-    { name: "حلاقة الأخ", url: "https://akh-barber.com", category: "حلاقة وتجميل رجالي", tier: 3, desc: "حلاقة سريعة بأسعار رمزية مع حلاقة ذقن وترتيب شعر", stars: 3 },
-    { name: "عيادة الطب الشعبي", url: "https://shabi-medicine.com", category: "عيادة طبية", tier: 3, desc: "علاج بالأعشاب والطب البديل مع كي وحجامة معتمدة", stars: 3 },
-    { name: "عيادة أسنان الجيران", url: "https://jiyran-dental.com", category: "عيادة أسنان", tier: 3, desc: "خلع أسنان بسيط وحشوات عادية بأسعار في متناول الجميع", stars: 3 },
-    { name: "مزرعة الجد", url: "https://jid-farm.com", category: "مزرعة ومنتجات زراعية", tier: 3, desc: "منتجات زراعية محلية بسيطة مع توريد أسبوعي للجوار", stars: 3 },
-    { name: "بقالة السوق", url: "https://souq-grocery.com", category: "بقالة ومتجر", tier: 3, desc: "مواد غذائية أساسية ومعلبات بأسعار جملة صغيرة", stars: 3 },
-    { name: "مطعم أم زينب", url: "https://umzainab-food.com", category: "مطعم ومأكولات", tier: 3, desc: "أكلات منزلية شهية مع مقلوبة وكبسة ومرق يومي طازج", stars: 3 },
-    { name: "مقهى المساء", url: "https://masaa-cafe.com", category: "مقهى ومشروبات", tier: 3, desc: "شاي وقهوة مع جلسات بسيطة وكراسي خارجية للاستراحة", stars: 3 },
-    { name: "صيدلية العافية", url: "https://afya-pharmacy.com", category: "صيدلية", tier: 3, desc: "أدوية شائعة وإسعافات مع نصائح صيدلانية بسيطة", stars: 3 },
-    { name: "ورشة ابن الحي", url: "https://ibnhay-auto.com", category: "ورشة سيارات", tier: 3, desc: "تبديل إطارات وزيت وبطارية مع إصلاحات بسيطة وسريعة", stars: 3 },
-    { name: "مغسلة النظافة", url: "https://nadafa-laundry.com", category: "مغسلة ملابس", tier: 3, desc: "غسيل عادي بالكيلو مع كوي وتسليم في اليوم التالي", stars: 3 },
-    { name: "مكتب الأمانة العقاري", url: "https://amana-real.com", category: "مكتب عقاري", tier: 3, desc: "وساطة عقارية بسيطة في أحياء شعبية بعمولة رمزية", stars: 3 },
-    { name: "فرن الحارة", url: "https://hara-bakery.com", category: "فرن ومخبز", tier: 3, desc: "خبز تنور يومي مع كعرات وسمون طازج بسعر رمزي", stars: 3 },
-    { name: "محل البقالة الصغير", url: "https://small-grocery.com", category: "بقالة ومتجر", tier: 3, desc: "بقالة مصغرة للمستعجلات والاحتياجات اليومية البسيطة", stars: 3 },
-    { name: "صالون هدى للسيدات", url: "https://huda-salon.com", category: "صالون تجميل نسائي", tier: 3, desc: "قص وتصفيف بسيط مع مكياج خفيف بأسعار اقتصادية", stars: 3 },
-    { name: "متجر الذرة الذهبي", url: "https://dhahab-corn.com", category: "بائع فواكه وخضار", tier: 3, desc: "ذرة مشوية ومسلوقة مع بطاطا وبندورة موسمية طازجة", stars: 3 },
+    // ===================== TIER 3 - الجيدة =====================
+    {name:"Fantastic Sams",url:"https://www.fantasticsams.com",category:"حلاقة وتجميل",tier:3,desc:"سلسلة صالونات حلاقة عائلية بأسعار اقتصادية",stars:3,emoji:"&#9986;"},
+    {name:"Cost Cutters",url:"https://www.costcutters.com",category:"حلاقة وتجميل",tier:3,desc:"حلاقة اقتصادية بدون حجز مع فروع في المراكز التجارية",stars:3,emoji:"&#9986;"},
+    {name:"K Health",url:"https://khealth.ai",category:"عيادات طبية",tier:3,desc:"استشارات طبية بالذكاء الاصطناعي مع مقارنة أعراضك بملايين الحالات",stars:3,emoji:"&#129657;"},
+    {name:"Teladoc",url:"https://www.teladoc.com",category:"عيادات طبية",tier:3,desc:"استشارات طبية عن بعد مع أطباء معتمدين 24/7",stars:3,emoji:"&#129657;"},
+    {name:"DentalPlans",url:"https://www.dentalplans.com",category:"عيادات أسنان",tier:3,desc:"خطط توفير لأسنان مع خصومات على العلاجات",stars:3,emoji:"&#129463;"},
+    {name:"Miswak Club",url:"https://miswak.club",category:"عيادات أسنان",tier:3,desc:"منتجات عناية بالأسنان طبيعية مع فرشاة السواك",stars:3,emoji:"&#129463;"},
+    {name:"Bountiful Baskets",url:"https://www.bountifulbaskets.org",category:"فواكه وخضار",tier:3,desc:"سلة فواكه وخضار أسبوعية تعاونية بأسعار شعبية",stars:3,emoji:"&#127815;"},
+    {name:"Farmers Market Portal",url:"https://www.ams.usda.gov/local-food-directories/farmersmarkets",category:"مزارع ومنتجات",tier:3,desc:"دليل أسواق المزارع المحلية التابع لوزارة الزراعة الأمريكية",stars:3,emoji:"&#127806;"},
+    {name:"Boxed",url:"https://www.boxed.com",category:"بقالة وتسوق",tier:3,desc:"بقالة بالجملة أونلاين بدون اشتراك مع توصيل سريع",stars:3,emoji:"&#128722;"},
+    {name:"FreshDirect",url:"https://www.freshdirect.com",category:"بقالة وتسوق",tier:3,desc:"توصيل بقالة طازجة في نيويورك مع منتجات محلية",stars:3,emoji:"&#128722;"},
+    {name:"Seamless",url:"https://www.seamless.com",category:"مطاعم",tier:3,desc:"طلب طعام من مطاعم محلية في المدن الأمريكية الكبرى",stars:3,emoji:"&#127869;"},
+    {name:"Slice",url:"https://slicelife.com",category:"مطاعم",tier:3,desc:"طلب بيتزا من مطاعم محلية مستقلة مع عروض خاصة",stars:3,emoji:"&#127869;"},
+    {name:"Tim Hortons",url:"https://www.timhortons.com",category:"مقاهي ومشروبات",tier:3,desc:"سلسلة مقاهي كندية شهيرة مع قهوة ودونات كندية",stars:3,emoji:"&#9749;"},
+    {name:"Caribou Coffee",url:"https://www.cariboucoffee.com",category:"مقاهي ومشروبات",tier:3,desc:"مقاهي أمريكية مع قهوة محمصة يدوياً وأجواء دافئة",stars:3,emoji:"&#9749;"},
+    {name:"HealthWarehouse",url:"https://www.healthwarehouse.com",category:"صيدليات",tier:3,desc:"صيدلية أونلاين مع أدوية مخفضة وتوصيل مجاني",stars:3,emoji:"&#128138;"},
+    {name:"Hippo",url:"https://www.hippo.com",category:"صيدليات",tier:3,desc:"مقارنة أسعار الأدوية والعثور على أقل الأسعار",stars:3,emoji:"&#128138;"},
+    {name:"O'Reilly Auto",url:"https://www.oreillyauto.com",category:"سيارات",tier:3,desc:"قطع غيار وأدوات سيارات مع نصائح فنية مجانية",stars:3,emoji:"&#128663;"},
+    {name:"Advance Auto Parts",url:"https://shop.advanceautoparts.com",category:"سيارات",tier:3,desc:"متجر قطع غيار سيارات مع خدمة تركيب مجانية",stars:3,emoji:"&#128663;"},
+    {name:"Tidy",url:"https://www.tidy.com",category:"خدمات منزلية",tier:3,desc:"حجز خدمات تنظيف منزلي مع جدولة متكررة وأسعار شفافة",stars:3,emoji:"&#128736;"},
+    {name:"Molly Maid",url:"https://www.mollymaid.com",category:"خدمات منزلية",tier:3,desc:"خدمة تنظيف منازل احترافية مع فريق مدرب ومؤمن",stars:3,emoji:"&#128736;"},
+    {name:"Redfin",url:"https://www.redfin.com",category:"عقارات",tier:3,desc:"بحث عقارات مع وكلاء بتكلفة أقل وتقنية متقدمة",stars:3,emoji:"&#127968;"},
+    {name:"Trulia",url:"https://www.trulia.com",category:"عقارات",tier:3,desc:"بحث عن منازل مع معلومات عن الأحياء والمدارس",stars:3,emoji:"&#127968;"},
+    {name:"Crunch Fitness",url:"https://www.crunch.com",category:"رياضة",tier:3,desc:"صالات رياضية بأجواء ممتعة وأسعار اقتصادية",stars:3,emoji:"&#127947;"},
+    {name:"ClassPass",url:"https://classpass.com",category:"رياضة",tier:3,desc:"اشتراك مرن للدخول لصالات رياضية ودروس مختلفة",stars:3,emoji:"&#127947;"},
+    {name:"edX",url:"https://www.edx.org",category:"تعليم",tier:3,desc:"دورات مجانية من هارفارد وMIT مع شهادات اختيارية",stars:3,emoji:"&#128218;"},
+    {name:"Codecademy",url:"https://www.codecademy.com",category:"تعليم",tier:3,desc:"تعلم البرمجة تفاعلياً من الصفر مع مشاريع عملية",stars:3,emoji:"&#128218;"},
+    {name:"Canva Print",url:"https://www.canva.com/print/",category:"تصوير",tier:3,desc:"تصميم وطباعة ملصقات وبطاقات وكتب صور احترافية",stars:3,emoji:"&#128247;"},
+    {name:"Vistaprint",url:"https://www.vistaprint.com",category:"تصوير",tier:3,desc:"طباعة بطاقات أعمال ومواد تسويقية بأسعار منخفضة",stars:3,emoji:"&#128247;"},
+    {name:"Chewy Pharmacy",url:"https://www.chewy.com/b/pharmacy",category:"حيوانات أليفة",tier:3,desc:"صيدلية بيطرية أونلاين مع أدوية وصفات طبية للحيوانات",stars:3,emoji:"&#128054;"},
+    {name:"1800PetMeds",url:"https://www.1800petmeds.com",category:"حيوانات أليفة",tier:3,desc:"أدوية ومستلزمات حيوانات أليفة مع توصيل منزلي",stars:3,emoji:"&#128054;"},
+    {name:"From You Flowers",url:"https://www.fromyouflowers.com",category:"زهور",tier:3,desc:"توصيل زهور في نفس اليوم بأسعار تنافسية",stars:3,emoji:"&#127801;"},
+    { name:"Blooms Today",url:"https://www.bloomstoday.com",category:"زهور",tier:3,desc:"باقات زهور موسمية مع توصيل سريع وخصومات مستمرة",stars:3,emoji:"&#127801;"},
+    {name:"GlassesUSA",url:"https://www.glassesusa.com",category:"نظارات",tier:3,desc:"نظارات طبية وشمسية أونلاين مع تجربة افتراضية",stars:3,emoji:"&#128374;"},
+    {name:"Firmoo",url:"https://www.firmoo.com",category:"نظارات",tier:3,desc:"نظارات طبية بأسعار تبدأ من 19 دولار مع شحن دولي",stars:3,emoji:"&#128374;"},
+    {name:"Overstock",url:"https://www.overstock.com",category:"سجاد ومفروشات",tier:3,desc:"أثاث ومفروشات وسجاد بتخفيضات كبيرة وعرض يومي",stars:3,emoji:"&#127967;"},
+    {name:"Home Depot",url:"https://www.homedepot.com",category:"سجاد ومفروشات",tier:3,desc:"مواد بناء وأثاث وسجاد مع نصائح وتوصيل",stars:3,emoji:"&#127967;"},
+    {name:"FlyCleaners",url:"https://www.flycleaners.com",category:"مغاسل",tier:3,desc:"خدمة غسيل ذكية مع استلام وتوصيل خلال 24 ساعة",stars:3,emoji:"&#128703;"},
+    {name:"Press",url:"https://www.presscleaners.com",category:"مغاسل",tier:3,desc:"تنظيف جاف وغسيل بالاشتراك مع توصيل للباب",stars:3,emoji:"&#128703;"},
+    {name:"Shein",url:"https://www.shein.com",category:"ملابس وأزياء",tier:3,desc:"ملابس وأزياء عصرية بأسعار منخفضة مع شحن مجاني",stars:3,emoji:"&#128085;"},
+    {name:"Boohoo",url:"https://www.boohoo.com",category:"ملابس وأزياء",tier:3,desc:"أزياء شبابية بأسرع صيحات الموضة وأسعار مناسبة",stars:3,emoji:"&#128085;"},
+    {name:"Micro Center",url:"https://www.microcenter.com",category:"إلكترونيات",tier:3,desc:"متجر إلكترونيات وكمبيوترات مع عروض في المتجر فقط",stars:3,emoji:"&#128187;"},
+    {name:"B&H Photo",url:"https://www.bhphotovideo.com",category:"إلكترونيات",tier:3,desc:"متجر كاميرات وإلكترونيات احترافي مع خبرة منذ 1973",stars:3,emoji:"&#128187;"},
+    {name:"USPS",url:"https://www.usps.com",category:"نقل وشحن",tier:3,desc:"خدمة بريد وشحن أمريكية مع تتبع وأسعار اقتصادية",stars:3,emoji:"&#128666;"},
+    {name:"UPS",url:"https://www.ups.com",category:"نقل وشحن",tier:3,desc:"شحن دولي مع خيارات متعددة وتتبع مباشر",stars:3,emoji:"&#128666;"},
+    {name:"Aramex",url:"https://www.aramex.com",category:"نقل وشحن",tier:3,desc:"شحن وتوصيل في الشرق الأوسط والعالم مع تتبع",stars:3,emoji:"&#128666;"},
+    {name:"Dave's Killer Bread",url:"https://www.daveskillerbread.com",category:"أفران ومخابز",tier:3,desc:"خبز عضوي شهي متوفر في المتاجر بتنكات مميزة",stars:3,emoji:"&#127838;"},
+    {name:"Book Depository",url:"https://www.bookdepository.com",category:"مكتبات",tier:3,desc:"كتب بشحن مجاني عالمياً مع أكثر من 20 مليون عنوان",stars:3,emoji:"&#128218;"},
+    {name:"Bookshop.org",url:"https://www.bookshop.org",category:"مكتبات",tier:3,desc:"دعم المكتبات المحلية عند شراء الكتب أونلاين",stars:3,emoji:"&#128218;"},
+    {name:"Custom Ink",url:"https://www.customink.com",category:"خياطة",tier:3,desc:"طباعة مخصصة على القمصان والملابس بكميات صغيرة",stars:3,emoji:"&#129531;"},
+    {name:"Porcht",url:"https://porch.com",category:"سباكة وصيانة",tier:3,desc:"حجز خدمات سباكة وكهرباء وصيانة منزلية محلية",stars:3,emoji:"&#128688;"},
+    {name:"Rover",url:"https://www.rover.com",category:"حيوانات أليفة",tier:3,desc:"البحث عن مربية ومربية كلاب في منطقتك مع تقييمات",stars:3,emoji:"&#128054;"},
 ];
 
 // ========== State ==========
-let websites = JSON.parse(localStorage.getItem('bizWebsitesDir')) || JSON.parse(JSON.stringify(initialWebsites));
-let editingIndex = -1;
-let openDropdownId = null;
+let sites = JSON.parse(localStorage.getItem('realBizDir')) || JSON.parse(JSON.stringify(DATA));
+let editIdx = -1;
+let openDD = null;
 
-const categoryClassMap = {
-    "حلاقة وتجميل رجالي": "cat-halqa",
-    "عيادة طبية": "cat-clinic",
-    "عيادة أسنان": "cat-dental",
-    "مزرعة ومنتجات زراعية": "cat-farm",
-    "بائع فواكه وخضار": "cat-fruit",
-    "بقالة ومتجر": "cat-grocery",
-    "مطعم ومأكولات": "cat-restaurant",
-    "مقهى ومشروبات": "cat-cafe",
-    "صيدلية": "cat-pharmacy",
-    "ورشة سيارات": "cat-car",
-    "مغسلة ملابس": "cat-laundry",
-    "محل زهور": "cat-flower",
-    "مكتبة": "cat-book",
-    "صالون تجميل نسائي": "cat-beauty",
-    "مكتب عقاري": "cat-realestate",
-    "نقل وشحن": "cat-transport",
-    "تعليم وتدريب": "cat-education",
-    "فرن ومخبز": "cat-bakery",
-    "خدمات منزلية": "cat-home",
-    "إلكترونيات": "cat-electronics",
-    "ملابس وأزياء": "cat-clothes",
-    "رياضة ولياقة": "cat-sport",
-    "تصوير فوتوغرافي": "cat-photo",
-    "مستلزمات حيوانات": "cat-pet",
-    "خياطة وتفصيل": "cat-tailor",
-    "سباكة": "cat-plumber",
-    "كهرباء": "cat-electrician",
-    "سجاد ومفروشات": "cat-carpet",
-    "نظارات وبصريات": "cat-optics",
-};
-
-const categoryEmojiMap = {
-    "حلاقة وتجميل رجالي": "&#9986;",
-    "عيادة طبية": "&#129657;",
-    "عيادة أسنان": "&#129463;",
-    "مزرعة ومنتجات زراعية": "&#127806;",
-    "بائع فواكه وخضار": "&#127815;",
-    "بقالة ومتجر": "&#128722;",
-    "مطعم ومأكولات": "&#127869;",
-    "مقهى ومشروبات": "&#9749;",
-    "صيدلية": "&#128138;",
-    "ورشة سيارات": "&#128663;",
-    "مغسلة ملابس": "&#128703;",
-    "محل زهور": "&#127801;",
-    "مكتبة": "&#128218;",
-    "صالون تجميل نسائي": "&#128132;",
-    "مكتب عقاري": "&#127968;",
-    "نقل وشحن": "&#128666;",
-    "تعليم وتدريب": "&#128221;",
-    "فرن ومخبز": "&#127838;",
-    "خدمات منزلية": "&#128736;",
-    "إلكترونيات": "&#128187;",
-    "ملابس وأزياء": "&#128085;",
-    "رياضة ولياقة": "&#127947;",
-    "تصوير فوتوغرافي": "&#128247;",
-    "مستلزمات حيوانات": "&#128054;",
-    "خياطة وتفصيل": "&#129531;",
-    "سباكة": "&#128688;",
-    "كهرباء": "&#9889;",
-    "سجاد ومفروشات": "&#127967;",
-    "نظارات وبصريات": "&#128374;",
-};
-
-function getStarsHTML(count) {
-    let html = '<div class="stars">';
-    for (let i = 1; i <= 5; i++) {
-        html += i <= count ? '<span class="filled">&#9733;</span>' : '<span class="empty">&#9733;</span>';
-    }
-    html += '</div>';
-    return html;
+function starsHTML(n) {
+    let h = '<div class="card-stars">';
+    for (let i = 1; i <= 5; i++) h += `<span class="${i<=n?'on':'off'}">&#9733;</span>`;
+    return h + '</div>';
 }
 
 // ========== Render ==========
 function render() {
-    const main = document.getElementById('mainContent');
-    main.innerHTML = '';
+    const app = document.getElementById('app');
+    app.innerHTML = '';
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const cf = document.getElementById('catFilter').value;
 
     const tiers = [
-        { num: 1, name: "الطبقة المميزة", desc: "أعلى تقييم وأفضل سمعة في المنطقة", icon: "&#128142;" },
-        { num: 2, name: "الطبقة الجيدة جداً", desc: "محلات ونشاطات ذات جودة عالية وموثوقة", icon: "&#129751;" },
-        { num: 3, name: "الطبقة الجيدة", desc: "محلات ونشاطات جيدة وخدمات شعبية", icon: "&#129752;" },
+        {n:1, name:"الطبقة المميزة", desc:"أعلى تقييم وأفضل سمعة", icon:"&#128142;"},
+        {n:2, name:"الطبقة الجيدة جداً", desc:"محلات ذات جودة عالية وموثوقة", icon:"&#129751;"},
+        {n:3, name:"الطبقة الجيدة", desc:"خدمات جيدة بأسعار مناسبة", icon:"&#129752;"},
     ];
 
-    const search = document.getElementById('searchInput').value.toLowerCase();
-    const catFilter = document.getElementById('categoryFilter').value;
-
-    tiers.forEach(tier => {
-        const filtered = websites.filter(w => {
-            if (w.tier !== tier.num) return false;
-            if (search && !w.name.toLowerCase().includes(search) && !w.url.toLowerCase().includes(search) && !w.category.includes(search) && (!w.desc || !w.desc.toLowerCase().includes(search))) return false;
-            if (catFilter && w.category !== catFilter) return false;
+    tiers.forEach(t => {
+        const list = sites.filter(s => {
+            if (s.tier !== t.n) return false;
+            if (q && !s.name.toLowerCase().includes(q) && !s.url.toLowerCase().includes(q) && !s.category.includes(q) && !(s.desc||'').toLowerCase().includes(q)) return false;
+            if (cf && s.category !== cf) return false;
             return true;
         });
 
-        const section = document.createElement('div');
-        section.className = `tier-section tier${tier.num}`;
-        section.id = `tier${tier.num}`;
-
-        section.innerHTML = `
-            <div class="tier-header" onclick="toggleTier(${tier.num})">
-                <div class="tier-title-area">
-                    <div class="tier-badge">${tier.icon}</div>
-                    <div class="tier-title">
-                        <h2>${tier.name}</h2>
-                        <p>${tier.desc}</p>
-                    </div>
+        const el = document.createElement('div');
+        el.className = `tier tier${t.n}`;
+        el.id = `tier${t.n}`;
+        el.innerHTML = `
+            <div class="tier-head" onclick="document.getElementById('tier${t.n}').classList.toggle('collapsed')">
+                <div class="tier-left">
+                    <div class="tier-icon">${t.icon}</div>
+                    <div class="tier-label"><h2>${t.name}</h2><p>${t.desc}</p></div>
                 </div>
-                <div style="display:flex;align-items:center;gap:12px;">
-                    <span class="tier-count">${filtered.length} نشاط</span>
-                    <span class="tier-toggle">&#9650;</span>
+                <div class="tier-right">
+                    <span class="tier-cnt">${list.length} نشاط</span>
+                    <span class="tier-chevron">&#9650;</span>
                 </div>
             </div>
-            <div class="tier-grid" id="tierGrid${tier.num}"
-                 ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, ${tier.num})">
-                ${filtered.length === 0 ? '<div class="empty-state">لا توجد أنشطة في هذه الطبقة</div>' : ''}
-                ${filtered.map(w => {
-                    const globalIdx = websites.indexOf(w);
-                    const catClass = categoryClassMap[w.category] || '';
-                    const emoji = categoryEmojiMap[w.category] || '&#128204;';
-                    return `
-                    <div class="website-card" draggable="true" data-index="${globalIdx}"
-                         ondragstart="handleDragStart(event, ${globalIdx})" ondragend="handleDragEnd(event)">
-                        <div class="card-top">
-                            <div class="website-icon">${emoji}</div>
-                            <div class="website-info">
-                                <div class="website-name">${w.name}</div>
-                                <div class="website-category"><span class="cat-tag ${catClass}">${w.category}</span></div>
+            <div class="tier-body">
+                <div class="grid" id="grid${t.n}" ondragover="dOver(event)" ondragleave="dLeave(event)" ondrop="dDrop(event,${t.n})">
+                    ${list.length === 0 ? '<div class="empty">لا توجد أنشطة</div>' : ''}
+                    ${list.map(s => {
+                        const gi = sites.indexOf(s);
+                        return `<div class="card" draggable="true" ondragstart="dStart(event,${gi})" ondragend="dEnd(event)" data-idx="${gi}">
+                            <div class="card-top">
+                                <div class="card-ico">${s.emoji||'&#128204;'}</div>
+                                <div class="card-info">
+                                    <div class="card-name">${s.name}</div>
+                                    <div class="card-cat">${s.category}</div>
+                                </div>
                             </div>
-                        </div>
-                        ${w.desc ? `<div class="website-desc">${w.desc}</div>` : ''}
-                        ${w.stars ? getStarsHTML(w.stars) : ''}
-                        <div class="website-url">${w.url}</div>
-                        <div class="card-actions" style="position:relative;">
-                            <button class="card-btn visit-btn" onclick="visitSite('${w.url}')">&#128279; زيارة</button>
-                            <button class="card-btn copy-btn" onclick="copyUrl('${w.url}')">&#128203; نسخ</button>
-                            <button class="card-btn edit-btn" onclick="editSite(${globalIdx})">&#9998; تعديل</button>
-                            <button class="card-btn move-btn" onclick="toggleMoveDropdown(event, ${globalIdx})">&#8597; نقل</button>
-                            <button class="card-btn delete-btn" onclick="deleteSite(${globalIdx})">&#128465; حذف</button>
-                            <div class="move-dropdown" id="moveDropdown${globalIdx}">
-                                ${tier.num !== 1 ? `<div class="move-dropdown-item to-tier1" onclick="moveSite(${globalIdx}, 1)">&#128142; المميزة</div>` : ''}
-                                ${tier.num !== 2 ? `<div class="move-dropdown-item to-tier2" onclick="moveSite(${globalIdx}, 2)">&#129751; الجيدة جداً</div>` : ''}
-                                ${tier.num !== 3 ? `<div class="move-dropdown-item to-tier3" onclick="moveSite(${globalIdx}, 3)">&#129752; الجيدة</div>` : ''}
+                            ${s.desc?`<div class="card-desc">${s.desc}</div>`:''}
+                            ${s.stars?starsHTML(s.stars):''}
+                            <div class="card-url">${s.url}</div>
+                            <div class="card-btns">
+                                <button class="cb vi" onclick="visit('${s.url}')">&#128279;</button>
+                                <button class="cb cp" onclick="cpUrl('${s.url}')">&#128203;</button>
+                                <button class="cb ed" onclick="editSite(${gi})">&#9998;</button>
+                                <button class="cb mv" onclick="togDD(event,${gi})">&#8597;</button>
+                                <button class="cb dl" onclick="delSite(${gi})">&#128465;</button>
+                                <div class="mv-dd" id="dd${gi}">
+                                    ${t.n!==1?`<div class="mv-dd-item t1" onclick="moveSite(${gi},1)">&#128142; المميزة</div>`:''}
+                                    ${t.n!==2?`<div class="mv-dd-item t2" onclick="moveSite(${gi},2)">&#129751; الجيدة جداً</div>`:''}
+                                    ${t.n!==3?`<div class="mv-dd-item t3" onclick="moveSite(${gi},3)">&#129752; الجيدة</div>`:''}
+                                </div>
                             </div>
-                        </div>
-                    </div>`;
-                }).join('')}
-            </div>
-        `;
-
-        main.appendChild(section);
+                        </div>`;
+                    }).join('')}
+                </div>
+            </div>`;
+        app.appendChild(el);
     });
 
-    updateStats();
-    updateCategoryFilter();
-    saveData();
-}
+    // Stats
+    document.getElementById('c1').textContent = sites.filter(s=>s.tier===1).length;
+    document.getElementById('c2').textContent = sites.filter(s=>s.tier===2).length;
+    document.getElementById('c3').textContent = sites.filter(s=>s.tier===3).length;
+    document.getElementById('ct').textContent = sites.length;
 
-function updateStats() {
-    const t1 = websites.filter(w => w.tier === 1).length;
-    const t2 = websites.filter(w => w.tier === 2).length;
-    const t3 = websites.filter(w => w.tier === 3).length;
-    document.getElementById('tier1Count').textContent = t1;
-    document.getElementById('tier2Count').textContent = t2;
-    document.getElementById('tier3Count').textContent = t3;
-    document.getElementById('totalCount').textContent = t1 + t2 + t3;
-}
+    // Category filter
+    const sel = document.getElementById('catFilter');
+    const cv = sel.value;
+    const cats = [...new Set(sites.map(s=>s.category))].sort();
+    sel.innerHTML = '<option value="">كل الأنشطة</option>';
+    cats.forEach(c => { const o = document.createElement('option'); o.value=c; o.textContent=c; if(c===cv)o.selected=true; sel.appendChild(o); });
 
-function updateCategoryFilter() {
-    const select = document.getElementById('categoryFilter');
-    const current = select.value;
-    const categories = [...new Set(websites.map(w => w.category))].sort();
-    select.innerHTML = '<option value="">كل الأنشطة</option>';
-    categories.forEach(cat => {
-        const opt = document.createElement('option');
-        opt.value = cat; opt.textContent = cat;
-        if (cat === current) opt.selected = true;
-        select.appendChild(opt);
-    });
+    save();
 }
 
 // ========== Actions ==========
-function copyUrl(url) {
-    navigator.clipboard.writeText(url).then(() => {
-        showToast('تم نسخ الرابط بنجاح!', 'success');
-    }).catch(() => {
-        const ta = document.createElement('textarea');
-        ta.value = url; document.body.appendChild(ta);
-        ta.select(); document.execCommand('copy');
-        document.body.removeChild(ta);
-        showToast('تم نسخ الرابط بنجاح!', 'success');
+function cpUrl(u) {
+    navigator.clipboard.writeText(u).then(()=>toast('تم نسخ الرابط!','ok')).catch(()=>{
+        const t=document.createElement('textarea'); t.value=u; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); toast('تم نسخ الرابط!','ok');
     });
 }
+function visit(u) { if(u&&u.startsWith('http'))window.open(u,'_blank'); else toast('الرابط غير متاح','nfo'); }
 
-function visitSite(url) {
-    if (url && url.startsWith('http')) window.open(url, '_blank');
-    else showToast('الرابط غير متاح', 'info');
+function togDD(e,i) {
+    e.stopPropagation();
+    const dd = document.getElementById('dd'+i);
+    if(openDD!==null&&openDD!==i){const p=document.getElementById('dd'+openDD);if(p)p.classList.remove('open');}
+    dd.classList.toggle('open');
+    openDD = dd.classList.contains('open')?i:null;
 }
-
-function toggleMoveDropdown(event, index) {
-    event.stopPropagation();
-    const dropdown = document.getElementById(`moveDropdown${index}`);
-    if (openDropdownId !== null && openDropdownId !== index) {
-        const prev = document.getElementById(`moveDropdown${openDropdownId}`);
-        if (prev) prev.classList.remove('show');
-    }
-    dropdown.classList.toggle('show');
-    openDropdownId = dropdown.classList.contains('show') ? index : null;
+function moveSite(i,t) {
+    sites[i].tier=t; openDD=null;
+    const nm={1:'المميزة',2:'الجيدة جداً',3:'الجيدة'};
+    toast(`تم النقل إلى ${nm[t]}`,'nfo'); render();
 }
-
-function moveSite(index, newTier) {
-    websites[index].tier = newTier;
-    openDropdownId = null;
-    const tierNames = { 1: 'المميزة', 2: 'الجيدة جداً', 3: 'الجيدة' };
-    showToast(`تم نقل النشاط إلى الطبقة ${tierNames[newTier]}`, 'info');
-    render();
+function delSite(i) {
+    if(confirm(`حذف "${sites[i].name}"؟`)){sites.splice(i,1);toast('تم الحذف','nfo');render();}
 }
-
-function deleteSite(index) {
-    if (confirm(`هل تريد حذف "${websites[index].name}"؟`)) {
-        websites.splice(index, 1);
-        showToast('تم حذف النشاط', 'info');
-        render();
-    }
+function editSite(i) {
+    editIdx=i; const s=sites[i];
+    document.getElementById('mTitle').innerHTML='&#9998; تعديل النشاط';
+    document.getElementById('mName').value=s.name;
+    document.getElementById('mUrl').value=s.url||'';
+    document.getElementById('mCat').value=s.category;
+    document.getElementById('mDesc').value=s.desc||'';
+    document.getElementById('mTier').value=s.tier;
+    document.getElementById('overlay').classList.add('on');
 }
-
-function editSite(index) {
-    editingIndex = index;
-    const site = websites[index];
-    document.getElementById('modalTitle').innerHTML = '&#9998; تعديل النشاط';
-    document.getElementById('siteName').value = site.name;
-    document.getElementById('siteUrl').value = site.url || '';
-    document.getElementById('siteCategory').value = site.category;
-    document.getElementById('siteDesc').value = site.desc || '';
-    document.getElementById('siteTier').value = site.tier;
-    document.getElementById('modalOverlay').classList.add('active');
+function openAdd() {
+    editIdx=-1;
+    document.getElementById('mTitle').innerHTML='&#10010; إضافة نشاط';
+    document.getElementById('mName').value='';
+    document.getElementById('mUrl').value='';
+    document.getElementById('mCat').value='حلاقة وتجميل';
+    document.getElementById('mDesc').value='';
+    document.getElementById('mTier').value='3';
+    document.getElementById('overlay').classList.add('on');
 }
-
-function openAddModal() {
-    editingIndex = -1;
-    document.getElementById('modalTitle').innerHTML = '&#10010; إضافة نشاط جديد';
-    document.getElementById('siteName').value = '';
-    document.getElementById('siteUrl').value = '';
-    document.getElementById('siteCategory').value = 'حلاقة وتجميل رجالي';
-    document.getElementById('siteDesc').value = '';
-    document.getElementById('siteTier').value = '3';
-    document.getElementById('modalOverlay').classList.add('active');
-}
-
-function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('active');
-    editingIndex = -1;
-}
-
-function closeModalOutside(e) {
-    if (e.target === document.getElementById('modalOverlay')) closeModal();
-}
-
+function closeModal() { document.getElementById('overlay').classList.remove('on'); editIdx=-1; }
 function saveSite() {
-    const name = document.getElementById('siteName').value.trim();
-    const url = document.getElementById('siteUrl').value.trim();
-    const category = document.getElementById('siteCategory').value;
-    const desc = document.getElementById('siteDesc').value.trim();
-    const tier = parseInt(document.getElementById('siteTier').value);
-
-    if (!name) { showToast('يرجى إدخال اسم النشاط', 'info'); return; }
-
-    if (editingIndex >= 0) {
-        websites[editingIndex] = { ...websites[editingIndex], name, url, category, desc, tier };
-        showToast('تم تحديث النشاط بنجاح', 'success');
-    } else {
-        websites.push({ name, url: url || 'https://', category, desc, tier, stars: 3 });
-        showToast('تم إضافة النشاط بنجاح', 'success');
-    }
-    closeModal();
-    render();
+    const n=document.getElementById('mName').value.trim(),
+          u=document.getElementById('mUrl').value.trim(),
+          c=document.getElementById('mCat').value,
+          d=document.getElementById('mDesc').value.trim(),
+          t=+document.getElementById('mTier').value;
+    if(!n){toast('أدخل الاسم','nfo');return;}
+    if(editIdx>=0){Object.assign(sites[editIdx],{name:n,url:u,category:c,desc:d,tier:t});toast('تم التحديث','ok');}
+    else{sites.push({name:n,url:u||'https://',category:c,desc:d,tier:t,stars:3,emoji:'&#128204;'});toast('تمت الإضافة','ok');}
+    closeModal(); render();
+}
+function resetAll() {
+    if(confirm('إعادة تعيين كل البيانات؟')){localStorage.removeItem('realBizDir');sites=JSON.parse(JSON.stringify(DATA));toast('تم إعادة التعيين','nfo');render();}
 }
 
-function toggleTier(num) {
-    document.getElementById(`tier${num}`).classList.toggle('collapsed');
+// Drag & Drop
+let dragI=null;
+function dStart(e,i){dragI=i;e.target.classList.add('dragging');e.dataTransfer.effectAllowed='move';}
+function dEnd(e){e.target.classList.remove('dragging');document.querySelectorAll('.grid').forEach(g=>g.classList.remove('dragover'));}
+function dOver(e){e.preventDefault();e.currentTarget.classList.add('dragover');}
+function dLeave(e){e.currentTarget.classList.remove('dragover');}
+function dDrop(e,nt){
+    e.preventDefault();e.currentTarget.classList.remove('dragover');
+    if(dragI!==null&&sites[dragI].tier!==nt){sites[dragI].tier=nt;const nm={1:'المميزة',2:'الجيدة جداً',3:'الجيدة'};toast(`تم النقل إلى ${nm[nt]}`,'nfo');render();}
+    dragI=null;
 }
 
-function filterWebsites() { render(); }
-
-// ========== Drag & Drop ==========
-let draggedIndex = null;
-function handleDragStart(e, index) { draggedIndex = index; e.target.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; }
-function handleDragEnd(e) { e.target.classList.remove('dragging'); document.querySelectorAll('.tier-grid').forEach(g => g.classList.remove('drag-over')); }
-function handleDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
-function handleDragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
-function handleDrop(e, newTier) {
-    e.preventDefault(); e.currentTarget.classList.remove('drag-over');
-    if (draggedIndex !== null && websites[draggedIndex].tier !== newTier) {
-        websites[draggedIndex].tier = newTier;
-        const tierNames = { 1: 'المميزة', 2: 'الجيدة جداً', 3: 'الجيدة' };
-        showToast(`تم نقل النشاط إلى الطبقة ${tierNames[newTier]}`, 'info');
-        render();
-    }
-    draggedIndex = null;
+// Toast
+function toast(m,t) {
+    const c=document.getElementById('toasts'),el=document.createElement('div');
+    el.className=`toast ${t}`;el.innerHTML=`<span>${t==='ok'?'&#10003;':'&#9432;'}</span> ${m}`;
+    c.appendChild(el);setTimeout(()=>el.remove(),3000);
 }
 
-// ========== Toast ==========
-function showToast(message, type = 'info') {
-    const container = document.getElementById('toastContainer');
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    const icon = type === 'success' ? '&#10003;' : '&#9432;';
-    toast.innerHTML = `<span>${icon}</span> ${message}`;
-    container.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
-}
+// Save
+function save(){localStorage.setItem('realBizDir',JSON.stringify(sites));}
 
-// ========== Save/Load ==========
-function saveData() { localStorage.setItem('bizWebsitesDir', JSON.stringify(websites)); }
-function resetData() {
-    if (confirm('هل تريد إعادة تعيين جميع البيانات إلى الحالة الأصلية؟')) {
-        localStorage.removeItem('bizWebsitesDir');
-        websites = JSON.parse(JSON.stringify(initialWebsites));
-        showToast('تم إعادة تعيين البيانات', 'info');
-        render();
-    }
-}
-
-// ========== Events ==========
-document.addEventListener('click', (e) => {
-    if (openDropdownId !== null && !e.target.closest('.move-btn') && !e.target.closest('.move-dropdown')) {
-        const dropdown = document.getElementById(`moveDropdown${openDropdownId}`);
-        if (dropdown) dropdown.classList.remove('show');
-        openDropdownId = null;
+// Close dropdowns on outside click
+document.addEventListener('click',e=>{
+    if(openDD!==null&&!e.target.closest('.mv')&&!e.target.closest('.mv-dd')){
+        const d=document.getElementById('dd'+openDD);if(d)d.classList.remove('open');openDD=null;
     }
 });
 
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
-    if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); document.getElementById('searchInput').focus(); }
+// Keyboard
+document.addEventListener('keydown',e=>{
+    if(e.key==='Escape')closeModal();
+    if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();document.getElementById('searchInput').focus();}
 });
 
-// ========== Init ==========
 render();
 </script>
 </body>

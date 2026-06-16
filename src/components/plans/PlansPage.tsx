@@ -5,9 +5,11 @@ import { Button } from '@/components/ui/button'
 import { Check, Sparkles, ArrowRight } from 'lucide-react'
 import { useAppStore } from '@/lib/store'
 
+type BillingType = 'monthly' | 'semi_annual' | 'annual'
+
 export default function PlansPage() {
   const { setCurrentPage, user } = useAppStore()
-  const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly')
+  const [billing, setBilling] = useState<BillingType>('monthly')
 
   const planFeatures = [
     'Website design based on selected template',
@@ -20,9 +22,13 @@ export default function PlansPage() {
     'SSL certificate included',
   ]
 
-  const price = billing === 'monthly' ? 30 : 300
-  const period = billing === 'monthly' ? 'month' : 'year'
-  const savings = billing === 'annual' ? 'Save $60/year (2 months free)' : null
+  const planConfig: Record<BillingType, { price: number; period: string; label: string; savings: string | null; badge: string | null }> = {
+    monthly: { price: 30, period: 'month', label: 'Monthly Plan', savings: null, badge: null },
+    semi_annual: { price: 170, period: '6 months', label: 'Semi-Annual Plan', savings: 'Save $10 vs monthly', badge: '-5%' },
+    annual: { price: 300, period: 'year', label: 'Annual Plan', savings: 'Save $60/year (2 months free)', badge: '-17%' },
+  }
+
+  const current = planConfig[billing]
 
   const handleSubscribe = () => {
     if (!user) {
@@ -54,12 +60,12 @@ export default function PlansPage() {
         </p>
       </div>
 
-      {/* Billing Toggle */}
+      {/* Billing Toggle - 3 options */}
       <div className="flex justify-center mb-10">
         <div className="inline-flex items-center bg-[#f1f4f7] rounded-xl p-1.5 gap-1">
           <button
             onClick={() => setBilling('monthly')}
-            className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
+            className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
               billing === 'monthly'
                 ? 'bg-[#000f22] text-white shadow-md'
                 : 'text-[#43474d] hover:text-[#000f22]'
@@ -68,8 +74,25 @@ export default function PlansPage() {
             Monthly
           </button>
           <button
+            onClick={() => setBilling('semi_annual')}
+            className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
+              billing === 'semi_annual'
+                ? 'bg-[#000f22] text-white shadow-md'
+                : 'text-[#43474d] hover:text-[#000f22]'
+            }`}
+          >
+            Semi-Annual
+            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
+              billing === 'semi_annual'
+                ? 'bg-[#00D1FF] text-[#000f22]'
+                : 'bg-[#F59E0B]/10 text-[#F59E0B]'
+            }`}>
+              -5%
+            </span>
+          </button>
+          <button
             onClick={() => setBilling('annual')}
-            className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
+            className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
               billing === 'annual'
                 ? 'bg-[#000f22] text-white shadow-md'
                 : 'text-[#43474d] hover:text-[#000f22]'
@@ -99,25 +122,25 @@ export default function PlansPage() {
             <div className="flex items-center gap-2 mb-4">
               <Sparkles className="h-5 w-5 text-[#00D1FF]" />
               <h3 className="text-lg font-semibold text-white">
-                {billing === 'monthly' ? 'Monthly Plan' : 'Annual Plan'}
+                {current.label}
               </h3>
             </div>
 
             {/* Price */}
             <div className="flex items-baseline gap-2 mb-2">
-              <span className="text-5xl font-bold text-white">${price}</span>
-              <span className="text-[#768dad] text-lg">/{period}</span>
+              <span className="text-5xl font-bold text-white">${current.price}</span>
+              <span className="text-[#768dad] text-lg">/{current.period}</span>
             </div>
 
             {/* Savings badge */}
-            {savings && (
+            {current.savings ? (
               <div className="inline-flex items-center gap-1.5 bg-[#10B981]/15 border border-[#10B981]/30 rounded-full px-3 py-1 mb-6">
                 <Check className="h-3.5 w-3.5 text-[#10B981]" />
-                <span className="text-[#10B981] text-xs font-semibold">{savings}</span>
+                <span className="text-[#10B981] text-xs font-semibold">{current.savings}</span>
               </div>
+            ) : (
+              <div className="mb-6" />
             )}
-
-            {!savings && <div className="mb-6" />}
 
             {/* Divider */}
             <div className="border-t border-[#768dad]/20 mb-6" />

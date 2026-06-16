@@ -59,7 +59,7 @@ export default function TemplatePreview() {
   const { previewTemplate, setPreviewTemplate, setCurrentPage, user, setCheckoutData } = useAppStore()
   const [template, setTemplate] = useState<Template | null>(null)
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([])
-  const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly')
+  const [billing, setBilling] = useState<'monthly' | 'semi_annual' | 'annual'>('monthly')
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])
   const [showFeaturePicker, setShowFeaturePicker] = useState(false)
   const [customFeatureInput, setCustomFeatureInput] = useState('')
@@ -116,10 +116,12 @@ export default function TemplatePreview() {
   const industries: string[] = template?.industries ? JSON.parse(template.industries) : []
 
   const basePriceMonthly = 30
+  const basePriceSemiAnnual = 170
   const basePriceAnnual = 300
   const extraFeaturesCount = Math.max(0, selectedFeatures.length - FREE_FEATURES_LIMIT)
   const extraFeatureCost = extraFeaturesCount * 3
   const addOnCostMonthly = selectedAddOns.length * 3
+  const addOnCostSemiAnnual = selectedAddOns.length * 18
   const addOnCostAnnual = selectedAddOns.length * 36
 
   // Domain cost calculation
@@ -128,12 +130,13 @@ export default function TemplatePreview() {
   const domainMonthlyInstallment = domainExcess > 0 ? 3 : 0
   const domainInstallmentMonths = domainMonthlyInstallment > 0 ? Math.ceil(domainExcess / domainMonthlyInstallment) : 0
 
-  const basePrice = billing === 'monthly' ? basePriceMonthly : basePriceAnnual
-  const extraFeatureTotal = billing === 'monthly' ? extraFeatureCost : extraFeatureCost * 12
-  const addOnTotal = billing === 'monthly' ? addOnCostMonthly : addOnCostAnnual
-  const domainInstallmentTotal = billing === 'monthly' ? domainMonthlyInstallment : domainMonthlyInstallment * 12
+  const basePrice = billing === 'monthly' ? basePriceMonthly : billing === 'semi_annual' ? basePriceSemiAnnual : basePriceAnnual
+  const billingMonths = billing === 'monthly' ? 1 : billing === 'semi_annual' ? 6 : 12
+  const extraFeatureTotal = extraFeatureCost * billingMonths
+  const addOnTotal = billing === 'monthly' ? addOnCostMonthly : billing === 'semi_annual' ? addOnCostSemiAnnual : addOnCostAnnual
+  const domainInstallmentTotal = domainMonthlyInstallment * billingMonths
   const total = basePrice + extraFeatureTotal + addOnTotal + domainInstallmentTotal
-  const period = billing === 'monthly' ? 'mo' : 'yr'
+  const period = billing === 'monthly' ? 'mo' : billing === 'semi_annual' ? '6mo' : 'yr'
 
   const toggleAddOn = (id: string) => {
     setSelectedAddOns(prev => prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id])
@@ -652,25 +655,43 @@ export default function TemplatePreview() {
                   <div className="flex bg-white/10 rounded-xl p-1 gap-1">
                     <button
                       onClick={() => setBilling('monthly')}
-                      className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                      className={`flex-1 px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
                         billing === 'monthly' ? 'bg-[#00D1FF] text-[#000f22] shadow-md' : 'text-[#768dad] hover:text-white'
                       }`}
                     >
-                      Monthly — $30/mo
+                      Monthly
+                    </button>
+                    <button
+                      onClick={() => setBilling('semi_annual')}
+                      className={`flex-1 px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200 flex items-center justify-center gap-1 ${
+                        billing === 'semi_annual' ? 'bg-[#00D1FF] text-[#000f22] shadow-md' : 'text-[#768dad] hover:text-white'
+                      }`}
+                    >
+                      6-Mo
+                      <span className={`text-[8px] font-bold px-1 py-0.5 rounded-full ${
+                        billing === 'semi_annual' ? 'bg-[#000f22] text-[#00D1FF]' : 'bg-[#F59E0B]/20 text-[#F59E0B]'
+                      }`}>
+                        -5%
+                      </span>
                     </button>
                     <button
                       onClick={() => setBilling('annual')}
-                      className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-1.5 ${
+                      className={`flex-1 px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200 flex items-center justify-center gap-1 ${
                         billing === 'annual' ? 'bg-[#00D1FF] text-[#000f22] shadow-md' : 'text-[#768dad] hover:text-white'
                       }`}
                     >
-                      Annual — $300/yr
-                      <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
+                      Annual
+                      <span className={`text-[8px] font-bold px-1 py-0.5 rounded-full ${
                         billing === 'annual' ? 'bg-[#000f22] text-[#00D1FF]' : 'bg-[#10B981]/20 text-[#10B981]'
                       }`}>
                         -17%
                       </span>
                     </button>
+                  </div>
+                  <div className="mt-2 text-center">
+                    <span className="text-[11px] text-[#768dad]">
+                      {billing === 'monthly' ? '$30/month' : billing === 'semi_annual' ? '$170/6 months' : '$300/year'}
+                    </span>
                   </div>
                 </div>
 
@@ -685,7 +706,7 @@ export default function TemplatePreview() {
                   </div>
 
                   <div className="flex justify-between text-sm pt-2">
-                    <span className="text-[#768dad]">Plan ({billing === 'monthly' ? 'Monthly' : 'Annual'})</span>
+                    <span className="text-[#768dad]">Plan ({billing === 'monthly' ? 'Monthly' : billing === 'semi_annual' ? 'Semi-Annual' : 'Annual'})</span>
                     <span>${basePrice}/{period}</span>
                   </div>
 
@@ -701,7 +722,7 @@ export default function TemplatePreview() {
                     return addOn ? (
                       <div key={addOnId} className="flex justify-between text-sm">
                         <span className="text-[#768dad] truncate mr-2">{addOn.name}</span>
-                        <span className="text-[#00D1FF] flex-shrink-0">+{billing === 'monthly' ? '$3/mo' : '$36/yr'}</span>
+                        <span className="text-[#00D1FF] flex-shrink-0">+{billing === 'monthly' ? '$3/mo' : billing === 'semi_annual' ? '$18/6mo' : '$36/yr'}</span>
                       </div>
                     ) : null
                   })}

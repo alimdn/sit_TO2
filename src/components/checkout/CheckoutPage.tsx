@@ -55,27 +55,27 @@ export default function CheckoutPage() {
 
   const { templateTitle, templateImage, templateCategory, templateFeatures, billing, selectedAddOns, domain, domainPrice } = checkoutData
 
-  const basePrice = billing === 'monthly' ? 30 : 300
-  const addOnUnitCost = billing === 'monthly' ? 3 : 36
-  const addOnTotal = selectedAddOns.length * addOnUnitCost
+  const basePrice = billing === 'monthly' ? 30 : billing === 'semi_annual' ? 170 : 300
+  const billingMonths = billing === 'monthly' ? 1 : billing === 'semi_annual' ? 6 : 12
+  const addOnUnitCost = selectedAddOns.length * 3 * billingMonths
+  const addOnTotal = addOnUnitCost
   const extraFeaturesCount = Math.max(0, templateFeatures.length - FREE_FEATURES_LIMIT)
-  const extraFeatureUnitCost = billing === 'monthly' ? 3 : 36
-  const extraFeatureTotal = extraFeaturesCount * extraFeatureUnitCost
+  const extraFeatureTotal = extraFeaturesCount * 3 * billingMonths
   // Domain cost calculation
   const domainBaseIncluded = 50
   const domainExcess = domainPrice ? Math.max(0, domainPrice - domainBaseIncluded) : 0
   const domainMonthlyInstallment = domainExcess > 0 ? 3 : 0
   const domainInstallmentMonths = domainMonthlyInstallment > 0 ? Math.ceil(domainExcess / domainMonthlyInstallment) : 0
-  const domainInstallmentTotal = billing === 'monthly' ? domainMonthlyInstallment : domainMonthlyInstallment * 12
+  const domainInstallmentTotal = domainMonthlyInstallment * billingMonths
   const total = basePrice + addOnTotal + extraFeatureTotal + domainInstallmentTotal
-  const period = billing === 'monthly' ? 'mo' : 'yr'
+  const period = billing === 'monthly' ? 'mo' : billing === 'semi_annual' ? '6mo' : 'yr'
 
   const handlePayment = async () => {
     setProcessing(true)
 
     // Build invoice items
     const invoiceItems: { description: string; amount: number }[] = [
-      { description: `${templateTitle} — ${billing === 'monthly' ? 'Monthly' : 'Annual'} Plan`, amount: basePrice },
+      { description: `${templateTitle} — ${billing === 'monthly' ? 'Monthly' : billing === 'semi_annual' ? 'Semi-Annual' : 'Annual'} Plan`, amount: basePrice },
     ]
     if (extraFeaturesCount > 0) {
       invoiceItems.push({ description: `Extra Features (${extraFeaturesCount} x $3/${period})`, amount: extraFeatureTotal })
@@ -352,7 +352,7 @@ export default function CheckoutPage() {
             {/* Price breakdown */}
             <div className="space-y-3 mb-5 pb-5 border-b border-[#768dad]/20">
               <div className="flex justify-between text-sm">
-                <span className="text-[#768dad]">Plan ({billing === 'monthly' ? 'Monthly' : 'Annual'})</span>
+                <span className="text-[#768dad]">Plan ({billing === 'monthly' ? 'Monthly' : billing === 'semi_annual' ? 'Semi-Annual' : 'Annual'})</span>
                 <span className="font-medium">${basePrice}.00/{period}</span>
               </div>
 

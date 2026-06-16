@@ -13,6 +13,8 @@ interface TemplateCardProps {
     category: string
     image: string
     featured: boolean
+    livePreview?: string
+    previewUrl?: string
   }
 }
 
@@ -31,6 +33,11 @@ export default function TemplateCard({ template }: TemplateCardProps) {
           <Badge className="absolute top-3 left-3 bg-[#00D1FF] text-[#000f22] hover:bg-[#00b8e6] text-xs">
             <Sparkles className="h-3 w-3 mr-1" />
             Featured
+          </Badge>
+        )}
+        {(template.livePreview || template.previewUrl) && (
+          <Badge className="absolute top-3 right-3 bg-[#10B981] text-white hover:bg-[#059669] text-xs">
+            Live Preview
           </Badge>
         )}
       </div>

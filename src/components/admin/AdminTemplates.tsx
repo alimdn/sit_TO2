@@ -25,6 +25,8 @@ interface Template {
   industries: string
   featured: boolean
   active: boolean
+  previewUrl?: string
+  livePreview?: string
 }
 
 const categories = ['Education', 'Business', 'Portfolio', 'E-commerce', 'Blog', 'SaaS']
@@ -41,6 +43,8 @@ export default function AdminTemplates() {
     image: '',
     features: '',
     industries: '',
+    previewUrl: '',
+    livePreview: '',
     featured: false,
     active: true,
   })
@@ -56,7 +60,7 @@ export default function AdminTemplates() {
 
   const openCreate = () => {
     setEditing(null)
-    setForm({ title: '', description: '', category: 'Business', image: '', features: '', industries: '', featured: false, active: true })
+    setForm({ title: '', description: '', category: 'Business', image: '', features: '', industries: '', previewUrl: '', livePreview: '', featured: false, active: true })
     setDialogOpen(true)
   }
 
@@ -69,6 +73,8 @@ export default function AdminTemplates() {
       image: t.image,
       features: Array.isArray(JSON.parse(t.features)) ? (JSON.parse(t.features) as string[]).join(', ') : '',
       industries: Array.isArray(JSON.parse(t.industries)) ? (JSON.parse(t.industries) as string[]).join(', ') : '',
+      previewUrl: (t as any).previewUrl || '',
+      livePreview: (t as any).livePreview || '',
       featured: t.featured,
       active: t.active,
     })
@@ -202,6 +208,16 @@ export default function AdminTemplates() {
             <div className="space-y-2">
               <Label>Industries (comma-separated)</Label>
               <Input value={form.industries} onChange={(e) => setForm({ ...form, industries: e.target.value })} placeholder="Industry 1, Industry 2, ..." />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Preview URL</Label>
+                <Input value={form.previewUrl} onChange={(e) => setForm({ ...form, previewUrl: e.target.value })} placeholder="/templates/your-template.html" />
+              </div>
+              <div className="space-y-2">
+                <Label>Live Preview URL</Label>
+                <Input value={form.livePreview} onChange={(e) => setForm({ ...form, livePreview: e.target.value })} placeholder="/templates/your-template.html" />
+              </div>
             </div>
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">

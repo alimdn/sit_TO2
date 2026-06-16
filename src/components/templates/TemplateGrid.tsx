@@ -17,6 +17,8 @@ interface Template {
   industries: string
   featured: boolean
   active: boolean
+  previewUrl?: string
+  livePreview?: string
 }
 
 const categories = ['All', 'Education', 'Business', 'Portfolio', 'E-commerce', 'Blog', 'SaaS']

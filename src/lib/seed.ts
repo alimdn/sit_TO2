@@ -158,6 +158,18 @@ export async function seedDatabase() {
       featured: false,
       active: true,
     },
+    {
+      title: 'EduMentor — Course Platform',
+      description: 'A comprehensive e-learning platform template for selling online courses. Features include course cards with category filtering, interactive syllabus with accordion modules, quiz system with instant feedback, progress tracking with visual charts, instructor profiles, course detail modal with cart, and a complete pricing section. Built with Tailwind CSS and fully responsive design. Perfect for online academies, training centers, and educational institutions.',
+      category: 'Education',
+      image: '/images/template-education.png',
+      previewUrl: '/templates/edumentor-course-platform.html',
+      features: JSON.stringify(['Video Course Player', 'Interactive Syllabus', 'Quiz System', 'Progress Tracking', 'Student Dashboard', 'Instructor Profiles', 'Course Filtering', 'Responsive Design', 'Accordion Modules', 'Course Modal']),
+      industries: JSON.stringify(['Education', 'E-Learning', 'Training', 'Academy', 'Online Courses', 'Corporate Training']),
+      livePreview: '/templates/edumentor-course-platform.html',
+      featured: true,
+      active: true,
+    },
   ]
 
   for (const template of templates) {

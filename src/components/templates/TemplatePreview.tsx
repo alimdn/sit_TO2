@@ -15,6 +15,8 @@ interface Template {
   features: string
   industries: string
   featured: boolean
+  previewUrl?: string
+  livePreview?: string
 }
 
 const ADD_ONS = [
@@ -869,12 +871,22 @@ export default function TemplatePreview() {
               </div>
             </div>
             {/* Browser content area */}
-            <div className="flex-1 overflow-auto bg-white">
-              <img
-                src={template.image}
-                alt={template.title}
-                className="w-full object-cover"
-              />
+            <div className="flex-1 overflow-hidden bg-white relative">
+              {(template.livePreview || template.previewUrl) ? (
+                <iframe
+                  src={template.livePreview || template.previewUrl}
+                  title={`${template.title} — Live Preview`}
+                  className="w-full h-full border-0"
+                  sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                  loading="lazy"
+                />
+              ) : (
+                <img
+                  src={template.image}
+                  alt={template.title}
+                  className="w-full object-cover"
+                />
+              )}
             </div>
           </div>
         </div>

@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+#!/usr/bin/env python3
+"""Generate a high-quality EduMentor course platform template HTML."""
+
+template_html = '''<!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
 <meta charset="UTF-8"/>
@@ -1090,4 +1093,12 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 </script>
 
 </body>
-</html>
+</html>'''
+
+# Write the template HTML file
+output_path = '/home/z/my-project/public/templates/edumentor-course-platform.html'
+with open(output_path, 'w', encoding='utf-8') as f:
+    f.write(template_html)
+
+print(f"Template written to {output_path}")
+print(f"Size: {len(template_html)} bytes")

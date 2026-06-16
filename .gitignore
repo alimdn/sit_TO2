@@ -54,3 +54,4 @@ server.log
 /skills/db/
 tool-results/
 skills/
+db/*.db

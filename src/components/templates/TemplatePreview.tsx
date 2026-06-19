@@ -75,8 +75,12 @@ export default function TemplatePreview() {
 
   // Additional info & similar site
   const [additionalInfo, setAdditionalInfo] = useState('')
+  const [additionalInfoSaved, setAdditionalInfoSaved] = useState(false)
   const [similarSiteUrl, setSimilarSiteUrl] = useState('')
   const [selectedSimilarities, setSelectedSimilarities] = useState<string[]>([])
+
+  // Extra template features (beyond the free limit) — available to add as paid extras
+  const [extraTemplateFeatures, setExtraTemplateFeatures] = useState<string[]>([])
 
   // Domain search
   const [domainQuery, setDomainQuery] = useState('')
@@ -113,7 +117,11 @@ export default function TemplatePreview() {
         if (!cancelled) {
           setTemplate(data)
           const templateFeatures: string[] = data?.features ? JSON.parse(data.features) : []
-          setSelectedFeatures(templateFeatures)
+          // Only auto-select the first 5 features (within the free limit).
+          // Remaining template features are moved to the available pool so the
+          // customer can manually add them as paid extras (+$3 each).
+          setSelectedFeatures(templateFeatures.slice(0, FREE_FEATURES_LIMIT))
+          setExtraTemplateFeatures(templateFeatures.slice(FREE_FEATURES_LIMIT))
         }
       })
       .catch(() => { if (!cancelled) setTemplate(null) })
@@ -138,8 +146,6 @@ export default function TemplatePreview() {
   }, [])
 
   if (!previewTemplate) return null
-
-  const industries: string[] = template?.industries ? JSON.parse(template.industries) : []
 
   const basePriceMonthly = planPrices.monthly ?? 30
   const basePriceSemiAnnual = planPrices.semi_annual ?? 160
@@ -198,6 +204,14 @@ export default function TemplatePreview() {
     setSelectedSimilarities(prev => prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id])
   }
 
+  const handleSaveAdditionalInfo = () => {
+    setAdditionalInfoSaved(true)
+  }
+
+  const handleEditAdditionalInfo = () => {
+    setAdditionalInfoSaved(false)
+  }
+
   // Domain search
   const handleDomainSearch = async () => {
     if (!domainQuery.trim()) return
@@ -230,7 +244,7 @@ export default function TemplatePreview() {
     }
   }
 
-  const availableFeatures = EXTRA_FEATURES_POOL.filter(f => !selectedFeatures.includes(f))
+  const availableFeatures = [...EXTRA_FEATURES_POOL, ...extraTemplateFeatures].filter(f => !selectedFeatures.includes(f))
 
   const handleProceedToCheckout = () => {
     if (!template) return
@@ -316,12 +330,12 @@ export default function TemplatePreview() {
               <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
                 <div className="flex items-center justify-between mb-2">
                   <h2 className="text-base font-bold text-[#000f22]">Features</h2>
-                  <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[#f1f4f7] text-[#4F5B76]">
+                  <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[#f1f4f7] text-[#4F5B76]" translate="no" lang="en">
                     {selectedFeatures.length} selected · {FREE_FEATURES_LIMIT} free
                   </span>
                 </div>
                 <p className="text-xs text-[#4F5B76] mb-3">
-                  First {FREE_FEATURES_LIMIT} free. Extra: <span className="font-semibold text-[#000f22]">+$3/{period}</span> each.
+                  First {FREE_FEATURES_LIMIT} free. Extra: <span className="font-semibold text-[#000f22]" translate="no" lang="en">+$3/{period}</span> each.
                 </p>
 
                 {/* Selected features - compact grid */}
@@ -339,7 +353,7 @@ export default function TemplatePreview() {
                         </div>
                         <span className="text-[#43474d] flex-1 truncate">{feature}</span>
                         {!isFree && (
-                          <span className="text-[9px] font-bold text-[#F59E0B]">+$3</span>
+                          <span className="text-[9px] font-bold text-[#F59E0B]" translate="no" lang="en">+$3</span>
                         )}
                         <button
                           onClick={() => removeFeature(feature)}
@@ -414,26 +428,12 @@ export default function TemplatePreview() {
                     </Button>
                   </div>
                   {selectedFeatures.length >= FREE_FEATURES_LIMIT && customFeatureInput.trim() && (
-                    <p className="text-[10px] text-[#F59E0B] mt-1 flex items-center gap-1">
+                    <p className="text-[10px] text-[#F59E0B] mt-1 flex items-center gap-1" translate="no" lang="en">
                       <span className="font-semibold">+$3/{period}</span> — exceeds free feature limit
                     </p>
                   )}
                 </div>
               </div>
-
-              {/* Suitable Industries - compact */}
-              {industries.length > 0 && (
-                <div className="bg-white rounded-2xl p-4 border border-[#e6ebf1] shadow-card">
-                  <h2 className="text-sm font-bold text-[#000f22] mb-2">Suitable For</h2>
-                  <div className="flex flex-wrap gap-1.5">
-                    {industries.map((industry, i) => (
-                      <Badge key={i} variant="outline" className="text-xs border-[#e6ebf1] text-[#4F5B76] py-1 px-2.5">
-                        {industry}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              )}
 
               {/* Additional Notes */}
               <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
@@ -448,14 +448,45 @@ export default function TemplatePreview() {
                 </div>
                 <textarea
                   value={additionalInfo}
-                  onChange={(e) => setAdditionalInfo(e.target.value)}
+                  onChange={(e) => {
+                    setAdditionalInfo(e.target.value)
+                    if (additionalInfoSaved) setAdditionalInfoSaved(false)
+                  }}
                   placeholder="e.g., I want a modern look with blue accents, need Arabic language support, prefer a minimalist homepage..."
                   className="w-full px-4 py-3 rounded-xl border border-[#e6ebf1] bg-[#f7fafd] text-sm text-[#000f22] placeholder:text-[#74777e] focus:outline-none focus:ring-2 focus:ring-[#00D1FF]/30 focus:border-[#00D1FF] resize-none transition-all"
                   rows={4}
+                  disabled={additionalInfoSaved}
                 />
-                {additionalInfo.length > 0 && (
-                  <p className="text-[10px] text-[#74777e] mt-1.5 text-right">{additionalInfo.length} characters</p>
-                )}
+                <div className="flex items-center justify-between mt-3">
+                  {additionalInfo.length > 0 && (
+                    <p className="text-[10px] text-[#74777e]">{additionalInfo.length} characters</p>
+                  )}
+                  <div className="ml-auto flex items-center gap-2">
+                    {additionalInfoSaved && (
+                      <span className="text-[10px] text-[#10B981] font-medium flex items-center gap-1">
+                        <Check className="h-3 w-3" /> Saved
+                      </span>
+                    )}
+                    {additionalInfoSaved ? (
+                      <Button
+                        onClick={handleEditAdditionalInfo}
+                        variant="outline"
+                        className="h-8 px-4 border-[#e6ebf1] text-[#43474d] hover:bg-[#f7fafd] text-xs"
+                      >
+                        <PenLine className="h-3 w-3 mr-1" />
+                        Edit
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={handleSaveAdditionalInfo}
+                        disabled={!additionalInfo.trim()}
+                        className="h-8 px-4 bg-[#000f22] hover:bg-[#0A2540] text-white text-xs disabled:opacity-40"
+                      >
+                        Save Information
+                      </Button>
+                    )}
+                  </div>
+                </div>
               </div>
 
               {/* Similar Website Reference */}
@@ -625,22 +656,19 @@ export default function TemplatePreview() {
                             </span>
                           </div>
                           <p className="text-[10px] text-[#74777e]">
-                            {result.available ? 'Available' : 'Taken'}
+                            {result.available ? 'Available — click to select' : 'Taken'}
                           </p>
                         </div>
-                        {result.available && (
-                          <span className={`text-xs font-bold flex-shrink-0 ${
-                            selectedDomain?.domain === result.domain ? 'text-[#FF6B35]' : 'text-[#000f22]'
-                          }`}>
-                            ${result.price.toFixed(2)}/yr
-                          </span>
-                        )}
+                        {/* Price is hidden in search results; it is only revealed after
+                            the user selects a domain (see "Selected Domain" summary below). */}
                       </button>
                     ))}
                   </div>
                 )}
 
-                {/* Selected domain summary */}
+                {/* Selected domain summary — only visible after the user selects a domain.
+                    The price is intentionally hidden in the search results above and is
+                    only revealed here once a domain has been chosen. */}
                 {selectedDomain && (
                   <div className="p-3 rounded-xl bg-[#FF6B35]/5 border border-[#FF6B35]/20">
                     <div className="flex items-center justify-between mb-1">
@@ -653,7 +681,7 @@ export default function TemplatePreview() {
                       </button>
                     </div>
                     <p className="text-sm font-bold text-[#FF6B35]">{selectedDomain.domain}</p>
-                    <div className="mt-1.5 text-[10px] text-[#43474d] space-y-0.5">
+                    <div className="mt-1.5 text-[10px] text-[#43474d] space-y-0.5" translate="no" lang="en">
                       <p>Domain cost: <span className="font-semibold">${selectedDomain.price.toFixed(2)}/yr</span></p>
                       {selectedDomain.price <= domainBaseIncluded ? (
                         <p className="text-[#10B981] font-medium">Included free (under ${domainBaseIncluded})</p>
@@ -696,8 +724,8 @@ export default function TemplatePreview() {
                       6-Mo
                       <span className={`text-[8px] font-bold px-1 py-0.5 rounded-full ${
                         billing === 'semi_annual' ? 'bg-[#000f22] text-[#00D1FF]' : 'bg-[#F59E0B]/20 text-[#F59E0B]'
-                      }`}>
-                        -5%
+                      }`} translate="no" lang="en">
+                        -11%
                       </span>
                     </button>
                     <button
@@ -709,13 +737,13 @@ export default function TemplatePreview() {
                       Annual
                       <span className={`text-[8px] font-bold px-1 py-0.5 rounded-full ${
                         billing === 'annual' ? 'bg-[#000f22] text-[#00D1FF]' : 'bg-[#10B981]/20 text-[#10B981]'
-                      }`}>
+                      }`} translate="no" lang="en">
                         -17%
                       </span>
                     </button>
                   </div>
                   <div className="mt-2 text-center">
-                    <span className="text-[11px] text-[#768dad]">
+                    <span className="text-[11px] text-[#768dad]" translate="no" lang="en">
                       {billing === 'monthly' ? `$${basePriceMonthly}/month` : billing === 'semi_annual' ? `$${basePriceSemiAnnual}/6 months` : `$${basePriceAnnual}/year`}
                     </span>
                   </div>
@@ -731,13 +759,13 @@ export default function TemplatePreview() {
                     </div>
                   </div>
 
-                  <div className="flex justify-between text-sm pt-2">
+                  <div className="flex justify-between text-sm pt-2" translate="no" lang="en">
                     <span className="text-[#768dad]">Plan ({billing === 'monthly' ? 'Monthly' : billing === 'semi_annual' ? 'Semi-Annual' : 'Annual'})</span>
                     <span>${basePrice}/{period}</span>
                   </div>
 
                   {extraFeaturesCount > 0 && (
-                    <div className="flex justify-between text-sm">
+                    <div className="flex justify-between text-sm" translate="no" lang="en">
                       <span className="text-[#768dad]">Extra features ({extraFeaturesCount} × $3)</span>
                       <span className="text-[#F59E0B]">+${extraFeatureTotal}/{period}</span>
                     </div>
@@ -746,7 +774,7 @@ export default function TemplatePreview() {
                   {selectedAddOns.map((addOnId) => {
                     const addOn = ADD_ONS.find(a => a.id === addOnId)
                     return addOn ? (
-                      <div key={addOnId} className="flex justify-between text-sm">
+                      <div key={addOnId} className="flex justify-between text-sm" translate="no" lang="en">
                         <span className="text-[#768dad] truncate mr-2">{addOn.name}</span>
                         <span className="text-[#00D1FF] flex-shrink-0">+{billing === 'monthly' ? '$3/mo' : billing === 'semi_annual' ? '$18/6mo' : '$36/yr'}</span>
                       </div>
@@ -754,7 +782,7 @@ export default function TemplatePreview() {
                   })}
 
                   {selectedDomain && domainMonthlyInstallment > 0 && (
-                    <div className="flex justify-between text-sm">
+                    <div className="flex justify-between text-sm" translate="no" lang="en">
                       <span className="text-[#768dad]">Domain installment ({domainInstallmentMonths} × $3)</span>
                       <span className="text-[#FF6B35]">+${domainInstallmentTotal}/{period}</span>
                     </div>
@@ -783,7 +811,7 @@ export default function TemplatePreview() {
                 </div>
 
                 <div className="px-6 pt-4 pb-6">
-                  <div className="flex justify-between items-baseline mb-2">
+                  <div className="flex justify-between items-baseline mb-2" translate="no" lang="en">
                     <span className="text-[#768dad] text-sm">Total</span>
                     <div className="text-right">
                       <span className="text-3xl font-bold">${total}</span>

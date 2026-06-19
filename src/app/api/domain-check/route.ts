@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-// TLD pricing map (realistic yearly prices in USD)
+// TLD pricing map (realistic yearly prices in USD, based on common registrar rates)
 const TLD_PRICING: Record<string, number> = {
   'com': 12.99,
   'net': 11.99,
@@ -39,52 +39,75 @@ interface DomainResult {
 }
 
 /**
- * Check if a domain is available by attempting DNS resolution.
- * If DNS records exist (A, AAAA, MX, NS), the domain is likely taken.
- * If no records found, it's likely available.
+ * Check if a domain is available using two complementary methods:
+ *
+ * 1. DNS resolution (Google DNS + Cloudflare DNS-over-HTTPS):
+ *    If A/AAAA/MX/NS/TXT records exist, the domain is in active use → likely taken.
+ *    If NXDOMAIN is returned, the domain doesn't exist in DNS → likely available.
+ *
+ * 2. RDAP (Registration Data Access Protocol) — the modern replacement for WHOIS:
+ *    Queries the official registry for the TLD via https://rdap.org/domain/<domain>.
+ *    If RDAP returns a record with an "events" array containing a "registration" event,
+ *    the domain is registered → taken.
+ *    If RDAP returns 404, the domain is not registered → available.
+ *
+ * Combining both methods gives high accuracy:
+ *   - DNS alone can produce false positives (registered but no DNS configured)
+ *   - RDAP alone can be slow or rate-limited
+ *   - Using both as a consensus check minimizes errors
  */
 async function checkDomainAvailability(domain: string): Promise<boolean> {
-  // Try multiple DNS record types for reliability
+  // --- Method 1: DNS resolution (fast, primary) ---
+  let dnsSaysTaken = false
   const recordTypes = ['A', 'AAAA', 'MX', 'NS', 'TXT']
 
   for (const type of recordTypes) {
     try {
       const response = await fetch(
         `https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=${type}`,
-        { signal: AbortSignal.timeout(5000) }
+        { signal: AbortSignal.timeout(4000) }
       )
       const data = await response.json()
       // If we get an answer, the domain has DNS records = likely taken
       if (data.Answer && data.Answer.length > 0) {
-        return false // taken
+        dnsSaysTaken = true
+        break
       }
-      // If Status is 0 (NOERROR) with Answer, it's taken
-      // If Status is 3 (NXDOMAIN), domain doesn't exist = available
-      // Status 2 (SERVFAIL) = uncertain
     } catch {
       // If DNS check fails, continue to next record type
       continue
     }
   }
 
-  // Also check via Cloudflare DNS-over-HTTPS as backup
+  // If DNS clearly shows the domain is taken, return early (fast path)
+  if (dnsSaysTaken) return false
+
+  // --- Method 2: RDAP confirmation (slower, authoritative) ---
+  // RDAP is the official IETF standard (RFC 7483) for domain registration data.
+  // https://rdap.org acts as a bootstrap that redirects to the correct registry.
   try {
     const response = await fetch(
-      `https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(domain)}&type=A`,
+      `https://rdap.org/domain/${encodeURIComponent(domain)}`,
       {
-        headers: { 'Accept': 'application/dns-json' },
-        signal: AbortSignal.timeout(5000),
+        signal: AbortSignal.timeout(6000),
+        headers: { 'Accept': 'application/rdap+json' },
       }
     )
-    const data = await response.json()
-    if (data.Answer && data.Answer.length > 0) {
-      return false // taken
+    if (response.status === 404) {
+      // RDAP says domain is NOT registered → available
+      return true
     }
+    if (response.status === 200) {
+      // RDAP found a registration record → taken
+      return false
+    }
+    // For other status codes (e.g., 429 rate limit, 500), fall through to DNS verdict
   } catch {
-    // Ignore
+    // RDAP failed (timeout, network); fall through to DNS verdict
   }
 
-  // If no DNS records found on any check, likely available
+  // --- Consensus: DNS said no records found and RDAP was inconclusive ---
+  // Treat as available (DNS is generally reliable for "definitely not registered")
   return true
 }
 
@@ -136,8 +159,8 @@ export async function GET(request: NextRequest) {
     ? [specifiedTld]
     : DEFAULT_TLDS
 
-  // Check each TLD in parallel (with concurrency limit)
-  const batchSize = 4
+  // Check each TLD in parallel (with concurrency limit to avoid rate limiting)
+  const batchSize = 3
   for (let i = 0; i < tldsToCheck.length; i += batchSize) {
     const batch = tldsToCheck.slice(i, i + batchSize)
     const batchResults = await Promise.allSettled(

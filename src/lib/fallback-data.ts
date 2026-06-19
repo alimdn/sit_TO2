@@ -217,21 +217,21 @@ export const fallbackFaqs = [
   {
     id: 'f1',
     question: 'How does the subscription model work?',
-    answer: 'Our subscription model provides you with a professionally designed website for a monthly or annual fee. This includes hosting, maintenance, design updates, and technical support. You can cancel anytime with our flexible plans.',
+    answer: 'Our subscription model provides you with a professionally designed website for a monthly, semi-annual, or annual fee. This includes hosting, maintenance, design updates, and technical support. You can cancel anytime with our flexible plans.',
     order: 1,
     active: true,
   },
   {
     id: 'f2',
     question: "What's included in the website design?",
-    answer: 'Every subscription includes a custom-designed website based on your chosen template, responsive mobile layouts, SSL certificate, domain setup, SEO optimization, and ongoing maintenance. Annual plans also include priority support and e-commerce integration.',
+    answer: 'Every subscription includes a custom-designed website based on your chosen template, responsive mobile layouts, SSL certificate, domain setup, and SEO optimization.',
     order: 2,
     active: true,
   },
   {
     id: 'f3',
     question: 'Can I switch between plans?',
-    answer: "Yes! You can upgrade or downgrade your plan at any time. When upgrading, you'll get immediate access to additional features. When downgrading, changes take effect at the start of your next billing cycle.",
+    answer: 'Yes! You can upgrade or downgrade your plan at any time.',
     order: 3,
     active: true,
   },
@@ -252,7 +252,7 @@ export const fallbackFaqs = [
   {
     id: 'f6',
     question: 'What happens if I cancel my subscription?',
-    answer: 'If you cancel, your website will remain active until the end of your current billing period. After that, we provide a 30-day grace period to export your data. You can reactivate your subscription at any time.',
+    answer: 'If you cancel, your website will remain active until the end of your current billing period. After that, we provide a 30-day grace period to export your data. You can reactivate your subscription at any time. Additionally, you have the right to download your site data after the first year from creating the site, or pay the difference for the first year design and preparation fees — in which case the client receives the site files + domain + ownership transfer.',
     order: 6,
     active: true,
   },

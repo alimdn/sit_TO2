@@ -36,13 +36,16 @@ export async function GET() {
   const seenIds = new Set<string>()
   const seenTitles = new Set<string>()
 
-  // 3a. Admin overrides first (highest priority)
+  // 3a. Admin overrides first (highest priority).
+  // IMPORTANT: register the id in seenIds even when the override is inactive,
+  // so the fallback seed version doesn't slip back into the public list.
+  // (An admin who set active=false must see the template hidden publicly.)
   for (const t of adminTemplates) {
     if (deletedIds.has(t.id)) continue
-    if (!t.active) continue
-    merged.push(t)
     seenIds.add(t.id)
     seenTitles.add(t.title)
+    if (!t.active) continue
+    merged.push(t)
   }
 
   // 3b. DB rows (when available)

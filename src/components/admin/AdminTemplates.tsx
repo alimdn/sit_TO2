@@ -187,6 +187,38 @@ export default function AdminTemplates() {
     }
   }
 
+  // Toggle the active state of a template in-place by clicking the status badge.
+  // Sends a PUT request with only the `active` field so the rest of the template
+  // is preserved (the API merges with the existing record).
+  const [togglingId, setTogglingId] = useState<string | null>(null)
+  const toggleActive = async (t: Template) => {
+    setTogglingId(t.id)
+    const newActive = !t.active
+    // Optimistically update the UI
+    setTemplates(prev => prev.map(x => x.id === t.id ? { ...x, active: newActive } : x))
+    try {
+      const res = await fetch(`/api/templates/${t.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ active: newActive }),
+      })
+      if (res.ok) {
+        toast.success(`Template ${newActive ? 'activated' : 'deactivated'} successfully`)
+      } else {
+        // Revert on failure
+        setTemplates(prev => prev.map(x => x.id === t.id ? { ...x, active: !newActive } : x))
+        const err = await res.json().catch(() => ({}))
+        toast.error(err?.error || `Failed to toggle (HTTP ${res.status})`)
+      }
+    } catch (e) {
+      // Revert on network error
+      setTemplates(prev => prev.map(x => x.id === t.id ? { ...x, active: !newActive } : x))
+      toast.error('Network error while toggling template status')
+    } finally {
+      setTogglingId(null)
+    }
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -262,9 +294,28 @@ export default function AdminTemplates() {
                     <Badge variant="secondary" className="text-xs">{t.category}</Badge>
                   </TableCell>
                   <TableCell>
-                    <Badge className={t.active ? 'bg-[#10B981]/10 text-[#10B981]' : 'bg-[#74777e]/10 text-[#74777e]'}>
-                      {t.active ? 'Active' : 'Inactive'}
-                    </Badge>
+                    <button
+                      onClick={() => toggleActive(t)}
+                      disabled={togglingId === t.id}
+                      title={t.active ? 'Click to deactivate (hide from public site)' : 'Click to activate (show on public site)'}
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer disabled:opacity-50 disabled:cursor-wait ${
+                        t.active
+                          ? 'bg-[#10B981]/10 text-[#10B981] hover:bg-[#10B981]/20'
+                          : 'bg-[#74777e]/10 text-[#74777e] hover:bg-[#74777e]/20'
+                      }`}
+                    >
+                      {togglingId === t.id ? (
+                        <>
+                          <div className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                          <span>Updating...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span className={`w-1.5 h-1.5 rounded-full ${t.active ? 'bg-[#10B981]' : 'bg-[#74777e]'}`} />
+                          {t.active ? 'Active' : 'Inactive'}
+                        </>
+                      )}
+                    </button>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-end gap-1">

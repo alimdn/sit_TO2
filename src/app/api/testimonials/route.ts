@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server'
 import { fallbackTestimonials } from '@/lib/fallback-data'
+import { getPendingTestimonials, addPendingTestimonial, getAllPendingTestimonials } from '@/lib/file-store'
 
 export async function GET() {
+  // 1) Try the database first
   try {
     const { db } = await import('@/lib/db')
     const testimonials = await db.testimonial.findMany({
@@ -9,12 +11,20 @@ export async function GET() {
       orderBy: { createdAt: 'desc' },
     })
     if (testimonials.length > 0) {
-      return NextResponse.json(testimonials)
+      // Also merge in approved file-store pending testimonials
+      const fileItems = (await getAllPendingTestimonials()).filter(t => t.active)
+      const dbIds = new Set(testimonials.map(t => t.id))
+      const merged = [...testimonials, ...fileItems.filter(t => !dbIds.has(t.id))]
+      return NextResponse.json(merged)
     }
   } catch (e) {
-    // Database unavailable, use fallback
+    // fall through
   }
-  return NextResponse.json(fallbackTestimonials)
+
+  // 2) Merge approved file-store testimonials with fallback defaults
+  const approvedFileItems = (await getAllPendingTestimonials()).filter(t => t.active)
+  const merged = [...approvedFileItems, ...fallbackTestimonials]
+  return NextResponse.json(merged)
 }
 
 export async function POST(request: Request) {
@@ -22,7 +32,6 @@ export async function POST(request: Request) {
     const body = await request.json()
     const { name, role, company, content, rating } = body || {}
 
-    // Basic validation
     if (!name || typeof name !== 'string' || !name.trim()) {
       return NextResponse.json({ error: 'Name is required' }, { status: 400 })
     }
@@ -37,9 +46,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Rating must be between 1 and 5' }, { status: 400 })
     }
 
-    // Try to persist to the database; if DB is unavailable (e.g. Vercel
-    // serverless without DATABASE_URL), return a 503 so the client can inform
-    // the user that submission is temporarily disabled.
+    // 1) Try the database first
     try {
       const { db } = await import('@/lib/db')
       const created = await db.testimonial.create({
@@ -49,20 +56,28 @@ export async function POST(request: Request) {
           company: company ? String(company).trim().slice(0, 120) : null,
           content: content.trim().slice(0, 2000),
           rating: Math.round(ratingNum),
-          // New submissions start as inactive until an admin approves them
           active: false,
         },
       })
       return NextResponse.json({ ok: true, id: created.id, pending: true }, { status: 201 })
     } catch (dbErr) {
-      console.error('Testimonial POST DB error:', dbErr)
-      return NextResponse.json(
-        { error: 'Review submission is temporarily unavailable. Please try again later.' },
-        { status: 503 },
-      )
+      // 2) Fallback: persist to file-store so admin can approve later
+      const stored = await addPendingTestimonial({
+        name: name.trim().slice(0, 120),
+        role: role.trim().slice(0, 120),
+        company: company ? String(company).trim().slice(0, 120) : null,
+        content: content.trim().slice(0, 2000),
+        rating: Math.round(ratingNum),
+      })
+      return NextResponse.json({ ok: true, id: stored.id, pending: true }, { status: 201 })
     }
   } catch (e) {
     console.error('Testimonial POST error:', e)
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
   }
+}
+
+// Helper for admin endpoint to see pending reviews (used by /api/testimonials/all/route.ts)
+export async function _getPendingList() {
+  return getPendingTestimonials()
 }

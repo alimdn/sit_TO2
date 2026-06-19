@@ -1,22 +1,31 @@
 import { NextResponse } from 'next/server'
 import { fallbackTestimonials } from '@/lib/fallback-data'
+import { getAllPendingTestimonials } from '@/lib/file-store'
 
 // Returns ALL testimonials (active + pending) for the admin panel.
-// The public GET (above) only returns active ones.
+// Merges DB rows + file-store pending rows + fallback defaults.
 export async function GET() {
+  // Start with file-store pending items (they appear first because newest at top)
+  const pendingItems = await getAllPendingTestimonials()
+
   try {
     const { db } = await import('@/lib/db')
     const testimonials = await db.testimonial.findMany({
       orderBy: { createdAt: 'desc' },
     })
     if (testimonials.length > 0) {
-      return NextResponse.json(testimonials)
+      // Merge DB rows with file-store rows (avoiding duplicate IDs)
+      const fileIds = new Set(pendingItems.map(t => t.id))
+      const merged = [...pendingItems, ...testimonials.filter(t => !fileIds.has(t.id))]
+      return NextResponse.json(merged)
     }
   } catch (e) {
     // fall through
   }
-  // Mark fallback ones as active so the admin sees something
-  return NextResponse.json(
-    fallbackTestimonials.map((t) => ({ ...t, active: true })),
-  )
+
+  // Fallback: pending file-store items + default seed testimonials (marked active)
+  return NextResponse.json([
+    ...pendingItems,
+    ...fallbackTestimonials.map((t) => ({ ...t, active: true })),
+  ])
 }

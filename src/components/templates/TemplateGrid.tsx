@@ -30,7 +30,11 @@ export default function TemplateGrid() {
   const [search, setSearch] = useState('')
 
   useEffect(() => {
-    fetch('/api/templates')
+    // Use cache: 'no-store' so the public Templates page always reflects
+    // the latest admin changes (active/inactive toggles, edits, deletes).
+    // Without this, the browser may serve a stale cached response and
+    // newly-activated templates won't appear until a hard refresh.
+    fetch('/api/templates', { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         const list = Array.isArray(data) ? data : (Array.isArray(data?.data) ? data.data : [])

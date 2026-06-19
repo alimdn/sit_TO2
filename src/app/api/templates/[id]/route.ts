@@ -1,44 +1,122 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { fallbackTemplates } from '@/lib/fallback-data'
+import {
+  getAdminTemplates,
+  getDeletedTemplateIds,
+  getTemplateById,
+  upsertTemplate,
+  markTemplateDeleted,
+  type StoredTemplate,
+} from '@/lib/file-store'
 
+// GET a single template by id
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
+
+  // 1) Check admin overrides (Blob) first
+  const admin = await getTemplateById(id)
+  if (admin) return NextResponse.json(admin)
+
+  // 2) Try DB
   try {
     const { db } = await import('@/lib/db')
     const template = await db.template.findUnique({ where: { id } })
-    if (template) {
-      return NextResponse.json(template)
-    }
+    if (template) return NextResponse.json(template)
   } catch (e) {
-    // Database unavailable, use fallback
+    // fall through
   }
-  // Try fallback
+
+  // 3) Fallback seed
   const fallback = fallbackTemplates.find(t => t.id === id)
   if (fallback) {
+    // Don't return if it was deleted by admin
+    const deleted = await getDeletedTemplateIds()
+    if (deleted.has(id)) {
+      return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    }
     return NextResponse.json(fallback)
   }
+
   return NextResponse.json({ error: 'Not found' }, { status: 404 })
 }
 
+// PUT — update a template (create or replace an override)
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const body = await req.json()
+
+  // 1) Try DB first
   try {
-    const { id } = await params
     const { db } = await import('@/lib/db')
-    const body = await req.json()
     const template = await db.template.update({ where: { id }, data: body })
     return NextResponse.json(template)
   } catch (e) {
-    return NextResponse.json({ error: 'Database unavailable' }, { status: 503 })
+    // Fall through to Blob fallback
+  }
+
+  // 2) Fallback: write an override to the Blob store.
+  //    If the template exists in fallback-data or as an admin override,
+  //    we keep its id and merge the new fields. Otherwise we create new.
+  try {
+    const now = new Date().toISOString()
+    // Look for existing record (admin override first, then fallback seed)
+    const existing = (await getTemplateById(id))
+      || fallbackTemplates.find(t => t.id === id) as any
+
+    const stored: StoredTemplate = {
+      id,
+      title: String(body.title ?? existing?.title ?? '').slice(0, 200),
+      description: String(body.description ?? existing?.description ?? '').slice(0, 5000),
+      category: String(body.category ?? existing?.category ?? 'Business').slice(0, 100),
+      image: String(body.image ?? existing?.image ?? '').slice(0, 1000),
+      features: typeof body.features === 'string'
+        ? body.features
+        : (existing?.features
+            ? existing.features
+            : JSON.stringify(Array.isArray(body.features) ? body.features : [])),
+      industries: typeof body.industries === 'string'
+        ? body.industries
+        : (existing?.industries
+            ? existing.industries
+            : JSON.stringify(Array.isArray(body.industries) ? body.industries : [])),
+      featured: body.featured !== undefined ? !!body.featured : (existing?.featured ?? false),
+      active: body.active !== undefined ? !!body.active : (existing?.active ?? true),
+      previewUrl: body.previewUrl !== undefined
+        ? (body.previewUrl ? String(body.previewUrl) : null)
+        : (existing?.previewUrl ?? null),
+      livePreview: body.livePreview !== undefined
+        ? (body.livePreview ? String(body.livePreview) : null)
+        : (existing?.livePreview ?? null),
+      createdAt: existing?.createdAt || now,
+      updatedAt: now,
+    }
+    await upsertTemplate(stored)
+    return NextResponse.json(stored)
+  } catch (e) {
+    console.error('Template PUT error:', e)
+    return NextResponse.json({ error: 'Failed to update template' }, { status: 500 })
   }
 }
 
+// DELETE — soft-delete a template (writes a deletion marker)
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+
+  // 1) Try DB first
   try {
-    const { id } = await params
     const { db } = await import('@/lib/db')
     await db.template.delete({ where: { id } })
     return NextResponse.json({ success: true })
   } catch (e) {
-    return NextResponse.json({ error: 'Database unavailable' }, { status: 503 })
+    // Fall through to Blob fallback
+  }
+
+  // 2) Fallback: write a deletion marker to the Blob store
+  try {
+    await markTemplateDeleted(id)
+    return NextResponse.json({ success: true, id, deleted: true })
+  } catch (e) {
+    console.error('Template DELETE error:', e)
+    return NextResponse.json({ error: 'Failed to delete template' }, { status: 500 })
   }
 }

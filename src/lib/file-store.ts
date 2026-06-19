@@ -450,3 +450,231 @@ export async function updatePendingTestimonial(
   if (isBlobConfigured()) await blobUpdateReview(id, updates)
   await localUpdateReview(id, updates)
 }
+
+// ═════════════════════════════════════════════════════════════════════
+// TEMPLATES — append-only override store
+// ═════════════════════════════════════════════════════════════════════
+// Templates have a base set in fallback-data.ts (read-only seed). The
+// admin can CREATE new templates, EDIT existing ones (creating an
+// override), or DELETE any template. We track three operations:
+//
+//   templates/<id>.json        → upserted template (create or edit)
+//   templates-deleted/<id>.json→ marker file meaning "this id is deleted"
+//
+// GET /api/templates merges: fallback ∪ overrides − deleted.
+// This way admins can fully manage templates without a database.
+
+export interface StoredTemplate {
+  id: string
+  title: string
+  description: string
+  category: string
+  image: string
+  features: string        // JSON string of string[]
+  industries: string      // JSON string of string[]
+  featured: boolean
+  active: boolean
+  previewUrl?: string | null
+  livePreview?: string | null
+  createdAt: string
+  updatedAt?: string
+}
+
+const TPL_DIR = path.join(DATA_DIR, 'templates')
+const TPL_DELETED_DIR = path.join(DATA_DIR, 'templates-deleted')
+
+// ─── Local fs helpers ──────────────────────────────────────────────────
+async function localWriteTemplate(t: StoredTemplate): Promise<void> {
+  try {
+    await fs.mkdir(TPL_DIR, { recursive: true })
+    await fs.writeFile(path.join(TPL_DIR, `${t.id}.json`), JSON.stringify(t, null, 2), 'utf-8')
+    // Remove any stale deletion marker (the template is alive again)
+    await fs.unlink(path.join(TPL_DELETED_DIR, `${t.id}.json`)).catch(() => {})
+  } catch (e) {
+    console.error('local template write failed:', e)
+  }
+}
+
+async function localListTemplates(): Promise<StoredTemplate[]> {
+  try {
+    await fs.mkdir(TPL_DIR, { recursive: true })
+    const files = await fs.readdir(TPL_DIR)
+    const items: StoredTemplate[] = []
+    for (const f of files) {
+      if (!f.endsWith('.json')) continue
+      try {
+        const raw = await fs.readFile(path.join(TPL_DIR, f), 'utf-8')
+        items.push(JSON.parse(raw))
+      } catch {
+        // skip corrupt file
+      }
+    }
+    return items
+  } catch {
+    return []
+  }
+}
+
+async function localListDeletedTemplateIds(): Promise<Set<string>> {
+  try {
+    await fs.mkdir(TPL_DELETED_DIR, { recursive: true })
+    const files = await fs.readdir(TPL_DELETED_DIR)
+    const ids = new Set<string>()
+    for (const f of files) {
+      if (f.endsWith('.json')) ids.add(f.replace(/\.json$/, ''))
+    }
+    return ids
+  } catch {
+    return new Set()
+  }
+}
+
+async function localMarkTemplateDeleted(id: string): Promise<void> {
+  try {
+    await fs.mkdir(TPL_DELETED_DIR, { recursive: true })
+    await fs.writeFile(
+      path.join(TPL_DELETED_DIR, `${id}.json`),
+      JSON.stringify({ id, deletedAt: new Date().toISOString() }),
+      'utf-8'
+    )
+    // Remove the override blob if it exists
+    await fs.unlink(path.join(TPL_DIR, `${id}.json`)).catch(() => {})
+  } catch (e) {
+    console.error('local template delete failed:', e)
+  }
+}
+
+// ─── Blob helpers ──────────────────────────────────────────────────────
+async function blobWriteTemplate(t: StoredTemplate): Promise<void> {
+  const blob = await blobHead()
+  if (!blob) return
+  try {
+    await blob.put(`templates/${t.id}.json`, JSON.stringify(t, null, 2), {
+      access: 'public',
+      addRandomSuffix: false,
+      contentType: 'application/json',
+      allowOverwrite: true,
+    })
+    // Remove deletion marker if present
+    try {
+      const list = await blob.list({ prefix: `templates-deleted/${t.id}.json` })
+      for (const b of list.blobs) await blob.del(b.url)
+    } catch {}
+  } catch (e) {
+    console.error('blob template write failed:', e)
+  }
+}
+
+async function blobListTemplates(): Promise<StoredTemplate[]> {
+  const blob = await blobHead()
+  if (!blob) return []
+  try {
+    const list = await blob.list({ prefix: 'templates/' })
+    const items: StoredTemplate[] = []
+    const fetches = list.blobs.map(async (b: { url: string }) => {
+      try {
+        const res = await fetch(b.url, { cache: 'no-store' })
+        if (!res.ok) return
+        const text = await res.text()
+        items.push(JSON.parse(text))
+      } catch {
+        // skip
+      }
+    })
+    await Promise.all(fetches)
+    return items
+  } catch (e) {
+    console.error('blob template list failed:', e)
+    return []
+  }
+}
+
+async function blobListDeletedTemplateIds(): Promise<Set<string>> {
+  const blob = await blobHead()
+  if (!blob) return new Set()
+  try {
+    const list = await blob.list({ prefix: 'templates-deleted/' })
+    const ids = new Set<string>()
+    for (const b of list.blobs) {
+      // Extract id from pathname: 'templates-deleted/<id>.json'
+      const match = b.pathname?.match(/templates-deleted\/(.+)\.json$/)
+      if (match) ids.add(match[1])
+    }
+    return ids
+  } catch {
+    return new Set()
+  }
+}
+
+async function blobMarkTemplateDeleted(id: string): Promise<void> {
+  const blob = await blobHead()
+  if (!blob) return
+  try {
+    await blob.put(
+      `templates-deleted/${id}.json`,
+      JSON.stringify({ id, deletedAt: new Date().toISOString() }, null, 2),
+      {
+        access: 'public',
+        addRandomSuffix: false,
+        contentType: 'application/json',
+        allowOverwrite: true,
+      }
+    )
+    // Remove override blob if present
+    try {
+      const list = await blob.list({ prefix: `templates/${id}.json` })
+      for (const b of list.blobs) await blob.del(b.url)
+    } catch {}
+  } catch (e) {
+    console.error('blob template delete failed:', e)
+  }
+}
+
+// ─── Unified public API ────────────────────────────────────────────────
+
+/**
+ * Returns ALL admin-managed templates (overrides + new templates),
+ * NOT including the fallback seed. The API layer merges these with
+ * fallback-data, applying deletion markers.
+ */
+export async function getAdminTemplates(): Promise<StoredTemplate[]> {
+  let items: StoredTemplate[] = []
+  if (isBlobConfigured()) {
+    items = await blobListTemplates()
+  }
+  const localItems = await localListTemplates()
+  const seen = new Set(items.map(i => i.id))
+  for (const li of localItems) {
+    if (!seen.has(li.id)) {
+      items.push(li)
+      seen.add(li.id)
+    }
+  }
+  return items
+}
+
+export async function getDeletedTemplateIds(): Promise<Set<string>> {
+  let ids = new Set<string>()
+  if (isBlobConfigured()) {
+    ids = await blobListDeletedTemplateIds()
+  }
+  const localIds = await localListDeletedTemplateIds()
+  for (const id of localIds) ids.add(id)
+  return ids
+}
+
+export async function upsertTemplate(t: StoredTemplate): Promise<StoredTemplate> {
+  if (isBlobConfigured()) await blobWriteTemplate(t)
+  await localWriteTemplate(t)
+  return t
+}
+
+export async function markTemplateDeleted(id: string): Promise<void> {
+  if (isBlobConfigured()) await blobMarkTemplateDeleted(id)
+  await localMarkTemplateDeleted(id)
+}
+
+export async function getTemplateById(id: string): Promise<StoredTemplate | null> {
+  const all = await getAdminTemplates()
+  return all.find(t => t.id === id) || null
+}

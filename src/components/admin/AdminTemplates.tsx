@@ -54,7 +54,11 @@ export default function AdminTemplates() {
   })
 
   const fetchTemplates = () => {
-    fetch('/api/templates', { cache: 'no-store' })
+    // Use the /admin endpoint which returns ALL templates (active + inactive).
+    // The public /api/templates only returns active ones, which would make
+    // toggled-off templates disappear from this admin view — making it look
+    // like Inactive was deleting them.
+    fetch('/api/templates/admin', { cache: 'no-store' })
       .then(r => r.json())
       .then(data => {
         if (Array.isArray(data)) setTemplates(data)
@@ -224,8 +228,17 @@ export default function AdminTemplates() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-[#000f22]">Templates Management</h2>
-          <p className="text-xs text-[#4F5B76] mt-1">
-            {templates.length} templates · Changes are saved to Vercel Blob and reflect on the site immediately.
+          <p className="text-xs text-[#4F5B76] mt-1 flex items-center gap-3 flex-wrap">
+            <span>
+              <span className="font-semibold text-[#10B981]">{templates.filter(t => t.active).length}</span> active
+              <span className="mx-1">·</span>
+              <span className="font-semibold text-[#74777e]">{templates.filter(t => !t.active).length}</span> inactive
+              <span className="mx-1">·</span>
+              <span>{templates.length} total</span>
+            </span>
+            <span className="text-[#74777e]">
+              Inactive templates are hidden from the public site but kept here for reactivation.
+            </span>
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -297,7 +310,7 @@ export default function AdminTemplates() {
                     <button
                       onClick={() => toggleActive(t)}
                       disabled={togglingId === t.id}
-                      title={t.active ? 'Click to deactivate (hide from public site)' : 'Click to activate (show on public site)'}
+                      title={t.active ? 'Click to deactivate — template will be hidden from the public site but kept here for reactivation' : 'Click to activate — template will be visible on the public site again'}
                       className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer disabled:opacity-50 disabled:cursor-wait ${
                         t.active
                           ? 'bg-[#10B981]/10 text-[#10B981] hover:bg-[#10B981]/20'

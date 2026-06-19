@@ -1,25 +1,39 @@
 /**
- * Hybrid storage for messages and reviews.
+ * Append-only storage for messages and reviews using Vercel Blob.
  *
- * PRIMARY: Vercel Blob (shared across all serverless instances)
- *   — needs BLOB_READ_WRITE_TOKEN + BLOB_URL env vars (auto-created
- *     when a Blob store is linked to the project in Vercel).
- *   — Durable, survives cold starts and deployments.
+ * DESIGN
+ * ──────
+ * Each message is stored as its OWN blob with a unique pathname like:
+ *   messages/msg-<timestamp>-<random>.json
  *
- * FALLBACK: Local /tmp file system (per-instance, ephemeral)
- *   — Used when Blob env vars are not set.
- *   — Lets the code run in dev / preview without configuration.
+ * The GET endpoint uses the `list()` API to enumerate every blob in
+ * the `messages/` prefix, fetches each one in parallel, and merges them.
  *
- * When DATABASE_URL is set on Vercel, the API routes prefer Prisma
- * and skip this module entirely.
+ * WHY THIS DESIGN
+ * ───────────────
+ * The previous "single blob + read-modify-write" approach had two bugs:
+ *
+ *  1. Race condition: two concurrent POSTs both read the current list,
+ *     both append their new message, both overwrite the same blob. The
+ *     second write wins, deleting the first message.
+ *
+ *  2. Read-during-write flicker: GET reads the blob mid-overwrite and
+ *     occasionally catches an empty or partial file, causing the admin
+ *     panel to briefly show zero messages.
+ *
+ * Append-only eliminates both: writes never touch each other, and a
+ * GET always sees the full set of previously-written blobs.
+ *
+ * The local /tmp file fallback keeps the same append-only pattern so
+ * dev mode behaves identically.
  */
 
 import { promises as fs } from 'fs'
 import path from 'path'
 
 const DATA_DIR = '/tmp/wfs-data'
-const MESSAGES_FILE = path.join(DATA_DIR, 'contact-messages.json')
-const TESTIMONIALS_FILE = path.join(DATA_DIR, 'testimonials-pending.json')
+const MSG_DIR = path.join(DATA_DIR, 'messages')
+const REV_DIR = path.join(DATA_DIR, 'reviews')
 
 export interface StoredContactMessage {
   id: string
@@ -47,10 +61,9 @@ export interface StoredTestimonial {
 // Detect whether Vercel Blob is configured
 // ─────────────────────────────────────────────────────────────────────
 function isBlobConfigured(): boolean {
-  return !!(process.env.BLOB_READ_WRITE_TOKEN && process.env.BLOB_URL)
+  return !!(process.env.BLOB_READ_WRITE_TOKEN)
 }
 
-// Dynamic import of @vercel/blob (avoids import errors in dev when missing)
 async function blobHead() {
   try {
     return await import('@vercel/blob')
@@ -60,133 +73,332 @@ async function blobHead() {
 }
 
 // ─────────────────────────────────────────────────────────────────────
-// Generic JSON read/write helpers
+// Local filesystem helpers (append-only)
 // ─────────────────────────────────────────────────────────────────────
-
-async function localRead<T>(file: string, fallback: T): Promise<T> {
+async function localWriteMessage(id: string, data: StoredContactMessage): Promise<void> {
   try {
-    await fs.mkdir(DATA_DIR, { recursive: true })
-    const raw = await fs.readFile(file, 'utf-8')
-    return JSON.parse(raw) as T
-  } catch {
-    return fallback
-  }
-}
-
-async function localWrite<T>(file: string, data: T): Promise<void> {
-  try {
-    await fs.mkdir(DATA_DIR, { recursive: true })
-    await fs.writeFile(file, JSON.stringify(data, null, 2), 'utf-8')
+    await fs.mkdir(MSG_DIR, { recursive: true })
+    await fs.writeFile(path.join(MSG_DIR, `${id}.json`), JSON.stringify(data, null, 2), 'utf-8')
   } catch (e) {
-    console.error('local write failed:', e)
+    console.error('local message write failed:', e)
   }
 }
 
-async function blobRead<T>(pathname: string, fallback: T): Promise<T> {
-  const blob = await blobHead()
-  if (!blob) return fallback
+async function localListMessages(): Promise<StoredContactMessage[]> {
   try {
-    // Vercel Blob: try to GET the file. head() doesn't return contents;
-    // we use a fetch against the public URL instead.
-    const url = `${process.env.BLOB_URL}/${pathname}.json`
-    const res = await fetch(url, {
-      headers: { Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}` },
-      // @ts-ignore — cache option is valid for fetch on Vercel
-      cache: 'no-store',
-    })
-    if (!res.ok) return fallback
-    const text = await res.text()
-    return JSON.parse(text) as T
+    await fs.mkdir(MSG_DIR, { recursive: true })
+    const files = await fs.readdir(MSG_DIR)
+    const items: StoredContactMessage[] = []
+    for (const f of files) {
+      if (!f.endsWith('.json')) continue
+      try {
+        const raw = await fs.readFile(path.join(MSG_DIR, f), 'utf-8')
+        items.push(JSON.parse(raw))
+      } catch {
+        // skip corrupt file
+      }
+    }
+    return items
   } catch {
-    return fallback
+    return []
   }
 }
 
-async function blobWrite<T>(pathname: string, data: T): Promise<void> {
+async function localDeleteMessage(id: string): Promise<void> {
+  try {
+    await fs.unlink(path.join(MSG_DIR, `${id}.json`))
+  } catch {
+    // ignore
+  }
+}
+
+async function localUpdateMessage(id: string, updates: Partial<StoredContactMessage>): Promise<void> {
+  try {
+    const file = path.join(MSG_DIR, `${id}.json`)
+    const raw = await fs.readFile(file, 'utf-8')
+    const data: StoredContactMessage = JSON.parse(raw)
+    const updated = { ...data, ...updates }
+    await fs.writeFile(file, JSON.stringify(updated, null, 2), 'utf-8')
+  } catch {
+    // ignore
+  }
+}
+
+// Same pattern for reviews
+async function localWriteReview(id: string, data: StoredTestimonial): Promise<void> {
+  try {
+    await fs.mkdir(REV_DIR, { recursive: true })
+    await fs.writeFile(path.join(REV_DIR, `${id}.json`), JSON.stringify(data, null, 2), 'utf-8')
+  } catch (e) {
+    console.error('local review write failed:', e)
+  }
+}
+
+async function localListReviews(): Promise<StoredTestimonial[]> {
+  try {
+    await fs.mkdir(REV_DIR, { recursive: true })
+    const files = await fs.readdir(REV_DIR)
+    const items: StoredTestimonial[] = []
+    for (const f of files) {
+      if (!f.endsWith('.json')) continue
+      try {
+        const raw = await fs.readFile(path.join(REV_DIR, f), 'utf-8')
+        items.push(JSON.parse(raw))
+      } catch {
+        // skip
+      }
+    }
+    return items
+  } catch {
+    return []
+  }
+}
+
+async function localDeleteReview(id: string): Promise<void> {
+  try {
+    await fs.unlink(path.join(REV_DIR, `${id}.json`))
+  } catch {
+    // ignore
+  }
+}
+
+async function localUpdateReview(id: string, updates: Partial<StoredTestimonial>): Promise<void> {
+  try {
+    const file = path.join(REV_DIR, `${id}.json`)
+    const raw = await fs.readFile(file, 'utf-8')
+    const data: StoredTestimonial = JSON.parse(raw)
+    const updated = { ...data, ...updates }
+    await fs.writeFile(file, JSON.stringify(updated, null, 2), 'utf-8')
+  } catch {
+    // ignore
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// Vercel Blob helpers (append-only)
+// ─────────────────────────────────────────────────────────────────────
+async function blobWriteMessage(data: StoredContactMessage): Promise<void> {
   const blob = await blobHead()
   if (!blob) return
   try {
-    // Use put() with a JSON string body and returnJSON access strategy
-    await blob.put(`${pathname}.json`, JSON.stringify(data, null, 2), {
+    await blob.put(`messages/${data.id}.json`, JSON.stringify(data, null, 2), {
       access: 'public',
       addRandomSuffix: false,
       contentType: 'application/json',
       allowOverwrite: true,
     })
   } catch (e) {
-    console.error('blob write failed:', e)
+    console.error('blob message write failed:', e)
   }
 }
 
-// Unified read/write that picks Blob when configured, else local fs
-async function readJson<T>(pathname: string, localFile: string, fallback: T): Promise<T> {
-  if (isBlobConfigured()) {
-    const blobData = await blobRead<T>(pathname, fallback as T)
-    if (blobData && (!Array.isArray(blobData) || blobData.length > 0)) {
-      return blobData
+async function blobListMessages(): Promise<StoredContactMessage[]> {
+  const blob = await blobHead()
+  if (!blob) return []
+  try {
+    const list = await blob.list({ prefix: 'messages/' })
+    const items: StoredContactMessage[] = []
+    // Fetch each blob in parallel
+    const fetches = list.blobs.map(async (b: { url: string }) => {
+      try {
+        const res = await fetch(b.url, { cache: 'no-store' })
+        if (!res.ok) return
+        const text = await res.text()
+        items.push(JSON.parse(text))
+      } catch {
+        // skip
+      }
+    })
+    await Promise.all(fetches)
+    return items
+  } catch (e) {
+    console.error('blob message list failed:', e)
+    return []
+  }
+}
+
+async function blobDeleteMessage(id: string): Promise<void> {
+  const blob = await blobHead()
+  if (!blob) return
+  try {
+    const list = await blob.list({ prefix: `messages/${id}.json` })
+    for (const b of list.blobs) {
+      await blob.del(b.url)
     }
-    // Fall back to local if Blob returned empty (e.g., first run)
-    return localRead<T>(localFile, fallback)
+  } catch (e) {
+    console.error('blob message delete failed:', e)
   }
-  return localRead<T>(localFile, fallback)
 }
 
-async function writeJson<T>(pathname: string, localFile: string, data: T): Promise<void> {
-  if (isBlobConfigured()) {
-    await blobWrite<T>(pathname, data)
+async function blobUpdateMessage(id: string, updates: Partial<StoredContactMessage>): Promise<void> {
+  const blob = await blobHead()
+  if (!blob) return
+  try {
+    const list = await blob.list({ prefix: `messages/${id}.json` })
+    if (list.blobs.length === 0) return
+    const res = await fetch(list.blobs[0].url, { cache: 'no-store' })
+    if (!res.ok) return
+    const data: StoredContactMessage = await res.json()
+    const updated = { ...data, ...updates }
+    await blob.put(`messages/${id}.json`, JSON.stringify(updated, null, 2), {
+      access: 'public',
+      addRandomSuffix: false,
+      contentType: 'application/json',
+      allowOverwrite: true,
+    })
+  } catch (e) {
+    console.error('blob message update failed:', e)
   }
-  // Always also write locally so reads are fast on the same instance
-  await localWrite<T>(localFile, data)
+}
+
+// Same pattern for reviews
+async function blobWriteReview(data: StoredTestimonial): Promise<void> {
+  const blob = await blobHead()
+  if (!blob) return
+  try {
+    await blob.put(`reviews/${data.id}.json`, JSON.stringify(data, null, 2), {
+      access: 'public',
+      addRandomSuffix: false,
+      contentType: 'application/json',
+      allowOverwrite: true,
+    })
+  } catch (e) {
+    console.error('blob review write failed:', e)
+  }
+}
+
+async function blobListReviews(): Promise<StoredTestimonial[]> {
+  const blob = await blobHead()
+  if (!blob) return []
+  try {
+    const list = await blob.list({ prefix: 'reviews/' })
+    const items: StoredTestimonial[] = []
+    const fetches = list.blobs.map(async (b: { url: string }) => {
+      try {
+        const res = await fetch(b.url, { cache: 'no-store' })
+        if (!res.ok) return
+        const text = await res.text()
+        items.push(JSON.parse(text))
+      } catch {
+        // skip
+      }
+    })
+    await Promise.all(fetches)
+    return items
+  } catch (e) {
+    console.error('blob review list failed:', e)
+    return []
+  }
+}
+
+async function blobDeleteReview(id: string): Promise<void> {
+  const blob = await blobHead()
+  if (!blob) return
+  try {
+    const list = await blob.list({ prefix: `reviews/${id}.json` })
+    for (const b of list.blobs) {
+      await blob.del(b.url)
+    }
+  } catch (e) {
+    console.error('blob review delete failed:', e)
+  }
+}
+
+async function blobUpdateReview(id: string, updates: Partial<StoredTestimonial>): Promise<void> {
+  const blob = await blobHead()
+  if (!blob) return
+  try {
+    const list = await blob.list({ prefix: `reviews/${id}.json` })
+    if (list.blobs.length === 0) return
+    const res = await fetch(list.blobs[0].url, { cache: 'no-store' })
+    if (!res.ok) return
+    const data: StoredTestimonial = await res.json()
+    const updated = { ...data, ...updates }
+    await blob.put(`reviews/${id}.json`, JSON.stringify(updated, null, 2), {
+      access: 'public',
+      addRandomSuffix: false,
+      contentType: 'application/json',
+      allowOverwrite: true,
+    })
+  } catch (e) {
+    console.error('blob review update failed:', e)
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────
-// Contact messages
+// Unified public API (uses Blob when configured, else local fs)
 // ─────────────────────────────────────────────────────────────────────
 
 export async function getContactMessages(): Promise<StoredContactMessage[]> {
-  const messages = await readJson<StoredContactMessage[]>('contact-messages', MESSAGES_FILE, [])
-  if (!Array.isArray(messages)) return []
-  messages.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-  return messages
+  let items: StoredContactMessage[] = []
+  if (isBlobConfigured()) {
+    items = await blobListMessages()
+  }
+  // Always also check local fs (helps in dev/preview and as a safety net)
+  const localItems = await localListMessages()
+  // Merge, dedupe by id
+  const seen = new Set(items.map(i => i.id))
+  for (const li of localItems) {
+    if (!seen.has(li.id)) {
+      items.push(li)
+      seen.add(li.id)
+    }
+  }
+  items.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+  return items
 }
 
 export async function addContactMessage(
   data: Omit<StoredContactMessage, 'id' | 'isRead' | 'createdAt'>
 ): Promise<StoredContactMessage> {
-  const messages = await getContactMessages()
   const newMessage: StoredContactMessage = {
     ...data,
     id: 'msg-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8),
     isRead: false,
     createdAt: new Date().toISOString(),
   }
-  // Prepend and write back
-  const updated = [newMessage, ...messages]
-  await writeJson('contact-messages', MESSAGES_FILE, updated)
+  // Write to BOTH blob (primary, shared) and local fs (fast read on same instance)
+  if (isBlobConfigured()) {
+    await blobWriteMessage(newMessage)
+  }
+  await localWriteMessage(newMessage.id, newMessage)
   return newMessage
 }
 
 export async function markContactMessageRead(id: string): Promise<void> {
-  const messages = await getContactMessages()
-  const idx = messages.findIndex(m => m.id === id)
-  if (idx >= 0) {
-    messages[idx].isRead = true
-    await writeJson('contact-messages', MESSAGES_FILE, messages)
-  }
+  const updates = { isRead: true }
+  if (isBlobConfigured()) await blobUpdateMessage(id, updates)
+  await localUpdateMessage(id, updates)
+}
+
+export async function markContactMessageUnread(id: string): Promise<void> {
+  const updates = { isRead: false }
+  if (isBlobConfigured()) await blobUpdateMessage(id, updates)
+  await localUpdateMessage(id, updates)
 }
 
 export async function deleteContactMessage(id: string): Promise<void> {
-  const messages = await getContactMessages()
-  await writeJson('contact-messages', MESSAGES_FILE, messages.filter(m => m.id !== id))
+  if (isBlobConfigured()) await blobDeleteMessage(id)
+  await localDeleteMessage(id)
 }
 
 // ─────────────────────────────────────────────────────────────────────
-// Pending testimonials
+// Pending testimonials (same append-only pattern)
 // ─────────────────────────────────────────────────────────────────────
 
 export async function getPendingTestimonials(): Promise<StoredTestimonial[]> {
-  const items = await readJson<StoredTestimonial[]>('testimonials-pending', TESTIMONIALS_FILE, [])
-  if (!Array.isArray(items)) return []
+  let items: StoredTestimonial[] = []
+  if (isBlobConfigured()) {
+    items = await blobListReviews()
+  }
+  const localItems = await localListReviews()
+  const seen = new Set(items.map(i => i.id))
+  for (const li of localItems) {
+    if (!seen.has(li.id)) {
+      items.push(li)
+      seen.add(li.id)
+    }
+  }
   items.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
   return items
 }
@@ -194,15 +406,14 @@ export async function getPendingTestimonials(): Promise<StoredTestimonial[]> {
 export async function addPendingTestimonial(
   data: Omit<StoredTestimonial, 'id' | 'active' | 'createdAt'>
 ): Promise<StoredTestimonial> {
-  const items = await getPendingTestimonials()
   const newItem: StoredTestimonial = {
     ...data,
     id: 'rev-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8),
     active: false,
     createdAt: new Date().toISOString(),
   }
-  const updated = [newItem, ...items]
-  await writeJson('testimonials-pending', TESTIMONIALS_FILE, updated)
+  if (isBlobConfigured()) await blobWriteReview(newItem)
+  await localWriteReview(newItem.id, newItem)
   return newItem
 }
 
@@ -211,15 +422,31 @@ export async function getAllPendingTestimonials(): Promise<StoredTestimonial[]> 
 }
 
 export async function deletePendingTestimonial(id: string): Promise<void> {
-  const items = await getPendingTestimonials()
-  await writeJson('testimonials-pending', TESTIMONIALS_FILE, items.filter(t => t.id !== id))
+  if (isBlobConfigured()) await blobDeleteReview(id)
+  await localDeleteReview(id)
 }
 
 export async function approvePendingTestimonial(id: string): Promise<StoredTestimonial | null> {
-  const items = await getPendingTestimonials()
-  const idx = items.findIndex(t => t.id === id)
-  if (idx < 0) return null
-  items[idx].active = true
-  await writeJson('testimonials-pending', TESTIMONIALS_FILE, items)
-  return items[idx]
+  const updates = { active: true }
+  if (isBlobConfigured()) await blobUpdateReview(id, updates)
+  await localUpdateReview(id, updates)
+  // Return the updated item
+  const all = await getPendingTestimonials()
+  return all.find(t => t.id === id) || null
+}
+
+export async function unapprovePendingTestimonial(id: string): Promise<StoredTestimonial | null> {
+  const updates = { active: false }
+  if (isBlobConfigured()) await blobUpdateReview(id, updates)
+  await localUpdateReview(id, updates)
+  const all = await getPendingTestimonials()
+  return all.find(t => t.id === id) || null
+}
+
+export async function updatePendingTestimonial(
+  id: string,
+  updates: Partial<StoredTestimonial>
+): Promise<void> {
+  if (isBlobConfigured()) await blobUpdateReview(id, updates)
+  await localUpdateReview(id, updates)
 }

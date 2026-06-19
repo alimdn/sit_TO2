@@ -1,5 +1,10 @@
 import { NextResponse } from 'next/server'
-import { deletePendingTestimonial, approvePendingTestimonial } from '@/lib/file-store'
+import {
+  deletePendingTestimonial,
+  approvePendingTestimonial,
+  unapprovePendingTestimonial,
+  updatePendingTestimonial,
+} from '@/lib/file-store'
 
 // GET a single testimonial by id (admin)
 export async function GET(
@@ -13,7 +18,6 @@ export async function GET(
   } catch (e) {
     // fall through to file-store
   }
-  // File-store lookup (linear scan; pending list is small)
   const { getAllPendingTestimonials } = await import('@/lib/file-store')
   const all = await getAllPendingTestimonials()
   const found = all.find(t => t.id === params.id)
@@ -49,10 +53,23 @@ export async function PUT(
       })
       return NextResponse.json(updated)
     } catch (dbErr) {
-      // Fallback: file-store. Only support approve (active=true) and unapprove (active=false).
+      // Fallback: file-store. Handle approve / unapprove / general update.
       if (typeof active === 'boolean') {
-        const t = await approvePendingTestimonial(params.id)
-        if (t) return NextResponse.json(t)
+        if (active) {
+          await approvePendingTestimonial(params.id)
+        } else {
+          await unapprovePendingTestimonial(params.id)
+        }
+      }
+      // Apply other edits (name/role/company/content/rating) if provided
+      const otherUpdates: Partial<Record<string, unknown>> = {}
+      if (data.name) otherUpdates.name = data.name
+      if (data.role) otherUpdates.role = data.role
+      if (data.company !== undefined) otherUpdates.company = data.company
+      if (data.content) otherUpdates.content = data.content
+      if (data.rating !== undefined) otherUpdates.rating = data.rating
+      if (Object.keys(otherUpdates).length > 0) {
+        await updatePendingTestimonial(params.id, otherUpdates as any)
       }
       return NextResponse.json({ ok: true, id: params.id, ...data })
     }
@@ -71,8 +88,8 @@ export async function DELETE(
     await db.testimonial.delete({ where: { id: params.id } })
     return NextResponse.json({ ok: true })
   } catch {
-    // Fallback: file-store
     await deletePendingTestimonial(params.id)
     return NextResponse.json({ ok: true })
   }
 }
+

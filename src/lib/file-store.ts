@@ -571,18 +571,39 @@ async function blobListTemplates(): Promise<StoredTemplate[]> {
   try {
     const list = await blob.list({ prefix: 'templates/' })
     const items: StoredTemplate[] = []
-    const fetches = list.blobs.map(async (b: { url: string }) => {
+    const fetches = list.blobs.map(async (b: { url: string; pathname?: string }) => {
       try {
+        // Skip deletion markers (they live under 'templates-deleted/' which
+        // also matches the 'templates/' prefix — filter them out explicitly)
+        if (b.pathname && b.pathname.includes('templates-deleted/')) return
         const res = await fetch(b.url, { cache: 'no-store' })
         if (!res.ok) return
         const text = await res.text()
-        items.push(JSON.parse(text))
+        const parsed = JSON.parse(text) as StoredTemplate
+        // Skip if this is a deletion marker disguised as a template
+        if ((parsed as any).deletedAt) return
+        items.push(parsed)
       } catch {
         // skip
       }
     })
     await Promise.all(fetches)
-    return items
+
+    // Deduplicate by id — if multiple blobs exist for the same id (e.g.
+    // from older writes before allowOverwrite was set), keep the one with
+    // the most recent updatedAt.
+    const byId = new Map<string, StoredTemplate>()
+    for (const t of items) {
+      const existing = byId.get(t.id)
+      if (!existing) {
+        byId.set(t.id, t)
+      } else {
+        const a = new Date(t.updatedAt || t.createdAt || 0).getTime()
+        const b = new Date(existing.updatedAt || existing.createdAt || 0).getTime()
+        if (a > b) byId.set(t.id, t)
+      }
+    }
+    return Array.from(byId.values())
   } catch (e) {
     console.error('blob template list failed:', e)
     return []
@@ -596,9 +617,13 @@ async function blobListDeletedTemplateIds(): Promise<Set<string>> {
     const list = await blob.list({ prefix: 'templates-deleted/' })
     const ids = new Set<string>()
     for (const b of list.blobs) {
-      // Extract id from pathname: 'templates-deleted/<id>.json'
-      const match = b.pathname?.match(/templates-deleted\/(.+)\.json$/)
-      if (match) ids.add(match[1])
+      // Extract id from pathname. Format: 'templates-deleted/<id>.json'
+      // The id may contain hyphens, so we match everything between the last
+      // '/' and '.json'.
+      const pn = b.pathname || ''
+      const filename = pn.split('/').pop() || ''
+      const id = filename.replace(/\.json$/, '')
+      if (id) ids.add(id)
     }
     return ids
   } catch {

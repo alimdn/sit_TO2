@@ -19,16 +19,50 @@ const platformIcons: Record<string, React.ReactNode> = {
   youtube: <Youtube className="h-4 w-4" />,
 }
 
+// Default values used when settings are missing or DB is unreachable.
+const DEFAULTS = {
+  site_name: 'WebFlowSub',
+  site_description: 'Professional website design subscription service. Get a stunning website without the upfront cost.',
+  contact_email: 'support@webflowsub.com',
+  contact_address: '123 Design Street\nSan Francisco, CA 94102',
+}
+
 export default function Footer() {
   const { setCurrentPage } = useAppStore()
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([])
+  const [settings, setSettings] = useState<Record<string, string>>({})
 
   useEffect(() => {
     fetch('/api/social')
       .then(res => res.json())
       .then(data => setSocialLinks(data))
       .catch(() => {})
+
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then((data: { key: string; value: string }[]) => {
+        const map: Record<string, string> = {}
+        data.forEach((s) => { map[s.key] = s.value })
+        setSettings(map)
+      })
+      .catch(() => {})
   }, [])
+
+  const siteName = settings.site_name || DEFAULTS.site_name
+  const siteDesc = settings.site_description || DEFAULTS.site_description
+  const contactEmail = settings.contact_email || DEFAULTS.contact_email
+  const contactAddress = (settings.contact_address || DEFAULTS.contact_address).replace(/\n/g, '<br />')
+
+  // Split brand name to highlight suffix (e.g. "WebFlowSub" → "WebFlow" + "Sub")
+  // If the name contains "Sub", highlight it; otherwise highlight last 3 chars.
+  const renderBrand = () => {
+    if (siteName.toLowerCase().endsWith('sub')) {
+      const prefix = siteName.slice(0, -3)
+      const suffix = siteName.slice(-3)
+      return <>{prefix}<span className="text-[#00D1FF]">{suffix}</span></>
+    }
+    return siteName
+  }
 
   const handleNav = (page: 'home' | 'templates' | 'plans' | 'contact') => {
     setCurrentPage(page)
@@ -46,11 +80,11 @@ export default function Footer() {
                 <span className="text-[#000f22] font-bold text-sm">W</span>
               </div>
               <span className="font-bold text-lg">
-                WebFlow<span className="text-[#00D1FF]">Sub</span>
+                {renderBrand()}
               </span>
             </div>
             <p className="text-[#768dad] text-sm leading-relaxed">
-              Professional website design subscription service. Get a stunning website without the upfront cost.
+              {siteDesc}
             </p>
           </div>
 
@@ -75,9 +109,12 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold text-sm label-style text-[#768dad] mb-4">Contact</h4>
             <ul className="space-y-2 text-sm text-[#768dad]">
-              <li>support@webflowsub.com</li>
-              <li>+1 (555) 123-4567</li>
-              <li>123 Design Street<br />San Francisco, CA 94102</li>
+              <li>
+                <a href={`mailto:${contactEmail}`} className="hover:text-white transition-colors">
+                  {contactEmail}
+                </a>
+              </li>
+              <li dangerouslySetInnerHTML={{ __html: contactAddress }} />
             </ul>
           </div>
 
@@ -96,13 +133,16 @@ export default function Footer() {
                   {platformIcons[link.platform] || null}
                 </a>
               ))}
+              {socialLinks.filter(l => l.active).length === 0 && (
+                <p className="text-xs text-[#768dad]">No social links configured.</p>
+              )}
             </div>
           </div>
         </div>
 
         <div className="border-t border-[#0A2540] mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-sm text-[#768dad]">
-            © {new Date().getFullYear()} WebFlowSub. All rights reserved.
+            © {new Date().getFullYear()} {siteName}. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-[#768dad]">
             <button className="hover:text-white transition-colors">Privacy Policy</button>

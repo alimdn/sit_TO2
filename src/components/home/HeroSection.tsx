@@ -3,9 +3,50 @@
 import { useAppStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, Play } from 'lucide-react'
+import { useEffect, useState } from 'react'
+
+const DEFAULTS = {
+  hero_badge: 'AI-Powered',
+  hero_title: 'Build Your Perfect Website with Ease',
+  hero_subtitle: 'Professional website design on subscription. Choose from stunning templates, get expert setup, and enjoy ongoing support — all for a predictable monthly price.',
+}
 
 export default function HeroSection() {
   const { setCurrentPage } = useAppStore()
+  const [settings, setSettings] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then((data: { key: string; value: string }[]) => {
+        const map: Record<string, string> = {}
+        data.forEach((s) => { map[s.key] = s.value })
+        setSettings(map)
+      })
+      .catch(() => {})
+  }, [])
+
+  const badge = settings.hero_badge || DEFAULTS.hero_badge
+  const rawTitle = settings.hero_title || DEFAULTS.hero_title
+  const subtitle = settings.hero_subtitle || DEFAULTS.hero_subtitle
+
+  // Split title so the word "Website" is highlighted with the gradient.
+  // If "Website" is present, wrap it. Otherwise, wrap the last word.
+  const renderTitle = () => {
+    if (rawTitle.includes('Website')) {
+      const parts = rawTitle.split(/(Website)/)
+      return parts.map((part, i) =>
+        part === 'Website'
+          ? <span key={i} className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D1FF] to-[#10B981]">Website</span>
+          : <span key={i}>{part}</span>
+      )
+    }
+    // Fallback: highlight last word
+    const words = rawTitle.split(' ')
+    if (words.length <= 1) return rawTitle
+    const last = words.pop()
+    return <>{words.join(' ')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D1FF] to-[#10B981]">{last}</span></>
+  }
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-[#000f22] via-[#0A2540] to-[#000f22] min-h-[450px] flex items-center">
@@ -28,20 +69,15 @@ export default function HeroSection() {
           <div className="animate-fade-in-up">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00D1FF]/10 border border-[#00D1FF]/20 mb-6">
               <span className="w-2 h-2 rounded-full bg-[#00D1FF] animate-pulse" />
-              <span className="text-[#00D1FF] text-xs font-medium">AI-Powered</span>
+              <span className="text-[#00D1FF] text-xs font-medium">{badge}</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-4" style={{ letterSpacing: '-0.02em' }}>
-              Build Your Perfect{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D1FF] to-[#10B981]">
-                Website
-              </span>{' '}
-              with Ease
+              {renderTitle()}
             </h1>
 
             <p className="text-base text-[#768dad] leading-relaxed mb-6 max-w-lg">
-              Professional website design on subscription. Choose from stunning templates, 
-              get expert setup, and enjoy ongoing support — all for a predictable monthly price.
+              {subtitle}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
@@ -115,3 +151,4 @@ export default function HeroSection() {
     </section>
   )
 }
+

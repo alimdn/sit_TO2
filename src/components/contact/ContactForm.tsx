@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -10,8 +10,15 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Mail, MapPin, Clock, Send } from 'lucide-react'
 import { toast } from 'sonner'
 
+const DEFAULTS = {
+  contact_email: 'support@webflowsub.com',
+  contact_address_line1: '123 Design Street',
+  contact_address_line2: 'San Francisco, CA 94102',
+}
+
 export default function ContactForm() {
   const [loading, setLoading] = useState(false)
+  const [settings, setSettings] = useState<Record<string, string>>({})
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -19,6 +26,33 @@ export default function ContactForm() {
     category: '',
     message: '',
   })
+
+  useEffect(() => {
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then((data: { key: string; value: string }[]) => {
+        const map: Record<string, string> = {}
+        data.forEach((s) => { map[s.key] = s.value })
+        setSettings(map)
+      })
+      .catch(() => {})
+  }, [])
+
+  const contactEmail = settings.contact_email || DEFAULTS.contact_email
+  // Allow multi-line address (split by \n). If single line, fall back to defaults.
+  const rawAddress = settings.contact_address || ''
+  let addressLine1 = DEFAULTS.contact_address_line1
+  let addressLine2 = DEFAULTS.contact_address_line2
+  if (rawAddress) {
+    const lines = rawAddress.split(/\n+/).map(l => l.trim()).filter(Boolean)
+    if (lines.length >= 2) {
+      addressLine1 = lines[0]
+      addressLine2 = lines.slice(1).join(', ')
+    } else if (lines.length === 1) {
+      addressLine1 = lines[0]
+      addressLine2 = ''
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -140,7 +174,9 @@ export default function ContactForm() {
               </div>
               <div>
                 <h4 className="font-medium text-[#000f22] text-sm">Email</h4>
-                <p className="text-sm text-[#4F5B76]">support@webflowsub.com</p>
+                <a href={`mailto:${contactEmail}`} className="text-sm text-[#00D1FF] hover:underline break-all">
+                  {contactEmail}
+                </a>
               </div>
             </div>
             <div className="flex items-start gap-4">
@@ -149,7 +185,10 @@ export default function ContactForm() {
               </div>
               <div>
                 <h4 className="font-medium text-[#000f22] text-sm">Address</h4>
-                <p className="text-sm text-[#4F5B76]">123 Design Street<br />San Francisco, CA 94102</p>
+                <p className="text-sm text-[#4F5B76]">
+                  {addressLine1}
+                  {addressLine2 && <><br />{addressLine2}</>}
+                </p>
               </div>
             </div>
           </CardContent>
@@ -168,3 +207,4 @@ export default function ContactForm() {
     </div>
   )
 }
+

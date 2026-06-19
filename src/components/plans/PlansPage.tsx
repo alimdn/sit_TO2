@@ -7,28 +7,103 @@ import { useAppStore } from '@/lib/store'
 
 type BillingType = 'monthly' | 'semi_annual' | 'annual'
 
+interface Plan {
+  id: string
+  name: string
+  price: number
+  currency: string
+  interval: string // 'monthly' | 'semi_annual' | 'annual'
+  features: string
+  popular: boolean
+  active: boolean
+}
+
+// Fallback config used when API returns no plans or DB is unavailable.
+// These values mirror the latest hardcoded prices in the project.
+const FALLBACK_PLANS: Record<BillingType, { price: number; period: string; label: string; savings: string | null; badge: string | null; features: string[] }> = {
+  monthly: {
+    price: 30, period: 'month', label: 'Monthly Plan', savings: null, badge: null,
+    features: [
+      'Website design based on selected template',
+      'Hosting service included',
+      'Database setup and configuration',
+      'Technical support',
+      'Domain and hosting management',
+      'Easy subscription management',
+      'Responsive mobile-friendly design',
+      'SSL certificate included',
+    ],
+  },
+  semi_annual: {
+    price: 160, period: '6 months', label: 'Semi-Annual Plan', savings: 'Save $20 vs monthly', badge: '-11%',
+    features: [
+      'Everything in Monthly, plus:',
+      'Priority design revisions',
+      'Custom domain setup',
+      '20 GB hosting storage',
+      'Bi-monthly design updates',
+      'Priority email support',
+      'Advanced SEO optimization',
+    ],
+  },
+  annual: {
+    price: 300, period: 'year', label: 'Annual Plan', savings: 'Save $60/year (2 months free)', badge: '-17%',
+    features: [
+      'Everything in Semi-Annual, plus:',
+      '50 GB hosting storage',
+      'Weekly design updates',
+      'Priority 24/7 support',
+      'Advanced SEO & analytics',
+      'E-commerce integration',
+      'Database setup & management',
+      'Dedicated project manager',
+      '2 months free',
+    ],
+  },
+}
+
+// When a plan from the API matches one of these intervals, use its price/features.
+function pickPlanFromList(plans: Plan[], interval: BillingType): Plan | undefined {
+  return plans.find(p => p.interval === interval && p.active)
+}
+
+function safeParseFeatures(raw: string | undefined | null): string[] {
+  if (!raw) return []
+  try {
+    const parsed = JSON.parse(raw)
+    if (Array.isArray(parsed)) return parsed.filter(Boolean)
+  } catch {
+    // not JSON, treat as newline/comma-separated
+    return raw.split(/[\n,]/).map(s => s.trim()).filter(Boolean)
+  }
+  return []
+}
+
 export default function PlansPage() {
   const { setCurrentPage, user } = useAppStore()
   const [billing, setBilling] = useState<BillingType>('monthly')
+  const [plans, setPlans] = useState<Plan[]>([])
 
-  const planFeatures = [
-    'Website design based on selected template',
-    'Hosting service included',
-    'Database setup and configuration',
-    'Technical support',
-    'Domain and hosting management',
-    'Easy subscription management',
-    'Responsive mobile-friendly design',
-    'SSL certificate included',
-  ]
+  useEffect(() => {
+    fetch('/api/plans')
+      .then(r => r.json())
+      .then(data => {
+        const list = Array.isArray(data) ? data.filter((p: Plan) => p.active) : []
+        if (list.length > 0) setPlans(list)
+      })
+      .catch(() => {})
+  }, [])
 
-  const planConfig: Record<BillingType, { price: number; period: string; label: string; savings: string | null; badge: string | null }> = {
-    monthly: { price: 30, period: 'month', label: 'Monthly Plan', savings: null, badge: null },
-    semi_annual: { price: 160, period: '6 months', label: 'Semi-Annual Plan', savings: 'Save $20 vs monthly', badge: '-11%' },
-    annual: { price: 300, period: 'year', label: 'Annual Plan', savings: 'Save $60/year (2 months free)', badge: '-17%' },
-  }
+  // Compute current plan display: prefer API plan, fallback to hardcoded
+  const apiPlan = pickPlanFromList(plans, billing)
+  const fallback = FALLBACK_PLANS[billing]
 
-  const current = planConfig[billing]
+  const currentPrice = apiPlan?.price ?? fallback.price
+  const currentPeriod = fallback.period // period is fixed per interval
+  const currentLabel = fallback.label
+  const currentSavings = fallback.savings
+  const currentBadge = fallback.badge
+  const currentFeatures = apiPlan ? safeParseFeatures(apiPlan.features) : fallback.features
 
   const handleSubscribe = () => {
     if (!user) {
@@ -122,21 +197,21 @@ export default function PlansPage() {
             <div className="flex items-center gap-2 mb-4">
               <Sparkles className="h-5 w-5 text-[#00D1FF]" />
               <h3 className="text-lg font-semibold text-white">
-                {current.label}
+                {currentLabel}
               </h3>
             </div>
 
             {/* Price */}
             <div className="flex items-baseline gap-2 mb-2">
-              <span className="text-5xl font-bold text-white">${current.price}</span>
-              <span className="text-[#768dad] text-lg">/{current.period}</span>
+              <span className="text-5xl font-bold text-white">${currentPrice}</span>
+              <span className="text-[#768dad] text-lg">/{currentPeriod}</span>
             </div>
 
             {/* Savings badge */}
-            {current.savings ? (
+            {currentSavings ? (
               <div className="inline-flex items-center gap-1.5 bg-[#10B981]/15 border border-[#10B981]/30 rounded-full px-3 py-1 mb-6">
                 <Check className="h-3.5 w-3.5 text-[#10B981]" />
-                <span className="text-[#10B981] text-xs font-semibold">{current.savings}</span>
+                <span className="text-[#10B981] text-xs font-semibold">{currentSavings}</span>
               </div>
             ) : (
               <div className="mb-6" />
@@ -147,7 +222,7 @@ export default function PlansPage() {
 
             {/* Features */}
             <div className="space-y-3 mb-8">
-              {planFeatures.map((feature, i) => (
+              {currentFeatures.map((feature, i) => (
                 <div key={i} className="flex items-start gap-2.5">
                   <div className="w-5 h-5 rounded-full bg-[#00D1FF]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <Check className="h-3 w-3 text-[#00D1FF]" />

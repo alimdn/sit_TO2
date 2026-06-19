@@ -113,7 +113,7 @@ export default function AdminPlans() {
                     </Badge>
                   </div>
                 </div>
-                <p className="text-2xl font-bold text-[#000f22]">${plan.price}<span className="text-sm font-normal text-[#4F5B76]">/{plan.interval === 'monthly' ? 'mo' : 'yr'}</span></p>
+                <p className="text-2xl font-bold text-[#000f22]">${plan.price}<span className="text-sm font-normal text-[#4F5B76]">/{plan.interval === 'monthly' ? 'mo' : plan.interval === 'semi_annual' ? '6mo' : 'yr'}</span></p>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-1 mb-4">
@@ -150,7 +150,7 @@ export default function AdminPlans() {
             <div className="space-y-2">
               <Label>Interval</Label>
               <div className="flex gap-2">
-                {['monthly', 'annual'].map((int) => (
+                {['monthly', 'semi_annual', 'annual'].map((int) => (
                   <button
                     key={int}
                     onClick={() => setForm({ ...form, interval: int })}
@@ -158,7 +158,7 @@ export default function AdminPlans() {
                       form.interval === int ? 'bg-[#000f22] text-white' : 'bg-[#f1f4f7] text-[#43474d]'
                     }`}
                   >
-                    {int.charAt(0).toUpperCase() + int.slice(1)}
+                    {int === 'monthly' ? 'Monthly' : int === 'semi_annual' ? 'Semi-Annual' : 'Annual'}
                   </button>
                 ))}
               </div>

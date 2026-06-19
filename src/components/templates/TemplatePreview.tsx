@@ -66,6 +66,13 @@ export default function TemplatePreview() {
   const [showFeaturePicker, setShowFeaturePicker] = useState(false)
   const [customFeatureInput, setCustomFeatureInput] = useState('')
 
+  // Plan prices loaded from /api/plans so admin changes reflect here.
+  const [planPrices, setPlanPrices] = useState<Record<string, number>>({
+    monthly: 30,
+    semi_annual: 160,
+    annual: 300,
+  })
+
   // Additional info & similar site
   const [additionalInfo, setAdditionalInfo] = useState('')
   const [similarSiteUrl, setSimilarSiteUrl] = useState('')
@@ -113,13 +120,30 @@ export default function TemplatePreview() {
     return () => { cancelled = true; setTemplate(null) }
   }, [previewTemplate])
 
+  // Fetch plan prices once so admin changes propagate to this preview.
+  useEffect(() => {
+    let cancelled = false
+    fetch('/api/plans')
+      .then(r => r.json())
+      .then(data => {
+        if (cancelled || !Array.isArray(data)) return
+        const map: Record<string, number> = {}
+        data.forEach((p: { interval: string; price: number; active: boolean }) => {
+          if (p.active) map[p.interval] = p.price
+        })
+        if (Object.keys(map).length > 0) setPlanPrices(prev => ({ ...prev, ...map }))
+      })
+      .catch(() => {})
+    return () => { cancelled = true }
+  }, [])
+
   if (!previewTemplate) return null
 
   const industries: string[] = template?.industries ? JSON.parse(template.industries) : []
 
-  const basePriceMonthly = 30
-  const basePriceSemiAnnual = 160
-  const basePriceAnnual = 300
+  const basePriceMonthly = planPrices.monthly ?? 30
+  const basePriceSemiAnnual = planPrices.semi_annual ?? 160
+  const basePriceAnnual = planPrices.annual ?? 300
   const extraFeaturesCount = Math.max(0, selectedFeatures.length - FREE_FEATURES_LIMIT)
   const extraFeatureCost = extraFeaturesCount * 3
   const addOnCostMonthly = selectedAddOns.length * 3
@@ -692,7 +716,7 @@ export default function TemplatePreview() {
                   </div>
                   <div className="mt-2 text-center">
                     <span className="text-[11px] text-[#768dad]">
-                      {billing === 'monthly' ? '$30/month' : billing === 'semi_annual' ? '$160/6 months' : '$300/year'}
+                      {billing === 'monthly' ? `$${basePriceMonthly}/month` : billing === 'semi_annual' ? `$${basePriceSemiAnnual}/6 months` : `$${basePriceAnnual}/year`}
                     </span>
                   </div>
                 </div>

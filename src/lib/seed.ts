@@ -52,6 +52,27 @@ export async function seedDatabase() {
     },
   })
 
+  const semiAnnualPlan = await db.subscriptionPlan.create({
+    data: {
+      name: 'Semi-Annual',
+      price: 160,
+      currency: 'USD',
+      interval: 'semi_annual',
+      features: JSON.stringify([
+        'Everything in Monthly, plus:',
+        'Priority design revisions',
+        'Custom domain setup',
+        '20 GB hosting storage',
+        'Bi-monthly design updates',
+        'Priority email support',
+        'Advanced SEO optimization',
+        'Save $20 vs monthly',
+      ]),
+      popular: false,
+      active: true,
+    },
+  })
+
   const annualPlan = await db.subscriptionPlan.create({
     data: {
       name: 'Annual',
@@ -59,9 +80,7 @@ export async function seedDatabase() {
       currency: 'USD',
       interval: 'annual',
       features: JSON.stringify([
-        'Everything in Monthly, plus:',
-        'Priority design revisions',
-        'Custom domain setup',
+        'Everything in Semi-Annual, plus:',
         '50 GB hosting storage',
         'Weekly design updates',
         'Priority 24/7 support',

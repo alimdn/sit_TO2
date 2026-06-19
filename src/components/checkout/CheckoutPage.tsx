@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -34,10 +34,54 @@ const ADD_ON_MAP: Record<string, { name: string }> = {
 
 const FREE_FEATURES_LIMIT = 5
 
+// Hardcoded fallback prices — used if /api/plans is unreachable.
+// These mirror the production values and are kept in sync manually.
+const FALLBACK_PRICES: Record<string, number> = {
+  monthly: 30,
+  semi_annual: 160,
+  annual: 300,
+}
+
+interface PaymentGateway {
+  id: string
+  name: string
+  provider: string
+  active: boolean
+  testMode: boolean
+}
+
 export default function CheckoutPage() {
   const { checkoutData, setCurrentPage, setCheckoutData, user } = useAppStore()
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'paypal' | 'bank'>('card')
   const [processing, setProcessing] = useState(false)
+  const [planPrices, setPlanPrices] = useState<Record<string, number>>(FALLBACK_PRICES)
+  const [gateways, setGateways] = useState<PaymentGateway[]>([])
+
+  // Fetch plan prices and active payment gateways from API so admin changes reflect here.
+  useEffect(() => {
+    fetch('/api/plans')
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          const map: Record<string, number> = {}
+          data.forEach((p: { interval: string; price: number; active: boolean }) => {
+            if (p.active) map[p.interval] = p.price
+          })
+          if (Object.keys(map).length > 0) setPlanPrices(map)
+        }
+      })
+      .catch(() => {})
+
+    fetch('/api/payment-gateways')
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          // Only show active gateways; if none active, fallback list (below) is used.
+          setGateways(data.filter((g: PaymentGateway) => g.active))
+        }
+      })
+      .catch(() => {})
+  }, [])
 
   if (!checkoutData) {
     return (
@@ -55,7 +99,8 @@ export default function CheckoutPage() {
 
   const { templateTitle, templateImage, templateCategory, templateFeatures, billing, selectedAddOns, domain, domainPrice } = checkoutData
 
-  const basePrice = billing === 'monthly' ? 30 : billing === 'semi_annual' ? 160 : 300
+  // Use API price when available, else fallback
+  const basePrice = planPrices[billing] ?? FALLBACK_PRICES[billing] ?? 30
   const billingMonths = billing === 'monthly' ? 1 : billing === 'semi_annual' ? 6 : 12
   const addOnUnitCost = selectedAddOns.length * 3 * billingMonths
   const addOnTotal = addOnUnitCost
@@ -69,6 +114,35 @@ export default function CheckoutPage() {
   const domainInstallmentTotal = domainMonthlyInstallment * billingMonths
   const total = basePrice + addOnTotal + extraFeatureTotal + domainInstallmentTotal
   const period = billing === 'monthly' ? 'mo' : billing === 'semi_annual' ? '6mo' : 'yr'
+
+  // Build payment methods list: prefer active gateways from API, fallback to defaults
+  const buildMethodList = () => {
+    const methodMeta: Record<string, { label: string; desc: string; icon: string }> = {
+      card: { label: 'Credit / Debit Card', desc: 'Visa, Mastercard, AMEX', icon: '💳' },
+      paypal: { label: 'PayPal', desc: 'Pay with your PayPal account', icon: '🅿️' },
+      bank: { label: 'Bank Transfer', desc: 'Direct bank wire transfer', icon: '🏦' },
+    }
+    if (gateways.length === 0) {
+      // Fallback: show all three
+      return (['card', 'paypal', 'bank'] as const).map(id => ({ id, ...methodMeta[id] }))
+    }
+    // Map API providers to method IDs (stripe→card, paypal→paypal, bank→bank)
+    const providerToId: Record<string, 'card' | 'paypal' | 'bank'> = {
+      stripe: 'card',
+      paypal: 'paypal',
+      bank: 'bank',
+    }
+    return gateways
+      .map(g => {
+        const id = providerToId[g.provider]
+        if (!id) return null
+        return { id, ...methodMeta[id] }
+      })
+      .filter(Boolean) as { id: 'card' | 'paypal' | 'bank'; label: string; desc: string; icon: string }[]
+  }
+  const methods = buildMethodList()
+  // Ensure current paymentMethod is in the available list
+  const effectiveMethod = methods.find(m => m.id === paymentMethod) ? paymentMethod : (methods[0]?.id ?? 'card')
 
   const handlePayment = async () => {
     setProcessing(true)
@@ -131,7 +205,7 @@ export default function CheckoutPage() {
                 items: invoiceItems,
                 total,
                 billing,
-                paymentMethod: paymentMethod === 'card' ? 'Credit/Debit Card' : paymentMethod === 'paypal' ? 'PayPal' : 'Bank Transfer',
+                paymentMethod: effectiveMethod === 'card' ? 'Credit/Debit Card' : effectiveMethod === 'paypal' ? 'PayPal' : 'Bank Transfer',
                 siteUrl: `${window.location.origin}`,
               },
             }),
@@ -263,38 +337,39 @@ export default function CheckoutPage() {
               Payment Method
             </h2>
             <div className="space-y-3">
-              {[
-                { id: 'card' as const, label: 'Credit / Debit Card', desc: 'Visa, Mastercard, AMEX', icon: '💳' },
-                { id: 'paypal' as const, label: 'PayPal', desc: 'Pay with your PayPal account', icon: '🅿️' },
-                { id: 'bank' as const, label: 'Bank Transfer', desc: 'Direct bank wire transfer', icon: '🏦' },
-              ].map((method) => (
+              {methods.map((method) => (
                 <button
                   key={method.id}
                   onClick={() => setPaymentMethod(method.id)}
                   className={`w-full text-left p-4 rounded-xl border transition-all duration-200 flex items-center gap-4 ${
-                    paymentMethod === method.id
+                    effectiveMethod === method.id
                       ? 'border-[#00D1FF] bg-[#00D1FF]/5 ring-1 ring-[#00D1FF]/30'
                       : 'border-[#e6ebf1] hover:border-[#c4c6ce]'
                   }`}
                 >
                   <span className="text-2xl">{method.icon}</span>
                   <div className="flex-1">
-                    <span className={`text-sm font-medium ${paymentMethod === method.id ? 'text-[#000f22]' : 'text-[#43474d]'}`}>
+                    <span className={`text-sm font-medium ${effectiveMethod === method.id ? 'text-[#000f22]' : 'text-[#43474d]'}`}>
                       {method.label}
                     </span>
                     <p className="text-xs text-[#74777e]">{method.desc}</p>
                   </div>
                   <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                    paymentMethod === method.id ? 'border-[#00D1FF]' : 'border-[#c4c6ce]'
+                    effectiveMethod === method.id ? 'border-[#00D1FF]' : 'border-[#c4c6ce]'
                   }`}>
-                    {paymentMethod === method.id && <div className="w-2.5 h-2.5 rounded-full bg-[#00D1FF]" />}
+                    {effectiveMethod === method.id && <div className="w-2.5 h-2.5 rounded-full bg-[#00D1FF]" />}
                   </div>
                 </button>
               ))}
+              {methods.length === 0 && (
+                <div className="p-4 rounded-xl bg-[#FFF8E1] border border-[#FFE082] text-xs text-[#92400E]">
+                  No active payment gateways. Please configure them from Admin → Payments.
+                </div>
+              )}
             </div>
 
             {/* Card form placeholder */}
-            {paymentMethod === 'card' && (
+            {effectiveMethod === 'card' && (
               <div className="mt-5 space-y-4 p-4 rounded-xl bg-[#f7fafd] border border-[#e6ebf1]">
                 <div>
                   <label className="text-xs font-medium text-[#43474d] mb-1.5 block">Card Number</label>

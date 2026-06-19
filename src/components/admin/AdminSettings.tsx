@@ -130,21 +130,33 @@ export default function AdminSettings() {
           <CardTitle className="text-base">Site Settings</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          {['site_name', 'site_description', 'contact_email', 'support_phone'].map((key) => (
-            <div key={key} className="flex items-end gap-4">
+          {[
+            { key: 'site_name', label: 'Site Name' },
+            { key: 'site_description', label: 'Site Description' },
+            { key: 'contact_email', label: 'Contact Email' },
+            { key: 'contact_address', label: 'Contact Address' },
+            { key: 'hero_badge', label: 'Hero Badge Text (e.g. AI-Powered)' },
+            { key: 'hero_title', label: 'Hero Title' },
+            { key: 'hero_subtitle', label: 'Hero Subtitle' },
+          ].map((field) => (
+            <div key={field.key} className="flex items-end gap-4">
               <div className="flex-1 space-y-2">
-                <Label className="capitalize">{key.replace(/_/g, ' ')}</Label>
+                <Label>{field.label}</Label>
                 <Input
-                  value={settings[key] || ''}
-                  onChange={(e) => setSettings({ ...settings, [key]: e.target.value })}
+                  value={settings[field.key] || ''}
+                  onChange={(e) => setSettings({ ...settings, [field.key]: e.target.value })}
+                  placeholder={`Enter ${field.label.toLowerCase()}`}
                   className="bg-[#f7fafd]"
                 />
               </div>
-              <Button onClick={() => handleSaveSetting(key)} size="sm" className="bg-[#000f22] hover:bg-[#0A2540] text-white mb-0.5">
+              <Button onClick={() => handleSaveSetting(field.key)} size="sm" className="bg-[#000f22] hover:bg-[#0A2540] text-white mb-0.5">
                 Save
               </Button>
             </div>
           ))}
+          <div className="mt-4 p-3 rounded-lg bg-[#00D1FF]/5 border border-[#00D1FF]/20 text-xs text-[#4F5B76] leading-relaxed">
+            <strong className="text-[#00D1FF]">Note:</strong> Changes are saved to the database and reflected on the live site immediately (Header logo text, Footer contact info, Hero section, Contact page). If a field is left empty, the default hardcoded value is used.
+          </div>
         </CardContent>
       </Card>
     </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Menu, X, LayoutDashboard, Shield, LogOut, ShoppingCart } from 'lucide-react'
@@ -13,9 +13,32 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
+const DEFAULT_SITE_NAME = 'WebFlowSub'
+
 export default function Header() {
   const { currentPage, setCurrentPage, user, setUser, checkoutData } = useAppStore()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [siteName, setSiteName] = useState<string>(DEFAULT_SITE_NAME)
+
+  useEffect(() => {
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then((data: { key: string; value: string }[]) => {
+        const found = data.find(s => s.key === 'site_name')
+        if (found?.value) setSiteName(found.value)
+      })
+      .catch(() => {})
+  }, [])
+
+  // Split brand name to highlight suffix (e.g. "WebFlowSub" → "WebFlow" + "Sub")
+  const renderBrand = () => {
+    if (siteName.toLowerCase().endsWith('sub')) {
+      const prefix = siteName.slice(0, -3)
+      const suffix = siteName.slice(-3)
+      return <>{prefix}<span className="text-[#00D1FF]">{suffix}</span></>
+    }
+    return siteName
+  }
 
   const navItems = [
     { label: 'Home', page: 'home' as const },
@@ -48,7 +71,7 @@ export default function Header() {
             <span className="text-white font-bold text-[10px]">W</span>
           </div>
           <span className="font-bold text-sm text-[#000f22]">
-            WebFlow<span className="text-[#00D1FF]">Sub</span>
+            {renderBrand()}
           </span>
         </button>
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { RefreshCw, Trash2, Mail, MailOpen } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface ContactMessage {
@@ -37,30 +38,66 @@ export default function AdminMessages() {
   const [tickets, setTickets] = useState<SupportTicket[]>([])
   const [selectedContact, setSelectedContact] = useState<ContactMessage | null>(null)
   const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(null)
+  const [refreshing, setRefreshing] = useState(false)
+  const [autoRefresh, setAutoRefresh] = useState(true)
 
-  const fetchContacts = () => {
-    fetch('/api/contact')
+  const fetchContacts = useCallback(() => {
+    fetch('/api/contact', { cache: 'no-store' })
       .then(r => r.json())
-      .then(setContacts)
+      .then(data => {
+        if (Array.isArray(data)) setContacts(data)
+      })
       .catch(() => {})
-  }
+  }, [])
 
-  const fetchTickets = () => {
-    fetch('/api/support')
+  const fetchTickets = useCallback(() => {
+    fetch('/api/support', { cache: 'no-store' })
       .then(r => r.json())
-      .then(setTickets)
+      .then(data => {
+        if (Array.isArray(data)) setTickets(data)
+      })
       .catch(() => {})
-  }
+  }, [])
 
   useEffect(() => {
     fetchContacts()
     fetchTickets()
-  }, [])
+  }, [fetchContacts, fetchTickets])
+
+  // Auto-refresh every 8 seconds so new messages from the public Contact Us
+  // page show up in the admin panel without manual reload.
+  useEffect(() => {
+    if (!autoRefresh) return
+    const interval = setInterval(() => {
+      fetchContacts()
+      fetchTickets()
+    }, 8000)
+    return () => clearInterval(interval)
+  }, [autoRefresh, fetchContacts, fetchTickets])
+
+  const handleManualRefresh = async () => {
+    setRefreshing(true)
+    fetchContacts()
+    fetchTickets()
+    setTimeout(() => setRefreshing(false), 600)
+  }
 
   const markAsRead = async (id: string) => {
-    await fetch(`/api/contact/${id}`, { method: 'PUT' })
+    await fetch(`/api/contact/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'read' }),
+    })
     fetchContacts()
     toast.success('Marked as read')
+  }
+
+  const deleteContact = async (id: string) => {
+    if (!confirm('Delete this message? This cannot be undone.')) return
+    await fetch(`/api/contact/${id}`, { method: 'DELETE' })
+    fetchContacts()
+    if (selectedContact?.id === id) setSelectedContact(null)
+    toast.success('Message deleted')
   }
 
   const updateTicketStatus = async (id: string, status: string) => {
@@ -80,9 +117,45 @@ export default function AdminMessages() {
     closed: 'bg-[#74777e]/10 text-[#74777e]',
   }
 
+  const unreadCount = contacts.filter(c => !c.isRead).length
+
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-[#000f22]">Messages</h2>
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-[#000f22] flex items-center gap-2">
+            Messages
+            {unreadCount > 0 && (
+              <Badge className="bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/20">
+                {unreadCount} unread
+              </Badge>
+            )}
+          </h2>
+          <p className="text-xs text-[#4F5B76] mt-1">
+            Auto-refreshing every 8 seconds — new messages appear automatically.
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setAutoRefresh(!autoRefresh)}
+            className={`h-9 border-[#e6ebf1] ${autoRefresh ? 'text-[#10B981]' : 'text-[#74777e]'}`}
+          >
+            {autoRefresh ? 'Auto: ON' : 'Auto: OFF'}
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleManualRefresh}
+            disabled={refreshing}
+            className="h-9 border-[#e6ebf1] hover:bg-[#f7fafd]"
+          >
+            <RefreshCw className={`h-4 w-4 mr-1.5 ${refreshing ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+        </div>
+      </div>
 
       <Tabs defaultValue="contact">
         <TabsList className="bg-[#f1f4f7]">
@@ -122,11 +195,36 @@ export default function AdminMessages() {
                       </TableCell>
                       <TableCell className="text-xs text-[#4F5B76]">{new Date(c.createdAt).toLocaleDateString()}</TableCell>
                       <TableCell>
-                        <div className="flex gap-1">
-                          <Button variant="ghost" size="sm" onClick={() => setSelectedContact(c)}>View</Button>
+                        <div className="flex items-center gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setSelectedContact(c)}
+                            className="h-8 px-2"
+                            title="View message"
+                          >
+                            View
+                          </Button>
                           {!c.isRead && (
-                            <Button variant="ghost" size="sm" onClick={() => markAsRead(c.id)}>Read</Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => markAsRead(c.id)}
+                              className="h-8 px-2 text-[#10B981] hover:bg-[#10B981]/10"
+                              title="Mark as read"
+                            >
+                              <MailOpen className="h-4 w-4" />
+                            </Button>
                           )}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => deleteContact(c.id)}
+                            className="h-8 px-2 text-[#ba1a1a] hover:bg-[#ba1a1a]/10"
+                            title="Delete message"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
                         </div>
                       </TableCell>
                     </TableRow>

@@ -1,23 +1,17 @@
 /**
- * File-based JSON storage for messages and other simple records.
+ * Hybrid storage for messages and reviews.
  *
- * WHY THIS EXISTS
- * ───────────────
- * The site currently runs on Vercel without DATABASE_URL configured (the
- * team hasn't enabled Vercel Postgres yet). The existing Prisma-based
- * storage path throws on every call, so POST /api/contact was returning
- * a fake "success" object that wasn't actually persisted anywhere —
- * meaning messages sent from the public Contact Us page never showed up
- * in the admin Messages tab.
+ * PRIMARY: Vercel Blob (shared across all serverless instances)
+ *   — needs BLOB_READ_WRITE_TOKEN + BLOB_URL env vars (auto-created
+ *     when a Blob store is linked to the project in Vercel).
+ *   — Durable, survives cold starts and deployments.
  *
- * This module provides a small JSON-file-backed store that works on
- * Vercel serverless (writes go to /tmp on each invocation). It is NOT
- * durable across cold starts or deployments — messages may disappear
- * when a new build is promoted — but it provides immediate functional
- * behaviour until the team enables a real database.
+ * FALLBACK: Local /tmp file system (per-instance, ephemeral)
+ *   — Used when Blob env vars are not set.
+ *   — Lets the code run in dev / preview without configuration.
  *
- * When DATABASE_URL is set, the API routes prefer Prisma and skip this
- * fallback entirely.
+ * When DATABASE_URL is set on Vercel, the API routes prefer Prisma
+ * and skip this module entirely.
  */
 
 import { promises as fs } from 'fs'
@@ -49,17 +43,29 @@ export interface StoredTestimonial {
   createdAt: string
 }
 
-async function ensureDir() {
+// ─────────────────────────────────────────────────────────────────────
+// Detect whether Vercel Blob is configured
+// ─────────────────────────────────────────────────────────────────────
+function isBlobConfigured(): boolean {
+  return !!(process.env.BLOB_READ_WRITE_TOKEN && process.env.BLOB_URL)
+}
+
+// Dynamic import of @vercel/blob (avoids import errors in dev when missing)
+async function blobHead() {
   try {
-    await fs.mkdir(DATA_DIR, { recursive: true })
+    return await import('@vercel/blob')
   } catch {
-    // Directory may already exist — ignore
+    return null
   }
 }
 
-async function readJson<T>(file: string, fallback: T): Promise<T> {
+// ─────────────────────────────────────────────────────────────────────
+// Generic JSON read/write helpers
+// ─────────────────────────────────────────────────────────────────────
+
+async function localRead<T>(file: string, fallback: T): Promise<T> {
   try {
-    await ensureDir()
+    await fs.mkdir(DATA_DIR, { recursive: true })
     const raw = await fs.readFile(file, 'utf-8')
     return JSON.parse(raw) as T
   } catch {
@@ -67,16 +73,70 @@ async function readJson<T>(file: string, fallback: T): Promise<T> {
   }
 }
 
-async function writeJson<T>(file: string, data: T): Promise<void> {
+async function localWrite<T>(file: string, data: T): Promise<void> {
   try {
-    await ensureDir()
+    await fs.mkdir(DATA_DIR, { recursive: true })
     await fs.writeFile(file, JSON.stringify(data, null, 2), 'utf-8')
   } catch (e) {
-    // If write fails (e.g. read-only filesystem), silently ignore —
-    // the in-memory copy returned to the caller is still valid for
-    // the current request lifecycle.
-    console.error('file-store write failed:', e)
+    console.error('local write failed:', e)
   }
+}
+
+async function blobRead<T>(pathname: string, fallback: T): Promise<T> {
+  const blob = await blobHead()
+  if (!blob) return fallback
+  try {
+    // Vercel Blob: try to GET the file. head() doesn't return contents;
+    // we use a fetch against the public URL instead.
+    const url = `${process.env.BLOB_URL}/${pathname}.json`
+    const res = await fetch(url, {
+      headers: { Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}` },
+      // @ts-ignore — cache option is valid for fetch on Vercel
+      cache: 'no-store',
+    })
+    if (!res.ok) return fallback
+    const text = await res.text()
+    return JSON.parse(text) as T
+  } catch {
+    return fallback
+  }
+}
+
+async function blobWrite<T>(pathname: string, data: T): Promise<void> {
+  const blob = await blobHead()
+  if (!blob) return
+  try {
+    // Use put() with a JSON string body and returnJSON access strategy
+    await blob.put(`${pathname}.json`, JSON.stringify(data, null, 2), {
+      access: 'public',
+      addRandomSuffix: false,
+      contentType: 'application/json',
+      allowOverwrite: true,
+    })
+  } catch (e) {
+    console.error('blob write failed:', e)
+  }
+}
+
+// Unified read/write that picks Blob when configured, else local fs
+async function readJson<T>(pathname: string, localFile: string, fallback: T): Promise<T> {
+  if (isBlobConfigured()) {
+    const blobData = await blobRead<T>(pathname, fallback as T)
+    if (blobData && (!Array.isArray(blobData) || blobData.length > 0)) {
+      return blobData
+    }
+    // Fall back to local if Blob returned empty (e.g., first run)
+    return localRead<T>(localFile, fallback)
+  }
+  return localRead<T>(localFile, fallback)
+}
+
+async function writeJson<T>(pathname: string, localFile: string, data: T): Promise<void> {
+  if (isBlobConfigured()) {
+    await blobWrite<T>(pathname, data)
+  }
+  // Always also write locally so reads are fast on the same instance
+  await localWrite<T>(localFile, data)
 }
 
 // ─────────────────────────────────────────────────────────────────────
@@ -84,8 +144,8 @@ async function writeJson<T>(file: string, data: T): Promise<void> {
 // ─────────────────────────────────────────────────────────────────────
 
 export async function getContactMessages(): Promise<StoredContactMessage[]> {
-  const messages = await readJson<StoredContactMessage[]>(MESSAGES_FILE, [])
-  // Sort newest first to match Prisma's orderBy behaviour
+  const messages = await readJson<StoredContactMessage[]>('contact-messages', MESSAGES_FILE, [])
+  if (!Array.isArray(messages)) return []
   messages.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
   return messages
 }
@@ -100,8 +160,9 @@ export async function addContactMessage(
     isRead: false,
     createdAt: new Date().toISOString(),
   }
-  messages.unshift(newMessage)
-  await writeJson(MESSAGES_FILE, messages)
+  // Prepend and write back
+  const updated = [newMessage, ...messages]
+  await writeJson('contact-messages', MESSAGES_FILE, updated)
   return newMessage
 }
 
@@ -110,23 +171,22 @@ export async function markContactMessageRead(id: string): Promise<void> {
   const idx = messages.findIndex(m => m.id === id)
   if (idx >= 0) {
     messages[idx].isRead = true
-    await writeJson(MESSAGES_FILE, messages)
+    await writeJson('contact-messages', MESSAGES_FILE, messages)
   }
 }
 
 export async function deleteContactMessage(id: string): Promise<void> {
   const messages = await getContactMessages()
-  const filtered = messages.filter(m => m.id !== id)
-  await writeJson(MESSAGES_FILE, filtered)
+  await writeJson('contact-messages', MESSAGES_FILE, messages.filter(m => m.id !== id))
 }
 
 // ─────────────────────────────────────────────────────────────────────
-// Pending testimonials (kept here as a separate store from the public
-// Testimonial table, so admin can approve/reject before publishing)
+// Pending testimonials
 // ─────────────────────────────────────────────────────────────────────
 
 export async function getPendingTestimonials(): Promise<StoredTestimonial[]> {
-  const items = await readJson<StoredTestimonial[]>(TESTIMONIALS_FILE, [])
+  const items = await readJson<StoredTestimonial[]>('testimonials-pending', TESTIMONIALS_FILE, [])
+  if (!Array.isArray(items)) return []
   items.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
   return items
 }
@@ -141,8 +201,8 @@ export async function addPendingTestimonial(
     active: false,
     createdAt: new Date().toISOString(),
   }
-  items.unshift(newItem)
-  await writeJson(TESTIMONIALS_FILE, items)
+  const updated = [newItem, ...items]
+  await writeJson('testimonials-pending', TESTIMONIALS_FILE, updated)
   return newItem
 }
 
@@ -152,7 +212,7 @@ export async function getAllPendingTestimonials(): Promise<StoredTestimonial[]> 
 
 export async function deletePendingTestimonial(id: string): Promise<void> {
   const items = await getPendingTestimonials()
-  await writeJson(TESTIMONIALS_FILE, items.filter(t => t.id !== id))
+  await writeJson('testimonials-pending', TESTIMONIALS_FILE, items.filter(t => t.id !== id))
 }
 
 export async function approvePendingTestimonial(id: string): Promise<StoredTestimonial | null> {
@@ -160,6 +220,6 @@ export async function approvePendingTestimonial(id: string): Promise<StoredTesti
   const idx = items.findIndex(t => t.id === id)
   if (idx < 0) return null
   items[idx].active = true
-  await writeJson(TESTIMONIALS_FILE, items)
+  await writeJson('testimonials-pending', TESTIMONIALS_FILE, items)
   return items[idx]
 }

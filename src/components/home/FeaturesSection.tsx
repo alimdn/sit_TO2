@@ -26,7 +26,7 @@ const features = [
   {
     icon: <CreditCard className="h-6 w-6" />,
     title: 'Subscription Management',
-    description: 'Flexible monthly or annual plans. Easy upgrades, downgrades, and transparent billing.',
+    description: 'Flexible monthly, semi-annual, or annual plans. Easy upgrades, downgrades, and transparent billing.',
   },
 ]
 

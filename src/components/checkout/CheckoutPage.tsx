@@ -55,7 +55,7 @@ export default function CheckoutPage() {
 
   const { templateTitle, templateImage, templateCategory, templateFeatures, billing, selectedAddOns, domain, domainPrice } = checkoutData
 
-  const basePrice = billing === 'monthly' ? 30 : billing === 'semi_annual' ? 170 : 300
+  const basePrice = billing === 'monthly' ? 30 : billing === 'semi_annual' ? 160 : 300
   const billingMonths = billing === 'monthly' ? 1 : billing === 'semi_annual' ? 6 : 12
   const addOnUnitCost = selectedAddOns.length * 3 * billingMonths
   const addOnTotal = addOnUnitCost

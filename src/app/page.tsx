@@ -25,6 +25,7 @@ import AdminTemplates from '@/components/admin/AdminTemplates'
 import AdminPlans from '@/components/admin/AdminPlans'
 import AdminOrders from '@/components/admin/AdminOrders'
 import AdminMessages from '@/components/admin/AdminMessages'
+import AdminTestimonials from '@/components/admin/AdminTestimonials'
 import AdminSocial from '@/components/admin/AdminSocial'
 import AdminPayments from '@/components/admin/AdminPayments'
 import AdminSettings from '@/components/admin/AdminSettings'
@@ -207,6 +208,7 @@ function AdminPage() {
       case 'plans': return <AdminPlans />
       case 'orders': return <AdminOrders />
       case 'messages': return <AdminMessages />
+      case 'testimonials': return <AdminTestimonials />
       case 'social': return <AdminSocial />
       case 'payments': return <AdminPayments />
       case 'settings': return <AdminSettings />

@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Card, CardContent } from '@/components/ui/card'
-import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react'
+import { Mail, MapPin, Clock, Send } from 'lucide-react'
 import { toast } from 'sonner'
 
 export default function ContactForm() {
@@ -145,15 +145,6 @@ export default function ContactForm() {
             </div>
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 rounded-lg bg-[#000f22]/5 flex items-center justify-center flex-shrink-0">
-                <Phone className="h-5 w-5 text-[#000f22]" />
-              </div>
-              <div>
-                <h4 className="font-medium text-[#000f22] text-sm">Phone</h4>
-                <p className="text-sm text-[#4F5B76]">+1 (555) 123-4567</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-lg bg-[#000f22]/5 flex items-center justify-center flex-shrink-0">
                 <MapPin className="h-5 w-5 text-[#000f22]" />
               </div>
               <div>
@@ -169,7 +160,7 @@ export default function ContactForm() {
             <Clock className="h-8 w-8 text-[#00D1FF] mx-auto mb-3" />
             <h4 className="font-semibold text-white mb-2">Response Time</h4>
             <p className="text-sm text-[#768dad]">
-              We typically respond within 24 hours on business days. For urgent issues, please call us directly.
+              We typically respond within 24 hours on business days. For urgent issues, please mention it in your subject line.
             </p>
           </CardContent>
         </Card>

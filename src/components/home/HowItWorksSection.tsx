@@ -7,13 +7,13 @@ const steps = [
     number: '01',
     icon: <LayoutTemplate className="h-6 w-6" />,
     title: 'Choose Template',
-    description: 'Browse our collection of professional templates and pick the perfect one for your business.',
+    description: 'Browse our collection of professional templates and pick the perfect one for your business. You can also include a link to a similar website to clarify the vision.',
   },
   {
     number: '02',
     icon: <CreditCard className="h-6 w-6" />,
     title: 'Select Plan',
-    description: 'Choose between our flexible monthly or annual subscription plans that fit your budget.',
+    description: 'Choose between our flexible monthly, semi-annual, or annual subscription plans that fit your budget.',
   },
   {
     number: '03',

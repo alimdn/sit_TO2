@@ -24,7 +24,7 @@ export default function PlansPage() {
 
   const planConfig: Record<BillingType, { price: number; period: string; label: string; savings: string | null; badge: string | null }> = {
     monthly: { price: 30, period: 'month', label: 'Monthly Plan', savings: null, badge: null },
-    semi_annual: { price: 170, period: '6 months', label: 'Semi-Annual Plan', savings: 'Save $10 vs monthly', badge: '-5%' },
+    semi_annual: { price: 160, period: '6 months', label: 'Semi-Annual Plan', savings: 'Save $20 vs monthly', badge: '-11%' },
     annual: { price: 300, period: 'year', label: 'Annual Plan', savings: 'Save $60/year (2 months free)', badge: '-17%' },
   }
 
@@ -87,7 +87,7 @@ export default function PlansPage() {
                 ? 'bg-[#00D1FF] text-[#000f22]'
                 : 'bg-[#F59E0B]/10 text-[#F59E0B]'
             }`}>
-              -5%
+              -11%
             </span>
           </button>
           <button

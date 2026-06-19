@@ -2,7 +2,7 @@ import { create } from 'zustand'
 
 export type Page = 'home' | 'templates' | 'plans' | 'contact' | 'login' | 'dashboard' | 'admin' | 'checkout'
 export type DashboardTab = 'overview' | 'orders' | 'support' | 'settings'
-export type AdminTab = 'templates' | 'plans' | 'orders' | 'messages' | 'social' | 'payments' | 'settings'
+export type AdminTab = 'templates' | 'plans' | 'orders' | 'messages' | 'testimonials' | 'social' | 'payments' | 'settings'
 
 interface AppUser {
   id: string

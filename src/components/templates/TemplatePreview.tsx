@@ -118,7 +118,7 @@ export default function TemplatePreview() {
   const industries: string[] = template?.industries ? JSON.parse(template.industries) : []
 
   const basePriceMonthly = 30
-  const basePriceSemiAnnual = 170
+  const basePriceSemiAnnual = 160
   const basePriceAnnual = 300
   const extraFeaturesCount = Math.max(0, selectedFeatures.length - FREE_FEATURES_LIMIT)
   const extraFeatureCost = extraFeaturesCount * 3
@@ -692,7 +692,7 @@ export default function TemplatePreview() {
                   </div>
                   <div className="mt-2 text-center">
                     <span className="text-[11px] text-[#768dad]">
-                      {billing === 'monthly' ? '$30/month' : billing === 'semi_annual' ? '$170/6 months' : '$300/year'}
+                      {billing === 'monthly' ? '$30/month' : billing === 'semi_annual' ? '$160/6 months' : '$300/year'}
                     </span>
                   </div>
                 </div>

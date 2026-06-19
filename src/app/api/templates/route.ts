@@ -70,7 +70,13 @@ export async function GET() {
     }
   }
 
-  return NextResponse.json(merged)
+  return NextResponse.json(merged, {
+    headers: {
+      'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+    },
+  })
 }
 
 // POST — admin creates a new template (or override of an existing one)

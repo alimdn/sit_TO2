@@ -9,19 +9,25 @@ import {
   type StoredTemplate,
 } from '@/lib/file-store'
 
+const NO_CACHE_HEADERS = {
+  'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+  'Pragma': 'no-cache',
+  'Expires': '0',
+}
+
 // GET a single template by id
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
 
   // 1) Check admin overrides (Blob) first
   const admin = await getTemplateById(id)
-  if (admin) return NextResponse.json(admin)
+  if (admin) return NextResponse.json(admin, { headers: NO_CACHE_HEADERS })
 
   // 2) Try DB
   try {
     const { db } = await import('@/lib/db')
     const template = await db.template.findUnique({ where: { id } })
-    if (template) return NextResponse.json(template)
+    if (template) return NextResponse.json(template, { headers: NO_CACHE_HEADERS })
   } catch (e) {
     // fall through
   }
@@ -32,12 +38,12 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
     // Don't return if it was deleted by admin
     const deleted = await getDeletedTemplateIds()
     if (deleted.has(id)) {
-      return NextResponse.json({ error: 'Not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Not found' }, { status: 404, headers: NO_CACHE_HEADERS })
     }
-    return NextResponse.json(fallback)
+    return NextResponse.json(fallback, { headers: NO_CACHE_HEADERS })
   }
 
-  return NextResponse.json({ error: 'Not found' }, { status: 404 })
+  return NextResponse.json({ error: 'Not found' }, { status: 404, headers: NO_CACHE_HEADERS })
 }
 
 // PUT — update a template (create or replace an override)

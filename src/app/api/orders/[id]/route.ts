@@ -83,7 +83,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       'templateFeatures', 'addOns', 'billing', 'additionalInfo',
       'similarSiteUrl', 'similarSiteCriteria', 'domain', 'domainPrice',
       'customerName', 'customerEmail', 'userId', 'templateId',
-      'startDate', 'deliveryDate',
+      'startDate', 'deliveryDate', 'isDemo',
     ]
     for (const field of allowedFields) {
       if (body[field] !== undefined) updates[field] = body[field]

@@ -138,6 +138,7 @@ export async function POST(req: NextRequest) {
       customerEmail: body.customerEmail ? String(body.customerEmail) : null,
       startDate: body.startDate ? String(body.startDate) : null,
       deliveryDate: body.deliveryDate ? String(body.deliveryDate) : null,
+      isDemo: body.isDemo === true,
     })
     return NextResponse.json(stored)
   } catch (e) {

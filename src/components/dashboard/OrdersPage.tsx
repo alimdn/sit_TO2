@@ -49,6 +49,7 @@ interface Order {
   domainPrice: number | null
   startDate?: string | null
   deliveryDate?: string | null
+  isDemo?: boolean
   createdAt: string
   updatedAt: string
   planId: string | null
@@ -182,6 +183,7 @@ export default function OrdersPage() {
           templateId: '1',
           status: 'pending',
           progress: 25,
+          isDemo: true,  // ← marks this as a demo order (shows DEMO badge)
           milestones: JSON.stringify([
             { name: 'Choose Template',     status: 'completed', date: now },
             { name: 'Select Plan',         status: 'pending' },
@@ -212,6 +214,9 @@ export default function OrdersPage() {
       setCreatingDemo(false)
     }
   }
+
+  // NOTE: handleCreateDemoOrder sends isDemo: true so the order is
+  // clearly marked as a demo/test order. This is NOT a real purchase.
 
   const statusColors: Record<string, string> = {
     active: 'bg-[#10B981]/10 text-[#10B981]',
@@ -297,13 +302,21 @@ export default function OrdersPage() {
                 {/* Header */}
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-base">Order #{order.id.slice(-8)}</CardTitle>
+                    <div className="flex items-center gap-2">
+                      <CardTitle className="text-base">Order #{order.id.slice(-8)}</CardTitle>
+                      {order.isDemo && (
+                        <Badge className="bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/30 text-[9px] font-bold tracking-wider uppercase">
+                          Demo
+                        </Badge>
+                      )}
+                    </div>
                     <Badge className={statusColors[order.status] || 'bg-gray-100 text-gray-600'}>
                       {order.status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
                     </Badge>
                   </div>
                   <p className="text-xs text-[#4F5B76]">
                     Created {new Date(order.createdAt).toLocaleDateString()} • {order.billing === 'annual' ? 'Annual' : 'Monthly'} Plan
+                    {order.isDemo && <span className="text-[#F59E0B] font-medium"> • Demo order (not a real purchase)</span>}
                   </p>
                 </CardHeader>
 

@@ -71,6 +71,7 @@ interface Order {
   domainPrice: number | null
   startDate?: string | null
   deliveryDate?: string | null
+  isDemo?: boolean
   createdAt: string
   user: { name: string; email: string }
 }
@@ -677,7 +678,16 @@ export default function AdminOrders() {
                 const addOns = parseJSON(order.addOns)
                 return (
                   <TableRow key={order.id}>
-                    <TableCell className="font-mono text-xs">#{order.id.slice(-8)}</TableCell>
+                    <TableCell className="font-mono text-xs">
+                      <div className="flex items-center gap-1.5">
+                        <span>#{order.id.slice(-8)}</span>
+                        {order.isDemo && (
+                          <Badge className="bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/30 text-[8px] font-bold tracking-wider uppercase px-1 py-0">
+                            Demo
+                          </Badge>
+                        )}
+                      </div>
+                    </TableCell>
                     <TableCell>
                       <div>
                         <div className="text-sm font-medium">{order.user?.name || 'Unknown'}</div>

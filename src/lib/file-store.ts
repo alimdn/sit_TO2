@@ -946,6 +946,7 @@ export interface StoredOrder {
   customerEmail?: string | null
   startDate?: string | null          // ISO timestamp when work began (set on first PUT that starts progress)
   deliveryDate?: string | null       // ISO timestamp — 7 days after startDate (deadline)
+  isDemo?: boolean                   // true = demo/test order (shows DEMO badge), false/undefined = real order
   createdAt: string
   updatedAt?: string
 }

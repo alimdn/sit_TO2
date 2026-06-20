@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mastering UI Design | EduMentor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#d3e4fe",
+                    "surface-tint": "#545f73",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed": "#00201d",
+                    "tertiary-fixed-dim": "#ffb690",
+                    "on-tertiary-fixed-variant": "#783200",
+                    "on-tertiary-fixed": "#341100",
+                    "surface-container-highest": "#d3e4fe",
+                    "outline-variant": "#c5c6cd",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed": "#ffdbca",
+                    "on-background": "#0b1c30",
+                    "on-error": "#ffffff",
+                    "background": "#f8f9ff",
+                    "secondary-fixed": "#89f5e7",
+                    "secondary": "#006a61",
+                    "secondary-container": "#86f2e4",
+                    "on-primary-fixed": "#111c2d",
+                    "on-surface-variant": "#45474c",
+                    "on-primary-fixed-variant": "#3c475a",
+                    "primary-container": "#1e293b",
+                    "surface-container-lowest": "#ffffff",
+                    "outline": "#75777d",
+                    "on-secondary-container": "#006f66",
+                    "surface-dim": "#cbdbf5",
+                    "primary-fixed": "#d8e3fb",
+                    "surface-bright": "#f8f9ff",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-container": "#eb6905",
+                    "surface-container": "#e5eeff",
+                    "error": "#ba1a1a",
+                    "inverse-primary": "#bcc7de",
+                    "primary-fixed-dim": "#bcc7de",
+                    "tertiary-container": "#481b00",
+                    "primary": "#091426",
+                    "surface": "#f8f9ff",
+                    "on-surface": "#0b1c30",
+                    "inverse-surface": "#213145",
+                    "on-secondary-fixed-variant": "#005049",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#8590a6",
+                    "surface-container-high": "#dce9ff",
+                    "surface-container-low": "#eff4ff",
+                    "tertiary": "#280c00",
+                    "on-primary": "#ffffff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "secondary-fixed-dim": "#6bd8cb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "40px",
+                    "container-max": "1280px",
+                    "margin-mobile": "16px",
+                    "base": "8px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "label-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-lg-mobile": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "26px", "fontWeight": "400"}],
+                    "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "30px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .syllabus-accordion[open] .arrow-icon {
+            transform: rotate(180deg);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-secondary-container">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface dark:bg-primary shadow-sm h-16 flex items-center">
+<nav class="flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto">
+<div class="flex items-center gap-8">
+<a class="text-headline-md font-headline-md font-extrabold text-secondary dark:text-secondary-fixed" href="#">EduMentor</a>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-label-md font-label-md text-on-surface-variant dark:text-on-primary-container hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#">Categories</a>
+<a class="text-label-md font-label-md text-secondary dark:text-secondary-fixed border-b-2 border-secondary dark:border-secondary-fixed pb-1" href="#">My Learning</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-full text-label-md focus:ring-2 focus:ring-secondary/20 w-64" placeholder="Search courses..." type="text"/>
+</div>
+<button class="p-2 text-on-surface-variant hover:bg-surface-variant rounded-full transition-all">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<img alt="User profile" class="w-10 h-10 rounded-full border-2 border-outline-variant" data-alt="A professional headshot of a young creative professional with a friendly smile, set against a soft-focus studio background. The lighting is bright and even, reflecting a modern corporate aesthetic with high-key whites and soft shadows. The overall image has a clean, high-resolution finish suitable for a professional learning platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCihjkRnwSS97SjkaddvMys0Skk4u9ZJfwncQUN0sJVoSY5YyKWYULIOmMjbAxnHQyI_TjFd5lbgyYrCGiFLvBF1oW2Og0jNXJFy9e_h12LzudDGQF1QfxuQi2FcvVTHmNnWehpTeu1KJVV7QX9RoRc_YzQpIxmm2AAdwuIgX3ZHvCEFwyX1JkffDs5L1BGla4Kp0okFLht5_rsvlWn8bozeq_gTmhpURujUf1ulde_lx9Al6IrwLCtJ-BmGXFT5Lh6wMFxs5jTE84"/>
+</div>
+</nav>
+</header>
+<main class="pt-16 min-h-screen">
+<!-- Hero Section -->
+<section class="relative w-full bg-primary-container text-white overflow-hidden py-16 md:py-24">
+<div class="absolute inset-0 opacity-20">
+
+</div>
+<div class="relative max-w-container-max mx-auto px-margin-desktop grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="space-y-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary text-on-secondary text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                        Bestseller
+                    </div>
+<h1 class="text-display-lg-mobile md:text-display-lg font-display-lg leading-tight">Mastering UI/UX Design: Foundations to Professional</h1>
+<p class="text-body-lg text-on-primary-container max-w-xl">
+                        Deep dive into the world of interface design. Learn to create accessible, beautiful, and user-centric digital experiences with industry-standard tools and methodologies.
+                    </p>
+<div class="flex items-center gap-4">
+<img alt="Instructor" class="w-12 h-12 rounded-full ring-2 ring-secondary" data-alt="A close-up portrait of a mature male design professional with glasses and a thoughtful expression, representing an expert mentor figure. He is dressed in a dark minimalist sweater against a clean architectural background. The lighting is dramatic but soft, emphasizing expertise and professional reliability in a corporate modern style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNo4t5V8yWQ2YWZ2JxqUtzaNjAE-5LhGh7HxK09NLrUUpIwlHBZL_yMLm-yaamC2t6QCeIth5uuL0JHbsXZiOz9uLWKYcnAB9qh56vSQX3ytemBYFEn2CAw5dRgeHex4qwtaCqFCcNOkZoy90yaAAUgNym7uJ3SUL0CSxWLQ7uYtqGc3fApdk-PCeRScELzGhleyy6lNRvXuroUa6mjgTvam9rasXAHtmfQdacOYX9scGaQ5lCScpmSe7ve3_0wG2fxA_kJ8WMmSc"/>
+<div>
+<p class="text-label-md font-label-md">Instructor</p>
+<p class="text-body-md font-bold text-secondary-fixed">Alexander Chen, Lead Product Designer</p>
+</div>
+</div>
+<div class="flex flex-wrap gap-4 pt-4">
+<button class="px-8 py-3 bg-secondary hover:bg-on-secondary-container text-white font-bold rounded-lg transition-all transform active:scale-95 shadow-lg shadow-secondary/20">Resume Learning</button>
+<button class="px-8 py-3 border border-secondary text-secondary-fixed hover:bg-secondary/10 font-bold rounded-lg transition-all">Enroll Now</button>
+</div>
+</div>
+<div class="hidden lg:block">
+<div class="relative aspect-video rounded-xl overflow-hidden shadow-2xl group cursor-pointer">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A clean, minimalist workspace featuring a high-end laptop displaying a complex UI design project with vibrant teal and indigo accents. The setting is a bright, modern studio with soft daylight and organized desk accessories. The image aesthetic is corporate modern, emphasizing productivity, high-end digital craft, and educational focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAK7UB0I0DAKYfEhU7BP038RGWSCwS2uw4K46jD1lV8yHSz-ME6mdvNB90ARDu7sa0Muhw1Eos2nN_-95mzXbb4QSjDT2qnN4f4AUJ5Not8nM47wsrFBNRNGTb90nkKybdVQ72PwcNpLtdpGyJWtfxwSGbtX0gI5RYCpqmawmaS3dnEpLCIPmVGOZTKXEoQeZwXeA8qQ4ViwDEgQkGaMe97Ro-9BfKzWylC6cA9nseCjyzMMpFMqufBPRjfcorSqv9FFoKXdwvPZjI"/>
+<div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+<div class="w-20 h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white/30 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-white text-5xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Sticky Secondary Nav -->
+<div class="sticky top-16 z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant">
+<div class="max-w-container-max mx-auto px-margin-desktop flex gap-8 h-14 items-center overflow-x-auto no-scrollbar">
+<a class="text-label-md font-label-md text-secondary border-b-2 border-secondary h-full flex items-center whitespace-nowrap" href="#overview">Overview</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-secondary transition-colors h-full flex items-center whitespace-nowrap" href="#syllabus">Syllabus</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-secondary transition-colors h-full flex items-center whitespace-nowrap" href="#instructor">Instructor</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-secondary transition-colors h-full flex items-center whitespace-nowrap" href="#reviews">Reviews</a>
+</div>
+</div>
+<!-- Main Content Area -->
+<div class="max-w-container-max mx-auto px-margin-desktop py-12">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+<!-- Left Column (Content) -->
+<div class="lg:col-span-2 space-y-16">
+<!-- Overview Section -->
+<section class="scroll-mt-32" id="overview">
+<h2 class="text-headline-lg font-headline-lg mb-6">Course Overview</h2>
+<div class="prose prose-on-surface max-w-none text-on-surface-variant space-y-4">
+<p class="text-body-lg">The "Mastering UI/UX Design" course is a comprehensive journey designed to turn beginners into job-ready designers. We don't just teach you how to use tools; we teach you how to think, solve problems, and communicate your design decisions effectively.</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+<div class="flex gap-3 items-start">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Master professional tools like Figma and FigJam</span>
+</div>
+<div class="flex gap-3 items-start">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Learn the psychology of user behavior</span>
+</div>
+<div class="flex gap-3 items-start">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Build a high-end portfolio project from scratch</span>
+</div>
+<div class="flex gap-3 items-start">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Understand Handoff and collaboration with Devs</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Syllabus Section -->
+<section class="scroll-mt-32" id="syllabus">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-headline-lg font-headline-lg">Syllabus</h2>
+<span class="text-label-md text-on-surface-variant">12 Modules • 84 Lessons • 12h 45m</span>
+</div>
+<div class="space-y-4">
+<!-- Module 1 -->
+<details class="syllabus-accordion group bg-surface-container-low border border-outline-variant rounded-xl overflow-hidden" open="">
+<summary class="flex items-center justify-between p-6 cursor-pointer list-none hover:bg-surface-variant/30 transition-colors">
+<div class="flex items-center gap-4">
+<span class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold">1</span>
+<div>
+<h3 class="text-body-lg font-bold">Foundations of Visual Design</h3>
+<p class="text-label-sm text-on-surface-variant">5 lessons • 45m</p>
+</div>
+</div>
+<span class="material-symbols-outlined arrow-icon transition-transform duration-300">expand_more</span>
+</summary>
+<div class="p-6 pt-0 space-y-4 border-t border-outline-variant">
+<div class="flex items-center justify-between py-2 group/lesson cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover/lesson:text-secondary">play_circle</span>
+<span class="text-body-md group-hover/lesson:text-secondary">Introduction to the Design Workspace</span>
+</div>
+<span class="text-label-sm text-on-surface-variant">08:24</span>
+</div>
+<div class="flex items-center justify-between py-2 group/lesson cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover/lesson:text-secondary">description</span>
+<span class="text-body-md group-hover/lesson:text-secondary">The Psychology of Color Theory</span>
+</div>
+<span class="text-label-sm text-on-surface-variant">Resource PDF</span>
+</div>
+<div class="flex items-center justify-between py-2 group/lesson cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover/lesson:text-secondary">play_circle</span>
+<span class="text-body-md group-hover/lesson:text-secondary">Typography Scales and Hierarchy</span>
+</div>
+<span class="text-label-sm text-on-surface-variant">12:15</span>
+</div>
+</div>
+</details>
+<!-- Module 2 -->
+<details class="syllabus-accordion group bg-surface-container-low border border-outline-variant rounded-xl overflow-hidden">
+<summary class="flex items-center justify-between p-6 cursor-pointer list-none hover:bg-surface-variant/30 transition-colors">
+<div class="flex items-center gap-4">
+<span class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold">2</span>
+<div>
+<h3 class="text-body-lg font-bold">Advanced Figma Components</h3>
+<p class="text-label-sm text-on-surface-variant">8 lessons • 1h 20m</p>
+</div>
+</div>
+<span class="material-symbols-outlined arrow-icon transition-transform duration-300">expand_more</span>
+</summary>
+<div class="p-6 pt-0 border-t border-outline-variant">
+<p class="text-body-md text-on-surface-variant py-4 italic">Expand to see lesson details...</p>
+</div>
+</details>
+<!-- Module 3 -->
+<details class="syllabus-accordion group bg-surface-container-low border border-outline-variant rounded-xl overflow-hidden">
+<summary class="flex items-center justify-between p-6 cursor-pointer list-none hover:bg-surface-variant/30 transition-colors">
+<div class="flex items-center gap-4">
+<span class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold">3</span>
+<div>
+<h3 class="text-body-lg font-bold">User Research &amp; Personas</h3>
+<p class="text-label-sm text-on-surface-variant">12 lessons • 2h 05m</p>
+</div>
+</div>
+<span class="material-symbols-outlined arrow-icon transition-transform duration-300">expand_more</span>
+</summary>
+<div class="p-6 pt-0 border-t border-outline-variant">
+<p class="text-body-md text-on-surface-variant py-4 italic">Expand to see lesson details...</p>
+</div>
+</details>
+</div>
+</section>
+<!-- Reviews Section -->
+<section class="scroll-mt-32" id="reviews">
+<div class="flex items-end justify-between mb-8">
+<div>
+<h2 class="text-headline-lg font-headline-lg mb-2">Student Reviews</h2>
+<div class="flex items-center gap-4">
+<div class="flex text-on-tertiary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0.5;">star_half</span>
+</div>
+<span class="font-bold text-headline-sm">4.8</span>
+<span class="text-on-surface-variant">(2,450 ratings)</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Review 1 -->
+<div class="p-6 rounded-2xl bg-surface-container shadow-sm border border-outline-variant">
+<div class="flex items-center gap-4 mb-4">
+<img alt="Reviewer 1" class="w-12 h-12 rounded-full object-cover" data-alt="A candid, warm portrait of a smiling young woman in a brightly lit, modern apartment. She has a natural look and represents a diverse student body. The lighting is sunny and optimistic, adhering to the high-key, clean aesthetic of a professional online learning platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBr55vgM3JZS6cidazHnsHqTbHhln-LkvapN4wZFaA7wtBG2kt-btdMg3Z7lOKhlLp1KB_e-a9xaNCoZ8Dj7NfRCNsKRnIpy3envYrfdDkhunodR8KdmhSwEuuuEpbYBkkOUXLjo13J-1BPfTJXyxWn761KoJcCJvEBjX6DKdRX6S74Wada4Dp9jJDM3KoO_Zqkbq87YGhcsvuudIE9TPqggXdfiWzZo68hw6DDpc-Hr5Yd7HEkPTemd9etlfewYlYZ40pIFjxPiCM"/>
+<div>
+<h4 class="font-bold">Sarah Jenkins</h4>
+<p class="text-label-sm text-on-surface-variant">2 weeks ago</p>
+</div>
+</div>
+<div class="flex text-on-tertiary-container mb-2">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-body-md text-on-surface-variant">"The best course on UI/UX I've taken so far. Alexander explains complex layout concepts with such ease. Highly recommended for anyone starting their design career!"</p>
+</div>
+<!-- Review 2 -->
+<div class="p-6 rounded-2xl bg-surface-container shadow-sm border border-outline-variant">
+<div class="flex items-center gap-4 mb-4">
+<img alt="Reviewer 2" class="w-12 h-12 rounded-full object-cover" data-alt="A professional headshot of a smiling young man in a casual collared shirt, set against a blurred creative office background. The lighting is crisp and modern, emphasizing a bright, collaborative work environment. The color palette is composed of soft blues and greys, matching the design system's professional tone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlGlFqs7vCN7siB8N-aHEC3uqJZ0OvtWZJA6fs4ZcqBxDbJH47i9mR4xmLzf_ssxf7_xAz9t309Lw1VL1_K37OXiHD6UaLyvEv4Uh-R2Sd0nxhyclccUB8mvDYwfBDRWkA3jdPEqCVN6lvv5gCT7J1XYL2slj5ZCtq4OESLsigow3b-ooLIWtd3xjnlRwMWfkgown8CIo6gwunUZCELt2yTTjHhQDxiFe24oMzwBpq2EBQYHO-GA5Qehd8D1b9VWJffNdStDkqbfM"/>
+<div>
+<h4 class="font-bold">Michael Ross</h4>
+<p class="text-label-sm text-on-surface-variant">1 month ago</p>
+</div>
+</div>
+<div class="flex text-on-tertiary-container mb-2">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 0;">star</span>
+</div>
+<p class="text-body-md text-on-surface-variant">"Great content. The module on Figma components saved me hours of work in my current job. Only wish there was a bit more on motion design."</p>
+</div>
+</div>
+<button class="mt-8 text-secondary font-bold text-label-md flex items-center gap-2 hover:underline">
+                            See all reviews <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</section>
+</div>
+<!-- Right Column (Sidebar) -->
+<aside class="relative">
+<div class="sticky top-32 space-y-8">
+<!-- Stats Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-8 shadow-xl">
+<h3 class="text-headline-md font-headline-md mb-6">Course Details</h3>
+<div class="space-y-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-variant flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant">Duration</p>
+<p class="font-bold">12h 45m (Self-paced)</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-variant flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">layers</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant">Level</p>
+<p class="font-bold">Intermediate</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-variant flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">translate</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant">Language</p>
+<p class="font-bold">English (Subtitles available)</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-variant flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">workspace_premium</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant">Certificate</p>
+<p class="font-bold">Verified on Completion</p>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-8 border-t border-outline-variant">
+<div class="flex items-center justify-between mb-4">
+<span class="text-body-md">Course Progress</span>
+<span class="text-label-md font-bold text-secondary">45%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary transition-all duration-1000" style="width: 45%;"></div>
+</div>
+<p class="text-label-sm text-on-surface-variant mt-2 text-center">32 of 84 lessons completed</p>
+</div>
+<button class="w-full mt-8 py-4 bg-secondary-container text-on-secondary-container font-bold rounded-xl hover:bg-secondary hover:text-white transition-all transform active:scale-[0.98]">
+                                Download Syllabus (PDF)
+                            </button>
+</div>
+<!-- Sidebar Promotion -->
+<div class="bg-primary rounded-2xl p-8 text-white relative overflow-hidden group">
+<div class="absolute -right-10 -bottom-10 w-40 h-40 bg-secondary/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+<h4 class="text-headline-sm font-bold mb-4 relative z-10">Join the Community</h4>
+<p class="text-label-md text-on-primary-container mb-6 relative z-10">Get access to private Discord channels and weekly Q&amp;A sessions with Alexander.</p>
+<a class="inline-flex items-center gap-2 text-secondary-fixed font-bold hover:gap-4 transition-all relative z-10" href="#">
+                                Upgrade to Pro <span class="material-symbols-outlined">arrow_right_alt</span>
+</a>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-primary border-t border-outline-variant">
+<div class="w-full py-12 px-margin-desktop max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="space-y-6">
+<a class="text-headline-sm font-headline-sm font-bold text-secondary" href="#">EduMentor</a>
+<p class="text-body-md text-on-surface-variant max-w-sm">© 2024 EduMentor. Empowering learners worldwide through high-quality, accessible design education. Building the next generation of creative leaders.</p>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="space-y-4">
+<h5 class="text-label-md font-bold uppercase tracking-wider text-on-surface">Platform</h5>
+<nav class="flex flex-col gap-2">
+<a class="text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">About</a>
+<a class="text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Careers</a>
+<a class="text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Teach on platform</a>
+</nav>
+</div>
+<div class="space-y-4">
+<h5 class="text-label-md font-bold uppercase tracking-wider text-on-surface">Support</h5>
+<nav class="flex flex-col gap-2">
+<a class="text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Help</a>
+<a class="text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Terms</a>
+</nav>
+</div>
+</div>
+</div>
+</footer>
+<!-- FAB for Support (Contextual only for learning dashboard) -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-secondary text-on-secondary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined">forum</span>
+</button>
+<script>
+        // Simple scroll spy for sticky nav
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.sticky nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-secondary', 'border-b-2', 'border-secondary');
+                link.classList.add('text-on-surface-variant');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('text-secondary', 'border-b-2', 'border-secondary');
+                    link.classList.remove('text-on-surface-variant');
+                }
+            });
+        });
+
+        // Syllabus accordion interactive log for prototype feel
+        const details = document.querySelectorAll('details.syllabus-accordion');
+        details.forEach(targetDetail => {
+            targetDetail.addEventListener('click', () => {
+                details.forEach(detail => {
+                    if (detail !== targetDetail) {
+                        detail.removeAttribute('open');
+                    }
+                });
+            });
+        });
+    </script>
+</body></html>

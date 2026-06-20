@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EduMentor - Interactive Quiz</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#d3e4fe",
+                    "surface-tint": "#545f73",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed": "#00201d",
+                    "tertiary-fixed-dim": "#ffb690",
+                    "on-tertiary-fixed-variant": "#783200",
+                    "on-tertiary-fixed": "#341100",
+                    "surface-container-highest": "#d3e4fe",
+                    "outline-variant": "#c5c6cd",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed": "#ffdbca",
+                    "on-background": "#0b1c30",
+                    "on-error": "#ffffff",
+                    "background": "#f8f9ff",
+                    "secondary-fixed": "#89f5e7",
+                    "secondary": "#006a61",
+                    "secondary-container": "#86f2e4",
+                    "on-primary-fixed": "#111c2d",
+                    "on-surface-variant": "#45474c",
+                    "on-primary-fixed-variant": "#3c475a",
+                    "primary-container": "#1e293b",
+                    "surface-container-lowest": "#ffffff",
+                    "outline": "#75777d",
+                    "on-secondary-container": "#006f66",
+                    "surface-dim": "#cbdbf5",
+                    "primary-fixed": "#d8e3fb",
+                    "surface-bright": "#f8f9ff",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-container": "#eb6905",
+                    "surface-container": "#e5eeff",
+                    "error": "#ba1a1a",
+                    "inverse-primary": "#bcc7de",
+                    "primary-fixed-dim": "#bcc7de",
+                    "tertiary-container": "#481b00",
+                    "primary": "#091426",
+                    "surface": "#f8f9ff",
+                    "on-surface": "#0b1c30",
+                    "inverse-surface": "#213145",
+                    "on-secondary-fixed-variant": "#005049",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#8590a6",
+                    "surface-container-high": "#dce9ff",
+                    "surface-container-low": "#eff4ff",
+                    "tertiary": "#280c00",
+                    "on-primary": "#ffffff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "secondary-fixed-dim": "#6bd8cb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "40px",
+                    "container-max": "1280px",
+                    "margin-mobile": "16px",
+                    "base": "8px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "label-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-lg-mobile": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "26px", "fontWeight": "400"}],
+                    "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "30px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .option-card:hover {
+            transform: translateY(-2px);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .timer-glow {
+            box-shadow: 0 0 15px rgba(0, 106, 97, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md overflow-x-hidden">
+<!-- Top Navigation Bar (Shared Component Strategy) -->
+<header class="bg-surface shadow-sm sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto h-16">
+<div class="flex items-center gap-base">
+<span class="text-headline-md font-headline-md font-bold text-secondary">EduMentor</span>
+</div>
+<div class="hidden md:flex items-center gap-gutter">
+<nav class="flex items-center gap-gutter">
+<a class="text-secondary border-b-2 border-secondary pb-1 font-label-md text-label-md hover:text-secondary transition-colors" href="#">Categories</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-secondary transition-colors" href="#">My Learning</a>
+</nav>
+</div>
+<div class="flex items-center gap-gutter">
+<button class="text-on-surface-variant hover:text-secondary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-secondary-container overflow-hidden border border-outline-variant">
+<img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9Qmy2-sjS6DbJBB9oMsLKAfKqqOVTkZanEbx2vx_1t8GXbTN4N7tHYW_CPNcYrYGjVJ_STggDAHZrPVlEUig-n3j7yRVZONgJUm2-13EchOe_ilbRCAd5oSo7q5Gym-KYd0P9BeCkYN8G06ajvj6_uta3pssKNMshBC5huswfcB_5Z5BhdejjeNHRGhOS3Xw36RSRSfUC-NMmp0Xlxqhq-Tr3JZpehDiPTo7kVEvQKMcjyY7yc7KU4yn3N9JvI6nTI3ZHIbKdjZE"/>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-8 grid grid-cols-1 md:grid-cols-[1fr_320px] gap-gutter">
+<!-- Quiz Content Area -->
+<section class="flex flex-col gap-8">
+<!-- Progress & Header -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/30">
+<div class="flex justify-between items-end mb-4">
+<div>
+<span class="text-label-sm font-label-sm text-secondary uppercase tracking-wider">Module 1: Foundations</span>
+<h1 class="text-headline-lg font-headline-lg mt-1">Mastering UI Design Principles</h1>
+</div>
+<div class="text-right">
+<p class="text-label-md font-label-md text-on-surface-variant mb-1">Question 3 of 10</p>
+<div class="w-32 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-secondary h-full transition-all duration-500" style="width: 30%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Question Card -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/30 overflow-hidden">
+<div class="p-8">
+<h2 class="text-headline-md font-headline-md mb-8 leading-tight">
+                        Which of the following principles best describes the practice of creating a visual hierarchy through the use of different font weights and sizes?
+                    </h2>
+<!-- Options Grid -->
+<div class="grid gap-4" id="options-container">
+<!-- Option 1 -->
+<button class="option-card group flex items-center p-5 rounded-xl border-2 border-outline-variant hover:border-secondary hover:bg-secondary-container/10 text-left transition-all w-full focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2" onclick="selectOption(this)">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center mr-4 group-hover:bg-secondary group-hover:text-white transition-colors">
+<span class="font-bold">A</span>
+</div>
+<span class="text-body-lg font-body-lg text-on-surface">Consistency and Standards</span>
+</button>
+<!-- Option 2 -->
+<button class="option-card group flex items-center p-5 rounded-xl border-2 border-outline-variant hover:border-secondary hover:bg-secondary-container/10 text-left transition-all w-full focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2" onclick="selectOption(this)">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center mr-4 group-hover:bg-secondary group-hover:text-white transition-colors">
+<span class="font-bold">B</span>
+</div>
+<span class="text-body-lg font-body-lg text-on-surface">Emphasis and Scale</span>
+</button>
+<!-- Option 3 (Correct Choice) -->
+<button class="option-card group flex items-center p-5 rounded-xl border-2 border-outline-variant hover:border-secondary hover:bg-secondary-container/10 text-left transition-all w-full focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2" onclick="selectOption(this)">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center mr-4 group-hover:bg-secondary group-hover:text-white transition-colors">
+<span class="font-bold">C</span>
+</div>
+<span class="text-body-lg font-body-lg text-on-surface">User Control and Freedom</span>
+</button>
+<!-- Option 4 -->
+<button class="option-card group flex items-center p-5 rounded-xl border-2 border-outline-variant hover:border-secondary hover:bg-secondary-container/10 text-left transition-all w-full focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2" onclick="selectOption(this)">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center mr-4 group-hover:bg-secondary group-hover:text-white transition-colors">
+<span class="font-bold">D</span>
+</div>
+<span class="text-body-lg font-body-lg text-on-surface">Error Prevention</span>
+</button>
+</div>
+<!-- Instant Feedback Section (Hidden by default) -->
+<div class="hidden mt-8 p-6 rounded-xl animate-[fadeIn_0.3s_ease-out]" id="feedback-panel">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" id="feedback-icon-container">
+<span class="material-symbols-outlined text-[32px]" id="feedback-icon"></span>
+</div>
+<div>
+<h3 class="text-headline-sm font-headline-sm mb-2" id="feedback-title"></h3>
+<p class="text-body-md font-body-md text-on-surface-variant" id="feedback-text"></p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Navigation -->
+<div class="bg-surface-container-low px-8 py-6 border-t border-outline-variant/30 flex items-center justify-between">
+<button class="text-on-surface-variant font-label-md text-label-md hover:text-secondary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="skip_next">skip_next</span>
+                        Skip Question
+                    </button>
+<div class="flex gap-4">
+<button class="bg-secondary text-white px-8 py-3 rounded-full font-label-md text-label-md shadow-sm hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed" id="submit-btn" onclick="submitAnswer()">
+                            Submit Answer
+                        </button>
+<button class="hidden bg-secondary text-white px-8 py-3 rounded-full font-label-md text-label-md shadow-sm hover:opacity-90 active:scale-[0.98] transition-all" id="next-btn" onclick="resetQuiz()">
+                            Next Question
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Sidebar / Context Panel -->
+<aside class="flex flex-col gap-gutter">
+<!-- Timer Block -->
+<div class="bg-primary-container text-on-primary-container p-6 rounded-xl shadow-lg timer-glow flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary-fixed" data-icon="timer">timer</span>
+<span class="text-label-md font-label-md opacity-80">Remaining Time</span>
+</div>
+<div class="text-headline-md font-headline-md text-secondary-fixed" id="timer">14:52</div>
+</div>
+<!-- Tips/Context Card -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/30">
+<h4 class="text-headline-sm font-headline-sm mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary-container" data-icon="lightbulb">lightbulb</span>
+                    Quick Tip
+                </h4>
+<p class="text-on-surface-variant text-body-md mb-6 leading-relaxed">
+                    Visual hierarchy isn't just about size; it's about leading the user's eye through the content in order of importance.
+                </p>
+<div class="bg-secondary-container/10 border border-secondary/20 p-4 rounded-lg">
+<img alt="Design Principle Illustration" class="w-full h-32 object-cover rounded-lg mb-3" data-alt="A clean, minimalist workspace with a tablet showing a professional UI design prototype. The screen displays clear typography hierarchy with bold headings and light body text. The room is brightly lit with natural light, creating a focused and expert design environment in a corporate modern style using teal and indigo tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3NShWH-PPBYEE6oLf3ZZ1Z2FOD4ei9xu-czFbvsGlRACfrsEWGUIkEyaUSJWwQgb1kY0EQYP-MvsZiU0MtyCYv2eOMgqDr39gNbDN9m9VHPYF7JbsoG1id3fUCFWD2vf3uN-kGJOhtr4FbKObxbcit586bapzrC7m9nO8RtSXk5w-X0yJI59MF0wGtDi8uftpVSNLD4nmM4-Fo82PgsTZLbr_Ktlnee_Csv0N-T_bx3dt6qquxKMs0r7Ye8_ThTA22_EJvz8eMSE"/>
+<span class="text-label-sm font-label-sm text-secondary">Refer to Lecture: "Text Layouts"</span>
+</div>
+</div>
+<!-- Instructor Support -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/30 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
+<img alt="Instructor" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCt-s6Ua457qlSSgv23lZmJF0hiSLZK3XesdyT_dmQJfGpvA6rO5dDSfSxE7gOFcNzl205VHgcZUxlbsIM-vKV2C9F4d70yMhxoPUWfXA8gZy_82rK8XgAb60ePSGdzVPa6F4EXQqUMqUoAQM_LZE_y-ZnCAKFd3TO0ApeKgwB_a6617LLmlWcege9gr8v-OluVMRlDbSvj4-d9-Hpsnmybgq_2GRASyCpZcCkxRNVK2jt__09Kckxm06l9Cs5h6XAqUzS4MkH9n0k"/>
+</div>
+<div>
+<p class="font-bold text-on-surface">Instructor Sarah</p>
+<button class="text-secondary text-label-sm font-label-sm hover:underline">Ask a question</button>
+</div>
+</div>
+</aside>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant w-full mt-auto">
+<div class="w-full py-12 px-margin-desktop max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div>
+<span class="text-headline-sm font-headline-sm font-bold text-secondary">EduMentor</span>
+<p class="mt-4 text-body-md font-body-md text-on-surface-variant max-w-md">
+                    © 2024 EduMentor. Empowering learners worldwide through expert-led courses and interactive challenges.
+                </p>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-8">
+<div class="flex flex-col gap-2">
+<a class="text-on-surface-variant text-label-sm font-label-sm hover:text-secondary transition-colors" href="#">About</a>
+<a class="text-on-surface-variant text-label-sm font-label-sm hover:text-secondary transition-colors" href="#">Careers</a>
+</div>
+<div class="flex flex-col gap-2">
+<a class="text-on-surface-variant text-label-sm font-label-sm hover:text-secondary transition-colors" href="#">Help</a>
+<a class="text-on-surface-variant text-label-sm font-label-sm hover:text-secondary transition-colors" href="#">Terms</a>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        let selectedElement = null;
+        const CORRECT_ANSWER_INDEX = 1; // Option B
+
+        function selectOption(element) {
+            if (document.getElementById('feedback-panel').classList.contains('hidden') === false) return;
+            
+            // Remove previous selection
+            const options = document.querySelectorAll('.option-card');
+            options.forEach(opt => {
+                opt.classList.remove('border-secondary', 'bg-secondary-container/10');
+                opt.classList.add('border-outline-variant');
+            });
+
+            // Add new selection
+            element.classList.remove('border-outline-variant');
+            element.classList.add('border-secondary', 'bg-secondary-container/10');
+            selectedElement = element;
+            
+            document.getElementById('submit-btn').disabled = false;
+        }
+
+        function submitAnswer() {
+            if (!selectedElement) return;
+
+            const options = Array.from(document.querySelectorAll('.option-card'));
+            const selectedIndex = options.indexOf(selectedElement);
+            const feedbackPanel = document.getElementById('feedback-panel');
+            const feedbackTitle = document.getElementById('feedback-title');
+            const feedbackText = document.getElementById('feedback-text');
+            const feedbackIcon = document.getElementById('feedback-icon');
+            const feedbackIconContainer = document.getElementById('feedback-icon-container');
+            
+            feedbackPanel.classList.remove('hidden');
+
+            if (selectedIndex === CORRECT_ANSWER_INDEX) {
+                // Correct
+                feedbackPanel.classList.add('bg-secondary-container/20', 'border', 'border-secondary/30');
+                feedbackIconContainer.classList.add('bg-secondary', 'text-white');
+                feedbackIcon.textContent = 'check_circle';
+                feedbackTitle.textContent = 'Excellent Work!';
+                feedbackTitle.classList.add('text-secondary');
+                feedbackText.textContent = 'You nailed it! Emphasis and Scale are key principles used to guide the viewer\'s focus through contrasting sizes and weights.';
+                
+                selectedElement.classList.add('bg-secondary/20', 'border-secondary');
+            } else {
+                // Incorrect
+                feedbackPanel.classList.add('bg-error-container', 'border', 'border-error/30');
+                feedbackIconContainer.classList.add('bg-error', 'text-white');
+                feedbackIcon.textContent = 'cancel';
+                feedbackTitle.textContent = 'Not Quite...';
+                feedbackTitle.classList.add('text-error');
+                feedbackText.textContent = 'Actually, the correct answer is Emphasis and Scale. While consistency is important, the specific use of font variants to create order is a matter of scale.';
+                
+                selectedElement.classList.add('bg-error/10', 'border-error');
+                // Highlight the correct one
+                options[CORRECT_ANSWER_INDEX].classList.add('border-secondary', 'border-dashed');
+            }
+
+            document.getElementById('submit-btn').classList.add('hidden');
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function resetQuiz() {
+            window.location.reload();
+        }
+
+        // Simple Timer
+        let time = 14 * 60 + 52;
+        const timerEl = document.getElementById('timer');
+        setInterval(() => {
+            time--;
+            const mins = Math.floor(time / 60);
+            const secs = time % 60;
+            timerEl.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+        }, 1000);
+
+        // Initial State
+        document.getElementById('submit-btn').disabled = true;
+    </script>
+<style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</body></html>

@@ -37,16 +37,13 @@ const SIMILARITY_LABELS: Record<string, { en: string; ar: string }> = {
 const FREE_FEATURES_LIMIT = 5
 
 // Default work-management milestones for every new order.
-// Order is intentional and reflects the project lifecycle.
+// Simplified to 4 stages that match the customer-facing "How It Works" section.
+// Each stage = 25% of total progress.
 const DEFAULT_MILESTONES: Milestone[] = [
-  { name: 'Order Received',           status: 'completed', date: new Date().toISOString() },
-  { name: 'Design Phase',             status: 'pending' },
-  { name: 'Add-ons Integration',      status: 'pending' },
-  { name: 'Website Testing',          status: 'pending' },
-  { name: 'Database Setup',           status: 'pending' },
-  { name: 'Control Panel Setup',      status: 'pending' },
-  { name: 'Final Approval',           status: 'pending' },
-  { name: 'Deployment & Delivery',    status: 'pending' },
+  { name: 'Choose Template',      status: 'completed', date: new Date().toISOString() },
+  { name: 'Select Plan',          status: 'pending' },
+  { name: 'Submit Requirements',  status: 'pending' },
+  { name: 'Receive Website',      status: 'pending' },
 ]
 
 interface Milestone {
@@ -71,6 +68,8 @@ interface Order {
   similarSiteCriteria: string | null
   domain: string | null
   domainPrice: number | null
+  startDate?: string | null
+  deliveryDate?: string | null
   createdAt: string
   user: { name: string; email: string }
 }
@@ -198,9 +197,8 @@ export default function AdminOrders() {
   }
 
   // Calculate progress as a percentage based on completed milestones.
-  // Formula: (completed_count / total_count) * 100, rounded to nearest integer.
-  // When all milestones are completed, progress = 100 (and the order status
-  // is automatically set to 'completed' by the caller).
+  // With 4 milestones: 0 done = 0%, 1 done = 25%, 2 done = 50%, 3 done = 75%, 4 done = 100%.
+  // Works for any number of milestones (formula: completed / total × 100).
   const calcProgressFromMilestones = (milestones: Milestone[]): number => {
     if (milestones.length === 0) return 0
     const completed = milestones.filter(m => m.status === 'completed').length
@@ -211,6 +209,16 @@ export default function AdminOrders() {
   // (no need to press "Save" first). Also auto-update the order's progress
   // percentage based on the new milestone states, and auto-set the order
   // status to 'completed' when all milestones are done.
+  //
+  // IMPORTANT: progress reflects the CURRENT number of completed milestones.
+  // If the admin reverts a milestone (clicks it back to pending/in_progress),
+  // the progress DECREASES accordingly. This ensures progress always matches
+  // the actual state of work.
+  //
+  // On the FIRST toggle that starts work (status goes from 'pending' to
+  // 'in_progress' or 'completed' for the first time), we also stamp:
+  //   - startDate: now (ISO timestamp)
+  //   - deliveryDate: startDate + 7 days (the deadline for building the site)
   const toggleMilestoneStatus = async (index: number) => {
     if (!selected) return
 
@@ -234,7 +242,7 @@ export default function AdminOrders() {
     // Optimistic UI update
     setEditMilestones(newMilestones)
 
-    // Auto-calculate progress from milestones
+    // Auto-calculate progress from milestones (decreases if reverting)
     const newProgress = calcProgressFromMilestones(newMilestones)
     setEditProgress(newProgress)
 
@@ -247,6 +255,28 @@ export default function AdminOrders() {
     } else if (statusUpdate === 'completed' && newProgress < 100) {
       newStatus = 'in_progress'
       setStatusUpdate('in_progress')
+    } else if (newProgress > 0 && statusUpdate === 'pending') {
+      // First time work begins — escalate from pending to in_progress
+      newStatus = 'in_progress'
+      setStatusUpdate('in_progress')
+    }
+
+    // Build the update payload. Include startDate + deliveryDate on the
+    // first transition into actual work (when they weren't set before).
+    const payload: Record<string, unknown> = {
+      milestones: JSON.stringify(newMilestones),
+      progress: newProgress,
+      status: newStatus,
+    }
+
+    // If this is the first time progress > 0 and startDate isn't set yet,
+    // stamp the start date + 7-day delivery deadline.
+    const hasStartedBefore = !!(selected as any).startDate
+    if (!hasStartedBefore && newProgress > 0) {
+      const now = new Date()
+      const delivery = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000) // +7 days
+      payload.startDate = now.toISOString()
+      payload.deliveryDate = delivery.toISOString()
     }
 
     // Persist immediately to the API
@@ -254,11 +284,7 @@ export default function AdminOrders() {
       const res = await fetch(`/api/orders/${selected.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          milestones: JSON.stringify(newMilestones),
-          progress: newProgress,
-          status: newStatus,
-        }),
+        body: JSON.stringify(payload),
       })
       if (res.ok) {
         const updated = await res.json()
@@ -269,7 +295,8 @@ export default function AdminOrders() {
         setEditMilestones(parseMilestones(updated.milestones))
         setEditProgress(updated.progress)
         setEditNotes(updated.notes || '')
-        toast.success(`Milestone ${newMilestones[index].status === 'completed' ? 'completed' : 'updated'} — progress: ${newProgress}%`)
+        const action = newMilestones[index].status === 'completed' ? 'completed' : 'reverted'
+        toast.success(`Milestone ${action} — progress: ${newProgress}%`)
       } else {
         toast.error('Failed to save milestone — please try again')
         // Revert on failure
@@ -298,19 +325,47 @@ export default function AdminOrders() {
 
   const handleSaveWork = async () => {
     if (!selected) return
+
+    // Always recalculate progress from milestones when saving, so the
+    // admin's manual milestone changes (add/remove/toggle in edit mode)
+    // are reflected in the progress percentage. The manual slider value
+    // is ignored in favour of the milestone-derived value.
+    const recalculatedProgress = calcProgressFromMilestones(editMilestones)
+    let effectiveStatus = statusUpdate
+    if (recalculatedProgress === 100) {
+      effectiveStatus = 'completed'
+      setStatusUpdate('completed')
+    } else if (recalculatedProgress > 0 && statusUpdate === 'pending') {
+      effectiveStatus = 'in_progress'
+      setStatusUpdate('in_progress')
+    } else if (statusUpdate === 'completed' && recalculatedProgress < 100) {
+      effectiveStatus = 'in_progress'
+      setStatusUpdate('in_progress')
+    }
+
+    // Build payload — include startDate + deliveryDate on first work start
+    const payload: Record<string, unknown> = {
+      status: effectiveStatus,
+      progress: recalculatedProgress,
+      milestones: JSON.stringify(editMilestones),
+      notes: editNotes || null,
+    }
+    const hasStartedBefore = !!(selected as any).startDate
+    if (!hasStartedBefore && recalculatedProgress > 0) {
+      const now = new Date()
+      const delivery = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
+      payload.startDate = now.toISOString()
+      payload.deliveryDate = delivery.toISOString()
+    }
+
     try {
       const res = await fetch(`/api/orders/${selected.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          status: statusUpdate,
-          progress: editProgress,
-          milestones: JSON.stringify(editMilestones),
-          notes: editNotes || null,
-        }),
+        body: JSON.stringify(payload),
       })
       if (res.ok) {
-        toast.success('Order updated successfully')
+        toast.success(`Order updated — progress: ${recalculatedProgress}%`)
         setIsEditing(false)
         fetchOrders()
         // Refresh selected order data
@@ -332,9 +387,9 @@ export default function AdminOrders() {
                 to: selected.user?.email,
                 customerName: selected.user?.name || 'Customer',
                 orderId: selected.id.slice(-8),
-                currentStep: currentMilestone?.name || statusUpdate.replace('_', ' '),
-                stepDescription: getStepDescription(statusUpdate, editProgress),
-                progress: editProgress,
+                currentStep: currentMilestone?.name || effectiveStatus.replace('_', ' '),
+                stepDescription: getStepDescription(effectiveStatus, recalculatedProgress),
+                progress: recalculatedProgress,
                 milestones: editMilestones.map(m => ({ name: m.name, status: m.status })),
                 siteUrl: `${window.location.origin}`,
               },
@@ -343,7 +398,7 @@ export default function AdminOrders() {
         } catch { /* email failure shouldn't block admin */ }
 
         // Send delivery email if status is completed
-        if (statusUpdate === 'completed' && selected.user?.email) {
+        if (effectiveStatus === 'completed' && selected.user?.email) {
           try {
             const domain = selected.domain || 'yourwebsite.com'
             await fetch('/api/send-email', {

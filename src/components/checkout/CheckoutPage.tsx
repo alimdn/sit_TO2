@@ -176,17 +176,14 @@ export default function CheckoutPage() {
           status: 'pending',
           progress: 0,
           // Send milestones as full objects so the admin panel can show
-          // status badges immediately. The first milestone (Order Received)
-          // is auto-marked completed when the order is placed.
+          // status badges immediately. The first milestone (Choose Template)
+          // is auto-marked completed when the order is placed (since the
+          // customer just selected a template in the previous step).
           milestones: JSON.stringify([
-            { name: 'Order Received',        status: 'completed', date: new Date().toISOString() },
-            { name: 'Design Phase',          status: 'pending' },
-            { name: 'Add-ons Integration',   status: 'pending' },
-            { name: 'Website Testing',       status: 'pending' },
-            { name: 'Database Setup',        status: 'pending' },
-            { name: 'Control Panel Setup',   status: 'pending' },
-            { name: 'Final Approval',        status: 'pending' },
-            { name: 'Deployment & Delivery', status: 'pending' },
+            { name: 'Choose Template',     status: 'completed', date: new Date().toISOString() },
+            { name: 'Select Plan',         status: 'pending' },
+            { name: 'Submit Requirements', status: 'pending' },
+            { name: 'Receive Website',     status: 'pending' },
           ]),
           templateFeatures: JSON.stringify(templateFeatures),
           addOns: JSON.stringify(selectedAddOns),

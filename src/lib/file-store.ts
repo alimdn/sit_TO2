@@ -952,6 +952,8 @@ export interface StoredOrder {
   domainPrice: number | null
   customerName?: string | null       // denormalized for admin display when no userId
   customerEmail?: string | null
+  startDate?: string | null          // ISO timestamp when work began (set on first PUT that starts progress)
+  deliveryDate?: string | null       // ISO timestamp — 7 days after startDate (deadline)
   createdAt: string
   updatedAt?: string
 }

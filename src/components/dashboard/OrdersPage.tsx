@@ -1,13 +1,13 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { LayoutDashboard, Clock, Check, Circle, ArrowRight, MessageSquare, Globe } from 'lucide-react'
+import { LayoutDashboard, Clock, Check, Circle, ArrowRight, MessageSquare, Globe, RefreshCw } from 'lucide-react'
 
 const ADD_ON_NAMES: Record<string, string> = {
   seo: 'Advanced SEO Package',
@@ -123,24 +123,46 @@ export default function OrdersPage() {
   const [payments, setPayments] = useState<Payment[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
+  const [refreshing, setRefreshing] = useState(false)
 
-  useEffect(() => {
+  const fetchOrders = useCallback(() => {
     if (!user) return
     Promise.all([
-      fetch('/api/orders?userId=' + user.id).then(r => r.json()),
-      fetch('/api/subscriptions?userId=' + user.id).then(r => r.json()),
+      fetch('/api/orders?userId=' + user.id, { cache: 'no-store' }).then(r => r.json()),
+      fetch('/api/subscriptions?userId=' + user.id, { cache: 'no-store' }).then(r => r.json()),
     ]).then(([ords, subs]) => {
-      setOrders(ords)
+      if (Array.isArray(ords)) setOrders(ords)
       const allPayments: Payment[] = []
-      subs.forEach((sub: any) => {
-        if (sub.payments) {
-          allPayments.push(...sub.payments)
-        }
-      })
+      if (Array.isArray(subs)) {
+        subs.forEach((sub: any) => {
+          if (sub.payments) {
+            allPayments.push(...sub.payments)
+          }
+        })
+      }
       setPayments(allPayments)
       setLoading(false)
     }).catch(() => setLoading(false))
   }, [user])
+
+  useEffect(() => {
+    fetchOrders()
+  }, [fetchOrders])
+
+  // Auto-refresh every 10 seconds so the customer sees admin milestone
+  // updates without needing to manually reload the page.
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchOrders()
+    }, 10000)
+    return () => clearInterval(interval)
+  }, [fetchOrders])
+
+  const handleManualRefresh = () => {
+    setRefreshing(true)
+    fetchOrders()
+    setTimeout(() => setRefreshing(false), 600)
+  }
 
   const statusColors: Record<string, string> = {
     active: 'bg-[#10B981]/10 text-[#10B981]',
@@ -168,7 +190,23 @@ export default function OrdersPage() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-[#000f22]">My Orders</h2>
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-[#000f22]">My Orders</h2>
+          <p className="text-xs text-[#4F5B76] mt-1">
+            {orders.length} order{orders.length !== 1 ? 's' : ''} · Auto-refreshing every 10s
+          </p>
+        </div>
+        <Button
+          variant="outline"
+          onClick={handleManualRefresh}
+          disabled={refreshing}
+          className="h-9 border-[#e6ebf1] hover:bg-[#f7fafd]"
+        >
+          <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+          Refresh
+        </Button>
+      </div>
 
       {orders.length === 0 ? (
         <Card className="shadow-card">

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Grain Texture Dark — Film Aesthetic</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Inter',system-ui,sans-serif}
+body{background:#0e0e0e;color:#d4d4d4;overflow-x:hidden}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.animate-fade-in{animation:fadeIn .5s ease-out}
+.grain-overlay{position:fixed;inset:0;pointer-events:none;z-index:100;opacity:0.04;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.card-hover{transition:all .3s}
+.card-hover:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,0.4)}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:16px 24px;border-radius:8px;background:#1a1a1a;border:1px solid #333;color:#d4d4d4;font-weight:500;animation:fadeIn .3s}
+</style>
+</head>
+<body class="min-h-screen">
+<div class="grain-overlay"></div>
+<div id="toast-container"></div>
+<nav class="fixed top-0 left-0 right-0 z-50 bg-[#0e0e0e]/90 backdrop-blur-sm border-b border-white/5">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+    <div class="flex items-center gap-2"><div class="w-9 h-9 rounded-lg bg-amber-500/10 flex items-center justify-center"><span class="text-amber-400">🎞️</span></div><span class="text-lg font-bold">Grain<span class="text-amber-400">/</span>Film</span></div>
+    <div class="hidden md:flex gap-8 text-sm text-gray-400"><a href="#work" class="hover:text-amber-400">Work</a><a href="#pricing" class="hover:text-amber-400">Pricing</a><a href="#voices" class="hover:text-amber-400">Reviews</a></div>
+    <button onclick="showToast('Rolling... 🎞️')" class="bg-amber-500/10 border border-amber-500/20 text-amber-400 px-5 py-2.5 rounded-lg text-sm font-semibold">Start</button>
+  </div>
+</nav>
+<section class="pt-32 pb-20 px-6">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+    <div class="animate-fade-in">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 mb-6"><span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span><span class="text-amber-400 text-xs font-medium">FILM GRAIN · ANALOG WARMTH</span></div>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6" style="letter-spacing:-0.02em">Imperfect<br/><span class="text-amber-400">by design.</span></h1>
+      <p class="text-lg text-gray-400 mb-8 max-w-lg">A subtle grain texture overlay that breaks digital perfection. Warm, nostalgic, and beautifully analog.</p>
+      <button onclick="showToast('Film rolling! 🎞️')" class="bg-amber-500 text-black px-7 py-3.5 font-semibold rounded-xl hover:bg-amber-600 transition-all">Explore →</button>
+    </div>
+    <div class="relative">
+      <div class="absolute -inset-2 bg-amber-500/5 blur-2xl rounded-2xl"></div>
+      <div class="relative rounded-2xl overflow-hidden border border-white/5">
+        <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=500&q=80" alt="Film" class="w-full h-72 object-cover" style="filter:contrast(1.1) saturate(0.8) sepia(0.1)"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="work" class="py-20 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="mb-14"><span class="text-amber-400 text-xs font-semibold uppercase tracking-widest">Portfolio</span><h2 class="text-3xl sm:text-4xl font-bold mt-3">Film-Aesthetic Work</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-hover bg-white/5 border border-white/5 rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&h=220&fit=crop&q=80" alt="" class="w-full h-44 object-cover" style="filter:contrast(1.1) saturate(0.8) sepia(0.15)"/><div class="p-6"><h3 class="font-bold mb-1 text-amber-300">Cinema Portfolio</h3><p class="text-sm text-gray-400">Film-grain aesthetic for a production house.</p></div></div>
+      <div class="card-hover bg-white/5 border border-white/5 rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=400&h=220&fit=crop&q=80" alt="" class="w-full h-44 object-cover" style="filter:contrast(1.1) saturate(0.8) sepia(0.15)"/><div class="p-6"><h3 class="font-bold mb-1 text-amber-300">Photography</h3><p class="text-sm text-gray-400">Analog-style gallery with grain overlay.</p></div></div>
+      <div class="card-hover bg-white/5 border border-white/5 rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=220&fit=crop&q=80" alt="" class="w-full h-44 object-cover" style="filter:contrast(1.1) saturate(0.8) sepia(0.15)"/><div class="p-6"><h3 class="font-bold mb-1 text-amber-300">Brand Story</h3><p class="text-sm text-gray-400">Warm nostalgic brand identity system.</p></div></div>
+    </div>
+  </div>
+</section>
+<section id="pricing" class="py-20 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14"><h2 class="text-3xl font-bold">Pricing</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-hover bg-white/5 border border-white/5 rounded-2xl p-8"><h3 class="font-bold mb-1 text-amber-300">Basic</h3><div class="text-4xl font-bold mb-4">$29</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>🎞️ Grain overlay</li><li>🎞️ 3 filters</li></ul><button onclick="showToast('Basic!')" class="w-full py-3 bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-lg font-semibold text-sm">Choose</button></div>
+      <div class="card-hover bg-amber-500/10 border border-amber-500/30 rounded-2xl p-8"><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-500 text-black text-xs px-3 py-0.5 rounded-full font-bold">BEST</div><h3 class="font-bold mb-1 text-amber-300">Pro</h3><div class="text-4xl font-bold mb-4">$79</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>🎞️ Full grain system</li><li>🎞️ 15 filters</li><li>🎞️ Custom textures</li></ul><button onclick="showToast('Pro!')" class="w-full py-3 bg-amber-500 text-black rounded-lg font-semibold text-sm">Choose</button></div>
+      <div class="card-hover bg-white/5 border border-white/5 rounded-2xl p-8"><h3 class="font-bold mb-1 text-amber-300">Studio</h3><div class="text-4xl font-bold mb-4">$199</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>🎞️ Everything</li><li>🎞️ Source files</li></ul><button onclick="showToast('Studio!')" class="w-full py-3 bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-lg font-semibold text-sm">Choose</button></div>
+    </div>
+  </div>
+</section>
+<section id="voices" class="py-20 px-6">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="card-hover bg-white/5 border border-white/5 rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3" style="filter:sepia(0.2)"/><p class="text-sm text-gray-400 italic">"The grain texture adds so much warmth. Beautiful."</p></div>
+    <div class="card-hover bg-white/5 border border-white/5 rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3" style="filter:sepia(0.2)"/><p class="text-sm text-gray-400 italic">"Finally a digital site that feels analog. Love it."</p></div>
+    <div class="card-hover bg-white/5 border border-white/5 rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3" style="filter:sepia(0.2)"/><p class="text-sm text-gray-400 italic">"Nostalgic without being retro. Perfect balance."</p></div>
+  </div>
+</section>
+<footer class="py-12 px-6 border-t border-white/5">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+    <div><div class="flex items-center gap-2 mb-4"><span class="text-lg">🎞️</span><span class="font-bold">Grain/Film</span></div><p class="text-sm text-gray-500">Film-aesthetic web design.</p></div>
+    <div><h4 class="text-xs font-bold text-gray-400 mb-3 uppercase">Work</h4><ul class="space-y-2 text-sm text-gray-500"><li>Portfolio</li><li>Photography</li><li>Branding</li></ul></div>
+    <div><h4 class="text-xs font-bold text-gray-400 mb-3 uppercase">About</h4><ul class="space-y-2 text-sm text-gray-500"><li>Studio</li><li>Contact</li></ul></div>
+    <div><h4 class="text-xs font-bold text-gray-400 mb-3 uppercase">Connect</h4><p class="text-sm text-gray-500">hello@grainfilm.studio</p></div>
+  </div>
+  <div class="max-w-7xl mx-auto mt-8 pt-8 border-t border-white/5 text-center text-xs text-gray-600">© 2026 Grain/Film Studio · Analog Digital</div>
+</footer>
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}))
+</script>
+</body>
+</html>

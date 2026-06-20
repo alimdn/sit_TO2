@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Vaporwave Dark — Aesthetic Dreamscape</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Inter',system-ui,sans-serif}
+.serif{font-family:'Playfair Display',serif}
+body{background:#0d0014;color:#fff;overflow-x:hidden}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes glow{0%,100%{text-shadow:0 0 20px rgba(255,0,128,0.5)}50%{text-shadow:0 0 40px rgba(0,255,255,0.5)}}
+.animate-fade-in{animation:fadeIn .6s ease-out}
+.vapor-gradient{background:linear-gradient(135deg,#ff0080 0%,#7928ca 50%,#00ffff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.vapor-text{animation:glow 3s ease-in-out infinite}
+.vapor-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,0,128,0.15);backdrop-filter:blur(10px);border-radius:20px}
+.card-hover{transition:all .4s}
+.card-hover:hover{border-color:rgba(0,255,255,0.3);transform:translateY(-6px);box-shadow:0 20px 60px rgba(255,0,128,0.1)}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:16px 24px;border-radius:20px;background:linear-gradient(135deg,#ff0080,#7928ca);color:#fff;font-weight:500;animation:fadeIn .3s}
+</style>
+</head>
+<body class="min-h-screen" style="background-image:radial-gradient(ellipse at 20% 80%,rgba(255,0,128,0.08),transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(0,255,255,0.08),transparent 50%),radial-gradient(ellipse at 50% 50%,rgba(121,40,202,0.05),transparent 50%),#0d0014;">
+<div id="toast-container"></div>
+<nav class="fixed top-0 left-0 right-0 z-50 bg-[#0d0014]/80 backdrop-blur-lg border-b border-pink-500/10">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+    <div class="flex items-center gap-2"><div class="w-9 h-9 rounded-xl vapor-card flex items-center justify-center"><span class="vapor-gradient font-bold">V</span></div><span class="text-lg font-bold vapor-text">VAPOR</span></div>
+    <div class="hidden md:flex gap-8 text-sm text-gray-400"><a href="#aesthetic" class="hover:text-pink-400">Aesthetic</a><a href="#pricing" class="hover:text-cyan-400">Pricing</a><a href="#dreams" class="hover:text-purple-400">Reviews</a></div>
+    <button onclick="showToast('★ ENTER THE DREAMSCAPE ★')" class="vapor-card px-5 py-2.5 text-sm font-semibold vapor-gradient">Enter</button>
+  </div>
+</nav>
+<section class="pt-32 pb-20 px-6 relative overflow-hidden">
+  <div class="absolute top-20 left-1/4 w-72 h-72 bg-pink-500/10 rounded-full blur-3xl"></div>
+  <div class="absolute bottom-20 right-1/4 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl"></div>
+  <div class="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+    <div class="animate-fade-in">
+      <div class="inline-flex items-center gap-2 px-4 py-2 vapor-card mb-6"><span class="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span><span class="text-xs font-medium vapor-gradient">★ DREAMSCAPE ACTIVE ★</span></div>
+      <h1 class="text-5xl sm:text-7xl font-bold mb-6" style="letter-spacing:-0.03em"><span class="vapor-gradient">A E S T H E T I C</span><br/><span class="serif italic text-gray-500 text-3xl">dreams of the future</span></h1>
+      <p class="text-lg text-gray-400 mb-8 max-w-lg">Pink sunsets. Greek statues. Chrome text. Japanese typography. A nostalgic surreal internet art experience.</p>
+      <div class="flex gap-4">
+        <button onclick="showToast('★ WELCOME TO VAPOR ★')" class="vapor-card px-8 py-3.5 font-semibold vapor-gradient hover:scale-105 transition-transform">★ Enter Dream</button>
+        <a href="#aesthetic" class="vapor-card px-8 py-3.5 font-semibold text-cyan-400 hover:bg-cyan-500/10 cursor-pointer">View More</a>
+      </div>
+    </div>
+    <div class="relative">
+      <div class="absolute -inset-4 bg-gradient-to-r from-pink-500/20 to-cyan-500/20 blur-2xl rounded-full"></div>
+      <div class="relative vapor-card rounded-3xl overflow-hidden p-2">
+        <img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=500&q=80" alt="Vaporwave" class="w-full h-72 object-cover rounded-2xl"/>
+        <div class="absolute bottom-6 left-6 right-6">
+          <div class="vapor-card rounded-xl p-4 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-cyan-500"></div>
+            <div><div class="text-sm font-semibold vapor-gradient">SYSTEM-AESTHETIC</div><div class="text-xs text-gray-400">vapor.exe</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="aesthetic" class="py-20 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="mb-14"><span class="vapor-gradient text-xs font-semibold uppercase tracking-widest">★ FEATURES</span><h2 class="text-3xl sm:text-4xl font-bold mt-3">Dream Elements</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-hover vapor-card p-6"><img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-32 object-cover rounded-xl mb-4"/><div class="text-2xl mb-2">🌴</div><h3 class="font-bold mb-1 vapor-gradient">Palm Trees</h3><p class="text-sm text-gray-400">Tropical motifs against gradient skies.</p></div>
+      <div class="card-hover vapor-card p-6"><img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-32 object-cover rounded-xl mb-4"/><div class="text-2xl mb-2">🏛️</div><h3 class="font-bold mb-1 text-cyan-400">Greek Statues</h3><p class="text-sm text-gray-400">Classical imagery meets digital art.</p></div>
+      <div class="card-hover vapor-card p-6"><img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-32 object-cover rounded-xl mb-4"/><div class="text-2xl mb-2">✨</div><h3 class="font-bold mb-1 text-pink-400">Chrome Text</h3><p class="text-sm text-gray-400">Metallic gradients and glowing effects.</p></div>
+    </div>
+  </div>
+</section>
+<section id="pricing" class="py-20 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14"><h2 class="text-3xl font-bold vapor-gradient">★ PRICING ★</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-hover vapor-card p-8"><h3 class="font-bold vapor-gradient mb-1">DREAMER</h3><div class="text-4xl font-bold mb-4">$29</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>★ 5 gradients</li><li>★ Basic chrome</li></ul><button onclick="showToast('★ DREAMER! ★')" class="w-full py-3 vapor-card vapor-gradient font-semibold text-sm">★ Choose</button></div>
+      <div class="card-hover vapor-card p-8 relative" style="border-color:rgba(255,0,128,0.3)"><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-pink-500 to-cyan-500 text-white text-xs px-3 py-0.5 rounded-full">★ BEST ★</div><h3 class="font-bold vapor-gradient mb-1">AESTHETIC</h3><div class="text-4xl font-bold mb-4">$79</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>★ 20 gradients</li><li>★ Full chrome</li><li>★ Custom vibes</li></ul><button onclick="showToast('★ AESTHETIC! ★')" class="w-full py-3 bg-gradient-to-r from-pink-500 to-cyan-500 text-white rounded-xl font-semibold text-sm">★ Choose</button></div>
+      <div class="card-hover vapor-card p-8"><h3 class="font-bold vapor-gradient mb-1">GODMODE</h3><div class="text-4xl font-bold mb-4">$199</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>★ Everything</li><li>★ Source code</li></ul><button onclick="showToast('★ GODMODE! ★')" class="w-full py-3 vapor-card vapor-gradient font-semibold text-sm">★ Choose</button></div>
+    </div>
+  </div>
+</section>
+<section id="dreams" class="py-20 px-6">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="card-hover vapor-card p-7"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-400 italic">"Pure aesthetic perfection. 🌴"</p></div>
+    <div class="card-hover vapor-card p-7"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-400 italic">"Takes me back to the 80s dream future."</p></div>
+    <div class="card-hover vapor-card p-7"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-400 italic">"Chrome and gradients. Perfect combo."</p></div>
+  </div>
+</section>
+<footer class="py-12 px-6 border-t border-pink-500/10">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+    <div><div class="flex items-center gap-2 mb-4"><div class="w-8 h-8 rounded-lg vapor-card flex items-center justify-center"><span class="vapor-gradient font-bold text-sm">V</span></div><span class="font-bold vapor-text">VAPOR</span></div><p class="text-sm text-gray-500">Aesthetic dreamscape design.</p></div>
+    <div><h4 class="text-xs font-bold text-gray-400 mb-3">FEATURES</h4><ul class="space-y-2 text-sm text-gray-500"><li>Gradients</li><li>Chrome Effects</li><li>Glitch Art</li></ul></div>
+    <div><h4 class="text-xs font-bold text-gray-400 mb-3">COMPANY</h4><ul class="space-y-2 text-sm text-gray-500"><li>About</li><li>Portfolio</li><li>Contact</li></ul></div>
+    <div><h4 class="text-xs font-bold text-gray-400 mb-3">CONNECT</h4><p class="text-sm text-gray-500">hello@vapor.aesthetic</p></div>
+  </div>
+  <div class="max-w-7xl mx-auto mt-8 pt-8 border-t border-pink-500/10 text-center text-xs text-gray-600">★ © 2026 VAPOR. AESTHETIC DREAMSCAPE ★</div>
+</footer>
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}))
+</script>
+</body>
+</html>

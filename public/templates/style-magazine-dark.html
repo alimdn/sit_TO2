@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Magazine Dark — Editorial Layout</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Inter',system-ui,sans-serif}
+.serif{font-family:'Playfair Display',serif}
+body{background:#0a0a0a;color:#e5e5e5;overflow-x:hidden}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.animate-fade-in{animation:fadeIn .5s ease-out}
+.card-hover{transition:all .3s}
+.card-hover:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(255,255,255,0.05)}
+.drop-cap::first-letter{font-family:'Playfair Display',serif;font-size:4rem;font-weight:900;float:left;line-height:0.8;margin-right:8px;margin-top:4px;color:#f59e0b}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:16px 24px;border-radius:0;background:#1a1a1a;border-top:3px solid #f59e0b;color:#fff;font-weight:500;animation:fadeIn .3s}
+</style>
+</head>
+<body class="min-h-screen">
+<div id="toast-container"></div>
+<nav class="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-14">
+    <span class="serif text-2xl font-bold italic">The Dark<span class="text-amber-500">.</span>Mag</span>
+    <div class="hidden md:flex gap-8 text-xs text-gray-500 uppercase tracking-widest"><a href="#articles" class="hover:text-amber-500">Articles</a><a href="#pricing" class="hover:text-amber-500">Subscribe</a><a href="#voices" class="hover:text-amber-500">Voices</a></div>
+    <button onclick="showToast('Subscribed! 📰')" class="text-xs font-bold uppercase tracking-widest bg-amber-500 text-black px-5 py-2.5">Subscribe</button>
+  </div>
+</nav>
+<section class="pt-24 pb-12 px-6 border-b border-white/5">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-xs text-gray-600 uppercase tracking-widest mb-3">ISSUE 042 · JUNE 2026</div>
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div class="animate-fade-in">
+        <h1 class="serif text-5xl sm:text-7xl font-bold leading-tight mb-4" style="letter-spacing:-0.02em">The Future<br/><span class="italic text-amber-500">is Dark.</span></h1>
+        <p class="text-lg text-gray-400 leading-relaxed mb-6 max-w-md">In this issue: we explore the dark side of web design — from editorial layouts to immersive reading experiences.</p>
+        <button onclick="showToast('Reading article...')" class="text-sm font-bold uppercase tracking-widest border-b-2 border-amber-500 text-amber-500 pb-1">Read Article →</button>
+      </div>
+      <div class="relative">
+        <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=500&q=80" alt="Magazine Cover" class="w-full h-80 object-cover rounded-lg"/>
+        <div class="absolute bottom-4 left-4 right-4 bg-black/80 backdrop-blur-md p-4 rounded-lg"><div class="text-xs text-amber-500 uppercase tracking-widest mb-1">Featured</div><div class="serif text-lg font-bold">Design in the Shadows</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="articles" class="py-16 px-6 border-b border-white/5">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+      <div class="card-hover bg-white/5 border border-white/5 rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=220&fit=crop&q=80" alt="" class="w-full h-44 object-cover"/><div class="p-6"><div class="text-xs text-amber-500 uppercase tracking-widest mb-2">Technology</div><h3 class="serif text-xl font-bold mb-2">Dark Mode: A Complete Guide</h3><p class="text-sm text-gray-400">Everything you need to know about designing for dark interfaces.</p></div></div>
+      <div class="card-hover bg-white/5 border border-white/5 rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=220&fit=crop&q=80" alt="" class="w-full h-44 object-cover"/><div class="p-6"><div class="text-xs text-amber-500 uppercase tracking-widest mb-2">Design</div><h3 class="serif text-xl font-bold mb-2">Typography in the Dark</h3><p class="text-sm text-gray-400">How to choose fonts that shine on dark backgrounds.</p></div></div>
+      <div class="card-hover bg-white/5 border border-white/5 rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=220&fit=crop&q=80" alt="" class="w-full h-44 object-cover"/><div class="p-6"><div class="text-xs text-amber-500 uppercase tracking-widest mb-2">Business</div><h3 class="serif text-xl font-bold mb-2">The Dark Web Economy</h3><p class="text-sm text-gray-400">How dark themes are changing user behavior and conversion.</p></div></div>
+    </div>
+    <div class="grid lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2">
+        <div class="text-xs text-amber-500 uppercase tracking-widest mb-3">FEATURE STORY</div>
+        <h2 class="serif text-3xl font-bold mb-4">Designing for the Dark Side</h2>
+        <p class="drop-cap text-gray-400 leading-relaxed mb-4">Dark mode is more than just inverting colors. It's about understanding how light interacts with content, how contrast affects readability, and how atmosphere shapes the user experience. In this comprehensive guide, we explore the principles of dark design — from choosing the right grays to selecting accent colors that pop without overwhelming.</p>
+        <p class="text-gray-400 leading-relaxed mb-4">The best dark designs feel intentional, not just inverted. They use subtle gradients, careful spacing, and typography that breathes. The background isn't black — it's a deep charcoal that invites the eye to explore. Cards float with soft shadows. Text glows with just enough light to read comfortably.</p>
+        <button onclick="showToast('Continuing reading...')" class="text-sm font-bold text-amber-500 border-b border-amber-500 pb-1">Continue Reading →</button>
+      </div>
+      <div class="space-y-6">
+        <div class="bg-white/5 border border-white/5 rounded-2xl p-6"><div class="text-xs text-amber-500 uppercase tracking-widest mb-2">SIDEBAR</div><h3 class="serif text-lg font-bold mb-2">Top 10 Dark Palettes</h3><p class="text-sm text-gray-400">Our favorite dark color schemes for 2026.</p></div>
+        <div class="bg-white/5 border border-white/5 rounded-2xl p-6"><div class="text-xs text-amber-500 uppercase tracking-widest mb-2">QUOTE</div><p class="serif italic text-lg text-gray-300">"Dark isn't the absence of light. It's a different kind of light."</p><div class="text-xs text-gray-500 mt-2">— Anonymous Designer</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="pricing" class="py-16 px-6 border-b border-white/5">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-12"><span class="text-amber-500 text-xs uppercase tracking-widest">SUBSCRIBE</span><h2 class="serif text-3xl font-bold mt-3">Get Every Issue</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-hover bg-white/5 border border-white/5 rounded-2xl p-8"><h3 class="serif text-xl font-bold mb-1">Digital</h3><div class="text-4xl font-bold mb-4">$9</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>— Monthly digital issue</li><li>— Online archive</li></ul><button onclick="showToast('Digital sub!')" class="w-full py-3 bg-white/5 border border-white/10 rounded-lg font-semibold text-sm text-amber-500">Choose</button></div>
+      <div class="card-hover bg-amber-500/10 border border-amber-500/30 rounded-2xl p-8"><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-500 text-black text-xs px-3 py-0.5 rounded-full font-bold">BEST</div><h3 class="serif text-xl font-bold mb-1">Print + Digital</h3><div class="text-4xl font-bold mb-4">$29</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>— Monthly print issue</li><li>— Digital access</li><li>— Exclusive content</li></ul><button onclick="showToast('Print + Digital!')" class="w-full py-3 bg-amber-500 text-black rounded-lg font-semibold text-sm">Choose</button></div>
+      <div class="card-hover bg-white/5 border border-white/5 rounded-2xl p-8"><h3 class="serif text-xl font-bold mb-1">Collector</h3><div class="text-4xl font-bold mb-4">$99</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>— Everything</li><li>— Limited prints</li></ul><button onclick="showToast('Collector!')" class="w-full py-3 bg-white/5 border border-white/10 rounded-lg font-semibold text-sm text-amber-500">Choose</button></div>
+    </div>
+  </div>
+</section>
+<section id="voices" class="py-16 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-xs text-amber-500 uppercase tracking-widest mb-8">READER VOICES</div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-hover bg-white/5 border border-white/5 rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="serif italic text-gray-300 text-sm mb-2">"The best design publication. Period."</p><div class="text-xs text-gray-500">— Sarah J., Subscriber</div></div>
+      <div class="card-hover bg-white/5 border border-white/5 rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="serif italic text-gray-300 text-sm mb-2">"Every issue is a masterclass."</p><div class="text-xs text-gray-500">— Mike R., Designer</div></div>
+      <div class="card-hover bg-white/5 border border-white/5 rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="serif italic text-gray-300 text-sm mb-2">"Changed how I think about dark design."</p><div class="text-xs text-gray-500">— Emily D., Art Director</div></div>
+    </div>
+  </div>
+</section>
+<footer class="py-12 px-6 border-t border-white/5">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+    <div><span class="serif text-xl font-bold italic">The Dark<span class="text-amber-500">.</span>Mag</span><p class="text-sm text-gray-500 mt-2">Design journalism for the dark side.</p></div>
+    <div><h4 class="text-xs font-bold text-gray-400 mb-3 uppercase">Sections</h4><ul class="space-y-2 text-sm text-gray-500"><li>Technology</li><li>Design</li><li>Business</li></ul></div>
+    <div><h4 class="text-xs font-bold text-gray-400 mb-3 uppercase">About</h4><ul class="space-y-2 text-sm text-gray-500"><li>Our Team</li><li>Contact</li><li>Advertise</li></ul></div>
+    <div><h4 class="text-xs font-bold text-gray-400 mb-3 uppercase">Connect</h4><p class="text-sm text-gray-500">editor@darkmag.com</p></div>
+  </div>
+  <div class="max-w-7xl mx-auto mt-8 pt-8 border-t border-white/5 text-center text-xs text-gray-600">© 2026 The Dark.Mag · Issue 042</div>
+</footer>
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}))
+</script>
+</body>
+</html>

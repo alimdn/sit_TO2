@@ -36,6 +36,20 @@ const SIMILARITY_LABELS: Record<string, { en: string; ar: string }> = {
 
 const FREE_FEATURES_LIMIT = 5
 
+// Default work-management milestones for every new order.
+// Order is intentional and reflects the project lifecycle.
+// Each milestone has a label shown in the admin UI + a short description.
+const DEFAULT_MILESTONES: Milestone[] = [
+  { name: 'مرحلة استلام الطلب',            status: 'completed', date: new Date().toISOString() },
+  { name: 'مرحلة التصميم',                status: 'pending' },
+  { name: 'مرحلة الإضافات',               status: 'pending' },
+  { name: 'مرحلة اختبار عمل الموقع',       status: 'pending' },
+  { name: 'مرحلة بناء قاعدة البيانات',     status: 'pending' },
+  { name: 'مرحلة بناء لوحة التحكم',        status: 'pending' },
+  { name: 'الموافقة النهائية',             status: 'pending' },
+  { name: 'مرحلة تنصيب وتسليم الموقع',     status: 'pending' },
+]
+
 interface Milestone {
   name: string
   status: 'completed' | 'in_progress' | 'pending'
@@ -113,13 +127,7 @@ export default function AdminOrders() {
           templateId: null,
           status: 'pending',
           progress: 0,
-          milestones: JSON.stringify([
-            { name: 'Order Placed', status: 'completed', date: new Date().toISOString() },
-            { name: 'Design Phase', status: 'pending' },
-            { name: 'Review', status: 'pending' },
-            { name: 'Development', status: 'pending' },
-            { name: 'Delivery', status: 'pending' },
-          ]),
+          milestones: JSON.stringify(DEFAULT_MILESTONES),
           notes: null,
           templateFeatures: JSON.stringify(['Responsive Design', 'SEO Optimized', 'Contact Forms', 'Analytics Integration', 'Multi-page Layout']),
           addOns: JSON.stringify(['seo', 'analytics']),
@@ -176,13 +184,7 @@ export default function AdminOrders() {
         status: i === 0 ? 'completed' as const : 'pending' as const,
       }))
     } catch {
-      return [
-        { name: 'Order Placed', status: 'completed' },
-        { name: 'Design Phase', status: 'pending' },
-        { name: 'Review', status: 'pending' },
-        { name: 'Development', status: 'pending' },
-        { name: 'Delivery', status: 'pending' },
-      ]
+      return DEFAULT_MILESTONES.map(m => ({ ...m }))
     }
   }
 

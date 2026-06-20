@@ -175,7 +175,19 @@ export default function CheckoutPage() {
           templateId: checkoutData.templateId,
           status: 'pending',
           progress: 0,
-          milestones: JSON.stringify(['Order placed', 'Design in progress', 'Review', 'Delivery']),
+          // Send milestones as full objects so the admin panel can show
+          // status badges immediately. The first milestone (استلام الطلب)
+          // is auto-marked completed when the order is placed.
+          milestones: JSON.stringify([
+            { name: 'مرحلة استلام الطلب',          status: 'completed', date: new Date().toISOString() },
+            { name: 'مرحلة التصميم',              status: 'pending' },
+            { name: 'مرحلة الإضافات',             status: 'pending' },
+            { name: 'مرحلة اختبار عمل الموقع',     status: 'pending' },
+            { name: 'مرحلة بناء قاعدة البيانات',   status: 'pending' },
+            { name: 'مرحلة بناء لوحة التحكم',      status: 'pending' },
+            { name: 'الموافقة النهائية',           status: 'pending' },
+            { name: 'مرحلة تنصيب وتسليم الموقع',   status: 'pending' },
+          ]),
           templateFeatures: JSON.stringify(templateFeatures),
           addOns: JSON.stringify(selectedAddOns),
           billing,

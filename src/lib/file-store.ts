@@ -185,7 +185,6 @@ async function blobWriteMessage(data: StoredContactMessage): Promise<void> {
       access: 'public',
       addRandomSuffix: false,
       contentType: 'application/json',
-      allowOverwrite: true,
     })
   } catch (e) {
     console.error('blob message write failed:', e)
@@ -244,7 +243,6 @@ async function blobUpdateMessage(id: string, updates: Partial<StoredContactMessa
       access: 'public',
       addRandomSuffix: false,
       contentType: 'application/json',
-      allowOverwrite: true,
     })
   } catch (e) {
     console.error('blob message update failed:', e)
@@ -260,7 +258,6 @@ async function blobWriteReview(data: StoredTestimonial): Promise<void> {
       access: 'public',
       addRandomSuffix: false,
       contentType: 'application/json',
-      allowOverwrite: true,
     })
   } catch (e) {
     console.error('blob review write failed:', e)
@@ -318,7 +315,6 @@ async function blobUpdateReview(id: string, updates: Partial<StoredTestimonial>)
       access: 'public',
       addRandomSuffix: false,
       contentType: 'application/json',
-      allowOverwrite: true,
     })
   } catch (e) {
     console.error('blob review update failed:', e)
@@ -553,7 +549,6 @@ async function blobWriteTemplate(t: StoredTemplate): Promise<void> {
       access: 'public',
       addRandomSuffix: false,
       contentType: 'application/json',
-      allowOverwrite: true,
     })
     // Remove deletion marker if present
     try {
@@ -642,7 +637,6 @@ async function blobMarkTemplateDeleted(id: string): Promise<void> {
         access: 'public',
         addRandomSuffix: false,
         contentType: 'application/json',
-        allowOverwrite: true,
       }
     )
     // Remove override blob if present
@@ -795,7 +789,6 @@ async function blobWritePlan(p: StoredPlan): Promise<void> {
       access: 'public',
       addRandomSuffix: false,
       contentType: 'application/json',
-      allowOverwrite: true,
     })
     try {
       const list = await blob.list({ prefix: `plans-deleted/${p.id}.json` })
@@ -873,7 +866,6 @@ async function blobMarkPlanDeleted(id: string): Promise<void> {
         access: 'public',
         addRandomSuffix: false,
         contentType: 'application/json',
-        allowOverwrite: true,
       }
     )
     try {
@@ -1009,7 +1001,6 @@ async function blobWriteOrder(o: StoredOrder): Promise<void> {
       access: 'public',
       addRandomSuffix: false,
       contentType: 'application/json',
-      allowOverwrite: true,
     })
   } catch (e) {
     console.error('blob order write failed:', e)
@@ -1065,7 +1056,6 @@ async function blobUpdateOrder(id: string, updates: Partial<StoredOrder>): Promi
       access: 'public',
       addRandomSuffix: false,
       contentType: 'application/json',
-      allowOverwrite: true,
     })
   } catch (e) {
     console.error('blob order update failed:', e)
@@ -1130,6 +1120,6 @@ export async function updateOrder(
   }
   // Write to both Blob and local fs
   if (isBlobConfigured()) await blobWriteOrder(updated)
-  await localWriteOrder(id, updated)
+  await localWriteOrder(updated)
   return updated
 }

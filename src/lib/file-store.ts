@@ -1123,3 +1123,29 @@ export async function updateOrder(
   await localWriteOrder(updated)
   return updated
 }
+
+// Delete an order from both Blob and local fs.
+// In Blob, we delete the blob at orders/<id>.json.
+// In local fs, we unlink the file at ORDER_DIR/<id>.json.
+export async function deleteOrder(id: string): Promise<void> {
+  // 1) Delete from Blob
+  if (isBlobConfigured()) {
+    const blob = await blobHead()
+    if (blob) {
+      try {
+        const list = await blob.list({ prefix: `orders/${id}.json` })
+        for (const b of list.blobs) {
+          await blob.del(b.url)
+        }
+      } catch (e) {
+        console.error('blob order delete failed:', e)
+      }
+    }
+  }
+  // 2) Delete from local fs
+  try {
+    await fs.unlink(path.join(ORDER_DIR, `${id}.json`))
+  } catch {
+    // file may not exist — ignore
+  }
+}

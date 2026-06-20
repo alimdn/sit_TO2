@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getOrderById, updateOrder } from '@/lib/file-store'
+import { getOrderById, updateOrder, deleteOrder } from '@/lib/file-store'
 
 const NO_CACHE_HEADERS = {
   'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
@@ -76,5 +76,29 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   } catch (e) {
     console.error('Order PUT error:', e)
     return NextResponse.json({ error: 'Failed to update order' }, { status: 500 })
+  }
+}
+
+// DELETE — permanently remove an order.
+// Used by the admin to clean up test/problematic orders.
+export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+
+  // 1) Try DB first
+  try {
+    const { db } = await import('@/lib/db')
+    await db.order.delete({ where: { id } })
+    return NextResponse.json({ success: true, id, deleted: true })
+  } catch (e) {
+    // Fall through to Blob fallback
+  }
+
+  // 2) Fallback: delete from Blob + local fs
+  try {
+    await deleteOrder(id)
+    return NextResponse.json({ success: true, id, deleted: true })
+  } catch (e) {
+    console.error('Order DELETE error:', e)
+    return NextResponse.json({ error: 'Failed to delete order' }, { status: 500 })
   }
 }

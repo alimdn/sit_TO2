@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -81,6 +82,8 @@ export default function AdminOrders() {
   const [copied, setCopied] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
   const [creating, setCreating] = useState(false)
+  const [deleteId, setDeleteId] = useState<string | null>(null)
+  const [deleting, setDeleting] = useState(false)
 
   // Work management state
   const [editMilestones, setEditMilestones] = useState<Milestone[]>([])
@@ -152,6 +155,33 @@ export default function AdminOrders() {
       toast.error('Network error while creating test order')
     } finally {
       setCreating(false)
+    }
+  }
+
+  // Permanently delete an order — used to clean up test/problematic orders
+  // that cannot be completed. Asks for confirmation first.
+  const handleDelete = async () => {
+    if (!deleteId) return
+    setDeleting(true)
+    try {
+      const res = await fetch(`/api/orders/${deleteId}`, { method: 'DELETE' })
+      if (res.ok) {
+        toast.success('Order deleted successfully')
+        setDeleteId(null)
+        // If the deleted order was open in the detail dialog, close it
+        if (selected?.id === deleteId) {
+          setSelected(null)
+        }
+        fetchOrders()
+      } else {
+        const err = await res.json().catch(() => ({}))
+        toast.error(err?.error || `Failed to delete (HTTP ${res.status})`)
+      }
+    } catch (e) {
+      console.error('Delete order error:', e)
+      toast.error('Network error while deleting order')
+    } finally {
+      setDeleting(false)
     }
   }
 
@@ -674,9 +704,20 @@ export default function AdminOrders() {
                     </TableCell>
                     <TableCell className="text-[#4F5B76]">{new Date(order.createdAt).toLocaleDateString()}</TableCell>
                     <TableCell>
-                      <Button variant="ghost" size="sm" onClick={() => openOrderDetail(order)}>
-                        Manage
-                      </Button>
+                      <div className="flex items-center gap-1">
+                        <Button variant="ghost" size="sm" onClick={() => openOrderDetail(order)}>
+                          Manage
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setDeleteId(order.id)}
+                          className="h-8 w-8 p-0 text-[#ba1a1a] hover:bg-[#ba1a1a]/10"
+                          title="Delete order"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 )
@@ -1061,6 +1102,38 @@ export default function AdminOrders() {
           })()}
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={!!deleteId} onOpenChange={(open) => !deleting && !open && setDeleteId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Order</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to permanently delete this order? This action cannot be undone.
+              The order will be removed from both the admin panel and the customer&apos;s dashboard immediately.
+              Use this only for test orders or orders that cannot be completed.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={(e) => {
+                e.preventDefault()
+                handleDelete()
+              }}
+              disabled={deleting}
+              className="bg-[#ba1a1a] hover:bg-[#991515]"
+            >
+              {deleting ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                  Deleting...
+                </>
+              ) : 'Delete Order'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

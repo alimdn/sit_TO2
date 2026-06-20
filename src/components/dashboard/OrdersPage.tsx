@@ -198,256 +198,129 @@ export default function OrdersPage() {
                 </CardHeader>
 
                 <CardContent className="space-y-4">
-                  {/* Progress Steps - Visual Timeline */}
-                  <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <h4 className="text-sm font-semibold text-[#000f22]">Order Progress</h4>
-                      <span className="text-xs font-medium text-[#00D1FF]">{order.progress}%</span>
-                    </div>
-
-                    {/* Steps */}
-                    <div className="relative">
-                      {/* Connection line */}
-                      <div className="absolute top-4 left-4 right-4 h-0.5 bg-[#e6ebf1]">
-                        <div
-                          className="h-full bg-[#00D1FF] transition-all duration-500"
-                          style={{ width: `${(currentStep / 4) * 100}%` }}
-                        />
-                      </div>
-
-                      <div className="relative flex justify-between">
-                        {ORDER_STEPS.map((step, i) => {
-                          const isCompleted = i < currentStep
-                          const isCurrent = i === currentStep
-                          return (
-                            <div key={step.key} className="flex flex-col items-center" style={{ width: '20%' }}>
-                              <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all z-10 ${
-                                isCompleted
-                                  ? 'bg-[#10B981] border-[#10B981]'
-                                  : isCurrent
-                                    ? 'bg-[#00D1FF] border-[#00D1FF] ring-4 ring-[#00D1FF]/20'
-                                    : 'bg-white border-[#e6ebf1]'
-                              }`}>
-                                {isCompleted ? (
-                                  <Check className="h-4 w-4 text-white" />
-                                ) : isCurrent ? (
-                                  <ArrowRight className="h-4 w-4 text-white" />
-                                ) : (
-                                  <Circle className="h-3 w-3 text-[#c4c6ce]" />
-                                )}
-                              </div>
-                              <p className={`text-[10px] mt-1.5 text-center font-medium leading-tight ${
-                                isCompleted ? 'text-[#10B981]' : isCurrent ? 'text-[#00D1FF]' : 'text-[#74777e]'
-                              }`}>
-                                {step.label}
-                              </p>
-                            </div>
-                          )
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Current step description */}
-                    <div className="mt-3 p-2.5 rounded-lg bg-[#f7fafd] border border-[#e6ebf1]">
-                      <p className="text-xs text-[#43474d]">
-                        <span className="font-semibold">{ORDER_STEPS[currentStep].label}:</span>{' '}
-                        {ORDER_STEPS[currentStep].desc}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Detailed Work Milestones — synced with admin panel */}
+                  {/* Progress Steps — Visual Stepper (synced with admin milestones) */}
                   {(() => {
                     const milestones = parseCustomerMilestones(order.milestones)
                     const completedCount = milestones.filter(m => m.status === 'completed').length
                     const totalCount = milestones.length
-                    const currentMilestone = milestones.find(m => m.status === 'in_progress')
-                      || milestones.find(m => m.status === 'pending')
-
-                    // Compute the 7-day delivery countdown
-                    const startDate = order.startDate ? new Date(order.startDate) : null
-                    const deliveryDate = order.deliveryDate ? new Date(order.deliveryDate) : null
-                    const now = new Date()
-                    const msRemaining = deliveryDate ? deliveryDate.getTime() - now.getTime() : 0
-                    const daysRemaining = Math.max(0, Math.ceil(msRemaining / (1000 * 60 * 60 * 24)))
-                    const hoursRemaining = Math.max(0, Math.ceil(msRemaining / (1000 * 60 * 60)))
-                    const isOverdue = deliveryDate && msRemaining < 0 && order.status !== 'completed'
-                    const isCompleted = order.status === 'completed'
+                    // Find the index of the current step (first non-completed milestone)
+                    const currentStepIdx = milestones.findIndex(m => m.status !== 'completed')
+                    // If all are completed, currentStepIdx = -1 → use last index
+                    const activeIndex = currentStepIdx === -1 ? totalCount - 1 : currentStepIdx
+                    // Percentage for the connection line fill
+                    const fillPercent = totalCount > 1
+                      ? (activeIndex / (totalCount - 1)) * 100
+                      : 100
 
                     return (
-                      <div className="space-y-3">
-                        {/* Work Timeline — start date + delivery countdown */}
-                        {startDate && deliveryDate && (
-                          <div className={`rounded-xl border overflow-hidden ${
-                            isCompleted ? 'border-[#10B981]/30' :
-                            isOverdue ? 'border-[#ef4444]/40' :
-                            'border-[#00D1FF]/30'
-                          }`}>
-                            <div className={`px-4 py-2.5 flex items-center justify-between ${
-                              isCompleted ? 'bg-[#10B981]' :
-                              isOverdue ? 'bg-[#ef4444]' :
-                              'bg-[#000f22]'
-                            }`}>
-                              <h4 className="text-sm font-semibold text-white flex items-center gap-2">
-                                <Clock className="h-4 w-4" />
-                                {isCompleted ? 'Project Completed' : isOverdue ? 'Delivery Overdue' : 'Delivery Countdown'}
-                              </h4>
-                              {!isCompleted && !isOverdue && (
-                                <span className="text-[11px] font-bold text-white bg-white/20 px-2 py-0.5 rounded-full">
-                                  {daysRemaining} day{daysRemaining !== 1 ? 's' : ''} left
-                                </span>
-                              )}
-                              {isOverdue && (
-                                <span className="text-[11px] font-bold text-white bg-white/20 px-2 py-0.5 rounded-full">
-                                  {Math.abs(daysRemaining)} day{Math.abs(daysRemaining) !== 1 ? 's' : ''} overdue
-                                </span>
-                              )}
-                            </div>
-                            <div className="p-3 bg-white space-y-2">
-                              <div className="grid grid-cols-2 gap-2">
-                                <div className="p-2.5 rounded-lg bg-[#f7fafd] border border-[#e6ebf1]">
-                                  <p className="text-[9px] uppercase tracking-wide text-[#74777e] font-semibold">Work Started</p>
-                                  <p className="text-xs font-semibold text-[#000f22] mt-0.5">
-                                    {startDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-                                  </p>
-                                  <p className="text-[10px] text-[#74777e]">
-                                    {startDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
-                                  </p>
-                                </div>
-                                <div className={`p-2.5 rounded-lg border ${
-                                  isOverdue ? 'bg-[#ef4444]/5 border-[#ef4444]/30' :
-                                  isCompleted ? 'bg-[#10B981]/5 border-[#10B981]/30' :
-                                  'bg-[#FFF8E1] border-[#FFE082]'
-                                }`}>
-                                  <p className="text-[9px] uppercase tracking-wide text-[#74777e] font-semibold">
-                                    {isCompleted ? 'Completed' : 'Delivery Deadline'}
-                                  </p>
-                                  <p className={`text-xs font-semibold mt-0.5 ${
-                                    isOverdue ? 'text-[#ef4444]' :
-                                    isCompleted ? 'text-[#10B981]' :
-                                    'text-[#92400E]'
-                                  }`}>
-                                    {deliveryDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-                                  </p>
-                                  <p className="text-[10px] text-[#74777e]">
-                                    {deliveryDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
-                                  </p>
-                                </div>
-                              </div>
+                      <div>
+                        <div className="flex items-center justify-between mb-4">
+                          <h4 className="text-sm font-semibold text-[#000f22]">Order Progress</h4>
+                          <span className="text-xs font-medium text-[#00D1FF]" translate="no" lang="en">
+                            {order.progress}%
+                          </span>
+                        </div>
 
-                              {/* Progress bar showing time elapsed vs total 7 days */}
-                              {!isCompleted && (
-                                <div>
-                                  <div className="flex items-center justify-between text-[10px] text-[#74777e] mb-1">
-                                    <span>Time elapsed</span>
-                                    <span>{7 - daysRemaining} / 7 days</span>
-                                  </div>
-                                  <div className="h-1.5 rounded-full bg-[#e6ebf1] overflow-hidden">
-                                    <div
-                                      className={`h-full transition-all duration-500 ${
-                                        isOverdue ? 'bg-[#ef4444]' : 'bg-[#00D1FF]'
-                                      }`}
-                                      style={{ width: `${Math.min(100, ((7 - daysRemaining) / 7) * 100)}%` }}
-                                    />
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        )}
+                        {/* Horizontal Stepper */}
+                        <div className="relative pb-2">
+                          {/* Connection line (background) */}
+                          <div className="absolute top-5 left-5 right-5 h-0.5 bg-[#e6ebf1] rounded-full" />
+                          {/* Connection line (filled — green→cyan gradient for completed steps) */}
+                          <div
+                            className="absolute top-5 left-5 h-0.5 bg-gradient-to-r from-[#10B981] to-[#00D1FF] rounded-full transition-all duration-700"
+                            style={{ width: `calc((100% - 40px) * ${fillPercent / 100})` }}
+                          />
 
-                        {/* Milestones list */}
-                        <div className="rounded-xl border border-[#e6ebf1] overflow-hidden">
-                          <div className="px-4 py-2.5 bg-[#000f22] flex items-center justify-between">
-                            <h4 className="text-sm font-semibold text-white flex items-center gap-2">
-                              <LayoutDashboard className="h-4 w-4 text-[#00D1FF]" />
-                              Work Milestones
-                            </h4>
-                            <span className="text-[11px] text-[#768dad]">
-                              <span className="font-semibold text-[#10B981]">{completedCount}</span> / {totalCount} completed
-                            </span>
-                          </div>
-                          <div className="p-3 space-y-1.5 bg-white">
+                          {/* Step circles */}
+                          <div className="relative flex justify-between">
                             {milestones.map((m, i) => {
                               const isCompleted = m.status === 'completed'
-                              const isInProgress = m.status === 'in_progress'
-                              const isPending = m.status === 'pending'
+                              const isCurrent = i === activeIndex && !isCompleted && order.status !== 'completed'
+                              const isLastCompleted = order.status === 'completed' && i === totalCount - 1
                               return (
-                                <div
-                                  key={i}
-                                  className={`flex items-center gap-2.5 p-2 rounded-lg border transition-all ${
-                                    isCompleted
-                                      ? 'bg-[#10B981]/5 border-[#10B981]/30'
-                                      : isInProgress
-                                        ? 'bg-[#00D1FF]/5 border-[#00D1FF]/30'
-                                        : 'bg-[#f7fafd] border-[#e6ebf1]'
-                                  }`}
-                                >
-                                  {/* Status indicator */}
-                                  <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
-                                    isCompleted
-                                      ? 'bg-[#10B981] text-white'
-                                      : isInProgress
-                                        ? 'bg-[#00D1FF] text-white'
-                                        : 'bg-white border-2 border-[#c4c6ce]'
-                                  }`}>
+                                <div key={i} className="flex flex-col items-center" style={{ width: `${100 / totalCount}%` }}>
+                                  <div
+                                    className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all z-10 ${
+                                      isCompleted
+                                        ? 'bg-[#10B981] border-[#10B981] shadow-md shadow-[#10B981]/30'
+                                        : isCurrent
+                                          ? 'bg-[#00D1FF] border-[#00D1FF] ring-4 ring-[#00D1FF]/20 animate-pulse'
+                                          : isLastCompleted
+                                            ? 'bg-[#10B981] border-[#10B981] shadow-md shadow-[#10B981]/30'
+                                            : 'bg-white border-[#e6ebf1]'
+                                    }`}
+                                  >
                                     {isCompleted ? (
-                                      <Check className="h-3.5 w-3.5" />
-                                    ) : isInProgress ? (
-                                      <Clock className="h-3 w-3" />
+                                      <Check className="h-5 w-5 text-white" />
+                                    ) : isCurrent ? (
+                                      <Clock className="h-4 w-4 text-white" />
+                                    ) : isLastCompleted ? (
+                                      <Check className="h-5 w-5 text-white" />
                                     ) : (
-                                      <Circle className="h-2 w-2 text-[#c4c6ce]" />
+                                      <span className="text-xs font-bold text-[#74777e]">{i + 1}</span>
                                     )}
                                   </div>
-
-                                  {/* Step number + name */}
-                                  <div className="flex-1 min-w-0">
-                                    <div className="flex items-center gap-1.5">
-                                      <span className="text-[9px] font-mono text-[#74777e]">#{i + 1}</span>
-                                      <span className={`text-xs ${isPending ? 'text-[#74777e]' : 'text-[#000f22] font-medium'}`}>
-                                        {m.name}
-                                      </span>
-                                    </div>
-                                    {m.date && isCompleted && (
-                                      <span className="text-[9px] text-[#10B981]">
-                                        ✓ Completed {new Date(m.date).toLocaleDateString()}
-                                      </span>
-                                    )}
-                                    {isInProgress && (
-                                      <span className="text-[9px] text-[#00D1FF]">In progress now…</span>
-                                    )}
-                                  </div>
-
-                                  {/* Status badge */}
-                                  <Badge className={`text-[9px] px-1.5 py-0 ${
-                                    isCompleted ? 'bg-[#10B981]/10 text-[#10B981]' :
-                                    isInProgress ? 'bg-[#00D1FF]/10 text-[#00D1FF]' :
-                                    'bg-[#e6ebf1] text-[#74777e]'
+                                  <p className={`text-[10px] mt-2 text-center font-medium leading-tight transition-colors ${
+                                    isCompleted ? 'text-[#10B981]' : isCurrent ? 'text-[#00D1FF]' : 'text-[#74777e]'
                                   }`}>
-                                    {isCompleted ? 'Done' : isInProgress ? 'Active' : 'Pending'}
-                                  </Badge>
+                                    {m.name}
+                                  </p>
+                                  {m.date && isCompleted && (
+                                    <p className="text-[8px] text-[#10B981] mt-0.5" translate="no" lang="en">
+                                      {new Date(m.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                    </p>
+                                  )}
+                                  {isCurrent && (
+                                    <p className="text-[8px] text-[#00D1FF] mt-0.5">In progress…</p>
+                                  )}
                                 </div>
                               )
                             })}
+                          </div>
+                        </div>
 
-                            {/* Current milestone highlight */}
-                            {currentMilestone && order.status !== 'completed' && (
-                              <div className="mt-2 p-2.5 rounded-lg bg-[#00D1FF]/5 border border-[#00D1FF]/20 flex items-center gap-2">
-                                <ArrowRight className="h-3.5 w-3.5 text-[#00D1FF] flex-shrink-0" />
-                                <p className="text-[11px] text-[#00D1FF]">
-                                  <span className="font-semibold">Current step:</span> {currentMilestone.name}
-                                </p>
-                              </div>
-                            )}
-                            {order.status === 'completed' && (
-                              <div className="mt-2 p-2.5 rounded-lg bg-[#10B981]/5 border border-[#10B981]/20 flex items-center gap-2">
-                                <Check className="h-3.5 w-3.5 text-[#10B981] flex-shrink-0" />
-                                <p className="text-[11px] text-[#10B981] font-semibold">
+                        {/* Current step description */}
+                        <div className="mt-3 p-3 rounded-lg bg-gradient-to-r from-[#f7fafd] to-[#00D1FF]/5 border border-[#00D1FF]/20">
+                          <div className="flex items-center gap-2">
+                            {order.status === 'completed' ? (
+                              <>
+                                <Check className="h-4 w-4 text-[#10B981] flex-shrink-0" />
+                                <p className="text-xs text-[#10B981] font-semibold">
                                   Your website is complete and ready! 🎉
                                 </p>
-                              </div>
+                              </>
+                            ) : currentStepIdx >= 0 ? (
+                              <>
+                                <ArrowRight className="h-4 w-4 text-[#00D1FF] flex-shrink-0" />
+                                <p className="text-xs text-[#43474d]">
+                                  <span className="font-semibold text-[#00D1FF]">Current step:</span>{' '}
+                                  {milestones[currentStepIdx].name}
+                                </p>
+                              </>
+                            ) : (
+                              <>
+                                <Clock className="h-4 w-4 text-[#00D1FF] flex-shrink-0" />
+                                <p className="text-xs text-[#43474d]">Processing…</p>
+                              </>
                             )}
                           </div>
+                        </div>
+
+                        {/* Counter dots */}
+                        <div className="mt-2 flex items-center justify-center gap-2">
+                          <div className="flex gap-1">
+                            {milestones.map((m, i) => (
+                              <div
+                                key={i}
+                                className={`w-2 h-2 rounded-full transition-colors ${
+                                  m.status === 'completed' ? 'bg-[#10B981]' : 'bg-[#e6ebf1]'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                          <span className="text-[10px] text-[#74777e]" translate="no" lang="en">
+                            {completedCount} of {totalCount} steps completed
+                          </span>
                         </div>
                       </div>
                     )

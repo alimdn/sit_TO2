@@ -38,16 +38,15 @@ const FREE_FEATURES_LIMIT = 5
 
 // Default work-management milestones for every new order.
 // Order is intentional and reflects the project lifecycle.
-// Each milestone has a label shown in the admin UI + a short description.
 const DEFAULT_MILESTONES: Milestone[] = [
-  { name: 'مرحلة استلام الطلب',            status: 'completed', date: new Date().toISOString() },
-  { name: 'مرحلة التصميم',                status: 'pending' },
-  { name: 'مرحلة الإضافات',               status: 'pending' },
-  { name: 'مرحلة اختبار عمل الموقع',       status: 'pending' },
-  { name: 'مرحلة بناء قاعدة البيانات',     status: 'pending' },
-  { name: 'مرحلة بناء لوحة التحكم',        status: 'pending' },
-  { name: 'الموافقة النهائية',             status: 'pending' },
-  { name: 'مرحلة تنصيب وتسليم الموقع',     status: 'pending' },
+  { name: 'Order Received',           status: 'completed', date: new Date().toISOString() },
+  { name: 'Design Phase',             status: 'pending' },
+  { name: 'Add-ons Integration',      status: 'pending' },
+  { name: 'Website Testing',          status: 'pending' },
+  { name: 'Database Setup',           status: 'pending' },
+  { name: 'Control Panel Setup',      status: 'pending' },
+  { name: 'Final Approval',           status: 'pending' },
+  { name: 'Deployment & Delivery',    status: 'pending' },
 ]
 
 interface Milestone {

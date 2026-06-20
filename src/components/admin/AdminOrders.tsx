@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
-import { Copy, Check, FileText, Globe, MessageSquare, Sparkles, Plus, Trash2, Edit3, Save } from 'lucide-react'
+import { Copy, Check, FileText, Globe, MessageSquare, Sparkles, Plus, Trash2, Edit3, Save, RefreshCw } from 'lucide-react'
 
 const ADD_ON_NAMES: Record<string, string> = {
   seo: 'Advanced SEO Package',
@@ -67,6 +67,8 @@ export default function AdminOrders() {
   const [selected, setSelected] = useState<Order | null>(null)
   const [statusUpdate, setStatusUpdate] = useState('')
   const [copied, setCopied] = useState(false)
+  const [refreshing, setRefreshing] = useState(false)
+  const [creating, setCreating] = useState(false)
 
   // Work management state
   const [editMilestones, setEditMilestones] = useState<Milestone[]>([])
@@ -76,13 +78,76 @@ export default function AdminOrders() {
   const [isEditing, setIsEditing] = useState(false)
 
   const fetchOrders = () => {
-    fetch('/api/orders')
+    fetch('/api/orders', { cache: 'no-store' })
       .then(r => r.json())
-      .then(setOrders)
+      .then(data => {
+        if (Array.isArray(data)) setOrders(data)
+      })
       .catch(() => {})
   }
 
   useEffect(() => { fetchOrders() }, [])
+
+  const handleRefresh = () => {
+    setRefreshing(true)
+    fetchOrders()
+    setTimeout(() => setRefreshing(false), 500)
+  }
+
+  // Creates a sample order so the admin can verify the Orders tab works
+  // end-to-end (list, view, update status, edit milestones, copy details).
+  const handleCreateTestOrder = async () => {
+    setCreating(true)
+    try {
+      const testNames = ['Ahmed Ali', 'Sara Mohamed', 'John Smith', 'Maria Garcia', 'Omar Hassan']
+      const testTemplates = ['Business Pro', 'Creative Portfolio', 'ShopFront', 'SaaS Dashboard']
+      const randomName = testNames[Math.floor(Math.random() * testNames.length)]
+      const randomTemplate = testTemplates[Math.floor(Math.random() * testTemplates.length)]
+      const randomDomain = `${randomName.split(' ')[0].toLowerCase()}${Math.floor(Math.random() * 1000)}.com`
+
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: null,
+          templateId: null,
+          status: 'pending',
+          progress: 0,
+          milestones: JSON.stringify([
+            { name: 'Order Placed', status: 'completed', date: new Date().toISOString() },
+            { name: 'Design Phase', status: 'pending' },
+            { name: 'Review', status: 'pending' },
+            { name: 'Development', status: 'pending' },
+            { name: 'Delivery', status: 'pending' },
+          ]),
+          notes: null,
+          templateFeatures: JSON.stringify(['Responsive Design', 'SEO Optimized', 'Contact Forms', 'Analytics Integration', 'Multi-page Layout']),
+          addOns: JSON.stringify(['seo', 'analytics']),
+          billing: 'monthly',
+          additionalInfo: 'I want a modern look with blue accents.',
+          similarSiteUrl: 'https://example.com',
+          similarSiteCriteria: JSON.stringify(['layout', 'colors']),
+          domain: randomDomain,
+          domainPrice: 12.99,
+          customerName: randomName,
+          customerEmail: `${randomName.split(' ')[0].toLowerCase()}@example.com`,
+        }),
+      })
+
+      if (res.ok) {
+        toast.success(`Test order created for ${randomName} (template: ${randomTemplate})`)
+        fetchOrders()
+      } else {
+        const err = await res.json().catch(() => ({}))
+        toast.error(err?.error || 'Failed to create test order')
+      }
+    } catch (e) {
+      console.error('Create test order error:', e)
+      toast.error('Network error while creating test order')
+    } finally {
+      setCreating(false)
+    }
+  }
 
   const openOrderDetail = (order: Order) => {
     setSelected(order)
@@ -387,7 +452,49 @@ export default function AdminOrders() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-[#000f22]">Orders Management</h2>
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-[#000f22]">Orders Management</h2>
+          <p className="text-xs text-[#4F5B76] mt-1 flex items-center gap-3 flex-wrap">
+            <span>
+              <span className="font-semibold text-[#10B981]">{orders.filter(o => o.status === 'completed').length}</span> completed
+              <span className="mx-1">·</span>
+              <span className="font-semibold text-[#00D1FF]">{orders.filter(o => o.status === 'in_progress').length}</span> in progress
+              <span className="mx-1">·</span>
+              <span className="font-semibold text-[#FFB800]">{orders.filter(o => o.status === 'pending').length}</span> pending
+              <span className="mx-1">·</span>
+              <span>{orders.length} total</span>
+            </span>
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            onClick={handleRefresh}
+            disabled={refreshing}
+            className="h-9 border-[#e6ebf1] hover:bg-[#f7fafd]"
+          >
+            <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+          <Button
+            onClick={handleCreateTestOrder}
+            disabled={creating}
+            className="bg-[#000f22] hover:bg-[#0A2540] text-white h-9"
+          >
+            {creating ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                Creating...
+              </>
+            ) : (
+              <>
+                <Plus className="h-4 w-4 mr-2" /> Add Test Order
+              </>
+            )}
+          </Button>
+        </div>
+      </div>
 
       <Card className="shadow-card">
         <CardContent className="p-0">

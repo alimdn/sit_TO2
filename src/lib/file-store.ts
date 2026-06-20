@@ -928,3 +928,196 @@ export async function getPlanById(id: string): Promise<StoredPlan | null> {
   const all = await getAdminPlans()
   return all.find(p => p.id === id) || null
 }
+
+// ═════════════════════════════════════════════════════════════════════
+// ORDERS — append-only store (no fallback seed; orders are created by
+// customers via the Checkout page). All orders live in Blob.
+// ═════════════════════════════════════════════════════════════════════
+
+export interface StoredOrder {
+  id: string
+  userId: string | null
+  templateId: string | null
+  status: string        // 'pending' | 'in_progress' | 'review' | 'completed'
+  progress: number      // 0-100
+  milestones: string    // JSON string of Milestone[]
+  notes: string | null
+  templateFeatures: string | null   // JSON string of string[]
+  addOns: string | null              // JSON string of string[]
+  billing: string | null             // 'monthly' | 'semi_annual' | 'annual'
+  additionalInfo: string | null
+  similarSiteUrl: string | null
+  similarSiteCriteria: string | null // JSON string of string[]
+  domain: string | null
+  domainPrice: number | null
+  customerName?: string | null       // denormalized for admin display when no userId
+  customerEmail?: string | null
+  createdAt: string
+  updatedAt?: string
+}
+
+const ORDER_DIR = path.join(DATA_DIR, 'orders')
+
+// ─── Local fs helpers ──────────────────────────────────────────────────
+async function localWriteOrder(o: StoredOrder): Promise<void> {
+  try {
+    await fs.mkdir(ORDER_DIR, { recursive: true })
+    await fs.writeFile(path.join(ORDER_DIR, `${o.id}.json`), JSON.stringify(o, null, 2), 'utf-8')
+  } catch (e) {
+    console.error('local order write failed:', e)
+  }
+}
+
+async function localListOrders(): Promise<StoredOrder[]> {
+  try {
+    await fs.mkdir(ORDER_DIR, { recursive: true })
+    const files = await fs.readdir(ORDER_DIR)
+    const items: StoredOrder[] = []
+    for (const f of files) {
+      if (!f.endsWith('.json')) continue
+      try {
+        const raw = await fs.readFile(path.join(ORDER_DIR, f), 'utf-8')
+        items.push(JSON.parse(raw))
+      } catch { /* skip */ }
+    }
+    return items
+  } catch {
+    return []
+  }
+}
+
+async function localUpdateOrder(id: string, updates: Partial<StoredOrder>): Promise<void> {
+  try {
+    const file = path.join(ORDER_DIR, `${id}.json`)
+    const raw = await fs.readFile(file, 'utf-8')
+    const data: StoredOrder = JSON.parse(raw)
+    const updated = { ...data, ...updates, updatedAt: new Date().toISOString() }
+    await fs.writeFile(file, JSON.stringify(updated, null, 2), 'utf-8')
+  } catch {
+    // ignore
+  }
+}
+
+// ─── Blob helpers ──────────────────────────────────────────────────────
+async function blobWriteOrder(o: StoredOrder): Promise<void> {
+  const blob = await blobHead()
+  if (!blob) return
+  try {
+    await blob.put(`orders/${o.id}.json`, JSON.stringify(o, null, 2), {
+      access: 'public',
+      addRandomSuffix: false,
+      contentType: 'application/json',
+      allowOverwrite: true,
+    })
+  } catch (e) {
+    console.error('blob order write failed:', e)
+  }
+}
+
+async function blobListOrders(): Promise<StoredOrder[]> {
+  const blob = await blobHead()
+  if (!blob) return []
+  try {
+    const list = await blob.list({ prefix: 'orders/' })
+    const items: StoredOrder[] = []
+    const fetches = list.blobs.map(async (b: { url: string }) => {
+      try {
+        const res = await fetch(b.url, { cache: 'no-store' })
+        if (!res.ok) return
+        const text = await res.text()
+        items.push(JSON.parse(text))
+      } catch { /* skip */ }
+    })
+    await Promise.all(fetches)
+
+    // Dedupe by id — keep most recent updatedAt
+    const byId = new Map<string, StoredOrder>()
+    for (const o of items) {
+      const existing = byId.get(o.id)
+      if (!existing) {
+        byId.set(o.id, o)
+      } else {
+        const a = new Date(o.updatedAt || o.createdAt || 0).getTime()
+        const b = new Date(existing.updatedAt || existing.createdAt || 0).getTime()
+        if (a > b) byId.set(o.id, o)
+      }
+    }
+    return Array.from(byId.values())
+  } catch (e) {
+    console.error('blob order list failed:', e)
+    return []
+  }
+}
+
+async function blobUpdateOrder(id: string, updates: Partial<StoredOrder>): Promise<void> {
+  const blob = await blobHead()
+  if (!blob) return
+  try {
+    const list = await blob.list({ prefix: `orders/${id}.json` })
+    if (list.blobs.length === 0) return
+    const res = await fetch(list.blobs[0].url, { cache: 'no-store' })
+    if (!res.ok) return
+    const data: StoredOrder = await res.json()
+    const updated = { ...data, ...updates, updatedAt: new Date().toISOString() }
+    await blob.put(`orders/${id}.json`, JSON.stringify(updated, null, 2), {
+      access: 'public',
+      addRandomSuffix: false,
+      contentType: 'application/json',
+      allowOverwrite: true,
+    })
+  } catch (e) {
+    console.error('blob order update failed:', e)
+  }
+}
+
+// ─── Unified public API ────────────────────────────────────────────────
+
+export async function getAllOrders(): Promise<StoredOrder[]> {
+  let items: StoredOrder[] = []
+  if (isBlobConfigured()) {
+    items = await blobListOrders()
+  }
+  const localItems = await localListOrders()
+  const seen = new Set(items.map(i => i.id))
+  for (const li of localItems) {
+    if (!seen.has(li.id)) {
+      items.push(li)
+      seen.add(li.id)
+    }
+  }
+  // Sort newest first
+  items.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+  return items
+}
+
+export async function getOrdersByUser(userId: string): Promise<StoredOrder[]> {
+  const all = await getAllOrders()
+  return all.filter(o => o.userId === userId)
+}
+
+export async function getOrderById(id: string): Promise<StoredOrder | null> {
+  const all = await getAllOrders()
+  return all.find(o => o.id === id) || null
+}
+
+export async function createOrder(
+  data: Omit<StoredOrder, 'id' | 'createdAt'>
+): Promise<StoredOrder> {
+  const newOrder: StoredOrder = {
+    ...data,
+    id: 'ord-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  }
+  if (isBlobConfigured()) await blobWriteOrder(newOrder)
+  await localWriteOrder(newOrder)
+  return newOrder
+}
+
+export async function updateOrder(
+  id: string,
+  updates: Partial<StoredOrder>
+): Promise<void> {
+  if (isBlobConfigured()) await blobUpdateOrder(id, updates)
+  await localUpdateOrder(id, updates)
+}

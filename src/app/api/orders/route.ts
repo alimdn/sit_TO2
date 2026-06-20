@@ -62,29 +62,69 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
 
+    // Parse milestones from body, or use default 4-stage lifecycle
+    const DEFAULT_MILESTONES = [
+      { name: 'Choose Template',     status: 'completed', date: new Date().toISOString() },
+      { name: 'Select Plan',         status: 'pending' },
+      { name: 'Submit Requirements', status: 'pending' },
+      { name: 'Receive Website',     status: 'pending' },
+    ]
+    let milestones: any[] = DEFAULT_MILESTONES
+    if (body.milestones) {
+      try {
+        const parsed = typeof body.milestones === 'string'
+          ? JSON.parse(body.milestones)
+          : body.milestones
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          milestones = parsed
+        }
+      } catch { /* use default */ }
+    }
+
+    // AUTO-CALCULATE progress from milestones:
+    // progress = (completed / total) × 100
+    // This ensures progress always matches the actual milestone state,
+    // even if the client sends progress=0 or doesn't send it at all.
+    const completedCount = milestones.filter((m: any) => m.status === 'completed').length
+    const autoProgress = milestones.length > 0
+      ? Math.round((completedCount / milestones.length) * 100)
+      : 0
+
+    // Use the auto-calculated progress, OR the client-provided value if it's
+    // higher (in case the admin manually sets a higher progress). The
+    // auto-calculated value takes priority to keep milestones & progress
+    // in sync.
+    const finalProgress = autoProgress
+
+    // Auto-determine status from progress:
+    // 100% → 'completed', >0% → 'in_progress', 0% → 'pending'
+    let finalStatus = String(body.status || 'pending')
+    if (finalProgress === 100) {
+      finalStatus = 'completed'
+    } else if (finalProgress > 0 && finalStatus === 'pending') {
+      finalStatus = 'in_progress'
+    }
+
+    const milestonesJson = JSON.stringify(milestones)
+
     // 1) Try DB first
     try {
       const { db } = await import('@/lib/db')
-      const order = await db.order.create({ data: body })
+      const order = await db.order.create({
+        data: { ...body, milestones: milestonesJson, progress: finalProgress, status: finalStatus }
+      })
       return NextResponse.json(order)
     } catch (dbErr) {
       // Fall through to Blob fallback
     }
 
     // 2) Fallback: persist via Blob
-    // Normalize the body into the StoredOrder shape
     const stored = await createOrder({
       userId: body.userId ? String(body.userId) : null,
       templateId: body.templateId ? String(body.templateId) : null,
-      status: String(body.status || 'pending'),
-      progress: Number(body.progress) || 0,
-      milestones: String(body.milestones || JSON.stringify([
-        { name: 'Order Placed', status: 'completed' },
-        { name: 'Design Phase', status: 'pending' },
-        { name: 'Review', status: 'pending' },
-        { name: 'Development', status: 'pending' },
-        { name: 'Delivery', status: 'pending' },
-      ])),
+      status: finalStatus,
+      progress: finalProgress,
+      milestones: milestonesJson,
       notes: body.notes ? String(body.notes) : null,
       templateFeatures: body.templateFeatures ? String(body.templateFeatures) : null,
       addOns: body.addOns ? String(body.addOns) : null,
@@ -96,6 +136,8 @@ export async function POST(req: NextRequest) {
       domainPrice: body.domainPrice !== undefined ? Number(body.domainPrice) : null,
       customerName: body.customerName ? String(body.customerName) : null,
       customerEmail: body.customerEmail ? String(body.customerEmail) : null,
+      startDate: body.startDate ? String(body.startDate) : null,
+      deliveryDate: body.deliveryDate ? String(body.deliveryDate) : null,
     })
     return NextResponse.json(stored)
   } catch (e) {

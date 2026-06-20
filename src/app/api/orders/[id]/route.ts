@@ -42,6 +42,29 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   const { id } = await params
   const body = await req.json()
 
+  // AUTO-CALCULATE progress from milestones if milestones are being updated.
+  // This ensures progress ALWAYS matches the milestone state, even if the
+  // client sends a different progress value.
+  if (body.milestones) {
+    try {
+      const milestones = typeof body.milestones === 'string'
+        ? JSON.parse(body.milestones)
+        : body.milestones
+      if (Array.isArray(milestones) && milestones.length > 0) {
+        const completedCount = milestones.filter((m: any) => m.status === 'completed').length
+        const autoProgress = Math.round((completedCount / milestones.length) * 100)
+        // Override the progress with the auto-calculated value
+        body.progress = autoProgress
+        // Also auto-set status based on progress
+        if (autoProgress === 100) {
+          body.status = 'completed'
+        } else if (autoProgress > 0 && (!body.status || body.status === 'pending')) {
+          body.status = 'in_progress'
+        }
+      }
+    } catch { /* milestones not valid JSON — ignore */ }
+  }
+
   // 1) Try DB first
   try {
     const { db } = await import('@/lib/db')

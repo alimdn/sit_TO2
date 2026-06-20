@@ -1119,7 +1119,17 @@ export async function createOrder(
 export async function updateOrder(
   id: string,
   updates: Partial<StoredOrder>
-): Promise<void> {
-  if (isBlobConfigured()) await blobUpdateOrder(id, updates)
-  await localUpdateOrder(id, updates)
+): Promise<StoredOrder | null> {
+  // Compute the updated object by merging existing + updates
+  const existing = await getOrderById(id)
+  if (!existing) return null
+  const updated: StoredOrder = {
+    ...existing,
+    ...updates,
+    updatedAt: new Date().toISOString(),
+  }
+  // Write to both Blob and local fs
+  if (isBlobConfigured()) await blobWriteOrder(updated)
+  await localWriteOrder(id, updated)
+  return updated
 }

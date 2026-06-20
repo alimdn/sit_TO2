@@ -65,10 +65,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     for (const field of allowedFields) {
       if (body[field] !== undefined) updates[field] = body[field]
     }
-    await updateOrder(id, updates)
-
-    // Return the updated order
-    const updated = await getOrderById(id)
+    const updated = await updateOrder(id, updates)
     if (updated) {
       return NextResponse.json({
         ...updated,

@@ -20,7 +20,7 @@ export const fallbackTemplates = [
     title: 'Nexus — Multi-Purpose Business',
     description: 'A versatile, multi-purpose business template designed for agencies, startups, and enterprises. Features a stunning animated hero with live dashboard mockup, filterable portfolio grid, 4-step process timeline, interactive FAQ accordion, 3-tier pricing cards, testimonial tabs, contact modal with form, and smooth scroll navigation. Built with Tailwind CSS, custom animations, glass morphism effects, and fully responsive design. Perfect for creative agencies, consulting firms, SaaS companies, and any business that wants a professional online presence.',
     category: 'Business',
-    image: '/images/template-education.png',
+    image: '/images/template-nexus.png',
     previewUrl: '/templates/nexus-multi-purpose.html',
     features: JSON.stringify(['Animated Hero with Dashboard Mockup', 'Filterable Portfolio Grid', '4-Step Process Timeline', 'Interactive FAQ Accordion', '3-Tier Pricing Cards', 'Testimonial Tabs System', 'Contact Modal with Form', 'Animated Counters', 'Glass Morphism Design', 'Smooth Scroll Navigation', 'Mobile Menu', 'Toast Notifications', 'Fully Responsive', 'Custom CSS Animations']),
     industries: JSON.stringify(['Agency', 'Startup', 'Consulting', 'SaaS', 'E-Commerce', 'Real Estate', 'Healthcare', 'Finance', 'Technology', 'Marketing']),

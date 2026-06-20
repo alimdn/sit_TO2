@@ -43,16 +43,37 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   const body = await req.json()
 
   // AUTO-CALCULATE progress from milestones if milestones are being updated.
-  // This ensures progress ALWAYS matches the milestone state, even if the
-  // client sends a different progress value.
+  // Uses the custom 7-stage progress mapping where stage 6 (Final Preview)
+  // stays at 83% — it's a checkpoint, not a progress increase.
   if (body.milestones) {
     try {
       const milestones = typeof body.milestones === 'string'
         ? JSON.parse(body.milestones)
         : body.milestones
       if (Array.isArray(milestones) && milestones.length > 0) {
-        const completedCount = milestones.filter((m: any) => m.status === 'completed').length
-        const autoProgress = Math.round((completedCount / milestones.length) * 100)
+        // Custom progress mapping for the 7-stage lifecycle
+        const MILESTONE_PROGRESS = [17, 33, 50, 67, 83, 83, 100]
+
+        // Find the last completed milestone
+        let lastCompletedIdx = -1
+        for (let i = milestones.length - 1; i >= 0; i--) {
+          if (milestones[i].status === 'completed') {
+            lastCompletedIdx = i
+            break
+          }
+        }
+
+        let autoProgress = 0
+        if (lastCompletedIdx >= 0) {
+          if (lastCompletedIdx < MILESTONE_PROGRESS.length && milestones.length === MILESTONE_PROGRESS.length) {
+            autoProgress = MILESTONE_PROGRESS[lastCompletedIdx]
+          } else {
+            // Fallback: linear calculation for custom milestone counts
+            const completedCount = milestones.filter((m: any) => m.status === 'completed').length
+            autoProgress = Math.round((completedCount / milestones.length) * 100)
+          }
+        }
+
         // Override the progress with the auto-calculated value
         body.progress = autoProgress
         // Also auto-set status based on progress

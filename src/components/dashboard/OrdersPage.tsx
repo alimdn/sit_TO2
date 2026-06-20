@@ -74,12 +74,15 @@ const ORDER_STEPS = [
 ]
 
 // Default milestones shown to the customer when an order has no milestones
-// stored yet. Must match DEFAULT_MILESTONES in AdminOrders.tsx (4 stages).
+// stored yet. Must match DEFAULT_MILESTONES in AdminOrders.tsx (7 stages).
 const DEFAULT_CUSTOMER_MILESTONES = [
-  { name: 'Choose Template',     status: 'completed' as const },
-  { name: 'Select Plan',         status: 'pending' as const },
-  { name: 'Submit Requirements', status: 'pending' as const },
-  { name: 'Receive Website',     status: 'pending' as const },
+  { name: 'Order Confirmed',           status: 'completed' as const },
+  { name: 'Design Phase',              status: 'pending' as const },
+  { name: 'Customer Review',           status: 'pending' as const },
+  { name: 'Development & Integration', status: 'pending' as const },
+  { name: 'Testing & QA',              status: 'pending' as const },
+  { name: 'Final Preview',             status: 'pending' as const },
+  { name: 'Deployment & Delivery',     status: 'pending' as const },
 ]
 
 interface CustomerMilestone {
@@ -182,13 +185,16 @@ export default function OrdersPage() {
           userId: user.id,
           templateId: '1',
           status: 'pending',
-          progress: 25,
+          progress: 17,
           isDemo: true,  // ← marks this as a demo order (shows DEMO badge)
           milestones: JSON.stringify([
-            { name: 'Choose Template',     status: 'completed', date: now },
-            { name: 'Select Plan',         status: 'pending' },
-            { name: 'Submit Requirements', status: 'pending' },
-            { name: 'Receive Website',     status: 'pending' },
+            { name: 'Order Confirmed',           status: 'completed', date: now },
+            { name: 'Design Phase',              status: 'pending' },
+            { name: 'Customer Review',           status: 'pending' },
+            { name: 'Development & Integration', status: 'pending' },
+            { name: 'Testing & QA',              status: 'pending' },
+            { name: 'Final Preview',             status: 'pending' },
+            { name: 'Deployment & Delivery',     status: 'pending' },
           ]),
           templateFeatures: JSON.stringify(['Responsive Design', 'SEO Optimized', 'Contact Forms', 'Analytics Integration', 'Multi-page Layout']),
           addOns: JSON.stringify(['seo']),

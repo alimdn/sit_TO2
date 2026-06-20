@@ -38,14 +38,24 @@ const SIMILARITY_LABELS: Record<string, { en: string; ar: string }> = {
 const FREE_FEATURES_LIMIT = 5
 
 // Default work-management milestones for every new order.
-// Simplified to 4 stages that match the customer-facing "How It Works" section.
-// Each stage = 25% of total progress.
+// 7 stages reflecting the real project lifecycle.
+// Each stage has a target progress percentage. Stage 6 (Final Preview)
+// does NOT increase progress — it stays at 83% until the customer
+// approves, then stage 7 jumps to 100%.
 const DEFAULT_MILESTONES: Milestone[] = [
-  { name: 'Choose Template',      status: 'completed', date: new Date().toISOString() },
-  { name: 'Select Plan',          status: 'pending' },
-  { name: 'Submit Requirements',  status: 'pending' },
-  { name: 'Receive Website',      status: 'pending' },
+  { name: 'Order Confirmed',           status: 'completed', date: new Date().toISOString() },
+  { name: 'Design Phase',              status: 'pending' },
+  { name: 'Customer Review',           status: 'pending' },
+  { name: 'Development & Integration', status: 'pending' },
+  { name: 'Testing & QA',              status: 'pending' },
+  { name: 'Final Preview',             status: 'pending' },
+  { name: 'Deployment & Delivery',     status: 'pending' },
 ]
+
+// Progress mapping: which percentage each milestone completion sets.
+// Stage 6 (Final Preview) keeps progress at 83% — it's a checkpoint,
+// not a progress increase. Stage 7 (Deployment) jumps to 100%.
+const MILESTONE_PROGRESS: number[] = [17, 33, 50, 67, 83, 83, 100]
 
 interface Milestone {
   name: string
@@ -227,11 +237,29 @@ export default function AdminOrders() {
     setEditMilestones(prev => prev.filter((_, i) => i !== index))
   }
 
-  // Calculate progress as a percentage based on completed milestones.
-  // With 4 milestones: 0 done = 0%, 1 done = 25%, 2 done = 50%, 3 done = 75%, 4 done = 100%.
-  // Works for any number of milestones (formula: completed / total × 100).
+  // Calculate progress based on completed milestones using the custom
+  // MILESTONE_PROGRESS mapping. This handles the special case where
+  // stage 6 (Final Preview) does NOT increase progress beyond 83%.
+  //
+  // Logic: find the LAST completed milestone, then look up its target
+  // percentage in MILESTONE_PROGRESS. If no milestones are completed,
+  // progress = 0.
   const calcProgressFromMilestones = (milestones: Milestone[]): number => {
     if (milestones.length === 0) return 0
+    // Find the index of the last completed milestone
+    let lastCompletedIdx = -1
+    for (let i = milestones.length - 1; i >= 0; i--) {
+      if (milestones[i].status === 'completed') {
+        lastCompletedIdx = i
+        break
+      }
+    }
+    if (lastCompletedIdx === -1) return 0
+    // Use the custom mapping if available, otherwise fall back to linear calc
+    if (lastCompletedIdx < MILESTONE_PROGRESS.length) {
+      return MILESTONE_PROGRESS[lastCompletedIdx]
+    }
+    // Fallback: linear calculation
     const completed = milestones.filter(m => m.status === 'completed').length
     return Math.round((completed / milestones.length) * 100)
   }

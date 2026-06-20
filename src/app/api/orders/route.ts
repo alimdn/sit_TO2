@@ -62,13 +62,18 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
 
-    // Parse milestones from body, or use default 4-stage lifecycle
+    // Parse milestones from body, or use default 7-stage lifecycle
     const DEFAULT_MILESTONES = [
-      { name: 'Choose Template',     status: 'completed', date: new Date().toISOString() },
-      { name: 'Select Plan',         status: 'pending' },
-      { name: 'Submit Requirements', status: 'pending' },
-      { name: 'Receive Website',     status: 'pending' },
+      { name: 'Order Confirmed',           status: 'completed', date: new Date().toISOString() },
+      { name: 'Design Phase',              status: 'pending' },
+      { name: 'Customer Review',           status: 'pending' },
+      { name: 'Development & Integration', status: 'pending' },
+      { name: 'Testing & QA',              status: 'pending' },
+      { name: 'Final Preview',             status: 'pending' },
+      { name: 'Deployment & Delivery',     status: 'pending' },
     ]
+    // Custom progress mapping: stage 6 (Final Preview) stays at 83%
+    const MILESTONE_PROGRESS = [17, 33, 50, 67, 83, 83, 100]
     let milestones: any[] = DEFAULT_MILESTONES
     if (body.milestones) {
       try {
@@ -81,14 +86,27 @@ export async function POST(req: NextRequest) {
       } catch { /* use default */ }
     }
 
-    // AUTO-CALCULATE progress from milestones:
-    // progress = (completed / total) × 100
-    // This ensures progress always matches the actual milestone state,
-    // even if the client sends progress=0 or doesn't send it at all.
-    const completedCount = milestones.filter((m: any) => m.status === 'completed').length
-    const autoProgress = milestones.length > 0
-      ? Math.round((completedCount / milestones.length) * 100)
-      : 0
+    // AUTO-CALCULATE progress from milestones using the custom mapping.
+    // Finds the last completed milestone and looks up its target percentage.
+    // Stage 6 (Final Preview) keeps progress at 83% — it's a checkpoint.
+    let lastCompletedIdx = -1
+    for (let i = milestones.length - 1; i >= 0; i--) {
+      if (milestones[i].status === 'completed') {
+        lastCompletedIdx = i
+        break
+      }
+    }
+    let autoProgress = 0
+    if (lastCompletedIdx >= 0) {
+      // Use custom mapping if the milestones match the default 7 stages
+      if (lastCompletedIdx < MILESTONE_PROGRESS.length && milestones.length === MILESTONE_PROGRESS.length) {
+        autoProgress = MILESTONE_PROGRESS[lastCompletedIdx]
+      } else {
+        // Fallback: linear calculation for custom milestone counts
+        const completedCount = milestones.filter((m: any) => m.status === 'completed').length
+        autoProgress = Math.round((completedCount / milestones.length) * 100)
+      }
+    }
 
     // Use the auto-calculated progress, OR the client-provided value if it's
     // higher (in case the admin manually sets a higher progress). The

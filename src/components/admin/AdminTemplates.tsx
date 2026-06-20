@@ -12,7 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Plus, Pencil, Trash2, Eye, ExternalLink, RefreshCw, ImageOff } from 'lucide-react'
+import { Plus, Pencil, Trash2, Eye, ExternalLink, RefreshCw, ImageOff, Upload } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface Template {
@@ -40,6 +40,7 @@ export default function AdminTemplates() {
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
+  const [uploadingImage, setUploadingImage] = useState(false)
   const [form, setForm] = useState({
     title: '',
     description: '',
@@ -180,6 +181,60 @@ export default function AdminTemplates() {
 
   const openPreview = (t: Template) => {
     setPreviewTemplate(t)
+  }
+
+  // Handle image file upload — converts to base64 and sends to Cloudinary
+  // via the /api/upload-image endpoint. The returned URL is stored in form.image.
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file')
+      return
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image must be less than 5MB')
+      return
+    }
+
+    setUploadingImage(true)
+    try {
+      // Convert to base64
+      const reader = new FileReader()
+      reader.onloadend = async () => {
+        const base64 = reader.result as string
+        try {
+          const res = await fetch('/api/upload-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ base64 }),
+          })
+          if (res.ok) {
+            const data = await res.json()
+            setForm({ ...form, image: data.url })
+            toast.success('Image uploaded to Cloudinary successfully')
+          } else {
+            const err = await res.json().catch(() => ({}))
+            toast.error(err?.error || 'Failed to upload image')
+          }
+        } catch {
+          toast.error('Network error during upload')
+        } finally {
+          setUploadingImage(false)
+        }
+      }
+      reader.readAsDataURL(file)
+    } catch (e) {
+      console.error('Image upload error:', e)
+      toast.error('Failed to read image file')
+      setUploadingImage(false)
+    }
+    // Reset the input so the same file can be selected again
+    e.target.value = ''
   }
 
   const openLivePreview = (t: Template) => {
@@ -423,12 +478,54 @@ export default function AdminTemplates() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Image URL <span className="text-[#ba1a1a]">*</span></Label>
+                <Label>Template Image <span className="text-[#ba1a1a]">*</span></Label>
+                {/* Image preview */}
+                {form.image && (
+                  <div className="relative rounded-xl overflow-hidden border border-[#e6ebf1] mb-2 bg-[#f7fafd]">
+                    <img
+                      src={form.image}
+                      alt="Template preview"
+                      className="w-full h-32 object-cover"
+                      onError={(e) => {
+                        ;(e.target as HTMLImageElement).style.opacity = '0.3'
+                      }}
+                    />
+                  </div>
+                )}
+                {/* Upload from file */}
+                <div className="flex gap-2">
+                  <label className="flex-1 cursor-pointer">
+                    <div className="flex items-center justify-center gap-2 px-4 py-2.5 border-2 border-dashed border-[#c4c6ce] hover:border-[#00D1FF] rounded-xl text-xs text-[#74777e] hover:text-[#00D1FF] hover:bg-[#00D1FF]/5 transition-all">
+                      {uploadingImage ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-[#00D1FF] border-t-transparent rounded-full animate-spin" />
+                          Uploading...
+                        </>
+                      ) : (
+                        <>
+                          <Upload className="h-4 w-4" />
+                          Upload Image
+                        </>
+                      )}
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleImageUpload}
+                      disabled={uploadingImage}
+                    />
+                  </label>
+                </div>
+                {/* URL input */}
                 <Input
                   value={form.image}
                   onChange={(e) => setForm({ ...form, image: e.target.value })}
-                  placeholder="/images/template-xyz.png"
+                  placeholder="https://res.cloudinary.com/... or /images/template.png"
                 />
+                <p className="text-[10px] text-[#74777e]">
+                  Upload a file (auto-uploads to Cloudinary) or paste an image URL directly.
+                </p>
               </div>
             </div>
             <div className="space-y-2">

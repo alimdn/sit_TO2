@@ -69,6 +69,45 @@ const ORDER_STEPS = [
   { key: 'delivery', label: 'Delivery', desc: 'Your website is ready — control panel access granted!' },
 ]
 
+// Default milestones shown to the customer when an order has no milestones
+// stored yet. Must match DEFAULT_MILESTONES in AdminOrders.tsx.
+const DEFAULT_CUSTOMER_MILESTONES = [
+  { name: 'Order Received',        status: 'completed' as const },
+  { name: 'Design Phase',          status: 'pending' as const },
+  { name: 'Add-ons Integration',   status: 'pending' as const },
+  { name: 'Website Testing',       status: 'pending' as const },
+  { name: 'Database Setup',        status: 'pending' as const },
+  { name: 'Control Panel Setup',   status: 'pending' as const },
+  { name: 'Final Approval',        status: 'pending' as const },
+  { name: 'Deployment & Delivery', status: 'pending' as const },
+]
+
+interface CustomerMilestone {
+  name: string
+  status: 'completed' | 'in_progress' | 'pending'
+  date?: string
+}
+
+// Parse the milestones JSON stored on the order. Falls back to the
+// default 8-stage lifecycle if parsing fails or the field is empty.
+function parseCustomerMilestones(raw: string): CustomerMilestone[] {
+  if (!raw) return DEFAULT_CUSTOMER_MILESTONES
+  try {
+    const parsed = JSON.parse(raw)
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      // Handle both string[] and {name, status, date?}[] formats
+      if (typeof parsed[0] === 'string') {
+        return parsed.map((name: string, i: number) => ({
+          name,
+          status: i === 0 ? 'completed' as const : 'pending' as const,
+        }))
+      }
+      return parsed as CustomerMilestone[]
+    }
+  } catch { /* ignore */ }
+  return DEFAULT_CUSTOMER_MILESTONES
+}
+
 function getStepIndex(status: string, progress: number): number {
   if (status === 'completed') return 4
   if (status === 'review') return 2
@@ -218,6 +257,109 @@ export default function OrdersPage() {
                       </p>
                     </div>
                   </div>
+
+                  {/* Detailed Work Milestones — synced with admin panel */}
+                  {(() => {
+                    const milestones = parseCustomerMilestones(order.milestones)
+                    const completedCount = milestones.filter(m => m.status === 'completed').length
+                    const totalCount = milestones.length
+                    const currentMilestone = milestones.find(m => m.status === 'in_progress')
+                      || milestones.find(m => m.status === 'pending')
+                    return (
+                      <div className="rounded-xl border border-[#e6ebf1] overflow-hidden">
+                        <div className="px-4 py-2.5 bg-[#000f22] flex items-center justify-between">
+                          <h4 className="text-sm font-semibold text-white flex items-center gap-2">
+                            <LayoutDashboard className="h-4 w-4 text-[#00D1FF]" />
+                            Work Milestones
+                          </h4>
+                          <span className="text-[11px] text-[#768dad]">
+                            <span className="font-semibold text-[#10B981]">{completedCount}</span> / {totalCount} completed
+                          </span>
+                        </div>
+                        <div className="p-3 space-y-1.5 bg-white">
+                          {milestones.map((m, i) => {
+                            const isCompleted = m.status === 'completed'
+                            const isInProgress = m.status === 'in_progress'
+                            const isPending = m.status === 'pending'
+                            return (
+                              <div
+                                key={i}
+                                className={`flex items-center gap-2.5 p-2 rounded-lg border transition-all ${
+                                  isCompleted
+                                    ? 'bg-[#10B981]/5 border-[#10B981]/30'
+                                    : isInProgress
+                                      ? 'bg-[#00D1FF]/5 border-[#00D1FF]/30'
+                                      : 'bg-[#f7fafd] border-[#e6ebf1]'
+                                }`}
+                              >
+                                {/* Status indicator */}
+                                <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
+                                  isCompleted
+                                    ? 'bg-[#10B981] text-white'
+                                    : isInProgress
+                                      ? 'bg-[#00D1FF] text-white'
+                                      : 'bg-white border-2 border-[#c4c6ce]'
+                                }`}>
+                                  {isCompleted ? (
+                                    <Check className="h-3.5 w-3.5" />
+                                  ) : isInProgress ? (
+                                    <Clock className="h-3 w-3" />
+                                  ) : (
+                                    <Circle className="h-2 w-2 text-[#c4c6ce]" />
+                                  )}
+                                </div>
+
+                                {/* Step number + name */}
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-1.5">
+                                    <span className="text-[9px] font-mono text-[#74777e]">#{i + 1}</span>
+                                    <span className={`text-xs ${isPending ? 'text-[#74777e]' : 'text-[#000f22] font-medium'}`}>
+                                      {m.name}
+                                    </span>
+                                  </div>
+                                  {m.date && isCompleted && (
+                                    <span className="text-[9px] text-[#10B981]">
+                                      ✓ Completed {new Date(m.date).toLocaleDateString()}
+                                    </span>
+                                  )}
+                                  {isInProgress && (
+                                    <span className="text-[9px] text-[#00D1FF]">In progress now…</span>
+                                  )}
+                                </div>
+
+                                {/* Status badge */}
+                                <Badge className={`text-[9px] px-1.5 py-0 ${
+                                  isCompleted ? 'bg-[#10B981]/10 text-[#10B981]' :
+                                  isInProgress ? 'bg-[#00D1FF]/10 text-[#00D1FF]' :
+                                  'bg-[#e6ebf1] text-[#74777e]'
+                                }`}>
+                                  {isCompleted ? 'Done' : isInProgress ? 'Active' : 'Pending'}
+                                </Badge>
+                              </div>
+                            )
+                          })}
+
+                          {/* Current milestone highlight */}
+                          {currentMilestone && order.status !== 'completed' && (
+                            <div className="mt-2 p-2.5 rounded-lg bg-[#00D1FF]/5 border border-[#00D1FF]/20 flex items-center gap-2">
+                              <ArrowRight className="h-3.5 w-3.5 text-[#00D1FF] flex-shrink-0" />
+                              <p className="text-[11px] text-[#00D1FF]">
+                                <span className="font-semibold">Current step:</span> {currentMilestone.name}
+                              </p>
+                            </div>
+                          )}
+                          {order.status === 'completed' && (
+                            <div className="mt-2 p-2.5 rounded-lg bg-[#10B981]/5 border border-[#10B981]/20 flex items-center gap-2">
+                              <Check className="h-3.5 w-3.5 text-[#10B981] flex-shrink-0" />
+                              <p className="text-[11px] text-[#10B981] font-semibold">
+                                Your website is complete and ready! 🎉
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )
+                  })()}
 
                   {/* Quick info row */}
                   <div className="flex flex-wrap gap-2">

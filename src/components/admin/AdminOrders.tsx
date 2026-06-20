@@ -197,16 +197,91 @@ export default function AdminOrders() {
     setEditMilestones(prev => prev.filter((_, i) => i !== index))
   }
 
-  const toggleMilestoneStatus = (index: number) => {
-    setEditMilestones(prev => prev.map((m, i) => {
+  // Calculate progress as a percentage based on completed milestones.
+  // Formula: (completed_count / total_count) * 100, rounded to nearest integer.
+  // When all milestones are completed, progress = 100 (and the order status
+  // is automatically set to 'completed' by the caller).
+  const calcProgressFromMilestones = (milestones: Milestone[]): number => {
+    if (milestones.length === 0) return 0
+    const completed = milestones.filter(m => m.status === 'completed').length
+    return Math.round((completed / milestones.length) * 100)
+  }
+
+  // Toggle a milestone's status and IMMEDIATELY persist the change to the API
+  // (no need to press "Save" first). Also auto-update the order's progress
+  // percentage based on the new milestone states, and auto-set the order
+  // status to 'completed' when all milestones are done.
+  const toggleMilestoneStatus = async (index: number) => {
+    if (!selected) return
+
+    // Compute the new milestones array locally first
+    const newMilestones = editMilestones.map((m, i) => {
       if (i !== index) return m
       const next: Record<string, Milestone['status']> = {
         completed: 'in_progress',
         in_progress: 'pending',
         pending: 'completed',
       }
-      return { ...m, status: next[m.status] }
-    }))
+      const newStatus = next[m.status]
+      // When marking as completed, stamp the date. When reverting, clear it.
+      return {
+        ...m,
+        status: newStatus,
+        date: newStatus === 'completed' ? new Date().toISOString() : undefined,
+      }
+    })
+
+    // Optimistic UI update
+    setEditMilestones(newMilestones)
+
+    // Auto-calculate progress from milestones
+    const newProgress = calcProgressFromMilestones(newMilestones)
+    setEditProgress(newProgress)
+
+    // Auto-set status to 'completed' if all milestones are done,
+    // otherwise ensure status isn't 'completed' anymore.
+    let newStatus = statusUpdate
+    if (newProgress === 100) {
+      newStatus = 'completed'
+      setStatusUpdate('completed')
+    } else if (statusUpdate === 'completed' && newProgress < 100) {
+      newStatus = 'in_progress'
+      setStatusUpdate('in_progress')
+    }
+
+    // Persist immediately to the API
+    try {
+      const res = await fetch(`/api/orders/${selected.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          milestones: JSON.stringify(newMilestones),
+          progress: newProgress,
+          status: newStatus,
+        }),
+      })
+      if (res.ok) {
+        const updated = await res.json()
+        // Refresh the orders list so the table reflects the new progress
+        fetchOrders()
+        // Update the local selected order + edit state from the response
+        setSelected(updated)
+        setEditMilestones(parseMilestones(updated.milestones))
+        setEditProgress(updated.progress)
+        setEditNotes(updated.notes || '')
+        toast.success(`Milestone ${newMilestones[index].status === 'completed' ? 'completed' : 'updated'} — progress: ${newProgress}%`)
+      } else {
+        toast.error('Failed to save milestone — please try again')
+        // Revert on failure
+        setEditMilestones(parseMilestones(selected.milestones))
+        setEditProgress(selected.progress)
+      }
+    } catch (e) {
+      console.error('Toggle milestone error:', e)
+      toast.error('Network error — please try again')
+      setEditMilestones(parseMilestones(selected.milestones))
+      setEditProgress(selected.progress)
+    }
   }
 
   const getStepDescription = (status: string, progress: number): string => {
@@ -680,28 +755,50 @@ export default function AdminOrders() {
                       </div>
                     </div>
 
-                    {/* Milestones */}
+                    {/* Milestones — clickable at all times (auto-saves on click) */}
                     <div>
-                      <Label className="text-xs">Milestones</Label>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <Label className="text-xs">Milestones (click to toggle status — auto-saves)</Label>
+                        <span className="text-[10px] font-medium text-[#00D1FF]">
+                          {editMilestones.filter(m => m.status === 'completed').length}/{editMilestones.length} done
+                        </span>
+                      </div>
                       <div className="mt-1.5 space-y-1.5">
                         {editMilestones.map((ms, i) => (
-                          <div key={i} className="flex items-center gap-2 p-2 rounded-lg bg-[#f7fafd] border border-[#e6ebf1]">
+                          <div
+                            key={i}
+                            className={`flex items-center gap-2 p-2 rounded-lg border transition-all ${
+                              ms.status === 'completed'
+                                ? 'bg-[#10B981]/5 border-[#10B981]/30'
+                                : ms.status === 'in_progress'
+                                  ? 'bg-[#00D1FF]/5 border-[#00D1FF]/30'
+                                  : 'bg-[#f7fafd] border-[#e6ebf1]'
+                            }`}
+                          >
                             <button
-                              onClick={() => isEditing && toggleMilestoneStatus(i)}
-                              className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
+                              onClick={() => toggleMilestoneStatus(i)}
+                              title={`Click to change status (current: ${ms.status})`}
+                              className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 transition-all cursor-pointer hover:scale-110 ${
                                 ms.status === 'completed'
                                   ? 'bg-[#10B981] text-white'
                                   : ms.status === 'in_progress'
                                     ? 'bg-[#00D1FF] text-white'
-                                    : 'bg-[#e6ebf1] text-[#74777e]'
-                              } ${isEditing ? 'cursor-pointer' : 'cursor-default'}`}
+                                    : 'bg-white border-2 border-[#c4c6ce] text-transparent hover:border-[#10B981]'
+                              }`}
                             >
-                              {ms.status === 'completed' && <Check className="h-3 w-3" />}
-                              {ms.status === 'in_progress' && <span className="text-[8px] font-bold">→</span>}
+                              {ms.status === 'completed' && <Check className="h-3.5 w-3.5" />}
+                              {ms.status === 'in_progress' && <span className="text-[9px] font-bold">→</span>}
                             </button>
-                            <span className={`text-xs flex-1 ${ms.status === 'pending' ? 'text-[#74777e]' : 'text-[#000f22] font-medium'}`}>
-                              {ms.name}
-                            </span>
+                            <div className="flex-1 min-w-0">
+                              <span className={`text-xs block ${ms.status === 'pending' ? 'text-[#74777e]' : 'text-[#000f22] font-medium'}`}>
+                                {ms.name}
+                              </span>
+                              {ms.date && ms.status === 'completed' && (
+                                <span className="text-[9px] text-[#10B981]">
+                                  ✓ {new Date(ms.date).toLocaleDateString()} {new Date(ms.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </span>
+                              )}
+                            </div>
                             <Badge className={`text-[9px] px-1.5 py-0 ${
                               ms.status === 'completed' ? 'bg-[#10B981]/10 text-[#10B981]' :
                               ms.status === 'in_progress' ? 'bg-[#00D1FF]/10 text-[#00D1FF]' :

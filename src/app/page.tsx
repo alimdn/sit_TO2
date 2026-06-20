@@ -50,20 +50,42 @@ function HomePage() {
 
 function TemplatesPage() {
   const { setPreviewTemplate } = useAppStore()
+  const [templateCount, setTemplateCount] = useState<number | null>(null)
 
   // Clear preview state when leaving templates page
   useEffect(() => {
     return () => { setPreviewTemplate(null) }
   }, [setPreviewTemplate])
 
+  // Fetch total templates count for the counter badge
+  useEffect(() => {
+    fetch('/api/templates', { cache: 'no-store' })
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data)) setTemplateCount(data.length)
+      })
+      .catch(() => {})
+  }, [])
+
   return (
     <div className="page-enter py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
           <span className="label-style text-[#00D1FF] text-xs block mb-3">Our Templates</span>
-          <h1 className="text-3xl sm:text-4xl font-bold text-[#000f22]" style={{ letterSpacing: '-0.02em' }}>
-            Browse Website Templates
-          </h1>
+          <div className="flex items-center justify-center gap-3 flex-wrap">
+            <h1 className="text-3xl sm:text-4xl font-bold text-[#000f22]" style={{ letterSpacing: '-0.02em' }}>
+              Browse Website Templates
+            </h1>
+            {templateCount !== null && (
+              <span
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-semibold bg-[#000f22] text-white shadow-card"
+                title={`${templateCount} templates available`}
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00D1FF] animate-pulse" />
+                {templateCount}
+              </span>
+            )}
+          </div>
           <p className="mt-4 text-[#4F5B76] max-w-2xl mx-auto">
             Choose from our collection of professionally designed templates. Each one is fully customizable to match your brand.
           </p>

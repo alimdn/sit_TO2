@@ -12,7 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Plus, Pencil, Trash2, Eye, ExternalLink, RefreshCw, ImageOff, Upload } from 'lucide-react'
+import { Plus, Pencil, Trash2, Eye, ExternalLink, RefreshCw, ImageOff, Upload, Search, X, Filter } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface Template {
@@ -41,6 +41,10 @@ export default function AdminTemplates() {
   const [deleting, setDeleting] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
   const [uploadingImage, setUploadingImage] = useState(false)
+  // Search & filter state
+  const [search, setSearch] = useState('')
+  const [filterCategory, setFilterCategory] = useState<string>('all')
+  const [filterStatus, setFilterStatus] = useState<string>('all')
   const [form, setForm] = useState({
     title: '',
     description: '',
@@ -278,6 +282,32 @@ export default function AdminTemplates() {
     }
   }
 
+  // Filter logic for search & filters
+  const filteredTemplates = templates.filter(t => {
+    const q = search.trim().toLowerCase()
+    const matchSearch = !q ||
+      t.title.toLowerCase().includes(q) ||
+      t.description.toLowerCase().includes(q) ||
+      t.category.toLowerCase().includes(q) ||
+      (t.features || '').toLowerCase().includes(q) ||
+      (t.industries || '').toLowerCase().includes(q)
+    const matchCategory = filterCategory === 'all' || t.category === filterCategory
+    const matchStatus =
+      filterStatus === 'all' ||
+      (filterStatus === 'active' && t.active) ||
+      (filterStatus === 'inactive' && !t.active) ||
+      (filterStatus === 'featured' && t.featured)
+    return matchSearch && matchCategory && matchStatus
+  })
+
+  const hasActiveFilters = search.trim() !== '' || filterCategory !== 'all' || filterStatus !== 'all'
+
+  const clearFilters = () => {
+    setSearch('')
+    setFilterCategory('all')
+    setFilterStatus('all')
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -312,6 +342,88 @@ export default function AdminTemplates() {
         </div>
       </div>
 
+      {/* Search & Filters Bar */}
+      <div className="bg-white rounded-xl border border-[#e6ebf1] shadow-card p-4 space-y-3">
+        <div className="flex flex-col md:flex-row md:items-center gap-3">
+          {/* Search Input */}
+          <div className="relative flex-1 min-w-[240px]">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#74777e] pointer-events-none" />
+            <Input
+              placeholder="Search by title, description, category, features, or industries..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-10 pr-9 h-9 border-[#e6ebf1] focus:border-[#00D1FF]"
+            />
+            {search && (
+              <button
+                onClick={() => setSearch('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#74777e] hover:text-[#000f22]"
+                title="Clear search"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+
+          {/* Category Filter */}
+          <Select value={filterCategory} onValueChange={setFilterCategory}>
+            <SelectTrigger className="w-full md:w-[180px] h-9 border-[#e6ebf1]">
+              <div className="flex items-center gap-2">
+                <Filter className="h-3.5 w-3.5 text-[#74777e]" />
+                <SelectValue placeholder="All Categories" />
+              </div>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Categories</SelectItem>
+              {categories.map(c => (
+                <SelectItem key={c} value={c}>{c}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          {/* Status Filter */}
+          <Select value={filterStatus} onValueChange={setFilterStatus}>
+            <SelectTrigger className="w-full md:w-[160px] h-9 border-[#e6ebf1]">
+              <div className="flex items-center gap-2">
+                <Filter className="h-3.5 w-3.5 text-[#74777e]" />
+                <SelectValue placeholder="All Status" />
+              </div>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
+              <SelectItem value="active">Active Only</SelectItem>
+              <SelectItem value="inactive">Inactive Only</SelectItem>
+              <SelectItem value="featured">Featured Only</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {/* Clear Filters Button */}
+          {hasActiveFilters && (
+            <Button
+              variant="outline"
+              onClick={clearFilters}
+              className="h-9 border-[#e6ebf1] hover:bg-[#f7fafd] whitespace-nowrap"
+            >
+              <X className="h-4 w-4 mr-1" />
+              Clear
+            </Button>
+          )}
+        </div>
+
+        {/* Results summary */}
+        <div className="flex items-center justify-between text-xs text-[#4F5B76] pt-1 border-t border-[#f1f4f7]">
+          <span>
+            Showing <span className="font-semibold text-[#000f22]">{filteredTemplates.length}</span> of{' '}
+            <span className="font-semibold text-[#000f22]">{templates.length}</span> templates
+          </span>
+          {hasActiveFilters && (
+            <span className="text-[#00D1FF] font-medium">
+              Filters active
+            </span>
+          )}
+        </div>
+      </div>
+
       <Card className="shadow-card">
         <CardContent className="p-0">
           <Table>
@@ -332,7 +444,25 @@ export default function AdminTemplates() {
                   </TableCell>
                 </TableRow>
               )}
-              {templates.map((t) => (
+              {templates.length > 0 && filteredTemplates.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center py-8 text-[#4F5B76]">
+                    <div className="flex flex-col items-center gap-2">
+                      <Search className="h-8 w-8 text-[#74777e]/40" />
+                      <span>No templates match your search or filters.</span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={clearFilters}
+                        className="mt-2 h-8 border-[#e6ebf1] hover:bg-[#f7fafd]"
+                      >
+                        <X className="h-3.5 w-3.5 mr-1" /> Clear Filters
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              )}
+              {filteredTemplates.map((t) => (
                 <TableRow key={t.id}>
                   <TableCell>
                     {t.image ? (

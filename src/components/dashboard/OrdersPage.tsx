@@ -5,9 +5,10 @@ import { useAppStore } from '@/lib/store'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { LayoutDashboard, Clock, Check, Circle, ArrowRight, MessageSquare, Globe, RefreshCw } from 'lucide-react'
+import { LayoutDashboard, Clock, Check, Circle, ArrowRight, MessageSquare, Globe, RefreshCw, Plus } from 'lucide-react'
 
 const ADD_ON_NAMES: Record<string, string> = {
   seo: 'Advanced SEO Package',
@@ -164,6 +165,54 @@ export default function OrdersPage() {
     setTimeout(() => setRefreshing(false), 600)
   }
 
+  // Creates a demo order linked to THIS customer's userId so it appears
+  // in their dashboard immediately. Simulates what happens after Checkout.
+  const [creatingDemo, setCreatingDemo] = useState(false)
+  const handleCreateDemoOrder = async () => {
+    if (!user) return
+    setCreatingDemo(true)
+    try {
+      const now = new Date().toISOString()
+      const delivery = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: user.id,
+          templateId: '1',
+          status: 'pending',
+          progress: 25,
+          milestones: JSON.stringify([
+            { name: 'Choose Template',     status: 'completed', date: now },
+            { name: 'Select Plan',         status: 'pending' },
+            { name: 'Submit Requirements', status: 'pending' },
+            { name: 'Receive Website',     status: 'pending' },
+          ]),
+          templateFeatures: JSON.stringify(['Responsive Design', 'SEO Optimized', 'Contact Forms', 'Analytics Integration', 'Multi-page Layout']),
+          addOns: JSON.stringify(['seo']),
+          billing: 'monthly',
+          additionalInfo: 'Demo order — created from dashboard for testing.',
+          domain: `${user.name?.split(' ')[0]?.toLowerCase() || 'demo'}${Date.now().toString(36).slice(-4)}.com`,
+          domainPrice: 12.99,
+          customerName: user.name,
+          customerEmail: user.email,
+          startDate: now,
+          deliveryDate: delivery,
+        }),
+      })
+      if (res.ok) {
+        toast.success('Demo order created! Watch it appear below.')
+        fetchOrders()
+      } else {
+        toast.error('Failed to create demo order')
+      }
+    } catch (e) {
+      toast.error('Network error')
+    } finally {
+      setCreatingDemo(false)
+    }
+  }
+
   const statusColors: Record<string, string> = {
     active: 'bg-[#10B981]/10 text-[#10B981]',
     pending: 'bg-[#FFB800]/10 text-[#FFB800]',
@@ -210,8 +259,31 @@ export default function OrdersPage() {
 
       {orders.length === 0 ? (
         <Card className="shadow-card">
-          <CardContent className="p-8 text-center">
-            <p className="text-[#4F5B76]">No orders yet. Subscribe to a plan to get started.</p>
+          <CardContent className="p-8 text-center space-y-4">
+            <div className="w-16 h-16 rounded-full bg-[#f1f4f7] flex items-center justify-center mx-auto">
+              <LayoutDashboard className="h-8 w-8 text-[#74777e]" />
+            </div>
+            <div>
+              <p className="text-[#4F5B76] font-medium">No orders yet</p>
+              <p className="text-xs text-[#74777e] mt-1">Subscribe to a plan to get started, or create a demo order to see how it works.</p>
+            </div>
+            <Button
+              onClick={handleCreateDemoOrder}
+              disabled={creatingDemo}
+              className="bg-[#00D1FF] hover:bg-[#00b8e6] text-[#000f22] font-semibold h-10"
+            >
+              {creatingDemo ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-[#000f22] border-t-transparent rounded-full animate-spin mr-2" />
+                  Creating...
+                </>
+              ) : (
+                <>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create Demo Order
+                </>
+              )}
+            </Button>
           </CardContent>
         </Card>
       ) : (

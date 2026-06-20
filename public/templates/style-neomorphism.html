@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Neomorphism — Soft UI Design</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Inter',system-ui,sans-serif}
+:root{--bg:#e0e5ec;--text:#4a5568;--shadow-light:#ffffff;--shadow-dark:#a3b1c6}
+body{background:var(--bg);color:var(--text)}
+.neo{background:var(--bg);box-shadow:8px 8px 16px var(--shadow-dark),-8px -8px 16px var(--shadow-light);border-radius:20px}
+.neo-sm{box-shadow:6px 6px 12px var(--shadow-dark),-6px -6px 12px var(--shadow-light);border-radius:14px}
+.neo-inset{background:var(--bg);box-shadow:inset 6px 6px 12px var(--shadow-dark),inset -6px -6px 12px var(--shadow-light);border-radius:14px}
+.neo-hover{transition:all .3s}
+.neo-hover:hover{box-shadow:12px 12px 24px var(--shadow-dark),-12px -12px 24px var(--shadow-light)}
+.neo-press:active{box-shadow:inset 6px 6px 12px var(--shadow-dark),inset -6px -6px 12px var(--shadow-light)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.animate-fade-in{animation:fadeIn .5s ease-out}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:16px 24px;border-radius:14px;background:var(--bg);box-shadow:8px 8px 16px var(--shadow-dark),-8px -8px 16px var(--shadow-light);color:var(--text);font-weight:500;animation:fadeIn .3s}
+</style>
+</head>
+<body class="min-h-screen">
+<div id="toast-container"></div>
+
+<!-- Nav -->
+<nav class="sticky top-0 z-50 p-4">
+  <div class="max-w-7xl mx-auto neo px-6 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div class="w-10 h-10 neo-sm flex items-center justify-center"><span class="text-xl font-bold text-indigo-500">N</span></div>
+      <span class="text-xl font-bold">NeoSoft</span>
+    </div>
+    <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+      <a href="#features" class="hover:text-indigo-500 transition-colors">Features</a>
+      <a href="#showcase" class="hover:text-indigo-500 transition-colors">Showcase</a>
+      <a href="#pricing" class="hover:text-indigo-500 transition-colors">Pricing</a>
+    </div>
+    <button onclick="showToast('Welcome to NeoSoft!')" class="neo-sm neo-hover neo-press px-5 py-2.5 text-sm font-semibold text-indigo-500">Get Started</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="py-20 px-4">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+    <div class="animate-fade-in">
+      <div class="neo-sm inline-flex items-center gap-2 px-4 py-2 mb-6"><span class="w-2 h-2 rounded-full bg-green-400"></span><span class="text-xs font-medium text-gray-500">SOFT UI · v2.0 AVAILABLE</span></div>
+      <h1 class="text-4xl sm:text-5xl font-bold mb-6" style="letter-spacing:-0.02em">Soft, Tactile<br/><span class="text-indigo-500">Beautiful Interfaces</span></h1>
+      <p class="text-lg text-gray-500 leading-relaxed mb-8 max-w-lg">Elements that appear extruded from the background. Dual shadows create a soft, tactile feel that users want to touch.</p>
+      <div class="flex gap-4">
+        <button onclick="showToast('Demo started!')" class="neo-sm neo-hover neo-press px-7 py-3.5 font-semibold text-indigo-500">Explore Demo</button>
+        <button onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})" class="neo-sm neo-hover neo-press px-7 py-3.5 font-semibold text-gray-500">View Pricing</button>
+      </div>
+    </div>
+    <div class="neo p-6">
+      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80" alt="Dashboard" class="w-full h-64 object-cover rounded-xl neo-inset p-1"/>
+      <div class="grid grid-cols-3 gap-3 mt-4">
+        <div class="neo-sm p-4 text-center"><div class="text-2xl font-bold text-indigo-500">98%</div><div class="text-xs text-gray-400">Uptime</div></div>
+        <div class="neo-sm p-4 text-center"><div class="text-2xl font-bold text-pink-500">24/7</div><div class="text-xs text-gray-400">Support</div></div>
+        <div class="neo-sm p-4 text-center"><div class="text-2xl font-bold text-teal-500">15K+</div><div class="text-xs text-gray-400">Users</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="py-20 px-4">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14"><span class="text-indigo-500 text-xs font-semibold uppercase tracking-widest">Features</span><h2 class="text-3xl sm:text-4xl font-bold mt-3" style="letter-spacing:-0.02em">Soft UI Benefits</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="neo neo-hover p-7"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&h=180&fit=crop&q=80" alt="Tactile" class="w-full h-32 object-cover rounded-xl neo-inset p-1 mb-4"/><div class="w-12 h-12 neo-sm flex items-center justify-center mb-4"><svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343"/></svg></div><h3 class="font-bold mb-2 text-gray-700">Tactile Feel</h3><p class="text-sm text-gray-400">Soft shadows make every element feel physical and touchable.</p></div>
+      <div class="neo neo-hover p-7"><img src="https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=300&h=180&fit=crop&q=80" alt="Clean" class="w-full h-32 object-cover rounded-xl neo-inset p-1 mb-4"/><div class="w-12 h-12 neo-sm flex items-center justify-center mb-4"><svg class="w-6 h-6 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><h3 class="font-bold mb-2 text-gray-700">Clean Aesthetic</h3><p class="text-sm text-gray-400">No borders, no harsh lines — just smooth, cohesive surfaces.</p></div>
+      <div class="neo neo-hover p-7"><img src="https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?w=300&h=180&fit=crop&q=80" alt="Pressed" class="w-full h-32 object-cover rounded-xl neo-inset p-1 mb-4"/><div class="w-12 h-12 neo-sm flex items-center justify-center mb-4"><svg class="w-6 h-6 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></div><h3 class="font-bold mb-2 text-gray-700">Pressed States</h3><p class="text-sm text-gray-400">Elements inset on click for realistic physical feedback.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" class="py-20 px-4">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14"><span class="text-indigo-500 text-xs font-semibold uppercase tracking-widest">Pricing</span><h2 class="text-3xl sm:text-4xl font-bold mt-3" style="letter-spacing:-0.02em">Soft Pricing</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="neo neo-hover p-8"><h3 class="font-bold mb-1 text-gray-700">Starter</h3><p class="text-sm text-gray-400 mb-6">For beginners</p><div class="mb-6"><span class="text-4xl font-bold text-indigo-500">$29</span><span class="text-gray-400 text-sm">/mo</span></div><ul class="space-y-3 mb-8 text-sm text-gray-500"><li class="flex items-center gap-2">✓ 10 components</li><li class="flex items-center gap-2">✓ Basic shadows</li><li class="flex items-center gap-2">✓ Community support</li></ul><button onclick="showToast('Starter selected!')" class="w-full py-3 neo-sm neo-hover neo-press font-semibold text-indigo-500 text-sm">Get Started</button></div>
+      <div class="neo p-8 relative" style="box-shadow:12px 12px 24px var(--shadow-dark),-12px -12px 24px var(--shadow-light)"><div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 neo-sm text-indigo-500 text-xs font-bold rounded-full">POPULAR</div><h3 class="font-bold mb-1 text-gray-700">Pro</h3><p class="text-sm text-gray-400 mb-6">For professionals</p><div class="mb-6"><span class="text-4xl font-bold text-indigo-500">$79</span><span class="text-gray-400 text-sm">/mo</span></div><ul class="space-y-3 mb-8 text-sm text-gray-500"><li class="flex items-center gap-2">✓ 50 components</li><li class="flex items-center gap-2">✓ Advanced shadows</li><li class="flex items-center gap-2">✓ Priority support</li></ul><button onclick="showToast('Pro selected!')" class="w-full py-3 neo-sm neo-hover neo-press font-semibold text-indigo-500 text-sm">Get Started</button></div>
+      <div class="neo neo-hover p-8"><h3 class="font-bold mb-1 text-gray-700">Enterprise</h3><p class="text-sm text-gray-400 mb-6">For teams</p><div class="mb-6"><span class="text-4xl font-bold text-indigo-500">Custom</span></div><ul class="space-y-3 mb-8 text-sm text-gray-500"><li class="flex items-center gap-2">✓ Unlimited</li><li class="flex items-center gap-2">✓ Source code</li><li class="flex items-center gap-2">✓ 24/7 support</li></ul><button onclick="showToast('Contact us!')" class="w-full py-3 neo-sm neo-hover neo-press font-semibold text-indigo-500 text-sm">Contact</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section id="showcase" class="py-20 px-4">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14"><h2 class="text-3xl font-bold" style="letter-spacing:-0.02em">What Users Say</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="neo p-7"><div class="flex items-center gap-3 mb-4"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&q=80" alt="" class="w-12 h-12 rounded-full neo-sm p-0.5"/><div><div class="font-semibold text-sm text-gray-700">Sarah J.</div><div class="text-xs text-gray-400">Designer</div></div></div><p class="text-sm text-gray-500 italic">"The soft shadows are incredible. My UI feels premium and tactile."</p></div>
+      <div class="neo p-7"><div class="flex items-center gap-3 mb-4"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&q=80" alt="" class="w-12 h-12 rounded-full neo-sm p-0.5"/><div><div class="font-semibold text-sm text-gray-700">Michael R.</div><div class="text-xs text-gray-400">Developer</div></div></div><p class="text-sm text-gray-500 italic">"Clean, consistent, and easy to customize. Best soft UI kit I've used."</p></div>
+      <div class="neo p-7"><div class="flex items-center gap-3 mb-4"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&q=80" alt="" class="w-12 h-12 rounded-full neo-sm p-0.5"/><div><div class="font-semibold text-sm text-gray-700">Emily D.</div><div class="text-xs text-gray-400">PM</div></div></div><p class="text-sm text-gray-500 italic">"User engagement jumped 30%. The tactile feel makes a real difference."</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-20 px-4"><div class="max-w-3xl mx-auto text-center"><div class="neo p-12"><h2 class="text-3xl font-bold mb-4 text-gray-700">Start Building Soft UI</h2><p class="text-gray-400 mb-8">Create beautiful, tactile interfaces today.</p><button onclick="showToast('Welcome! 🎉')" class="neo-sm neo-hover neo-press px-8 py-4 font-semibold text-indigo-500">Get Started Free</button></div></div></section>
+
+<!-- Footer -->
+<footer class="py-8 px-4 text-center text-sm text-gray-400">© 2026 NeoSoft · Neomorphism Template</footer>
+
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}))
+</script>
+</body>
+</html>

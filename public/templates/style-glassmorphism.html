@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Glassmorphism — Frosted Glass Design</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config = {
+  theme: { extend: {
+    fontFamily: { sans: ['Inter','system-ui','sans-serif'] },
+    colors: {
+      brand: {400:'#a78bfa',500:'#8b5cf6',600:'#7c3aed',700:'#6d28d9'},
+      accent: {400:'#22d3ee',500:'#06b6d4',600:'#0891b2'},
+      ink: {900:'#0f0a1e',800:'#1a1130',700:'#241845'}
+    }
+  }}
+}
+</script>
+<style>
+*{font-family:'Inter',system-ui,sans-serif}
+html{scroll-behavior:smooth}
+body{overflow-x:hidden}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.animate-fade-in{animation:fadeIn .5s ease-out}
+.animate-float{animation:float 5s ease-in-out infinite}
+.gradient-bg{background:linear-gradient(135deg,#0f0a1e 0%,#1e1b4b 25%,#312e81 50%,#1e1b4b 75%,#0f0a1e 100%);background-size:300% 300%;animation:gradientShift 12s ease infinite}
+.glass{background:rgba(255,255,255,0.08);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.12);box-shadow:0 8px 32px rgba(0,0,0,0.2)}
+.glass-hover{transition:all .3s}
+.glass-hover:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.2);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.3)}
+.glass-strong{background:rgba(255,255,255,0.14);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.18)}
+.card-hover{transition:all .35s cubic-bezier(.4,0,.2,1)}
+.card-hover:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(124,58,237,0.15)}
+.nav-link{position:relative}
+.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:linear-gradient(90deg,#a78bfa,#22d3ee);transition:width .3s}
+.nav-link:hover::after{width:100%}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:16px 24px;border-radius:12px;color:#fff;font-weight:500;backdrop-filter:blur(16px);background:rgba(139,92,246,0.9);box-shadow:0 8px 32px rgba(0,0,0,0.3);animation:fadeIn .3s}
+</style>
+</head>
+<body class="gradient-bg text-white antialiased min-h-screen">
+<div id="toast-container"></div>
+
+<!-- Nav -->
+<nav class="fixed top-0 left-0 right-0 z-50 glass">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+    <div class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-xl glass-strong flex items-center justify-center">
+        <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/></svg>
+      </div>
+      <span class="text-xl font-bold">Glass</span>
+    </div>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#features" class="nav-link text-sm font-medium text-white/80 hover:text-white">Features</a>
+      <a href="#portfolio" class="nav-link text-sm font-medium text-white/80 hover:text-white">Portfolio</a>
+      <a href="#pricing" class="nav-link text-sm font-medium text-white/80 hover:text-white">Pricing</a>
+      <a href="#testimonials" class="nav-link text-sm font-medium text-white/80 hover:text-white">Reviews</a>
+    </div>
+    <button onclick="showToast('Welcome! Let's get started.')" class="glass-hover glass-strong px-5 py-2.5 rounded-xl text-sm font-semibold">Get Started</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+  <div class="absolute top-20 left-10 w-72 h-72 bg-brand-500/30 rounded-full blur-3xl animate-float"></div>
+  <div class="absolute bottom-20 right-10 w-96 h-96 bg-accent-500/20 rounded-full blur-3xl animate-float" style="animation-delay:2s"></div>
+  <div class="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+    <div class="animate-fade-in">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6">
+        <span class="w-2 h-2 rounded-full bg-accent-400 animate-pulse"></span>
+        <span class="text-accent-400 text-xs font-medium tracking-wide">NEW · GLASSMORPHISM UI KIT</span>
+      </div>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6" style="letter-spacing:-0.02em">
+        Frosted Glass<br/><span class="bg-gradient-to-r from-brand-400 to-accent-400 bg-clip-text text-transparent">Digital Experiences</span>
+      </h1>
+      <p class="text-lg text-white/60 leading-relaxed mb-8 max-w-lg">Translucent panels, backdrop blur, and layered depth. Build interfaces that feel premium, modern, and alive.</p>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <button onclick="showToast('Demo requested!')" class="px-7 py-3.5 bg-gradient-to-r from-brand-500 to-accent-500 hover:from-brand-600 hover:to-accent-600 text-white font-semibold rounded-xl transition-all hover:shadow-xl hover:shadow-brand-500/30 hover:-translate-y-0.5">Explore Demo</button>
+        <a href="#pricing" class="glass glass-hover px-7 py-3.5 text-white font-semibold rounded-xl text-center cursor-pointer">View Pricing</a>
+      </div>
+      <div class="flex items-center gap-6 mt-12 pt-8 border-t border-white/10">
+        <div><div class="text-3xl font-bold">15K+</div><div class="text-xs text-white/50 mt-1">Downloads</div></div>
+        <div class="w-px h-12 bg-white/10"></div>
+        <div><div class="text-3xl font-bold">4.9★</div><div class="text-xs text-white/50 mt-1">Rating</div></div>
+        <div class="w-px h-12 bg-white/10"></div>
+        <div><div class="text-3xl font-bold">50+</div><div class="text-xs text-white/50 mt-1">Components</div></div>
+      </div>
+    </div>
+    <div class="hidden lg:block animate-float" style="animation-duration:6s">
+      <div class="relative">
+        <div class="absolute -inset-4 bg-gradient-to-r from-brand-500/30 to-accent-500/30 rounded-3xl blur-2xl"></div>
+        <div class="relative glass-strong rounded-2xl overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80" alt="Glassmorphism Dashboard" class="w-full h-[400px] object-cover"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-ink-900/60 to-transparent"></div>
+          <div class="absolute bottom-6 left-6 right-6">
+            <div class="glass-strong rounded-xl p-4 flex items-center gap-3">
+              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&q=80" alt="User" class="w-10 h-10 rounded-full"/>
+              <div><div class="text-sm font-semibold">Live Preview</div><div class="text-xs text-white/60">Glassmorphism in action</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="py-20 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14">
+      <span class="text-brand-400 text-xs font-semibold uppercase tracking-widest">Features</span>
+      <h2 class="text-3xl sm:text-4xl font-bold mt-3 mb-4" style="letter-spacing:-0.02em">Why Glassmorphism?</h2>
+      <p class="text-white/50 max-w-2xl mx-auto">A design language that blends depth, blur, and transparency for a premium feel.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="glass glass-hover card-hover p-7 rounded-2xl">
+        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=250&fit=crop&q=80" alt="Blur" class="w-full h-32 object-cover rounded-xl mb-5"/>
+        <div class="w-12 h-12 rounded-xl glass-strong flex items-center justify-center mb-4"><svg class="w-6 h-6 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4l16 16M4 20L20 4"/></svg></div>
+        <h3 class="text-lg font-bold mb-2">Backdrop Blur</h3>
+        <p class="text-sm text-white/50 leading-relaxed">Smooth frosted glass effects with backdrop-filter blur on every panel.</p>
+      </div>
+      <div class="glass glass-hover card-hover p-7 rounded-2xl">
+        <img src="https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=400&h=250&fit=crop&q=80" alt="Transparency" class="w-full h-32 object-cover rounded-xl mb-5"/>
+        <div class="w-12 h-12 rounded-xl glass-strong flex items-center justify-center mb-4"><svg class="w-6 h-6 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></div>
+        <h3 class="text-lg font-bold mb-2">Layered Depth</h3>
+        <p class="text-sm text-white/50 leading-relaxed">Translucent panels stacked at different opacity levels create real depth.</p>
+      </div>
+      <div class="glass glass-hover card-hover p-7 rounded-2xl">
+        <img src="https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?w=400&h=250&fit=crop&q=80" alt="Gradients" class="w-full h-32 object-cover rounded-xl mb-5"/>
+        <div class="w-12 h-12 rounded-xl glass-strong flex items-center justify-center mb-4"><svg class="w-6 h-6 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg></div>
+        <h3 class="text-lg font-bold mb-2">Vibrant Gradients</h3>
+        <p class="text-sm text-white/50 leading-relaxed">Colorful gradient backgrounds shine through frosted glass for a premium look.</p>
+      </div>
+      <div class="glass glass-hover card-hover p-7 rounded-2xl">
+        <img src="https://images.unsplash.com/photo-1545235617-9465d2a55698?w=400&h=250&fit=crop&q=80" alt="Responsive" class="w-full h-32 object-cover rounded-xl mb-5"/>
+        <div class="w-12 h-12 rounded-xl glass-strong flex items-center justify-center mb-4"><svg class="w-6 h-6 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg></div>
+        <h3 class="text-lg font-bold mb-2">Fully Responsive</h3>
+        <p class="text-sm text-white/50 leading-relaxed">Glass effects adapt perfectly across desktop, tablet, and mobile breakpoints.</p>
+      </div>
+      <div class="glass glass-hover card-hover p-7 rounded-2xl">
+        <img src="https://images.unsplash.com/photo-1633354931133-927ba6f85a38?w=400&h=250&fit=crop&q=80" alt="Shadows" class="w-full h-32 object-cover rounded-xl mb-5"/>
+        <div class="w-12 h-12 rounded-xl glass-strong flex items-center justify-center mb-4"><svg class="w-6 h-6 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></div>
+        <h3 class="text-lg font-bold mb-2">Soft Shadows</h3>
+        <p class="text-sm text-white/50 leading-relaxed">Inner and outer shadows combined for a realistic frosted glass appearance.</p>
+      </div>
+      <div class="glass glass-hover card-hover p-7 rounded-2xl">
+        <img src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=400&h=250&fit=crop&q=80" alt="Animation" class="w-full h-32 object-cover rounded-xl mb-5"/>
+        <div class="w-12 h-12 rounded-xl glass-strong flex items-center justify-center mb-4"><svg class="w-6 h-6 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+        <h3 class="text-lg font-bold mb-2">Smooth Animations</h3>
+        <p class="text-sm text-white/50 leading-relaxed">Floating elements, gradient shifts, and fade-in entrances throughout.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Portfolio -->
+<section id="portfolio" class="py-20 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14">
+      <span class="text-brand-400 text-xs font-semibold uppercase tracking-widest">Showcase</span>
+      <h2 class="text-3xl sm:text-4xl font-bold mt-3 mb-4" style="letter-spacing:-0.02em">Glassmorphism in Action</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="glass card-hover rounded-2xl overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop&q=80" alt="Dashboard" class="w-full h-48 object-cover"/>
+        <div class="p-5"><h3 class="font-bold mb-1">Analytics Dashboard</h3><p class="text-sm text-white/50">Glass panels with live data visualization.</p></div>
+      </div>
+      <div class="glass card-hover rounded-2xl overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&h=300&fit=crop&q=80" alt="SaaS" class="w-full h-48 object-cover"/>
+        <div class="p-5"><h3 class="font-bold mb-1">SaaS Landing</h3><p class="text-sm text-white/50">Frosted hero with gradient mesh background.</p></div>
+      </div>
+      <div class="glass card-hover rounded-2xl overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&h=300&fit=crop&q=80" alt="Mobile" class="w-full h-48 object-cover"/>
+        <div class="p-5"><h3 class="font-bold mb-1">Mobile App</h3><p class="text-sm text-white/50">Glass cards on iOS-style gradient backgrounds.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" class="py-20 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14">
+      <span class="text-brand-400 text-xs font-semibold uppercase tracking-widest">Pricing</span>
+      <h2 class="text-3xl sm:text-4xl font-bold mt-3 mb-4" style="letter-spacing:-0.02em">Choose Your Plan</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="glass glass-hover p-8 rounded-2xl">
+        <h3 class="text-lg font-bold mb-1">Starter</h3>
+        <p class="text-sm text-white/50 mb-6">For small projects</p>
+        <div class="mb-6"><span class="text-4xl font-bold">$29</span><span class="text-white/50 text-sm">/mo</span></div>
+        <ul class="space-y-3 mb-8 text-sm text-white/70">
+          <li class="flex items-center gap-2"><svg class="w-4 h-4 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>10 glass components</li>
+          <li class="flex items-center gap-2"><svg class="w-4 h-4 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Basic animations</li>
+          <li class="flex items-center gap-2"><svg class="w-4 h-4 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Community support</li>
+        </ul>
+        <button onclick="showToast('Starter plan selected!')" class="w-full py-3 glass-strong glass-hover rounded-xl font-semibold text-sm">Get Started</button>
+      </div>
+      <div class="glass-strong p-8 rounded-2xl relative" style="border:2px solid rgba(167,139,250,0.4)">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-brand-500 to-accent-500 text-white text-xs font-bold rounded-full">POPULAR</div>
+        <h3 class="text-lg font-bold mb-1">Pro</h3>
+        <p class="text-sm text-white/50 mb-6">For growing teams</p>
+        <div class="mb-6"><span class="text-4xl font-bold">$79</span><span class="text-white/50 text-sm">/mo</span></div>
+        <ul class="space-y-3 mb-8 text-sm text-white/70">
+          <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>50 glass components</li>
+          <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Advanced animations</li>
+          <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Priority support</li>
+          <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Custom gradients</li>
+        </ul>
+        <button onclick="showToast('Pro plan selected!')" class="w-full py-3 bg-gradient-to-r from-brand-500 to-accent-500 hover:from-brand-600 hover:to-accent-600 rounded-xl font-semibold text-sm transition-all">Get Started</button>
+      </div>
+      <div class="glass glass-hover p-8 rounded-2xl">
+        <h3 class="text-lg font-bold mb-1">Enterprise</h3>
+        <p class="text-sm text-white/50 mb-6">For large organizations</p>
+        <div class="mb-6"><span class="text-4xl font-bold">Custom</span></div>
+        <ul class="space-y-3 mb-8 text-sm text-white/70">
+          <li class="flex items-center gap-2"><svg class="w-4 h-4 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Unlimited components</li>
+          <li class="flex items-center gap-2"><svg class="w-4 h-4 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Full source code</li>
+          <li class="flex items-center gap-2"><svg class="w-4 h-4 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>24/7 dedicated support</li>
+        </ul>
+        <button onclick="showToast('Contact us for enterprise!')" class="w-full py-3 glass-strong glass-hover rounded-xl font-semibold text-sm">Contact Sales</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section id="testimonials" class="py-20 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14">
+      <span class="text-brand-400 text-xs font-semibold uppercase tracking-widest">Reviews</span>
+      <h2 class="text-3xl sm:text-4xl font-bold mt-3 mb-4" style="letter-spacing:-0.02em">What People Say</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="glass p-7 rounded-2xl">
+        <div class="flex items-center gap-3 mb-4">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&q=80" alt="Sarah" class="w-12 h-12 rounded-full"/>
+          <div><div class="font-semibold text-sm">Sarah Johnson</div><div class="text-xs text-white/50">UI Designer</div></div>
+        </div>
+        <div class="flex gap-1 mb-3">★★★★★</div>
+        <p class="text-sm text-white/60 leading-relaxed italic">"The glass effects are stunning. My clients love the premium feel it adds to their dashboards."</p>
+      </div>
+      <div class="glass p-7 rounded-2xl">
+        <div class="flex items-center gap-3 mb-4">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&q=80" alt="Michael" class="w-12 h-12 rounded-full"/>
+          <div><div class="font-semibold text-sm">Michael Chen</div><div class="text-xs text-white/50">Developer</div></div>
+        </div>
+        <div class="flex gap-1 mb-3">★★★★★</div>
+        <p class="text-sm text-white/60 leading-relaxed italic">"Clean code, beautiful design, and easy to customize. Exactly what I needed for my SaaS project."</p>
+      </div>
+      <div class="glass p-7 rounded-2xl">
+        <div class="flex items-center gap-3 mb-4">
+          <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&q=80" alt="Emily" class="w-12 h-12 rounded-full"/>
+          <div><div class="font-semibold text-sm">Emily Davis</div><div class="text-xs text-white/50">Product Manager</div></div>
+        </div>
+        <div class="flex gap-1 mb-3">★★★★☆</div>
+        <p class="text-sm text-white/60 leading-relaxed italic">"The frosted glass look transformed our app. User engagement increased by 35% after the redesign."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-20 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto text-center">
+    <div class="glass-strong rounded-3xl p-12 relative overflow-hidden">
+      <div class="absolute top-0 left-1/4 w-48 h-48 bg-brand-500/30 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 right-1/4 w-48 h-48 bg-accent-500/30 rounded-full blur-3xl"></div>
+      <div class="relative">
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4" style="letter-spacing:-0.02em">Ready to Build Something Beautiful?</h2>
+        <p class="text-white/60 mb-8 max-w-xl mx-auto">Start creating stunning glassmorphism interfaces today. Free to try, no credit card required.</p>
+        <button onclick="showToast('Welcome aboard! 🎉')" class="px-8 py-4 bg-gradient-to-r from-brand-500 to-accent-500 hover:from-brand-600 hover:to-accent-600 text-white font-semibold rounded-xl transition-all hover:shadow-xl hover:shadow-brand-500/30 hover:-translate-y-0.5">Get Started Free</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-12 px-4 sm:px-6 lg:px-8 border-t border-white/10">
+  <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-lg glass flex items-center justify-center"><svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/></svg></div>
+      <span class="font-bold">Glass</span>
+    </div>
+    <p class="text-sm text-white/40">© 2026 Glassmorphism Template. All rights reserved.</p>
+    <div class="flex gap-4 text-sm text-white/50">
+      <a href="#" class="hover:text-white cursor-pointer">Privacy</a>
+      <a href="#" class="hover:text-white cursor-pointer">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function showToast(msg){
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;
+  document.getElementById('toast-container').appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(20px)';t.style.transition='all .3s';setTimeout(()=>t.remove(),300)},3500)
+}
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'})}
+  })
+})
+</script>
+</body>
+</html>

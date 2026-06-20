@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Minimalism — Less Is More</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Inter',system-ui,sans-serif}
+body{background:#ffffff;color:#1a1a1a}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.animate-fade-in{animation:fadeIn .6s ease-out}
+.minimal-hover{transition:all .3s}
+.minimal-hover:hover{color:#3b82f6}
+.line-hover{position:relative}
+.line-hover::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:#3b82f6;transition:width .3s}
+.line-hover:hover::after{width:100%}
+.card{transition:all .3s}
+.card:hover{box-shadow:0 2px 20px rgba(0,0,0,0.04)}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:14px 20px;border-radius:8px;background:#1a1a1a;color:#fff;font-size:14px;font-weight:400;animation:fadeIn .3s}
+</style>
+</head>
+<body class="min-h-screen">
+<div id="toast-container"></div>
+
+<!-- Nav -->
+<nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
+  <div class="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
+    <span class="text-lg font-medium tracking-tight">Minimal</span>
+    <div class="hidden md:flex items-center gap-10 text-sm text-gray-500"><a href="#features" class="line-hover">Features</a><a href="#pricing" class="line-hover">Pricing</a><a href="#reviews" class="line-hover">Reviews</a></div>
+    <button onclick="showToast('Welcome.')" class="text-sm font-medium text-gray-700 hover:text-blue-500 transition-colors">Get Started →</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="py-32 px-6">
+  <div class="max-w-4xl mx-auto text-center animate-fade-in">
+    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-light tracking-tight leading-tight mb-8" style="letter-spacing:-0.03em">
+      Simplicity is the<br/><span class="font-medium">ultimate sophistication</span>.
+    </h1>
+    <p class="text-lg text-gray-400 leading-relaxed mb-10 max-w-xl mx-auto font-light">
+      We strip away the unnecessary. What remains is clean, purposeful, and beautiful.
+    </p>
+    <button onclick="showToast('Let\'s begin.')" class="text-sm font-medium text-gray-700 border-b border-gray-300 hover:border-blue-500 hover:text-blue-500 transition-all pb-1">
+      Start your project →
+    </button>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="py-20 px-6 border-t border-gray-50">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
+      <div class="animate-fade-in"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&h=200&fit=crop&q=80" alt="" class="w-full h-40 object-cover rounded-lg mb-6"/><h3 class="text-lg font-medium mb-3">Clean Code</h3><p class="text-sm text-gray-400 leading-relaxed font-light">Every line serves a purpose. No bloat, no excess — just what matters.</p></div>
+      <div class="animate-fade-in"><img src="https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=300&h=200&fit=crop&q=80" alt="" class="w-full h-40 object-cover rounded-lg mb-6"/><h3 class="text-lg font-medium mb-3">Whitespace</h3><p class="text-sm text-gray-400 leading-relaxed font-light">Generous spacing guides focus. Let content breathe.</p></div>
+      <div class="animate-fade-in"><img src="https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?w=300&h=200&fit=crop&q=80" alt="" class="w-full h-40 object-cover rounded-lg mb-6"/><h3 class="text-lg font-medium mb-3">One Accent</h3><p class="text-sm text-gray-400 leading-relaxed font-light">A single color draws attention where it matters most.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="py-16 px-6 border-t border-gray-50">
+  <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-center items-center gap-12 sm:gap-20">
+    <div class="text-center"><div class="text-4xl font-light">500+</div><div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Projects</div></div>
+    <div class="text-center"><div class="text-4xl font-light">12</div><div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Years</div></div>
+    <div class="text-center"><div class="text-4xl font-light">98%</div><div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Satisfied</div></div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" class="py-20 px-6 border-t border-gray-50">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-14"><h2 class="text-3xl font-light tracking-tight mb-2">Simple Pricing</h2><p class="text-sm text-gray-400">Three options. No hidden fees.</p></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="card border border-gray-100 rounded-xl p-8"><h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">Essential</h3><div class="text-4xl font-light mb-2">$29<span class="text-base text-gray-400">/mo</span></div><p class="text-sm text-gray-400 mb-6">For individuals</p><ul class="space-y-3 text-sm text-gray-500 mb-8"><li>— 5 projects</li><li>— Basic support</li><li>— 1GB storage</li></ul><button onclick="showToast('Essential plan.')" class="text-sm font-medium text-gray-700 hover:text-blue-500 transition-colors">Choose →</button></div>
+      <div class="card border-2 border-blue-500 rounded-xl p-8 relative"><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-xs px-3 py-0.5 rounded-full">Recommended</div><h3 class="text-sm font-medium text-blue-500 uppercase tracking-wider mb-4">Professional</h3><div class="text-4xl font-light mb-2">$79<span class="text-base text-gray-400">/mo</span></div><p class="text-sm text-gray-400 mb-6">For growing teams</p><ul class="space-y-3 text-sm text-gray-500 mb-8"><li>— Unlimited projects</li><li>— Priority support</li><li>— 50GB storage</li></ul><button onclick="showToast('Professional plan.')" class="text-sm font-medium text-blue-500 hover:text-blue-600 transition-colors">Choose →</button></div>
+      <div class="card border border-gray-100 rounded-xl p-8"><h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">Enterprise</h3><div class="text-4xl font-light mb-2">Custom</div><p class="text-sm text-gray-400 mb-6">For organizations</p><ul class="space-y-3 text-sm text-gray-500 mb-8"><li>— Everything included</li><li>— Dedicated manager</li><li>— Unlimited storage</li></ul><button onclick="showToast('Contact us.')" class="text-sm font-medium text-gray-700 hover:text-blue-500 transition-colors">Contact →</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section id="reviews" class="py-20 px-6 border-t border-gray-50">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-14"><h2 class="text-3xl font-light tracking-tight">What clients say</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div class="text-center"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&q=80" alt="" class="w-12 h-12 rounded-full mx-auto mb-4"/><p class="text-sm text-gray-500 leading-relaxed font-light italic mb-3">"Effortlessly elegant. The minimalist approach transformed our brand."</p><div class="text-xs text-gray-400">Sarah Johnson</div></div>
+      <div class="text-center"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&q=80" alt="" class="w-12 h-12 rounded-full mx-auto mb-4"/><p class="text-sm text-gray-500 leading-relaxed font-light italic mb-3">"Less really is more. Our conversion rate doubled after the redesign."</p><div class="text-xs text-gray-400">Michael Chen</div></div>
+      <div class="text-center"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&q=80" alt="" class="w-12 h-12 rounded-full mx-auto mb-4"/><p class="text-sm text-gray-500 leading-relaxed font-light italic mb-3">"Clean, fast, and beautiful. Exactly what we needed."</p><div class="text-xs text-gray-400">Emily Davis</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-32 px-6 border-t border-gray-50">
+  <div class="max-w-2xl mx-auto text-center">
+    <h2 class="text-3xl font-light tracking-tight mb-6">Ready to simplify?</h2>
+    <p class="text-gray-400 mb-8 font-light">Let's create something clean together.</p>
+    <button onclick="showToast('Welcome.')" class="text-sm font-medium border-b border-gray-300 hover:border-blue-500 hover:text-blue-500 transition-all pb-1">Get in touch →</button>
+  </div>
+</section>
+
+<footer class="py-8 px-6 border-t border-gray-50 text-center text-xs text-gray-300">© 2026 Minimal. All rights reserved.</footer>
+
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}))
+</script>
+</body>
+</html>

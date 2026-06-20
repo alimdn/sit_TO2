@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Micro-interactions — Every Detail Alive</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Inter',system-ui,sans-serif}
+body{background:#fafafa;color:#1a1a1a;overflow-x:hidden}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bounce-in{0%{transform:scale(0.8);opacity:0}60%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
+.animate-fade-in{animation:fadeIn .4s ease-out}
+.btn-micro{transition:all .3s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden}
+.btn-micro:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(99,102,241,0.2)}
+.btn-micro:active{transform:translateY(0) scale(0.97)}
+.btn-micro::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.3);transform:translate(-50%,-50%);transition:width .5s,height .5s}
+.btn-micro:active::before{width:300px;height:300px}
+.card-micro{transition:all .35s cubic-bezier(.4,0,.2,1)}
+.card-micro:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 25px 50px rgba(0,0,0,0.1)}
+.input-micro{transition:all .3s}
+.input-micro:focus{transform:scale(1.02);box-shadow:0 5px 20px rgba(99,102,241,0.15)}
+.icon-spin{transition:transform .5s}
+.icon-spin:hover{transform:rotate(180deg)}
+.toggle{transition:all .3s cubic-bezier(.4,0,.2,1)}
+.toggle-dot{transition:all .3s cubic-bezier(.4,0,.2,1)}
+.toggle.active .toggle-dot{transform:translateX(24px)}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:16px 24px;border-radius:12px;background:#6366f1;color:#fff;font-weight:500;animation:bounce-in .4s}
+</style>
+</head>
+<body class="min-h-screen">
+<div id="toast-container"></div>
+
+<!-- Nav -->
+<nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+    <div class="flex items-center gap-2"><div class="w-9 h-9 bg-indigo-500 rounded-xl flex items-center justify-center icon-spin"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div><span class="text-lg font-bold">MicroUX</span></div>
+    <div class="hidden md:flex gap-8 text-sm text-gray-500"><a href="#features" class="hover:text-indigo-500 transition-colors">Features</a><a href="#pricing" class="hover:text-indigo-500 transition-colors">Pricing</a></div>
+    <button onclick="showToast('Micro-interactions activated!')" class="btn-micro bg-indigo-500 text-white px-5 py-2.5 rounded-xl text-sm font-semibold">Get Started</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="py-20 px-6">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+    <div class="animate-fade-in">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 mb-6"><span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span><span class="text-indigo-600 text-xs font-medium">EVERY DETAIL MATTERS</span></div>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6" style="letter-spacing:-0.02em">Every Click<br/><span class="text-indigo-500">Feels Alive</span></h1>
+      <p class="text-lg text-gray-500 leading-relaxed mb-8 max-w-lg">Hover effects, click feedback, smooth transitions, spring physics. Every interaction is designed to feel satisfying and responsive.</p>
+      <div class="flex gap-4">
+        <button onclick="showToast('Ripple effect! 🔵')" class="btn-micro bg-indigo-500 text-white px-7 py-3.5 font-semibold rounded-xl">Try the Button</button>
+        <button class="btn-micro bg-white border border-gray-200 px-7 py-3.5 font-semibold rounded-xl hover:border-indigo-300">Learn More</button>
+      </div>
+    </div>
+    <div class="space-y-4">
+      <!-- Interactive toggle -->
+      <div class="bg-white border border-gray-100 rounded-2xl p-6 card-micro">
+        <div class="flex items-center justify-between mb-4"><span class="font-semibold text-sm">Toggle Switch</span><div class="toggle active w-12 h-6 bg-indigo-500 rounded-full p-1 cursor-pointer" onclick="this.classList.toggle('active')"><div class="toggle-dot w-4 h-4 bg-white rounded-full"></div></div></div>
+        <input type="text" placeholder="Focus me to see scale effect" class="input-micro w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20"/>
+      </div>
+      <!-- Hover cards -->
+      <div class="grid grid-cols-3 gap-3">
+        <div class="card-micro bg-white border border-gray-100 rounded-xl p-4 text-center cursor-pointer"><div class="text-2xl mb-1 icon-spin">🎨</div><div class="text-xs font-medium">Hover Me</div></div>
+        <div class="card-micro bg-white border border-gray-100 rounded-xl p-4 text-center cursor-pointer"><div class="text-2xl mb-1 icon-spin">⚡</div><div class="text-xs font-medium">Click Me</div></div>
+        <div class="card-micro bg-white border border-gray-100 rounded-xl p-4 text-center cursor-pointer"><div class="text-2xl mb-1 icon-spin">✨</div><div class="text-xs font-medium">Touch Me</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="py-20 px-6 bg-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14"><span class="text-indigo-500 text-xs font-semibold uppercase tracking-widest">Features</span><h2 class="text-3xl sm:text-4xl font-bold mt-3">Interaction Types</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="card-micro bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-32 object-cover"/><div class="p-5"><div class="text-2xl mb-2">🖱️</div><h3 class="font-bold mb-1 text-sm">Hover Effects</h3><p class="text-xs text-gray-500">Scale, color shift, shadow lift on hover.</p></div></div>
+      <div class="card-micro bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-32 object-cover"/><div class="p-5"><div class="text-2xl mb-2">👆</div><h3 class="font-bold mb-1 text-sm">Click Feedback</h3><p class="text-xs text-gray-500">Ripple effects and press animations.</p></div></div>
+      <div class="card-micro bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-32 object-cover"/><div class="p-5"><div class="text-2xl mb-2">🔄</div><h3 class="font-bold mb-1 text-sm">Smooth Transitions</h3><p class="text-xs text-gray-500">Spring physics easing curves.</p></div></div>
+      <div class="card-micro bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-32 object-cover"/><div class="p-5"><div class="text-2xl mb-2">⏳</div><h3 class="font-bold mb-1 text-sm">Loading States</h3><p class="text-xs text-gray-500">Elegant spinners and skeleton screens.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" class="py-20 px-6 bg-gray-50">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14"><h2 class="text-3xl font-bold">Pricing</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-micro bg-white border border-gray-100 rounded-2xl p-8"><h3 class="font-bold mb-1">Starter</h3><div class="text-4xl font-bold mb-4">$29</div><ul class="space-y-2 text-sm text-gray-500 mb-6"><li>✓ Basic hover effects</li><li>✓ Click animations</li></ul><button onclick="showToast('Starter!')" class="btn-micro w-full py-3 bg-indigo-500 text-white rounded-xl font-semibold text-sm">Choose</button></div>
+      <div class="card-micro bg-white border-2 border-indigo-500 rounded-2xl p-8 relative"><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-500 text-white text-xs px-3 py-0.5 rounded-full">POPULAR</div><h3 class="font-bold mb-1">Pro</h3><div class="text-4xl font-bold mb-4">$79</div><ul class="space-y-2 text-sm text-gray-500 mb-6"><li>✓ All interactions</li><li>✓ Spring physics</li><li>✓ Custom curves</li></ul><button onclick="showToast('Pro!')" class="btn-micro w-full py-3 bg-indigo-500 text-white rounded-xl font-semibold text-sm">Choose</button></div>
+      <div class="card-micro bg-white border border-gray-100 rounded-2xl p-8"><h3 class="font-bold mb-1">Team</h3><div class="text-4xl font-bold mb-4">$199</div><ul class="space-y-2 text-sm text-gray-500 mb-6"><li>✓ Everything</li><li>✓ Source code</li></ul><button onclick="showToast('Team!')" class="btn-micro w-full py-3 bg-indigo-500 text-white rounded-xl font-semibold text-sm">Choose</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section class="py-20 px-6 bg-white">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="card-micro bg-gray-50 border border-gray-100 rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-500 italic">"Every interaction feels incredibly polished. Users notice."</p></div>
+    <div class="card-micro bg-gray-50 border border-gray-100 rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-500 italic">"The ripple effect on buttons alone increased our CTR by 15%."</p></div>
+    <div class="card-micro bg-gray-50 border border-gray-100 rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-500 italic">"Spring physics make everything feel natural and alive."</p></div>
+  </div>
+</section>
+
+<footer class="py-8 text-center text-sm text-gray-300">© 2026 MicroUX Template</footer>
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}))
+</script>
+</body>
+</html>

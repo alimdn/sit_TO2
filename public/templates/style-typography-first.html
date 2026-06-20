@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Typography-First — Type IS the Design</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;800;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Inter',system-ui,sans-serif}
+.serif{font-family:'Playfair Display',serif}
+body{background:#0a0a0a;color:#fff;overflow-x:hidden}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes textReveal{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.animate-fade-in{animation:fadeIn .6s ease-out}
+.animate-reveal{animation:textReveal 1s ease-out}
+.display-text{font-size:clamp(3rem,10vw,8rem);line-height:0.9;letter-spacing:-0.04em}
+.mega-text{font-size:clamp(4rem,15vw,12rem);line-height:0.85;letter-spacing:-0.05em}
+.card-hover{transition:all .3s}
+.card-hover:hover{transform:translateY(-4px);background:rgba(255,255,255,0.05)}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:16px 24px;border-radius:0;background:#fff;color:#0a0a0a;font-weight:700;animation:fadeIn .3s}
+</style>
+</head>
+<body class="min-h-screen">
+<div id="toast-container"></div>
+
+<!-- Nav -->
+<nav class="sticky top-0 z-50 bg-black/60 backdrop-blur-md border-b border-white/5">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+    <span class="text-2xl font-black tracking-tighter">TYPE.</span>
+    <div class="hidden md:flex gap-8 text-sm"><a href="#features" class="font-light hover:font-bold transition-all">Features</a><a href="#pricing" class="font-light hover:font-bold transition-all">Pricing</a></div>
+    <button onclick="showToast('TYPE.ACTIVATED')" class="text-sm font-black uppercase tracking-wider border-b-2 border-white hover:tracking-widest transition-all">Get Started</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="py-20 px-6">
+  <div class="max-w-7xl mx-auto animate-fade-in">
+    <h1 class="display-text font-black mb-4 animate-reveal">TYPE IS<br/><span class="serif italic font-normal text-gray-500">the</span> DESIGN.</h1>
+    <div class="flex items-end justify-between flex-wrap gap-4 mt-8">
+      <p class="text-lg font-light text-gray-500 max-w-md">Oversized headings. Dramatic weight contrasts. Overlapping layers. The words are the art.</p>
+      <button onclick="showToast('READ MORE')" class="text-sm font-black uppercase tracking-widest border-b-2 border-white pb-1 hover:tracking-[0.3em] transition-all">Explore →</button>
+    </div>
+  </div>
+</section>
+
+<!-- Mega Text Section -->
+<section class="py-32 px-6 border-y border-white/5">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="mega-text font-black leading-none"><span class="text-white">BOLD.</span> <span class="serif italic font-light text-gray-600">Beautiful.</span> <span class="text-white">TYPE.</span></h2>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="py-20 px-6">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-5xl font-black mb-14" style="letter-spacing:-0.03em">FEATURES<span class="text-gray-700">.</span></h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/5">
+      <div class="card-hover bg-black p-10"><span class="text-6xl font-black text-gray-700">01</span><h3 class="text-2xl font-bold mt-4 mb-2">Oversized Type</h3><p class="text-sm text-gray-500 font-light">Headings at 80px+ that demand attention and set the tone.</p></div>
+      <div class="card-hover bg-black p-10"><span class="text-6xl font-black text-gray-700">02</span><h3 class="text-2xl font-bold mt-4 mb-2">Weight Contrast</h3><p class="text-sm text-gray-500 font-light">900 vs 200. Bold vs thin. The contrast IS the design.</p></div>
+      <div class="card-hover bg-black p-10"><span class="text-6xl font-black text-gray-700">03</span><h3 class="text-2xl font-bold mt-4 mb-2 serif italic font-normal">Serif + Sans</h3><p class="text-sm text-gray-500 font-light">Mixing typefaces creates visual rhythm and hierarchy.</p></div>
+      <div class="card-hover bg-black p-10"><span class="text-6xl font-black text-gray-700">04</span><h3 class="text-2xl font-bold mt-4 mb-2">Overlapping</h3><p class="text-sm text-gray-500 font-light">Text layers that overlap create depth without images.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" class="py-20 px-6 border-t border-white/5">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-5xl font-black mb-14" style="letter-spacing:-0.03em">PRICING<span class="text-gray-700">.</span></h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-hover border border-white/10 p-8"><h3 class="text-sm font-light uppercase tracking-widest text-gray-500 mb-4">Basic</h3><div class="text-6xl font-black mb-4">$29</div><ul class="space-y-3 text-sm text-gray-400 font-light mb-8"><li>— 10 type styles</li><li>— Basic pairing</li></ul><button onclick="showToast('BASIC.')" class="text-sm font-black uppercase tracking-wider border-b border-white pb-1">Choose →</button></div>
+      <div class="card-hover border-2 border-white p-8 relative"><div class="absolute -top-3 left-8 bg-black px-2 text-xs font-black uppercase">Recommended</div><h3 class="text-sm font-light uppercase tracking-widest text-gray-500 mb-4">Pro</h3><div class="text-6xl font-black mb-4">$79</div><ul class="space-y-3 text-sm text-gray-400 font-light mb-8"><li>— 50 type styles</li><li>— Custom pairing</li><li>— Kinetic effects</li></ul><button onclick="showToast('PRO.')" class="text-sm font-black uppercase tracking-wider border-b border-white pb-1">Choose →</button></div>
+      <div class="card-hover border border-white/10 p-8"><h3 class="text-sm font-light uppercase tracking-widest text-gray-500 mb-4">Enterprise</h3><div class="text-6xl font-black mb-4">$199</div><ul class="space-y-3 text-sm text-gray-400 font-light mb-8"><li>— Everything</li><li>— Source files</li></ul><button onclick="showToast('ENTERPRISE.')" class="text-sm font-black uppercase tracking-wider border-b border-white pb-1">Choose →</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section class="py-20 px-6 border-t border-white/5">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-4xl font-black mb-12" style="letter-spacing:-0.03em">REVIEWS<span class="text-gray-700">.</span></h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div><p class="text-2xl font-light serif italic text-gray-300 mb-4">"Typography so good it hurts."</p><div class="text-xs font-black uppercase tracking-widest text-gray-600">— Sarah J., Designer</div></div>
+      <div><p class="text-2xl font-light serif italic text-gray-300 mb-4">"The weight contrast is genius."</p><div class="text-xs font-black uppercase tracking-widest text-gray-600">— Mike R., Developer</div></div>
+      <div><p class="text-2xl font-light serif italic text-gray-300 mb-4">"Words became the art."</p><div class="text-xs font-black uppercase tracking-widest text-gray-600">— Emily D., PM</div></div>
+    </div>
+  </div>
+</section>
+
+<footer class="py-8 px-6 border-t border-white/5"><div class="max-w-7xl mx-auto flex justify-between items-center"><span class="text-2xl font-black tracking-tighter">TYPE.</span><span class="text-xs font-light text-gray-600">© 2026 · Typography-First Template</span></div></footer>
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}))
+</script>
+</body>
+</html>

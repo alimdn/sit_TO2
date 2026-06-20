@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Parallax Scrolling — Depth on Scroll</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Inter',system-ui,sans-serif}
+body{background:#0f0f1a;color:#fff;overflow-x:hidden}
+.parallax-layer{position:absolute;will-change:transform}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.animate-fade-in{animation:fadeIn .6s ease-out}
+.scene{position:relative;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.card-hover{transition:all .3s}
+.card-hover:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(168,85,247,0.2)}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:16px 24px;border-radius:12px;background:rgba(168,85,247,0.9);backdrop-filter:blur(10px);color:#fff;font-weight:500;animation:fadeIn .3s}
+</style>
+</head>
+<body>
+<div id="toast-container"></div>
+
+<!-- Scene 1: Mountain Parallax -->
+<section class="scene">
+  <div class="parallax-layer" data-speed="0.2" style="top:0;left:0;width:100%;height:120%;">
+    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80" alt="Mountains" class="w-full h-full object-cover"/>
+  </div>
+  <div class="parallax-layer" data-speed="0.5" style="top:0;left:0;width:100%;height:100%;background:linear-gradient(to bottom,rgba(15,15,26,0.3),rgba(15,15,26,0.8));"></div>
+  <div class="relative z-10 text-center px-4">
+    <h1 class="text-5xl sm:text-7xl font-bold mb-4" style="letter-spacing:-0.03em">Depth on<br/><span class="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Scroll</span></h1>
+    <p class="text-lg text-white/60 max-w-md mx-auto mb-8">Multiple layers move at different speeds creating a cinematic journey.</p>
+    <button onclick="showToast('Scroll to explore!')" class="bg-white/10 backdrop-blur-md border border-white/20 px-8 py-3.5 rounded-xl font-semibold hover:bg-white/20 transition-all">Begin Journey ↓</button>
+  </div>
+</section>
+
+<!-- Scene 2: City Parallax -->
+<section class="scene" style="height:80vh;">
+  <div class="parallax-layer" data-speed="0.3" style="top:0;left:0;width:100%;height:120%;">
+    <img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=1920&q=80" alt="City" class="w-full h-full object-cover"/>
+  </div>
+  <div class="parallax-layer" data-speed="0.4" style="top:0;left:0;width:100%;height:100%;background:linear-gradient(to bottom,rgba(15,15,26,0.6),rgba(15,15,26,0.4),rgba(15,15,26,0.8));"></div>
+  <div class="relative z-10 text-center px-4">
+    <h2 class="text-4xl sm:text-6xl font-bold mb-4">Layers Create<br/><span class="text-purple-400">Story</span></h2>
+    <p class="text-white/50 max-w-lg mx-auto">Background images move slower than foreground, creating depth and immersion.</p>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="py-20 px-4 bg-[#0f0f1a]">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14"><span class="text-purple-400 text-xs font-semibold uppercase tracking-widest">Features</span><h2 class="text-3xl sm:text-4xl font-bold mt-3">Parallax Power</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-hover bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-sm"><img src="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=400&h=200&fit=crop&q=80" alt="" class="w-full h-40 object-cover"/><div class="p-6"><h3 class="font-bold mb-2">Multi-Layer Depth</h3><p class="text-sm text-white/50">3+ layers moving at different speeds for cinematic effect.</p></div></div>
+      <div class="card-hover bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-sm"><img src="https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=400&h=200&fit=crop&q=80" alt="" class="w-full h-40 object-cover"/><div class="p-6"><h3 class="font-bold mb-2">Smooth Scrolling</h3><p class="text-sm text-white/50">requestAnimationFrame for buttery-smooth parallax motion.</p></div></div>
+      <div class="card-hover bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-sm"><img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&h=200&fit=crop&q=80" alt="" class="w-full h-40 object-cover"/><div class="p-6"><h3 class="font-bold mb-2">Storytelling</h3><p class="text-sm text-white/50">Guide users through a narrative as they scroll.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="py-20 px-4 bg-[#0a0a14]">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14"><h2 class="text-3xl font-bold">Pricing</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-hover bg-white/5 border border-white/10 rounded-2xl p-8"><h3 class="font-bold mb-1">Basic</h3><div class="text-4xl font-bold mb-4">$29</div><ul class="space-y-2 text-sm text-white/50 mb-6"><li>✓ 2 parallax layers</li><li>✓ Basic animations</li></ul><button onclick="showToast('Basic!')" class="w-full py-3 bg-white/10 rounded-xl font-semibold text-sm">Choose</button></div>
+      <div class="card-hover bg-gradient-to-br from-purple-500/20 to-pink-500/10 border border-purple-500/30 rounded-2xl p-8"><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-purple-500 text-white text-xs px-3 py-0.5 rounded-full">POPULAR</div><h3 class="font-bold mb-1">Pro</h3><div class="text-4xl font-bold mb-4">$79</div><ul class="space-y-2 text-sm text-white/50 mb-6"><li>✓ 5 parallax layers</li><li>✓ Advanced animations</li><li>✓ Priority support</li></ul><button onclick="showToast('Pro!')" class="w-full py-3 bg-purple-500 hover:bg-purple-600 rounded-xl font-semibold text-sm">Choose</button></div>
+      <div class="card-hover bg-white/5 border border-white/10 rounded-2xl p-8"><h3 class="font-bold mb-1">Unlimited</h3><div class="text-4xl font-bold mb-4">$199</div><ul class="space-y-2 text-sm text-white/50 mb-6"><li>✓ Unlimited layers</li><li>✓ Full source</li></ul><button onclick="showToast('Unlimited!')" class="w-full py-3 bg-white/10 rounded-xl font-semibold text-sm">Choose</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="py-20 px-4">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-7"><div class="flex items-center gap-3 mb-4"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full"/><div class="text-sm font-semibold">Sarah J.</div></div><p class="text-sm text-white/50 italic">"The parallax effects added a whole new dimension to our site."</p></div>
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-7"><div class="flex items-center gap-3 mb-4"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full"/><div class="text-sm font-semibold">Mike R.</div></div><p class="text-sm text-white/50 italic">"Users spend 40% more time on our pages. Incredible depth."</p></div>
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-7"><div class="flex items-center gap-3 mb-4"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full"/><div class="text-sm font-semibold">Emily D.</div></div><p class="text-sm text-white/50 italic">"Cinematic experience that sets us apart from competitors."</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="py-8 text-center text-sm text-white/30">© 2026 Parallax Template</footer>
+
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+// Parallax scroll
+window.addEventListener('scroll',()=>{
+  const scrolled=window.pageYOffset;
+  document.querySelectorAll('.parallax-layer').forEach(el=>{
+    const speed=parseFloat(el.dataset.speed)||0.5;
+    el.style.transform=`translateY(${scrolled*speed}px)`;
+  });
+});
+</script>
+</body>
+</html>

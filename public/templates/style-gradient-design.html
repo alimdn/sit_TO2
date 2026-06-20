@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gradient Design — Color Transitions</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Inter',system-ui,sans-serif}
+body{background:#0a0a0f;color:#fff;overflow-x:hidden}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes gradientMove{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.animate-fade-in{animation:fadeIn .5s ease-out}
+.mesh-bg{background:linear-gradient(-45deg,#ee7752,#e73c7e,#23a6d5,#23d5ab);background-size:400% 400%;animation:gradientMove 15s ease infinite}
+.gradient-text{background:linear-gradient(135deg,#ee7752,#e73c7e,#23a6d5,#23d5ab);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% auto;animation:gradientMove 5s ease infinite}
+.gradient-card{background:linear-gradient(135deg,rgba(238,119,82,0.1),rgba(231,60,126,0.1),rgba(35,166,213,0.1));border:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(10px)}
+.gradient-btn{background:linear-gradient(135deg,#ee7752,#e73c7e,#23a6d5);background-size:200% auto;transition:all .3s}
+.gradient-btn:hover{background-position:right center;transform:translateY(-2px);box-shadow:0 10px 30px rgba(231,60,126,0.3)}
+.card-hover{transition:all .3s}
+.card-hover:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(35,166,213,0.15)}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:16px 24px;border-radius:12px;background:linear-gradient(135deg,#ee7752,#e73c7e);color:#fff;font-weight:500;animation:fadeIn .3s}
+</style>
+</head>
+<body class="min-h-screen" style="background:radial-gradient(ellipse at top,rgba(238,119,82,0.08),transparent 50%),radial-gradient(ellipse at bottom,rgba(35,166,213,0.08),transparent 50%),#0a0a0f;">
+<div id="toast-container"></div>
+
+<!-- Nav -->
+<nav class="sticky top-0 z-50 bg-black/40 backdrop-blur-xl border-b border-white/5">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+    <div class="flex items-center gap-2"><div class="w-9 h-9 rounded-xl gradient-btn flex items-center justify-center"><span class="text-white font-bold text-sm">G</span></div><span class="text-lg font-bold">Gradient</span></div>
+    <div class="hidden md:flex gap-8 text-sm text-gray-400"><a href="#features" class="hover:text-white transition-colors">Features</a><a href="#pricing" class="hover:text-white transition-colors">Pricing</a></div>
+    <button onclick="showToast('Gradient activated!')" class="gradient-btn text-white px-5 py-2.5 rounded-xl text-sm font-semibold">Get Started</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="py-24 px-6 relative overflow-hidden">
+  <div class="absolute top-0 left-1/4 w-96 h-96 rounded-full opacity-20 blur-3xl" style="background:linear-gradient(135deg,#ee7752,#e73c7e)"></div>
+  <div class="absolute bottom-0 right-1/4 w-96 h-96 rounded-full opacity-20 blur-3xl" style="background:linear-gradient(135deg,#23a6d5,#23d5ab)"></div>
+  <div class="relative max-w-4xl mx-auto text-center animate-fade-in">
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full gradient-card mb-6"><span class="w-2 h-2 rounded-full bg-gradient-to-r from-orange-400 to-pink-500 animate-pulse"></span><span class="text-xs font-medium gradient-text">VIBRANT · DYNAMIC · ALIVE</span></div>
+    <h1 class="text-5xl sm:text-7xl font-bold mb-6" style="letter-spacing:-0.03em"><span class="gradient-text">Color in Motion</span></h1>
+    <p class="text-lg text-gray-400 mb-8 max-w-xl mx-auto">Mesh gradients, animated backgrounds, gradient text. Every surface comes alive with smooth color transitions.</p>
+    <div class="flex gap-4 justify-center">
+      <button onclick="showToast('Gradient magic! 🎨')" class="gradient-btn text-white px-8 py-3.5 font-semibold rounded-xl">Start Creating</button>
+      <button class="gradient-card px-8 py-3.5 font-semibold rounded-xl text-white hover:bg-white/10 transition-all">View Examples</button>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="py-20 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14"><span class="gradient-text text-xs font-semibold uppercase tracking-widest">Features</span><h2 class="text-3xl sm:text-4xl font-bold mt-3">Gradient Types</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="card-hover gradient-card rounded-2xl overflow-hidden"><div class="h-32" style="background:linear-gradient(135deg,#ee7752,#e73c7e)"></div><div class="p-5"><h3 class="font-bold mb-1">Mesh Gradients</h3><p class="text-xs text-gray-400">Multi-point color blends.</p></div></div>
+      <div class="card-hover gradient-card rounded-2xl overflow-hidden"><div class="h-32" style="background:linear-gradient(135deg,#23a6d5,#23d5ab)"></div><div class="p-5"><h3 class="font-bold mb-1">Gradient Text</h3><p class="text-xs text-gray-400">Animated gradient on text.</p></div></div>
+      <div class="card-hover gradient-card rounded-2xl overflow-hidden"><div class="h-32" style="background:linear-gradient(135deg,#e73c7e,#23a6d5)"></div><div class="p-5"><h3 class="font-bold mb-1">Gradient Buttons</h3><p class="text-xs text-gray-400">Hover shifts the gradient.</p></div></div>
+      <div class="card-hover gradient-card rounded-2xl overflow-hidden"><div class="h-32 mesh-bg"></div><div class="p-5"><h3 class="font-bold mb-1">Animated BG</h3><p class="text-xs text-gray-400">Continuously moving colors.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" class="py-20 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14"><h2 class="text-3xl font-bold">Pricing</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-hover gradient-card rounded-2xl p-8"><h3 class="font-bold mb-1">Starter</h3><div class="text-4xl font-bold mb-4">$29</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>✓ Basic gradients</li><li>✓ 5 color schemes</li></ul><button onclick="showToast('Starter!')" class="gradient-btn w-full py-3 text-white rounded-xl font-semibold text-sm">Choose</button></div>
+      <div class="card-hover gradient-card rounded-2xl p-8 relative" style="border:2px solid rgba(231,60,126,0.3)"><div class="absolute -top-3 left-1/2 -translate-x-1/2 gradient-btn text-white text-xs px-3 py-0.5 rounded-full">POPULAR</div><h3 class="font-bold mb-1">Pro</h3><div class="text-4xl font-bold mb-4">$79</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>✓ Mesh gradients</li><li>✓ Animated backgrounds</li><li>✓ Custom palettes</li></ul><button onclick="showToast('Pro!')" class="gradient-btn w-full py-3 text-white rounded-xl font-semibold text-sm">Choose</button></div>
+      <div class="card-hover gradient-card rounded-2xl p-8"><h3 class="font-bold mb-1">Enterprise</h3><div class="text-4xl font-bold mb-4">$199</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>✓ Everything</li><li>✓ Source code</li></ul><button onclick="showToast('Enterprise!')" class="gradient-btn w-full py-3 text-white rounded-xl font-semibold text-sm">Choose</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section class="py-20 px-6">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="gradient-card rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-400 italic">"The gradients are absolutely mesmerizing. Users love it."</p></div>
+    <div class="gradient-card rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-400 italic">"Animated backgrounds took our landing page to the next level."</p></div>
+    <div class="gradient-card rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-400 italic">"Best gradient toolkit I've used. Period."</p></div>
+  </div>
+</section>
+
+<footer class="py-8 text-center text-sm text-gray-500">© 2026 Gradient Design Template</footer>
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}))
+</script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>3D Immersive — Interactive 3D Experience</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Inter',system-ui,sans-serif}
+body{background:#050510;color:#fff;overflow-x:hidden}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin3d{from{transform:rotateY(0deg)}to{transform:rotateY(360deg)}}
+@keyframes float{0%,100%{transform:translateY(0) rotateX(5deg)}50%{transform:translateY(-20px) rotateX(-5deg)}}
+.animate-fade-in{animation:fadeIn .5s ease-out}
+.animate-float-3d{animation:float 6s ease-in-out infinite}
+.perspective{perspective:1000px}
+.preserve-3d{transform-style:preserve-3d}
+.glow-cyan{box-shadow:0 0 40px rgba(0,212,255,0.3),0 0 80px rgba(0,212,255,0.1)}
+.glow-purple{box-shadow:0 0 40px rgba(168,85,247,0.3),0 0 80px rgba(168,85,247,0.1)}
+.card-3d{transition:all .4s;transform-style:preserve-3d}
+.card-3d:hover{transform:rotateY(5deg) rotateX(5deg) translateZ(20px)}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:16px 24px;border-radius:12px;background:rgba(0,212,255,0.2);border:1px solid rgba(0,212,255,0.4);backdrop-filter:blur(10px);color:#00d4ff;font-weight:500;animation:fadeIn .3s}
+</style>
+</head>
+<body class="min-h-screen">
+<div id="toast-container"></div>
+
+<!-- Nav -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-xl border-b border-cyan-500/10">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+    <div class="flex items-center gap-2"><div class="w-9 h-9 rounded-lg glow-cyan bg-cyan-500/10 flex items-center justify-center"><span class="text-cyan-400 font-bold">3D</span></div><span class="text-lg font-bold">Immersive</span></div>
+    <div class="hidden md:flex gap-8 text-sm text-gray-400"><a href="#features" class="hover:text-cyan-400">Features</a><a href="#pricing" class="hover:text-cyan-400">Pricing</a></div>
+    <button onclick="showToast('Entering 3D space...')" class="glow-cyan bg-cyan-500/10 border border-cyan-500/30 px-5 py-2.5 rounded-lg text-sm font-semibold text-cyan-400 hover:bg-cyan-500/20 transition-all">Enter 3D</button>
+  </div>
+</nav>
+
+<!-- Hero with 3D floating cards -->
+<section class="pt-32 pb-20 px-6 relative overflow-hidden">
+  <div class="absolute top-20 left-1/4 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl"></div>
+  <div class="absolute bottom-20 right-1/4 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl"></div>
+  <div class="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+    <div class="animate-fade-in">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-6"><span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span><span class="text-cyan-400 text-xs font-medium tracking-wide">WEBGL POWERED · 60FPS</span></div>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6" style="letter-spacing:-0.02em">Step Into<br/><span class="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">3D Space</span></h1>
+      <p class="text-lg text-gray-400 leading-relaxed mb-8 max-w-lg">Interactive 3D elements that respond to mouse movement. Rotate, zoom, and explore a spatial digital experience.</p>
+      <button onclick="showToast('3D mode activated!')" class="px-7 py-3.5 bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-cyan-500/30 transition-all hover:-translate-y-0.5">Start Exploring</button>
+    </div>
+    <div class="perspective hidden lg:block">
+      <div class="preserve-3d animate-float-3d relative">
+        <div class="card-3d glow-cyan bg-black/60 border border-cyan-500/20 rounded-2xl overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1633354931133-927ba6f85a38?w=500&q=80" alt="3D Scene" class="w-full h-64 object-cover"/>
+          <div class="p-4"><div class="text-sm font-semibold text-cyan-400">3D Render Engine</div><div class="text-xs text-gray-500">Real-time WebGL rendering</div></div>
+        </div>
+        <div class="card-3d glow-purple bg-black/60 border border-purple-500/20 rounded-xl p-4 absolute -bottom-6 -left-6 w-48"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=200&h=100&fit=crop&q=80" alt="" class="w-full h-16 object-cover rounded-lg mb-2"/><div class="text-xs text-purple-400 font-semibold">Spatial Depth</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="py-20 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14"><span class="text-cyan-400 text-xs font-semibold uppercase tracking-widest">// 3D Features</span><h2 class="text-3xl sm:text-4xl font-bold mt-3">Immersive Technology</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-3d bg-black/40 border border-cyan-500/20 rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?w=400&h=200&fit=crop&q=80" alt="" class="w-full h-40 object-cover"/><div class="p-6"><div class="text-2xl mb-2">🎨</div><h3 class="font-bold mb-2 text-cyan-400">WebGL Rendering</h3><p class="text-sm text-gray-400">Hardware-accelerated 3D graphics at 60fps.</p></div></div>
+      <div class="card-3d bg-black/40 border border-purple-500/20 rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=400&h=200&fit=crop&q=80" alt="" class="w-full h-40 object-cover"/><div class="p-6"><div class="text-2xl mb-2">🖱️</div><h3 class="font-bold mb-2 text-purple-400">Mouse Interactive</h3><p class="text-sm text-gray-400">3D objects rotate and respond to cursor position.</p></div></div>
+      <div class="card-3d bg-black/40 border border-cyan-500/20 rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=200&fit=crop&q=80" alt="" class="w-full h-40 object-cover"/><div class="p-6"><div class="text-2xl mb-2">⚡</div><h3 class="font-bold mb-2 text-cyan-400">Spatial Audio</h3><p class="text-sm text-gray-400">3D positional audio that moves with the scene.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" class="py-20 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14"><h2 class="text-3xl font-bold">3D Pricing</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-3d bg-black/40 border border-cyan-500/20 rounded-2xl p-8"><h3 class="font-bold text-cyan-400 mb-1">Starter</h3><div class="text-4xl font-bold mb-4">$49</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>✓ Basic 3D scenes</li><li>✓ Mouse rotation</li></ul><button onclick="showToast('Starter 3D!')" class="w-full py-3 border border-cyan-500/30 rounded-lg text-cyan-400 font-semibold text-sm">Choose</button></div>
+      <div class="card-3d bg-gradient-to-br from-cyan-500/10 to-purple-500/10 border border-purple-500/30 rounded-2xl p-8 glow-purple"><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-purple-500 text-white text-xs px-3 py-0.5 rounded-full">BEST</div><h3 class="font-bold text-purple-400 mb-1">Pro</h3><div class="text-4xl font-bold mb-4">$149</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>✓ Full WebGL</li><li>✓ Custom shaders</li><li>✓ Spatial audio</li></ul><button onclick="showToast('Pro 3D!')" class="w-full py-3 bg-purple-500 rounded-lg text-white font-semibold text-sm">Choose</button></div>
+      <div class="card-3d bg-black/40 border border-cyan-500/20 rounded-2xl p-8"><h3 class="font-bold text-cyan-400 mb-1">Enterprise</h3><div class="text-4xl font-bold mb-4">Custom</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>✓ Unlimited 3D</li><li>✓ Full source</li></ul><button onclick="showToast('Enterprise 3D!')" class="w-full py-3 border border-cyan-500/30 rounded-lg text-cyan-400 font-semibold text-sm">Contact</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section class="py-20 px-6">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="card-3d bg-black/40 border border-cyan-500/10 rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-400 italic">"Our 3D product showcase increased engagement by 200%."</p><div class="text-xs text-cyan-400 mt-2">— Sarah J.</div></div>
+    <div class="card-3d bg-black/40 border border-purple-500/10 rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-400 italic">"Users love interacting with 3D models. Game changer."</p><div class="text-xs text-purple-400 mt-2">— Mike R.</div></div>
+    <div class="card-3d bg-black/40 border border-cyan-500/10 rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-400 italic">"60fps 3D on mobile. Unbelievable performance."</p><div class="text-xs text-cyan-400 mt-2">— Emily D.</div></div>
+  </div>
+</section>
+
+<footer class="py-8 text-center text-sm text-gray-600">© 2026 3D Immersive Template</footer>
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}))
+// Mouse-tracking 3D tilt
+document.querySelectorAll('.card-3d').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-0.5;
+    const y=(e.clientY-r.top)/r.height-0.5;
+    card.style.transform=`rotateY(${x*10}deg) rotateX(${-y*10}deg) translateZ(10px)`;
+  });
+  card.addEventListener('mouseleave',()=>{card.style.transform=''});
+});
+</script>
+</body>
+</html>

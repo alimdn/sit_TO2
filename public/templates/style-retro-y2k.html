@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Retro Y2K — 90s & 2000s Nostalgia</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Space Grotesk',system-ui,sans-serif}
+body{background:#0d0d1a;color:#fff;overflow-x:hidden}
+.mono{font-family:'JetBrains Mono',monospace}
+.y2k-gradient{background:linear-gradient(135deg,#ff00ff 0%,#00ffff 50%,#ffff00 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.y2k-border{border:2px solid #ff00ff;box-shadow:0 0 15px rgba(255,0,255,0.4),0 0 30px rgba(0,255,255,0.2)}
+.y2k-card{background:rgba(255,255,255,0.05);border:2px solid rgba(255,0,255,0.3);box-shadow:0 0 20px rgba(255,0,255,0.15);backdrop-filter:blur(10px)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes rainbow{0%{color:#ff00ff}25%{color:#00ffff}50%{color:#ffff00}75%{color:#00ff00}100%{color:#ff00ff}}
+.animate-fade-in{animation:fadeIn .5s}
+.animate-blink{animation:blink 1s infinite}
+.animate-rainbow{animation:rainbow 3s infinite}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:16px 24px;border-radius:0;border:2px solid #00ffff;background:#0d0d1a;color:#00ffff;font-family:'JetBrains Mono',monospace;animation:fadeIn .3s}
+</style>
+</head>
+<body class="min-h-screen" style="background-image:radial-gradient(circle at 20% 80%,rgba(255,0,255,0.1),transparent 50%),radial-gradient(circle at 80% 20%,rgba(0,255,255,0.1),transparent 50%);">
+<div id="toast-container"></div>
+
+<!-- Nav -->
+<nav class="sticky top-0 z-50 bg-black/60 backdrop-blur-md border-b-2 border-fuchsia-500/30">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+    <div class="flex items-center gap-2"><div class="w-9 h-9 y2k-border flex items-center justify-center" style="border-color:#00ffff;box-shadow:0 0 10px rgba(0,255,255,0.4)"><span class="text-cyan-400 font-bold mono">Y2K</span></div><span class="text-lg font-bold animate-rainbow">RETRO</span></div>
+    <div class="hidden md:flex gap-8 text-sm font-medium"><a href="#features" class="text-fuchsia-400 hover:text-cyan-400 transition-colors">Features</a><a href="#pricing" class="text-fuchsia-400 hover:text-cyan-400 transition-colors">Pricing</a></div>
+    <button onclick="showToast('★ WELCOME TO THE FUTURE! ★')" class="y2k-border px-5 py-2.5 text-sm font-bold text-fuchsia-400 hover:bg-fuchsia-500/10 transition-all">★ Sign Up</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="py-24 px-6 text-center relative">
+  <div class="absolute top-10 left-10 text-4xl animate-blink">✦</div>
+  <div class="absolute top-20 right-20 text-3xl animate-blink" style="animation-delay:0.5s">★</div>
+  <div class="absolute bottom-20 left-1/4 text-2xl animate-blink" style="animation-delay:1s">✧</div>
+  <div class="animate-fade-in max-w-4xl mx-auto">
+    <div class="inline-block y2k-border px-4 py-1 mb-6 mono text-xs text-cyan-400">★ EST. 1999 · Y2K SURVIVOR ★</div>
+    <h1 class="text-5xl sm:text-7xl font-bold mb-6" style="letter-spacing:-0.02em">
+      <span class="y2k-gradient">RETRO FUTURE</span><br/>
+      <span class="text-white">IS NOW</span><span class="animate-blink text-fuchsia-500">_</span>
+    </h1>
+    <p class="text-lg text-gray-400 mb-8 max-w-xl mx-auto mono">★ Phosphorescent colors. Bubble fonts. Chrome effects. ★<br/>Nostalgia meets modern web technology.</p>
+    <div class="flex gap-4 justify-center">
+      <button onclick="showToast('★ LET\'S GO RETRO! ★')" class="y2k-border px-8 py-3.5 font-bold text-fuchsia-400 hover:bg-fuchsia-500/10 transition-all">★ Enter Site</button>
+      <button class="y2k-card px-8 py-3.5 font-bold text-cyan-400 hover:bg-cyan-500/10 transition-all">★ Demo</button>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="py-20 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14"><h2 class="text-4xl font-bold y2k-gradient">★ FEATURES ★</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="y2k-card rounded-2xl overflow-hidden p-5"><img src="https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-32 object-cover rounded-lg mb-4 y2k-border"/><div class="text-3xl mb-2">🌟</div><h3 class="font-bold text-fuchsia-400 mb-1">Neon Colors</h3><p class="text-sm text-gray-400 mono">Hot pink, electric blue, lime green.</p></div>
+      <div class="y2k-card rounded-2xl overflow-hidden p-5" style="border-color:rgba(0,255,255,0.3)"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-32 object-cover rounded-lg mb-4" style="border:2px solid rgba(0,255,255,0.3)"/><div class="text-3xl mb-2">💫</div><h3 class="font-bold text-cyan-400 mb-1">Chrome Effects</h3><p class="text-sm text-gray-400 mono">Metallic shine and glow everywhere.</p></div>
+      <div class="y2k-card rounded-2xl overflow-hidden p-5" style="border-color:rgba(255,255,0,0.3)"><img src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-32 object-cover rounded-lg mb-4" style="border:2px solid rgba(255,255,0,0.3)"/><div class="text-3xl mb-2">⭐</div><h3 class="font-bold text-yellow-400 mb-1">Star Decor</h3><p class="text-sm text-gray-400 mono">Sparkles and stars throughout.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" class="py-20 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14"><h2 class="text-4xl font-bold y2k-gradient">★ PRICING ★</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="y2k-card rounded-2xl p-8"><h3 class="font-bold text-fuchsia-400 mb-1">BASIC</h3><div class="text-4xl font-bold mb-4 text-white">$29</div><ul class="space-y-2 text-sm text-gray-400 mb-6 mono"><li>★ 10 components</li><li>★ Basic neon</li></ul><button onclick="showToast('★ BASIC! ★')" class="w-full py-3 y2k-border text-fuchsia-400 font-bold text-sm">★ Choose</button></div>
+      <div class="y2k-card rounded-2xl p-8 relative" style="border-color:#ffff00;box-shadow:0 0 30px rgba(255,255,0,0.2)"><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-yellow-400 text-black text-xs px-3 py-0.5 font-bold">★ BEST ★</div><h3 class="font-bold text-yellow-400 mb-1">PRO</h3><div class="text-4xl font-bold mb-4 text-white">$79</div><ul class="space-y-2 text-sm text-gray-400 mb-6 mono"><li>★ 50 components</li><li>★ Full chrome</li><li>★ Star pack</li></ul><button onclick="showToast('★ PRO! ★')" class="w-full py-3 y2k-border text-yellow-400 font-bold text-sm" style="border-color:#ffff00">★ Choose</button></div>
+      <div class="y2k-card rounded-2xl p-8"><h3 class="font-bold text-cyan-400 mb-1">MAX</h3><div class="text-4xl font-bold mb-4 text-white">$199</div><ul class="space-y-2 text-sm text-gray-400 mb-6 mono"><li>★ Everything</li><li>★ Source code</li></ul><button onclick="showToast('★ MAX! ★')" class="w-full py-3 y2k-border text-cyan-400 font-bold text-sm">★ Choose</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section class="py-20 px-6">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="y2k-card rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3 y2k-border"/><p class="text-sm text-gray-400 mono">★ "Takes me back to the 90s. Love it!"</p></div>
+    <div class="y2k-card rounded-2xl p-7" style="border-color:rgba(0,255,255,0.3)"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3" style="border:2px solid rgba(0,255,255,0.3)"/><p class="text-sm text-gray-400 mono">★ "Neon colors are fire. 🔥"</p></div>
+    <div class="y2k-card rounded-2xl p-7" style="border-color:rgba(255,255,0,0.3)"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3" style="border:2px solid rgba(255,255,0,0.3)"/><p class="text-sm text-gray-400 mono">★ "Nostalgic but modern. Perfect combo."</p></div>
+  </div>
+</section>
+
+<footer class="py-8 text-center text-sm text-gray-600 mono">★ © 1999-2026 RETRO Y2K ★</footer>
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}))
+</script>
+</body>
+</html>

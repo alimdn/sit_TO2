@@ -23,10 +23,11 @@ export default function TemplateCard({ template }: TemplateCardProps) {
 
   return (
     <div className="group rounded-xl bg-white shadow-card overflow-hidden hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 flex flex-col">
-      <div className="relative aspect-[16/10] overflow-hidden">
+      <div className="relative aspect-[16/10] overflow-hidden bg-[#f1f4f7]">
         <img
           src={template.image}
           alt={template.title}
+          loading="lazy"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
         {template.featured && (

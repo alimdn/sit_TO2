@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, lazy, Suspense } from 'react'
 import { useAppStore } from '@/lib/store'
 import { X, AlertTriangle } from 'lucide-react'
 import Header from '@/components/Header'
@@ -11,7 +11,6 @@ import HowItWorksSection from '@/components/home/HowItWorksSection'
 import TestimonialsSection from '@/components/home/TestimonialsSection'
 import FAQSection from '@/components/home/FAQSection'
 import TemplateGrid from '@/components/templates/TemplateGrid'
-import TemplatePreview from '@/components/templates/TemplatePreview'
 import PlansPage from '@/components/plans/PlansPage'
 import ContactForm from '@/components/contact/ContactForm'
 import LoginForm from '@/components/auth/LoginForm'
@@ -31,6 +30,11 @@ import AdminPayments from '@/components/admin/AdminPayments'
 import AdminSettings from '@/components/admin/AdminSettings'
 import CheckoutPage from '@/components/checkout/CheckoutPage'
 import { Button } from '@/components/ui/button'
+
+// Lazy-load TemplatePreview — it's 948 lines and only needed when a user
+// clicks "Preview Template". Loading it eagerly adds ~50KB to the main
+// bundle and slows down the initial page render.
+const TemplatePreview = lazy(() => import('@/components/templates/TemplatePreview'))
 
 function HomePage() {
   return (
@@ -66,7 +70,9 @@ function TemplatesPage() {
         </div>
         <TemplateGrid />
       </div>
-      <TemplatePreview />
+      <Suspense fallback={<div className="fixed inset-0 z-50 bg-[#f7fafd] flex items-center justify-center"><div className="w-8 h-8 border-3 border-[#00D1FF] border-t-transparent rounded-full animate-spin" /></div>}>
+        <TemplatePreview />
+      </Suspense>
     </div>
   )
 }

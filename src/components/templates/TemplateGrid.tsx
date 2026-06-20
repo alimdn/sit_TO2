@@ -28,12 +28,11 @@ export default function TemplateGrid() {
   const [templates, setTemplates] = useState<Template[]>([])
   const [activeCategory, setActiveCategory] = useState('All')
   const [search, setSearch] = useState('')
+  const [visibleCount, setVisibleCount] = useState(12) // Start with 12, load more on scroll
 
   useEffect(() => {
     // Use cache: 'no-store' so the public Templates page always reflects
     // the latest admin changes (active/inactive toggles, edits, deletes).
-    // Without this, the browser may serve a stale cached response and
-    // newly-activated templates won't appear until a hard refresh.
     fetch('/api/templates', { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
@@ -49,6 +48,10 @@ export default function TemplateGrid() {
                        t.description.toLowerCase().includes(search.toLowerCase())
     return matchCategory && matchSearch
   })
+
+  // Only render the first `visibleCount` templates — pagination/infinite scroll
+  const visibleTemplates = filtered.slice(0, visibleCount)
+  const hasMore = filtered.length > visibleCount
 
   return (
     <div>
@@ -81,12 +84,25 @@ export default function TemplateGrid() {
       </div>
 
       {/* Grid */}
-      {filtered.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((template) => (
-            <TemplateCard key={template.id} template={template} />
-          ))}
-        </div>
+      {visibleTemplates.length > 0 ? (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {visibleTemplates.map((template) => (
+              <TemplateCard key={template.id} template={template} />
+            ))}
+          </div>
+          {hasMore && (
+            <div className="text-center mt-10">
+              <Button
+                onClick={() => setVisibleCount(prev => prev + 12)}
+                variant="outline"
+                className="border-[#000f22] text-[#000f22] hover:bg-[#000f22] hover:text-white h-11 px-8"
+              >
+                Load More ({filtered.length - visibleCount} remaining)
+              </Button>
+            </div>
+          )}
+        </>
       ) : (
         <div className="text-center py-16">
           <p className="text-[#4F5B76] text-lg">No templates found matching your criteria.</p>

@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blade &amp; Fade Barbershop — Where Style Meets Precision</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            primary: '#3b82f6',
+            secondary: '#0ea5e9',
+            accent: '#0f172a',
+            light: '#f8fafc',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.7; }
+    }
+    .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+    .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
+    .animate-slide-down { animation: slideDown 0.3s ease-out forwards; }
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+    .delay-400 { animation-delay: 0.4s; }
+    .delay-500 { animation-delay: 0.5s; }
+
+    /* Gallery placeholders */
+    .gallery-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(15,23,42,0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Service card hover lift */
+    .service-card {
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px -12px rgba(59, 130, 246, 0.15);
+    }
+
+    /* Testimonial card */
+    .testimonial-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .testimonial-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Hero pattern overlay */
+    .hero-pattern {
+      background-image: radial-gradient(circle at 1px 1px, rgba(59, 130, 246, 0.08) 1px, transparent 0);
+      background-size: 40px 40px;
+    }
+
+    /* Stat counter glow */
+    .stat-glow {
+      text-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Nav link underline */
+    .nav-link {
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #3b82f6;
+      transition: width 0.3s ease;
+      border-radius: 1px;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* Button shine effect */
+    .btn-shine {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-shine::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+    .btn-shine:hover::before {
+      left: 100%;
+    }
+
+    /* CTA gradient animation */
+    .cta-gradient {
+      background: linear-gradient(135deg, #3b82f6 0%, #0ea5e9 50%, #3b82f6 100%);
+      background-size: 200% 200%;
+      animation: gradientShift 6s ease infinite;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Mobile menu overlay */
+    .mobile-menu-overlay {
+      backdrop-filter: blur(4px);
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased text-slate-800 bg-white">
+
+  <!-- ===== HEADER ===== -->
+  <header id="header" class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-18 lg:h-20">
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/20 group-hover:shadow-primary/40 transition-shadow duration-300">
+            <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6.5 6.5L17.5 17.5" />
+              <path d="M6.5 17.5L17.5 6.5" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </div>
+          <div class="hidden sm:block">
+            <span class="text-lg font-bold text-accent tracking-tight">Blade &amp; Fade</span>
+            <span class="hidden lg:block text-xs text-slate-400 -mt-0.5 tracking-widest uppercase">Barbershop</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center gap-8">
+          <a href="#services" class="nav-link text-sm font-medium text-slate-600 hover:text-primary transition-colors duration-200">Services</a>
+          <a href="#gallery" class="nav-link text-sm font-medium text-slate-600 hover:text-primary transition-colors duration-200">Gallery</a>
+          <a href="#about" class="nav-link text-sm font-medium text-slate-600 hover:text-primary transition-colors duration-200">About</a>
+          <a href="#contact" class="nav-link text-sm font-medium text-slate-600 hover:text-primary transition-colors duration-200">Contact</a>
+          <a href="#book" class="btn-shine inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-blue-600 transition-colors duration-200 shadow-lg shadow-primary/25">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+            Book Now
+          </a>
+        </nav>
+
+        <!-- Mobile Hamburger -->
+        <button id="menu-toggle" class="md:hidden relative w-10 h-10 flex items-center justify-center rounded-lg hover:bg-slate-100 transition-colors" aria-label="Toggle menu">
+          <svg id="hamburger-icon" class="w-6 h-6 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+          <svg id="close-icon" class="w-6 h-6 text-accent hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 bg-white border-b border-slate-200 shadow-xl">
+      <div class="mobile-menu-overlay bg-white px-4 py-6 space-y-1">
+        <a href="#services" class="mobile-link block px-4 py-3 text-sm font-medium text-slate-700 hover:text-primary hover:bg-blue-50 rounded-lg transition-all duration-200">Services</a>
+        <a href="#gallery" class="mobile-link block px-4 py-3 text-sm font-medium text-slate-700 hover:text-primary hover:bg-blue-50 rounded-lg transition-all duration-200">Gallery</a>
+        <a href="#about" class="mobile-link block px-4 py-3 text-sm font-medium text-slate-700 hover:text-primary hover:bg-blue-50 rounded-lg transition-all duration-200">About</a>
+        <a href="#contact" class="mobile-link block px-4 py-3 text-sm font-medium text-slate-700 hover:text-primary hover:bg-blue-50 rounded-lg transition-all duration-200">Contact</a>
+        <div class="pt-3">
+          <a href="#book" class="mobile-link flex items-center justify-center gap-2 w-full bg-primary text-white px-5 py-3 rounded-lg text-sm font-semibold hover:bg-blue-600 transition-colors duration-200">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+            Book Appointment
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+    <!-- Background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-sky-50"></div>
+    <div class="absolute inset-0 hero-pattern"></div>
+
+    <!-- Decorative blobs -->
+    <div class="absolute -top-40 -right-40 w-96 h-96 bg-primary/5 rounded-full blur-3xl" style="animation: pulse-slow 4s ease-in-out infinite;"></div>
+    <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-secondary/5 rounded-full blur-3xl" style="animation: pulse-slow 5s ease-in-out infinite 1s;"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <!-- Left Content -->
+        <div class="text-center lg:text-left">
+          <div class="animate-fade-in-up opacity-0" style="animation-fill-mode: forwards;">
+            <span class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase mb-6">
+              <span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
+              Premium Grooming Experience
+            </span>
+          </div>
+
+          <h1 class="animate-fade-in-up opacity-0 delay-100 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-accent leading-tight tracking-tight" style="animation-fill-mode: forwards;">
+            Where Style
+            <span class="relative">
+              <span class="text-primary"> Meets</span>
+              <svg class="absolute -bottom-2 left-0 w-full" viewBox="0 0 200 12" fill="none">
+                <path d="M2 8C40 2 80 2 100 6C120 10 160 4 198 8" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" opacity="0.3" />
+              </svg>
+            </span>
+            <br />Precision
+          </h1>
+
+          <p class="animate-fade-in-up opacity-0 delay-200 mt-6 text-lg sm:text-xl text-slate-500 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+            Experience the art of grooming at its finest. Our expert barbers combine classic techniques with modern trends to craft your perfect look.
+          </p>
+
+          <div class="animate-fade-in-up opacity-0 delay-300 mt-8 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+            <a href="#book" class="btn-shine group inline-flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-xl text-base font-semibold hover:bg-blue-600 transition-all duration-300 shadow-xl shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+              Book Appointment
+              <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </a>
+            <a href="#services" class="inline-flex items-center gap-2 text-slate-600 hover:text-primary px-6 py-4 rounded-xl text-base font-medium transition-colors duration-200">
+              View Services
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <polyline points="19 12 12 19 5 12" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Hero Visual (CSS Art) -->
+        <div class="animate-fade-in opacity-0 delay-400 hidden lg:flex justify-center" style="animation-fill-mode: forwards;">
+          <div class="relative w-full max-w-lg">
+            <!-- Main card -->
+            <div class="relative bg-white rounded-3xl shadow-2xl p-8 border border-slate-100">
+              <!-- Scissors SVG illustration -->
+              <div class="flex justify-center mb-6">
+                <svg class="w-40 h-40 text-primary/80" viewBox="0 0 200 200" fill="none">
+                  <!-- Blade 1 -->
+                  <ellipse cx="80" cy="60" rx="25" ry="60" transform="rotate(-20 80 60)" stroke="currentColor" stroke-width="3" />
+                  <!-- Blade 2 -->
+                  <ellipse cx="120" cy="60" rx="25" ry="60" transform="rotate(20 120 60)" stroke="currentColor" stroke-width="3" />
+                  <!-- Pivot screw -->
+                  <circle cx="100" cy="80" r="8" fill="currentColor" />
+                  <circle cx="100" cy="80" r="4" fill="white" />
+                  <!-- Handle rings -->
+                  <circle cx="70" cy="150" r="18" stroke="currentColor" stroke-width="3" />
+                  <circle cx="130" cy="150" r="18" stroke="currentColor" stroke-width="3" />
+                </svg>
+              </div>
+              <!-- Rating stars -->
+              <div class="flex items-center justify-center gap-1 mb-2">
+                <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <span class="ml-2 text-sm font-semibold text-slate-700">5.0</span>
+                <span class="text-sm text-slate-400">(200+ reviews)</span>
+              </div>
+            </div>
+
+            <!-- Floating badge 1 -->
+            <div class="absolute -top-4 -right-4 bg-accent text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-lg">
+              ⭐ Top Rated
+            </div>
+            <!-- Floating badge 2 -->
+            <div class="absolute -bottom-4 -left-4 bg-white text-accent px-4 py-2 rounded-xl text-sm font-semibold shadow-lg border border-slate-100">
+              🏆 Since 2009
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Bar -->
+      <div class="animate-fade-in-up opacity-0 delay-500 mt-16 lg:mt-24" style="animation-fill-mode: forwards;">
+        <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-slate-100 p-6 sm:p-8">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
+            <!-- Stat 1 -->
+            <div class="flex items-center gap-4 justify-center sm:justify-start">
+              <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
+                <svg class="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-2xl sm:text-3xl font-extrabold text-accent stat-glow">15+</p>
+                <p class="text-sm text-slate-500 font-medium">Years Experience</p>
+              </div>
+            </div>
+            <!-- Divider -->
+            <div class="hidden sm:block border-l border-slate-200 self-stretch"></div>
+            <!-- Stat 2 -->
+            <div class="flex items-center gap-4 justify-center sm:justify-start">
+              <div class="w-12 h-12 bg-sky-50 rounded-xl flex items-center justify-center shrink-0">
+                <svg class="w-6 h-6 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-2xl sm:text-3xl font-extrabold text-accent stat-glow">5,000+</p>
+                <p class="text-sm text-slate-500 font-medium">Happy Clients</p>
+              </div>
+            </div>
+            <!-- Divider -->
+            <div class="hidden sm:block border-l border-slate-200 self-stretch"></div>
+            <!-- Stat 3 -->
+            <div class="flex items-center gap-4 justify-center sm:justify-start">
+              <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
+                <svg class="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-2xl sm:text-3xl font-extrabold text-accent stat-glow">8</p>
+                <p class="text-sm text-slate-500 font-medium">Expert Barbers</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+      <svg class="w-6 h-6 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9" />
+      </svg>
+    </div>
+  </section>
+
+  <!-- ===== SERVICES SECTION ===== -->
+  <section id="services" class="py-20 lg:py-28 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section Header -->
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase mb-4">
+          <span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
+          Our Services
+        </span>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-accent tracking-tight">
+          What We <span class="text-primary">Offer</span>
+        </h2>
+        <p class="mt-4 text-slate-500 text-lg leading-relaxed">
+          From classic cuts to full grooming packages, we provide everything you need to look and feel your best.
+        </p>
+      </div>
+
+      <!-- Service Cards Grid -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+
+        <!-- Service 1: Classic Haircut -->
+        <div class="service-card bg-white rounded-2xl border border-slate-100 p-6 lg:p-8 hover:border-primary/20 group">
+          <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-primary/10 transition-colors duration-300">
+            <svg class="w-7 h-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="6" cy="6" r="3" />
+              <circle cx="6" cy="18" r="3" />
+              <line x1="20" y1="4" x2="8.12" y2="15.88" />
+              <line x1="14.47" y1="14.48" x2="20" y2="20" />
+              <line x1="8.12" y1="8.12" x2="12" y2="12" />
+            </svg>
+          </div>
+          <div class="flex items-start justify-between mb-3">
+            <h3 class="text-xl font-bold text-accent">Classic Haircut</h3>
+            <span class="text-xl font-extrabold text-primary">$30</span>
+          </div>
+          <p class="text-slate-500 text-sm leading-relaxed">A timeless cut tailored to your face shape and style preferences. Includes wash, cut, and styling.</p>
+        </div>
+
+        <!-- Service 2: Beard Trim -->
+        <div class="service-card bg-white rounded-2xl border border-slate-100 p-6 lg:p-8 hover:border-primary/20 group">
+          <div class="w-14 h-14 bg-sky-50 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-secondary/10 transition-colors duration-300">
+            <svg class="w-7 h-7 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" />
+            </svg>
+          </div>
+          <div class="flex items-start justify-between mb-3">
+            <h3 class="text-xl font-bold text-accent">Beard Trim</h3>
+            <span class="text-xl font-extrabold text-primary">$15</span>
+          </div>
+          <p class="text-slate-500 text-sm leading-relaxed">Keep your beard looking sharp and well-maintained with expert shaping and trimming services.</p>
+        </div>
+
+        <!-- Service 3: Hot Towel Shave -->
+        <div class="service-card bg-white rounded-2xl border border-slate-100 p-6 lg:p-8 hover:border-primary/20 group">
+          <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-primary/10 transition-colors duration-300">
+            <svg class="w-7 h-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+              <path d="M12 6v6l4 2" />
+            </svg>
+          </div>
+          <div class="flex items-start justify-between mb-3">
+            <h3 class="text-xl font-bold text-accent">Hot Towel Shave</h3>
+            <span class="text-xl font-extrabold text-primary">$25</span>
+          </div>
+          <p class="text-slate-500 text-sm leading-relaxed">A luxurious straight razor shave with hot towel preparation for the smoothest, most comfortable finish.</p>
+        </div>
+
+        <!-- Service 4: Kids Cut -->
+        <div class="service-card bg-white rounded-2xl border border-slate-100 p-6 lg:p-8 hover:border-primary/20 group">
+          <div class="w-14 h-14 bg-sky-50 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-secondary/10 transition-colors duration-300">
+            <svg class="w-7 h-7 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+              <path d="M8 3l-2 2" />
+              <path d="M16 3l2 2" />
+            </svg>
+          </div>
+          <div class="flex items-start justify-between mb-3">
+            <h3 class="text-xl font-bold text-accent">Kids Cut</h3>
+            <span class="text-xl font-extrabold text-primary">$20</span>
+          </div>
+          <p class="text-slate-500 text-sm leading-relaxed">A fun and gentle haircut experience for children. Our barbers are patient and skilled with young clients.</p>
+        </div>
+
+        <!-- Service 5: Hair Coloring -->
+        <div class="service-card bg-white rounded-2xl border border-slate-100 p-6 lg:p-8 hover:border-primary/20 group">
+          <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-primary/10 transition-colors duration-300">
+            <svg class="w-7 h-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+            </svg>
+          </div>
+          <div class="flex items-start justify-between mb-3">
+            <h3 class="text-xl font-bold text-accent">Hair Coloring</h3>
+            <span class="text-xl font-extrabold text-primary">$50</span>
+          </div>
+          <p class="text-slate-500 text-sm leading-relaxed">Expert color services from subtle highlights to bold new looks. Premium products for vibrant results.</p>
+        </div>
+
+        <!-- Service 6: Full Grooming Package -->
+        <div class="service-card bg-gradient-to-br from-accent to-slate-800 rounded-2xl p-6 lg:p-8 group relative overflow-hidden">
+          <div class="absolute top-4 right-4 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">POPULAR</div>
+          <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mb-5 backdrop-blur-sm">
+            <svg class="w-7 h-7 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+            </svg>
+          </div>
+          <div class="flex items-start justify-between mb-3">
+            <h3 class="text-xl font-bold text-white">Full Grooming Package</h3>
+            <span class="text-xl font-extrabold text-sky-300">$75</span>
+          </div>
+          <p class="text-slate-300 text-sm leading-relaxed">The ultimate grooming experience — haircut, beard trim, hot towel shave, and facial treatment all in one.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GALLERY SECTION ===== -->
+  <section id="gallery" class="py-20 lg:py-28 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section Header -->
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase mb-4">
+          <span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
+          Our Work
+        </span>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-accent tracking-tight">
+          Style <span class="text-primary">Gallery</span>
+        </h2>
+        <p class="mt-4 text-slate-500 text-lg leading-relaxed">
+          Browse our latest cuts and styles. Every look is crafted with care and precision.
+        </p>
+      </div>
+
+      <!-- Gallery Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
+
+        <!-- Gallery Item 1 -->
+        <div class="gallery-item relative group rounded-2xl overflow-hidden aspect-[4/3] cursor-pointer">
+          <div class="absolute inset-0 bg-gradient-to-br from-slate-800 via-slate-700 to-accent"></div>
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-white p-6">
+            <svg class="w-16 h-16 text-white/20 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <span class="text-lg font-bold">Classic Fade</span>
+            <span class="text-sm text-white/60 mt-1">Clean lines, timeless appeal</span>
+          </div>
+          <div class="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors duration-300 flex items-end">
+            <div class="w-full bg-gradient-to-t from-black/60 to-transparent p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+              <p class="text-white text-sm font-medium">Classic taper fade with textured top</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gallery Item 2 -->
+        <div class="gallery-item relative group rounded-2xl overflow-hidden aspect-[4/3] cursor-pointer">
+          <div class="absolute inset-0 bg-gradient-to-br from-blue-600 via-primary to-sky-400"></div>
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-white p-6">
+            <svg class="w-16 h-16 text-white/20 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <span class="text-lg font-bold">Modern Pompadour</span>
+            <span class="text-sm text-white/60 mt-1">Bold volume, sharp edges</span>
+          </div>
+          <div class="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors duration-300 flex items-end">
+            <div class="w-full bg-gradient-to-t from-black/60 to-transparent p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+              <p class="text-white text-sm font-medium">Sleek pompadour with skin fade</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gallery Item 3 -->
+        <div class="gallery-item relative group rounded-2xl overflow-hidden aspect-[4/3] cursor-pointer">
+          <div class="absolute inset-0 bg-gradient-to-br from-slate-600 via-slate-500 to-slate-800"></div>
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-white p-6">
+            <svg class="w-16 h-16 text-white/20 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <span class="text-lg font-bold">Beard Sculpting</span>
+            <span class="text-sm text-white/60 mt-1">Defined, expertly shaped</span>
+          </div>
+          <div class="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors duration-300 flex items-end">
+            <div class="w-full bg-gradient-to-t from-black/60 to-transparent p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+              <p class="text-white text-sm font-medium">Precision beard shaping and line-up</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gallery Item 4 -->
+        <div class="gallery-item relative group rounded-2xl overflow-hidden aspect-[4/3] cursor-pointer">
+          <div class="absolute inset-0 bg-gradient-to-br from-accent via-slate-800 to-blue-900"></div>
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-white p-6">
+            <svg class="w-16 h-16 text-white/20 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <span class="text-lg font-bold">Textured Crop</span>
+            <span class="text-sm text-white/60 mt-1">Effortlessly cool</span>
+          </div>
+          <div class="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors duration-300 flex items-end">
+            <div class="w-full bg-gradient-to-t from-black/60 to-transparent p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+              <p class="text-white text-sm font-medium">French crop with natural texture and fringe</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT SECTION ===== -->
+  <section id="about" class="py-20 lg:py-28 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+
+        <!-- Left: About Text -->
+        <div>
+          <span class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase mb-4">
+            <span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
+            About Us
+          </span>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-accent tracking-tight leading-tight">
+            A Legacy of <br/><span class="text-primary">Craftsmanship</span>
+          </h2>
+          <p class="mt-6 text-slate-500 text-lg leading-relaxed">
+            Founded in 2009, Blade &amp; Fade Barbershop has grown from a single chair in a small shop to one of the city's most trusted grooming destinations. Our philosophy is simple: every client deserves a personalized experience and a cut that reflects their unique personality.
+          </p>
+          <p class="mt-4 text-slate-500 leading-relaxed">
+            Our team of eight expert barbers brings decades of combined experience, continuous training in the latest techniques, and an unwavering commitment to quality. We believe that a great haircut isn't just about the final look — it's about the entire experience from the moment you walk through our doors.
+          </p>
+
+          <!-- Values -->
+          <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-accent">Premium Products</h4>
+                <p class="text-xs text-slate-400 mt-0.5">Only the finest grooming brands</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-accent">Hygiene First</h4>
+                <p class="text-xs text-slate-400 mt-0.5">Sanitized tools &amp; clean environment</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-accent">Walk-ins Welcome</h4>
+                <p class="text-xs text-slate-400 mt-0.5">No appointment needed</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                <svg class="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-accent">Satisfaction Guaranteed</h4>
+                <p class="text-xs text-slate-400 mt-0.5">Free touch-ups within 48 hours</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Opening Hours -->
+        <div>
+          <div class="bg-slate-50 rounded-2xl p-6 lg:p-8 border border-slate-100">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-bold text-accent">Opening Hours</h3>
+            </div>
+
+            <div class="space-y-0">
+              <!-- Monday -->
+              <div class="flex items-center justify-between py-4 border-b border-slate-200/60">
+                <span class="text-sm font-semibold text-slate-700">Monday</span>
+                <span class="text-sm font-medium text-primary">9:00 AM – 8:00 PM</span>
+              </div>
+              <!-- Tuesday -->
+              <div class="flex items-center justify-between py-4 border-b border-slate-200/60">
+                <span class="text-sm font-semibold text-slate-700">Tuesday</span>
+                <span class="text-sm font-medium text-primary">9:00 AM – 8:00 PM</span>
+              </div>
+              <!-- Wednesday -->
+              <div class="flex items-center justify-between py-4 border-b border-slate-200/60">
+                <span class="text-sm font-semibold text-slate-700">Wednesday</span>
+                <span class="text-sm font-medium text-primary">9:00 AM – 8:00 PM</span>
+              </div>
+              <!-- Thursday -->
+              <div class="flex items-center justify-between py-4 border-b border-slate-200/60">
+                <span class="text-sm font-semibold text-slate-700">Thursday</span>
+                <span class="text-sm font-medium text-primary">9:00 AM – 8:00 PM</span>
+              </div>
+              <!-- Friday -->
+              <div class="flex items-center justify-between py-4 border-b border-slate-200/60">
+                <span class="text-sm font-semibold text-slate-700">Friday</span>
+                <span class="text-sm font-medium text-primary">9:00 AM – 8:00 PM</span>
+              </div>
+              <!-- Saturday -->
+              <div class="flex items-center justify-between py-4 border-b border-slate-200/60">
+                <span class="text-sm font-semibold text-slate-700">Saturday</span>
+                <span class="text-sm font-medium text-sky-500">9:00 AM – 6:00 PM</span>
+              </div>
+              <!-- Sunday -->
+              <div class="flex items-center justify-between py-4">
+                <span class="text-sm font-semibold text-slate-700">Sunday</span>
+                <span class="text-sm font-semibold text-red-400 flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 bg-red-400 rounded-full"></span>
+                  Closed
+                </span>
+              </div>
+            </div>
+
+            <div class="mt-6 bg-accent rounded-xl p-4 flex items-center gap-3">
+              <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+              <p class="text-sm text-slate-300">Walk-ins welcome, appointments recommended</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TESTIMONIALS SECTION ===== -->
+  <section class="py-20 lg:py-28 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section Header -->
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase mb-4">
+          <span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
+          Testimonials
+        </span>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-accent tracking-tight">
+          What Our Clients <span class="text-primary">Say</span>
+        </h2>
+        <p class="mt-4 text-slate-500 text-lg leading-relaxed">
+          Don't just take our word for it — hear from the thousands of clients who trust us with their look.
+        </p>
+      </div>
+
+      <!-- Testimonial Cards -->
+      <div class="grid md:grid-cols-3 gap-6 lg:gap-8">
+
+        <!-- Testimonial 1 -->
+        <div class="testimonial-card bg-white rounded-2xl p-6 lg:p-8 border border-slate-100 shadow-sm">
+          <!-- Stars -->
+          <div class="flex items-center gap-1 mb-4">
+            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <!-- Quote -->
+          <blockquote class="text-slate-600 leading-relaxed mb-6">
+            "Best barbershop in the city, hands down. The attention to detail is incredible — every fade is perfectly clean. I've been coming here for three years and wouldn't go anywhere else."
+          </blockquote>
+          <!-- Author -->
+          <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
+            <div class="w-11 h-11 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-sm">
+              MR
+            </div>
+            <div>
+              <p class="text-sm font-bold text-accent">Marcus Reynolds</p>
+              <p class="text-xs text-slate-400">Regular Client · 3 Years</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 2 -->
+        <div class="testimonial-card bg-white rounded-2xl p-6 lg:p-8 border border-slate-100 shadow-sm">
+          <!-- Stars -->
+          <div class="flex items-center gap-1 mb-4">
+            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <!-- Quote -->
+          <blockquote class="text-slate-600 leading-relaxed mb-6">
+            "Took my son for his first haircut here and the barbers were so patient and friendly. Now it's our regular spot. The atmosphere is great and they always make you feel welcome."
+          </blockquote>
+          <!-- Author -->
+          <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
+            <div class="w-11 h-11 rounded-full bg-gradient-to-br from-accent to-slate-700 flex items-center justify-center text-white font-bold text-sm">
+              DJ
+            </div>
+            <div>
+              <p class="text-sm font-bold text-accent">David Johnson</p>
+              <p class="text-xs text-slate-400">Family Client · 2 Years</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div class="testimonial-card bg-white rounded-2xl p-6 lg:p-8 border border-slate-100 shadow-sm">
+          <!-- Stars -->
+          <div class="flex items-center gap-1 mb-4">
+            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <!-- Quote -->
+          <blockquote class="text-slate-600 leading-relaxed mb-6">
+            "The hot towel shave experience is absolutely next level. It's like a spa treatment for men. Clean, professional environment with skilled barbers who truly know their craft."
+          </blockquote>
+          <!-- Author -->
+          <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
+            <div class="w-11 h-11 rounded-full bg-gradient-to-br from-secondary to-primary flex items-center justify-center text-white font-bold text-sm">
+              JW
+            </div>
+            <div>
+              <p class="text-sm font-bold text-accent">James Williams</p>
+              <p class="text-xs text-slate-400">VIP Client · 5 Years</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT / CTA SECTION ===== -->
+  <section id="contact" class="relative py-20 lg:py-28 overflow-hidden">
+    <!-- Background -->
+    <div class="absolute inset-0 cta-gradient"></div>
+    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 30px 30px;"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
+          Ready for a Fresh Look?
+        </h2>
+        <p class="mt-4 text-blue-100 text-lg max-w-xl mx-auto">
+          Book your appointment today and experience the Blade &amp; Fade difference.
+        </p>
+      </div>
+
+      <!-- Contact Info Cards -->
+      <div class="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
+        <!-- Phone -->
+        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/10 hover:bg-white/20 transition-all duration-300">
+          <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <svg class="w-7 h-7 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+          </div>
+          <h3 class="text-white font-bold text-sm uppercase tracking-wider mb-1">Phone</h3>
+          <p class="text-blue-100 text-sm">(555) 123-4567</p>
+        </div>
+
+        <!-- Email -->
+        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/10 hover:bg-white/20 transition-all duration-300">
+          <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <svg class="w-7 h-7 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+              <polyline points="22,6 12,13 2,6" />
+            </svg>
+          </div>
+          <h3 class="text-white font-bold text-sm uppercase tracking-wider mb-1">Email</h3>
+          <p class="text-blue-100 text-sm">hello@bladeandfade.com</p>
+        </div>
+
+        <!-- Address -->
+        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/10 hover:bg-white/20 transition-all duration-300">
+          <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <svg class="w-7 h-7 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+          </div>
+          <h3 class="text-white font-bold text-sm uppercase tracking-wider mb-1">Location</h3>
+          <p class="text-blue-100 text-sm">123 Main Street, Suite 4<br/>New York, NY 10001</p>
+        </div>
+      </div>
+
+      <!-- Book Now Button -->
+      <div class="text-center" id="book">
+        <a href="tel:5551234567" class="btn-shine inline-flex items-center gap-3 bg-white text-primary px-10 py-4 rounded-xl text-lg font-bold hover:bg-blue-50 transition-all duration-300 shadow-2xl hover:-translate-y-1">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+          Book Your Appointment
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </a>
+        <p class="mt-4 text-blue-200/70 text-sm">Or call us directly to schedule your visit</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="bg-accent text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
+
+        <!-- Column 1: Brand -->
+        <div class="lg:col-span-1">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6.5 6.5L17.5 17.5" />
+                <path d="M6.5 17.5L17.5 6.5" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </div>
+            <div>
+              <span class="text-lg font-bold tracking-tight">Blade &amp; Fade</span>
+              <span class="block text-xs text-slate-400 -mt-0.5 tracking-widest uppercase">Barbershop</span>
+            </div>
+          </div>
+          <p class="text-sm text-slate-400 leading-relaxed mb-6">
+            Premium grooming experience since 2009. Where every cut tells a story and every client leaves looking their absolute best.
+          </p>
+          <!-- Social Media -->
+          <div class="flex items-center gap-3">
+            <a href="#" class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-primary transition-colors duration-200" aria-label="Facebook">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="#" class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-primary transition-colors duration-200" aria-label="Instagram">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+            </a>
+            <a href="#" class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-primary transition-colors duration-200" aria-label="Twitter/X">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="#" class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-primary transition-colors duration-200" aria-label="YouTube">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.13C5.12 19.56 12 19.56 12 19.56s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
+                <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Column 2: Quick Links -->
+        <div>
+          <h3 class="text-sm font-bold uppercase tracking-wider text-white mb-5">Quick Links</h3>
+          <ul class="space-y-3">
+            <li><a href="#services" class="text-sm text-slate-400 hover:text-primary transition-colors duration-200 flex items-center gap-2">
+              <svg class="w-3 h-3 text-primary/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="9 18 15 12 9 6" /></svg>
+              Our Services
+            </a></li>
+            <li><a href="#gallery" class="text-sm text-slate-400 hover:text-primary transition-colors duration-200 flex items-center gap-2">
+              <svg class="w-3 h-3 text-primary/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="9 18 15 12 9 6" /></svg>
+              Gallery
+            </a></li>
+            <li><a href="#about" class="text-sm text-slate-400 hover:text-primary transition-colors duration-200 flex items-center gap-2">
+              <svg class="w-3 h-3 text-primary/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="9 18 15 12 9 6" /></svg>
+              About Us
+            </a></li>
+            <li><a href="#contact" class="text-sm text-slate-400 hover:text-primary transition-colors duration-200 flex items-center gap-2">
+              <svg class="w-3 h-3 text-primary/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="9 18 15 12 9 6" /></svg>
+              Contact
+            </a></li>
+            <li><a href="#book" class="text-sm text-slate-400 hover:text-primary transition-colors duration-200 flex items-center gap-2">
+              <svg class="w-3 h-3 text-primary/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="9 18 15 12 9 6" /></svg>
+              Book Appointment
+            </a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Services -->
+        <div>
+          <h3 class="text-sm font-bold uppercase tracking-wider text-white mb-5">Services</h3>
+          <ul class="space-y-3">
+            <li><a href="#services" class="text-sm text-slate-400 hover:text-primary transition-colors duration-200 flex items-center gap-2">
+              <svg class="w-3 h-3 text-primary/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="9 18 15 12 9 6" /></svg>
+              Classic Haircut
+            </a></li>
+            <li><a href="#services" class="text-sm text-slate-400 hover:text-primary transition-colors duration-200 flex items-center gap-2">
+              <svg class="w-3 h-3 text-primary/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="9 18 15 12 9 6" /></svg>
+              Beard Trim
+            </a></li>
+            <li><a href="#services" class="text-sm text-slate-400 hover:text-primary transition-colors duration-200 flex items-center gap-2">
+              <svg class="w-3 h-3 text-primary/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="9 18 15 12 9 6" /></svg>
+              Hot Towel Shave
+            </a></li>
+            <li><a href="#services" class="text-sm text-slate-400 hover:text-primary transition-colors duration-200 flex items-center gap-2">
+              <svg class="w-3 h-3 text-primary/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="9 18 15 12 9 6" /></svg>
+              Hair Coloring
+            </a></li>
+            <li><a href="#services" class="text-sm text-slate-400 hover:text-primary transition-colors duration-200 flex items-center gap-2">
+              <svg class="w-3 h-3 text-primary/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="9 18 15 12 9 6" /></svg>
+              Full Grooming Package
+            </a></li>
+          </ul>
+        </div>
+
+        <!-- Column 4: Contact Info -->
+        <div>
+          <h3 class="text-sm font-bold uppercase tracking-wider text-white mb-5">Contact Info</h3>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-primary shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              <span class="text-sm text-slate-400">123 Main Street, Suite 4<br/>New York, NY 10001</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+              <span class="text-sm text-slate-400">(555) 123-4567</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
+              <span class="text-sm text-slate-400">hello@bladeandfade.com</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="border-t border-white/10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-slate-500">&copy; 2024 Blade &amp; Fade Barbershop. All rights reserved.</p>
+        <div class="flex items-center gap-6">
+          <a href="#" class="text-xs text-slate-500 hover:text-primary transition-colors duration-200">Privacy Policy</a>
+          <a href="#" class="text-xs text-slate-500 hover:text-primary transition-colors duration-200">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== MOBILE MENU SCRIPT (Vanilla JS only) ===== -->
+  <script>
+    (function () {
+      const toggle = document.getElementById('menu-toggle');
+      const menu = document.getElementById('mobile-menu');
+      const hamburger = document.getElementById('hamburger-icon');
+      const close = document.getElementById('close-icon');
+      const mobileLinks = document.querySelectorAll('.mobile-link');
+
+      let isOpen = false;
+
+      function toggleMenu() {
+        isOpen = !isOpen;
+        menu.classList.toggle('hidden', !isOpen);
+        hamburger.classList.toggle('hidden', isOpen);
+        close.classList.toggle('hidden', !isOpen);
+        if (isOpen) {
+          menu.style.animation = 'slideDown 0.3s ease-out forwards';
+        }
+      }
+
+      toggle.addEventListener('click', toggleMenu);
+
+      mobileLinks.forEach(function (link) {
+        link.addEventListener('click', function () {
+          if (isOpen) toggleMenu();
+        });
+      });
+
+      // Close menu on click outside
+      document.addEventListener('click', function (e) {
+        if (isOpen && !menu.contains(e.target) && !toggle.contains(e.target)) {
+          toggleMenu();
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>

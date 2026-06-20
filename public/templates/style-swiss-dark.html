@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Swiss Dark — International Style</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Inter',system-ui,sans-serif}
+body{background:#0c0c0c;color:#e5e5e5;overflow-x:hidden}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.animate-fade-in{animation:fadeIn .5s ease-out}
+.grid-lines{background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:80px 80px}
+.card-hover{transition:all .3s}
+.card-hover:hover{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.02)}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:14px 20px;border-radius:0;background:#1a1a1a;border:1px solid #333;color:#fff;font-size:14px;animation:fadeIn .3s}
+</style>
+</head>
+<body class="min-h-screen grid-lines">
+<div id="toast-container"></div>
+<nav class="fixed top-0 left-0 right-0 z-50 bg-[#0c0c0c]/90 backdrop-blur-md border-b border-white/5">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-14">
+    <span class="text-sm font-bold tracking-tight">SWISS/01</span>
+    <div class="hidden md:flex gap-10 text-xs text-gray-500 uppercase tracking-widest"><a href="#features" class="hover:text-white">System</a><a href="#pricing" class="hover:text-white">Pricing</a><a href="#reviews" class="hover:text-white">Reviews</a></div>
+    <button onclick="showToast('System initialized.')" class="text-xs font-semibold uppercase tracking-widest border border-white/20 px-4 py-2 hover:bg-white/5 transition-all">Contact</button>
+  </div>
+</nav>
+<section class="pt-32 pb-20 px-6">
+  <div class="max-w-7xl mx-auto animate-fade-in">
+    <div class="text-xs text-gray-600 uppercase tracking-widest mb-4">01 — DESIGN SYSTEM</div>
+    <h1 class="text-5xl sm:text-7xl lg:text-8xl font-bold leading-none tracking-tight mb-6" style="letter-spacing:-0.04em">Precision.<br/><span class="text-gray-600">Structure.</span><br/>Clarity.</h1>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 pt-8 border-t border-white/5">
+      <div><div class="text-3xl font-bold mb-1">200+</div><div class="text-xs text-gray-500 uppercase tracking-wider">Projects</div></div>
+      <div><div class="text-3xl font-bold mb-1">15yr</div><div class="text-xs text-gray-500 uppercase tracking-wider">Experience</div></div>
+      <div><div class="text-3xl font-bold mb-1">99%</div><div class="text-xs text-gray-500 uppercase tracking-wider">Precision</div></div>
+    </div>
+  </div>
+</section>
+<section id="features" class="py-20 px-6 border-t border-white/5">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-xs text-gray-600 uppercase tracking-widest mb-8">02 — FEATURES</div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5">
+      <div class="card-hover bg-[#0c0c0c] p-10"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-28 object-cover mb-6 opacity-80"/><div class="text-xs text-gray-600 uppercase tracking-wider mb-3">01</div><h3 class="text-xl font-bold mb-2">Grid System</h3><p class="text-sm text-gray-500">Mathematical precision in every layout decision.</p></div>
+      <div class="card-hover bg-[#0c0c0c] p-10"><img src="https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-28 object-cover mb-6 opacity-80"/><div class="text-xs text-gray-600 uppercase tracking-wider mb-3">02</div><h3 class="text-xl font-bold mb-2">Typography</h3><p class="text-sm text-gray-500">Helvetica-inspired hierarchy. Clean. Authoritative.</p></div>
+      <div class="card-hover bg-[#0c0c0c] p-10"><img src="https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-28 object-cover mb-6 opacity-80"/><div class="text-xs text-gray-600 uppercase tracking-wider mb-3">03</div><h3 class="text-xl font-bold mb-2">Whitespace</h3><p class="text-sm text-gray-500">Generous spacing guides focus and creates authority.</p></div>
+    </div>
+  </div>
+</section>
+<section id="pricing" class="py-20 px-6 border-t border-white/5">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-xs text-gray-600 uppercase tracking-widest mb-8">03 — PRICING</div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-hover border border-white/10 p-8"><div class="text-xs text-gray-600 uppercase tracking-widest mb-4">Basic</div><div class="text-4xl font-bold mb-6">$29</div><ul class="space-y-2 text-sm text-gray-500 mb-8"><li>— 5 layouts</li><li>— Grid system</li></ul><button onclick="showToast('Basic.')" class="text-xs font-semibold uppercase tracking-widest border-b border-white/30 pb-1 hover:border-white transition-all">Choose →</button></div>
+      <div class="card-hover border border-white p-8"><div class="text-xs uppercase tracking-widest mb-4">Pro</div><div class="text-4xl font-bold mb-6">$79</div><ul class="space-y-2 text-sm text-gray-400 mb-8"><li>— 20 layouts</li><li>— Custom grid</li><li>— Priority</li></ul><button onclick="showToast('Pro.')" class="text-xs font-semibold uppercase tracking-widest border-b border-white pb-1">Choose →</button></div>
+      <div class="card-hover border border-white/10 p-8"><div class="text-xs text-gray-600 uppercase tracking-widest mb-4">Enterprise</div><div class="text-4xl font-bold mb-6">$199</div><ul class="space-y-2 text-sm text-gray-500 mb-8"><li>— Unlimited</li><li>— Source</li></ul><button onclick="showToast('Enterprise.')" class="text-xs font-semibold uppercase tracking-widest border-b border-white/30 pb-1 hover:border-white transition-all">Choose →</button></div>
+    </div>
+  </div>
+</section>
+<section id="reviews" class="py-20 px-6 border-t border-white/5">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-xs text-gray-600 uppercase tracking-widest mb-8">04 — REVIEWS</div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-4 opacity-80"/><p class="text-lg font-light text-gray-400 mb-3">"Mathematical precision in every pixel."</p><div class="text-xs text-gray-600 uppercase tracking-widest">— Sarah J.</div></div>
+      <div><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-4 opacity-80"/><p class="text-lg font-light text-gray-400 mb-3">"Swiss design at its finest."</p><div class="text-xs text-gray-600 uppercase tracking-widest">— Mike R.</div></div>
+      <div><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-4 opacity-80"/><p class="text-lg font-light text-gray-400 mb-3">"Structure meets beauty."</p><div class="text-xs text-gray-600 uppercase tracking-widest">— Emily D.</div></div>
+    </div>
+  </div>
+</section>
+<footer class="py-8 px-6 border-t border-white/5 flex justify-between items-center"><span class="text-xs text-gray-600 uppercase tracking-widest">SWISS/01 © 2026</span><span class="text-xs text-gray-700">Precision Design System</span></footer>
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}))
+</script>
+</body>
+</html>

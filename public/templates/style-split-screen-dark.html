@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Split Screen Dark — Dual Panel</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Inter',system-ui,sans-serif}
+body{background:#080810;color:#fff;overflow-x:hidden}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.animate-fade-in{animation:fadeIn .5s ease-out}
+.card-hover{transition:all .3s}
+.card-hover:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,0.3)}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:16px 24px;border-radius:12px;background:rgba(124,92,255,0.9);color:#fff;font-weight:500;animation:fadeIn .3s}
+</style>
+</head>
+<body class="min-h-screen">
+<div id="toast-container"></div>
+<nav class="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-md">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+    <span class="text-lg font-bold">Split<span class="text-purple-400">/</span>Screen</span>
+    <div class="hidden md:flex gap-8 text-sm text-gray-400"><a href="#features" class="hover:text-white">Features</a><a href="#pricing" class="hover:text-white">Pricing</a></div>
+    <button onclick="showToast('Dual mode activated.')" class="bg-purple-500/20 border border-purple-500/30 text-purple-300 px-5 py-2.5 rounded-lg text-sm font-semibold">Start</button>
+  </div>
+</nav>
+<!-- Split Hero -->
+<section class="pt-16 flex min-h-screen">
+  <div class="w-full md:w-1/2 flex items-center justify-center p-12 bg-gradient-to-br from-[#0c0c14] to-[#1a1a2e]">
+    <div class="animate-fade-in max-w-md">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 mb-6"><span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span><span class="text-purple-400 text-xs font-medium">DUAL PANEL LAYOUT</span></div>
+      <h1 class="text-4xl sm:text-5xl font-bold mb-6" style="letter-spacing:-0.02em">Two sides.<br/><span class="text-purple-400">One story.</span></h1>
+      <p class="text-gray-400 mb-8">Split-screen design creates visual tension and balance. Perfect for dual messaging.</p>
+      <button onclick="showToast('Left side! ←')" class="bg-purple-500 hover:bg-purple-600 text-white px-7 py-3.5 font-semibold rounded-xl transition-all">Explore Left →</button>
+    </div>
+  </div>
+  <div class="hidden md:block w-1/2 relative overflow-hidden">
+    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80" alt="Visual" class="w-full h-full object-cover"/>
+    <div class="absolute inset-0 bg-gradient-to-l from-transparent to-[#080810]/50"></div>
+    <div class="absolute bottom-12 right-12 max-w-xs text-right">
+      <h2 class="text-3xl font-bold mb-3 text-white">Visual Side</h2>
+      <p class="text-sm text-gray-300">Striking imagery on one panel, content on the other.</p>
+      <button onclick="showToast('Right side! →')" class="mt-4 bg-white/10 backdrop-blur-md border border-white/20 text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-white/20">Explore Right →</button>
+    </div>
+  </div>
+</section>
+<section id="features" class="py-20 px-6 bg-[#0c0c14]">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14"><h2 class="text-3xl sm:text-4xl font-bold">Dual Features</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="card-hover bg-white/5 border border-white/10 rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=200&fit=crop&q=80" alt="" class="w-full h-40 object-cover"/><div class="p-6"><h3 class="font-bold mb-2 text-purple-300">Visual Panel</h3><p class="text-sm text-gray-400">Full-bleed imagery on one side for maximum impact.</p></div></div>
+      <div class="card-hover bg-white/5 border border-white/10 rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop&q=80" alt="" class="w-full h-40 object-cover"/><div class="p-6"><h3 class="font-bold mb-2 text-cyan-300">Content Panel</h3><p class="text-sm text-gray-400">Clean text content on the other for clear messaging.</p></div></div>
+    </div>
+  </div>
+</section>
+<section id="pricing" class="py-20 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14"><h2 class="text-3xl font-bold">Pricing</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-hover bg-white/5 border border-white/10 rounded-2xl p-8"><h3 class="font-bold mb-1">Starter</h3><div class="text-4xl font-bold mb-4">$29</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>✓ 2-panel layout</li><li>✓ Basic split</li></ul><button onclick="showToast('Starter!')" class="w-full py-3 bg-purple-500/20 border border-purple-500/30 text-purple-300 rounded-lg font-semibold text-sm">Choose</button></div>
+      <div class="card-hover bg-purple-500/10 border border-purple-500/30 rounded-2xl p-8"><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-purple-500 text-white text-xs px-3 py-0.5 rounded-full">POPULAR</div><h3 class="font-bold mb-1">Pro</h3><div class="text-4xl font-bold mb-4">$79</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>✓ Multi-panel</li><li>✓ Animations</li><li>✓ Custom splits</li></ul><button onclick="showToast('Pro!')" class="w-full py-3 bg-purple-500 text-white rounded-lg font-semibold text-sm">Choose</button></div>
+      <div class="card-hover bg-white/5 border border-white/10 rounded-2xl p-8"><h3 class="font-bold mb-1">Enterprise</h3><div class="text-4xl font-bold mb-4">$199</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>✓ Everything</li><li>✓ Source</li></ul><button onclick="showToast('Enterprise!')" class="w-full py-3 bg-purple-500/20 border border-purple-500/30 text-purple-300 rounded-lg font-semibold text-sm">Choose</button></div>
+    </div>
+  </div>
+</section>
+<section class="py-20 px-6">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="card-hover bg-white/5 border border-white/10 rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-400 italic">"The split layout doubled our conversion rate."</p></div>
+    <div class="card-hover bg-white/5 border border-white/10 rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-400 italic">"Perfect for our dual-product landing page."</p></div>
+    <div class="card-hover bg-white/5 border border-white/10 rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-400 italic">"Visual tension at its finest."</p></div>
+  </div>
+</section>
+<footer class="py-8 text-center text-sm text-gray-600">© 2026 Split Screen Dark Template</footer>
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}))
+</script>
+</body>
+</html>

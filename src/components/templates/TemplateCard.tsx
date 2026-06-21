@@ -76,13 +76,6 @@ export default function TemplateCard({ template }: TemplateCardProps) {
 
         {/* Hover overlay with action hint */}
         <div className="absolute inset-0 bg-[#000f22]/0 group-hover:bg-[#000f22]/15 transition-colors duration-500 pointer-events-none" />
-
-        {/* Quick preview icon that appears on hover */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none">
-          <div className="w-14 h-14 rounded-full bg-white/95 backdrop-blur-sm shadow-2xl flex items-center justify-center transform scale-75 group-hover:scale-100 transition-transform duration-500">
-            <Eye className="h-6 w-6 text-[#000f22]" />
-          </div>
-        </div>
       </div>
 
       {/* Content */}

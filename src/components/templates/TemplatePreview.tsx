@@ -308,6 +308,15 @@ export default function TemplatePreview() {
                   <Sparkles className="h-3 w-3 mr-1" /> Featured
                 </Badge>
               )}
+              {/* Prominent "Get This Template" CTA in top bar */}
+              <button
+                onClick={handleProceedToCheckout}
+                className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#10B981] hover:bg-[#059669] text-white text-xs font-semibold transition-colors shadow-sm"
+              >
+                <span>Get This Template</span>
+                <span className="opacity-80">·</span>
+                <span className="opacity-90">$30/month</span>
+              </button>
             </div>
           )}
         </div>
@@ -858,9 +867,9 @@ export default function TemplatePreview() {
 
                   <Button
                     onClick={handleProceedToCheckout}
-                    className="w-full bg-[#00D1FF] hover:bg-[#00b8e6] text-[#000f22] font-semibold h-11"
+                    className="w-full bg-[#10B981] hover:bg-[#059669] text-white font-semibold h-12 text-base shadow-md shadow-[#10B981]/20"
                   >
-                    Proceed to Checkout
+                    Get This Template — $30/month
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
 

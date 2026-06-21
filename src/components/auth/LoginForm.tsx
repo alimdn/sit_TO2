@@ -129,8 +129,8 @@ export default function LoginForm() {
               Demo accounts available:
             </p>
             <div className="mt-2 space-y-1 text-xs text-[#4F5B76]">
-              <p>Admin: admin@webflowsub.com / admin123</p>
-              <p>User: demo@webflowsub.com / demo123</p>
+              <p>Admin: admin@webforge.com / admin123</p>
+              <p>User: demo@webforge.com / demo123</p>
             </div>
           </div>
         </div>

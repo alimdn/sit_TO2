@@ -30,11 +30,11 @@ export async function POST(req: NextRequest) {
     })
   } catch (e) {
     // Fallback: demo login for Vercel
-    if (email === 'demo@webflowsub.com' && password === 'demo123') {
+    if (email === 'demo@webforge.com' && password === 'demo123') {
       return NextResponse.json({
         user: {
           id: 'demo-user',
-          email: 'demo@webflowsub.com',
+          email: 'demo@webforge.com',
           name: 'Demo User',
           role: 'user',
           avatar: null,
@@ -43,11 +43,11 @@ export async function POST(req: NextRequest) {
         },
       })
     }
-    if (email === 'admin@webflowsub.com' && password === 'admin123') {
+    if (email === 'admin@webforge.com' && password === 'admin123') {
       return NextResponse.json({
         user: {
           id: 'admin-user',
-          email: 'admin@webflowsub.com',
+          email: 'admin@webforge.com',
           name: 'Admin User',
           role: 'admin',
           avatar: null,

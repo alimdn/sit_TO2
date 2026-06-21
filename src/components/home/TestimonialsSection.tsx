@@ -84,7 +84,7 @@ export default function TestimonialsSection() {
             What Our Clients Say
           </h2>
           <p className="mt-4 text-[#4F5B76] max-w-2xl mx-auto">
-            Join hundreds of satisfied customers who have transformed their online presence with WebFlowSub.
+            Join hundreds of satisfied customers who have transformed their online presence with WebForge.
           </p>
         </div>
 
@@ -147,7 +147,7 @@ export default function TestimonialsSection() {
           <DialogHeader>
             <DialogTitle>Write a Review</DialogTitle>
             <DialogDescription>
-              Share your experience with WebFlowSub. Your review will be published after admin approval.
+              Share your experience with WebForge. Your review will be published after admin approval.
             </DialogDescription>
           </DialogHeader>
 
@@ -220,7 +220,7 @@ export default function TestimonialsSection() {
                 id="t-content"
                 value={form.content}
                 onChange={(e) => setForm({ ...form, content: e.target.value })}
-                placeholder="Tell us about your experience with WebFlowSub..."
+                placeholder="Tell us about your experience with WebForge..."
                 rows={5}
                 required
               />

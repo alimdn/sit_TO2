@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Check, Sparkles, ArrowRight } from 'lucide-react'
+import { Check, Sparkles, ArrowRight, Star } from 'lucide-react'
 import { useAppStore } from '@/lib/store'
 
 type BillingType = 'monthly' | 'semi_annual' | 'annual'
@@ -83,6 +83,9 @@ export default function PlansPage() {
   const { setCurrentPage, user } = useAppStore()
   const [billing, setBilling] = useState<BillingType>('monthly')
   const [plans, setPlans] = useState<Plan[]>([])
+  const [testimonials, setTestimonials] = useState<Array<{
+    id: string; name: string; role: string; content: string; rating: number
+  }>>([])
 
   useEffect(() => {
     fetch('/api/plans')
@@ -90,6 +93,16 @@ export default function PlansPage() {
       .then(data => {
         const list = Array.isArray(data) ? data.filter((p: Plan) => p.active) : []
         if (list.length > 0) setPlans(list)
+      })
+      .catch(() => {})
+
+    // Fetch real testimonials for the social proof section
+    fetch('/api/testimonials')
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setTestimonials(data.slice(0, 3))
+        }
       })
       .catch(() => {})
   }, [])
@@ -181,6 +194,9 @@ export default function PlansPage() {
             }`}>
               -17%
             </span>
+            {billing !== 'annual' && (
+              <span className="text-[9px] font-bold text-[#10B981] uppercase tracking-wide ml-1">Best Value</span>
+            )}
           </button>
         </div>
       </div>
@@ -188,6 +204,12 @@ export default function PlansPage() {
       {/* Single Pricing Card */}
       <div className="max-w-lg mx-auto mb-16">
         <div className="relative rounded-2xl bg-gradient-to-br from-[#000f22] via-[#0A2540] to-[#0A2540] p-8 text-white shadow-2xl ring-1 ring-[#00D1FF]/30 overflow-hidden">
+          {/* Best Value badge (only when annual is selected) */}
+          {billing === 'annual' && (
+            <div className="absolute -top-2 -right-2 bg-[#10B981] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-bl-xl rounded-tr-2xl shadow-lg z-10">
+              ★ Best Value
+            </div>
+          )}
           {/* Background decoration */}
           <div className="absolute top-0 right-0 w-40 h-40 bg-[#00D1FF]/5 rounded-full blur-3xl" />
           <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#10B981]/5 rounded-full blur-3xl" />
@@ -278,11 +300,35 @@ export default function PlansPage() {
         </div>
       </div>
 
+      {/* Real customer testimonials (social proof before purchase) */}
+      {testimonials.length > 0 && (
+        <div className="mb-16">
+          <h3 className="text-2xl font-bold text-[#000f22] text-center mb-2">What Our Customers Say</h3>
+          <p className="text-center text-[#4F5B76] text-sm mb-8">Real feedback from real subscribers</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {testimonials.map((t) => (
+              <div key={t.id} className="p-6 rounded-xl bg-white shadow-card">
+                <div className="flex gap-1 mb-3">
+                  {Array.from({ length: t.rating || 5 }).map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-[#F59E0B] text-[#F59E0B]" />
+                  ))}
+                </div>
+                <p className="text-sm text-[#43474d] leading-relaxed mb-4 italic">"{t.content}"</p>
+                <div className="pt-3 border-t border-[#e6ebf1]">
+                  <div className="font-semibold text-[#000f22] text-sm">{t.name}</div>
+                  <div className="text-xs text-[#4F5B76]">{t.role}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Bottom CTA */}
       <div className="rounded-2xl bg-gradient-to-r from-[#000f22] to-[#0A2540] p-8 sm:p-12 text-center">
         <h3 className="text-2xl font-bold text-white mb-3">Ready to Get Started?</h3>
         <p className="text-[#768dad] max-w-lg mx-auto mb-6">
-          Join hundreds of businesses that trust WebFlowSub for their online presence.
+          Get your professional website designed, hosted, and maintained — starting at $30/month.
         </p>
         <Button
           onClick={() => {

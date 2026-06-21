@@ -9,7 +9,7 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "WebFlowSub - Professional Website Design Subscription",
+  title: "WebForge - Professional Website Design Subscription",
   description: "Build your perfect website with our subscription-based design service. Professional templates, hosting included, and ongoing support.",
   keywords: ["website design", "subscription", "web development", "templates", "hosting"],
   icons: {

@@ -21,10 +21,10 @@ const platformIcons: Record<string, React.ReactNode> = {
 
 // Default values used when settings are missing or DB is unreachable.
 const DEFAULTS = {
-  site_name: 'WebFlowSub',
-  site_description: 'Professional website design subscription service. Get a stunning website without the upfront cost.',
-  contact_email: 'support@webflowsub.com',
-  contact_address: '123 Design Street\nSan Francisco, CA 94102',
+  site_name: 'WebForge',
+  site_description: 'We design, host, and maintain your website for a flat monthly fee. No upfront cost, no long-term contracts.',
+  contact_email: 'support@webforge.com',
+  contact_address: '',  // Removed fake address — set real one via admin panel
 }
 
 export default function Footer() {
@@ -51,14 +51,15 @@ export default function Footer() {
   const siteName = settings.site_name || DEFAULTS.site_name
   const siteDesc = settings.site_description || DEFAULTS.site_description
   const contactEmail = settings.contact_email || DEFAULTS.contact_email
-  const contactAddress = (settings.contact_address || DEFAULTS.contact_address).replace(/\n/g, '<br />')
+  const contactAddressRaw = settings.contact_address || DEFAULTS.contact_address
+  const contactAddress = contactAddressRaw.replace(/\n/g, '<br />')
 
-  // Split brand name to highlight suffix (e.g. "WebFlowSub" → "WebFlow" + "Sub")
-  // If the name contains "Sub", highlight it; otherwise highlight last 3 chars.
+  // Split brand name to highlight suffix (e.g. "WebForge" → "Web" + "Forge")
+  // If the name contains "Forge", highlight it; otherwise highlight last 5 chars.
   const renderBrand = () => {
-    if (siteName.toLowerCase().endsWith('sub')) {
-      const prefix = siteName.slice(0, -3)
-      const suffix = siteName.slice(-3)
+    if (siteName.toLowerCase().endsWith('forge')) {
+      const prefix = siteName.slice(0, -5)
+      const suffix = siteName.slice(-5)
       return <>{prefix}<span className="text-[#00D1FF]">{suffix}</span></>
     }
     return siteName
@@ -76,7 +77,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-[#00D1FF] rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-br from-[#00D1FF] to-[#10B981] rounded-lg flex items-center justify-center">
                 <span className="text-[#000f22] font-bold text-sm">W</span>
               </div>
               <span className="font-bold text-lg">
@@ -105,16 +106,27 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Company */}
           <div>
-            <h4 className="font-semibold text-sm label-style text-[#768dad] mb-4">Contact</h4>
+            <h4 className="font-semibold text-sm label-style text-[#768dad] mb-4">Company</h4>
             <ul className="space-y-2 text-sm text-[#768dad]">
+              <li>
+                <button onClick={() => handleNav('contact')} className="hover:text-white transition-colors">About Us</button>
+              </li>
+              <li>
+                <button className="hover:text-white transition-colors">Privacy Policy</button>
+              </li>
+              <li>
+                <button className="hover:text-white transition-colors">Terms of Service</button>
+              </li>
               <li>
                 <a href={`mailto:${contactEmail}`} className="hover:text-white transition-colors">
                   {contactEmail}
                 </a>
               </li>
-              <li dangerouslySetInnerHTML={{ __html: contactAddress }} />
+              {contactAddressRaw && (
+                <li dangerouslySetInnerHTML={{ __html: contactAddress }} />
+              )}
             </ul>
           </div>
 

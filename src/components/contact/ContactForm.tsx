@@ -11,9 +11,9 @@ import { Mail, MapPin, Clock, Send } from 'lucide-react'
 import { toast } from 'sonner'
 
 const DEFAULTS = {
-  contact_email: 'support@webflowsub.com',
-  contact_address_line1: '123 Design Street',
-  contact_address_line2: 'San Francisco, CA 94102',
+  contact_email: 'support@webforge.com',
+  contact_address_line1: '',  // Removed fake address — set real one via admin panel
+  contact_address_line2: '',
 }
 
 export default function ContactForm() {
@@ -179,18 +179,20 @@ export default function ContactForm() {
                 </a>
               </div>
             </div>
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-lg bg-[#000f22]/5 flex items-center justify-center flex-shrink-0">
-                <MapPin className="h-5 w-5 text-[#000f22]" />
+            {addressLine1 && (
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-lg bg-[#000f22]/5 flex items-center justify-center flex-shrink-0">
+                  <MapPin className="h-5 w-5 text-[#000f22]" />
+                </div>
+                <div>
+                  <h4 className="font-medium text-[#000f22] text-sm">Address</h4>
+                  <p className="text-sm text-[#4F5B76]">
+                    {addressLine1}
+                    {addressLine2 && <><br />{addressLine2}</>}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h4 className="font-medium text-[#000f22] text-sm">Address</h4>
-                <p className="text-sm text-[#4F5B76]">
-                  {addressLine1}
-                  {addressLine2 && <><br />{addressLine2}</>}
-                </p>
-              </div>
-            </div>
+            )}
           </CardContent>
         </Card>
 

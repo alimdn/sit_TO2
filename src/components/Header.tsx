@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
-const DEFAULT_SITE_NAME = 'WebFlowSub'
+const DEFAULT_SITE_NAME = 'WebForge'
 
 export default function Header() {
   const { currentPage, setCurrentPage, user, setUser, checkoutData } = useAppStore()
@@ -30,11 +30,11 @@ export default function Header() {
       .catch(() => {})
   }, [])
 
-  // Split brand name to highlight suffix (e.g. "WebFlowSub" → "WebFlow" + "Sub")
+  // Split brand name to highlight suffix (e.g. "WebForge" → "Web" + "Forge")
   const renderBrand = () => {
-    if (siteName.toLowerCase().endsWith('sub')) {
-      const prefix = siteName.slice(0, -3)
-      const suffix = siteName.slice(-3)
+    if (siteName.toLowerCase().endsWith('forge')) {
+      const prefix = siteName.slice(0, -5)
+      const suffix = siteName.slice(-5)
       return <>{prefix}<span className="text-[#00D1FF]">{suffix}</span></>
     }
     return siteName
@@ -67,8 +67,10 @@ export default function Header() {
           onClick={() => handleNav('home')}
           className="flex items-center gap-2 hover:opacity-80 transition-opacity"
         >
-          <div className="w-5 h-5 bg-[#000f22] rounded flex items-center justify-center">
-            <span className="text-white font-bold text-[10px]">W</span>
+          <div className="w-7 h-7 bg-gradient-to-br from-[#00D1FF] to-[#10B981] rounded-md flex items-center justify-center shadow-sm">
+            <svg className="w-4 h-4 text-[#000f22]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 4l4 16 4-12 4 12 4-16" />
+            </svg>
           </div>
           <span className="font-bold text-sm text-[#000f22]">
             {renderBrand()}
@@ -251,12 +253,21 @@ export default function Header() {
                   </button>
                 </>
               ) : (
-                <button
-                  onClick={() => handleNav('login')}
-                  className="w-full px-4 py-2.5 rounded-lg text-sm font-medium bg-[#000f22] text-white hover:bg-[#0A2540]"
-                >
-                  Sign In
-                </button>
+                <>
+                  {/* Prominent "Get Started" CTA in mobile menu */}
+                  <button
+                    onClick={() => handleNav('plans')}
+                    className="w-full px-4 py-2.5 rounded-lg text-sm font-semibold bg-[#10B981] text-white hover:bg-[#059669] mb-2"
+                  >
+                    Get Started Now — $30/mo
+                  </button>
+                  <button
+                    onClick={() => handleNav('login')}
+                    className="w-full px-4 py-2.5 rounded-lg text-sm font-medium bg-[#000f22] text-white hover:bg-[#0A2540]"
+                  >
+                    Sign In
+                  </button>
+                </>
               )}
             </div>
           </div>

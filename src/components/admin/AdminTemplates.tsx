@@ -255,27 +255,42 @@ export default function AdminTemplates() {
   // is preserved (the API merges with the existing record).
   const [togglingId, setTogglingId] = useState<string | null>(null)
   const toggleActive = async (t: Template) => {
+    if (togglingId === t.id) return // Prevent double-clicks
     setTogglingId(t.id)
     const newActive = !t.active
-    // Optimistically update the UI
-    setTemplates(prev => prev.map(x => x.id === t.id ? { ...x, active: newActive } : x))
+    const previousActive = t.active // Keep reference for revert
+
+    // Optimistically update the UI immediately
+    setTemplates(prev => prev.map(x => x.id === t.id ? { ...x, active: newActive, updatedAt: new Date().toISOString() } : x))
+
     try {
       const res = await fetch(`/api/templates/${t.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
+        cache: 'no-store',
         body: JSON.stringify({ active: newActive }),
       })
+
       if (res.ok) {
-        toast.success(`Template ${newActive ? 'activated' : 'deactivated'} successfully`)
+        const updatedTemplate = await res.json().catch(() => null)
+        // Sync the local state with the server's response (in case the API returned merged data)
+        if (updatedTemplate && updatedTemplate.id) {
+          setTemplates(prev => prev.map(x => x.id === t.id ? { ...x, ...updatedTemplate } : x))
+        }
+        toast.success(`Template ${newActive ? 'activated' : 'deactivated'} successfully`, {
+          description: newActive
+            ? 'It is now visible on the public website.'
+            : 'It is now hidden from the public website but kept here for reactivation.',
+        })
       } else {
         // Revert on failure
-        setTemplates(prev => prev.map(x => x.id === t.id ? { ...x, active: !newActive } : x))
+        setTemplates(prev => prev.map(x => x.id === t.id ? { ...x, active: previousActive } : x))
         const err = await res.json().catch(() => ({}))
         toast.error(err?.error || `Failed to toggle (HTTP ${res.status})`)
       }
     } catch (e) {
       // Revert on network error
-      setTemplates(prev => prev.map(x => x.id === t.id ? { ...x, active: !newActive } : x))
+      setTemplates(prev => prev.map(x => x.id === t.id ? { ...x, active: previousActive } : x))
       toast.error('Network error while toggling template status')
     } finally {
       setTogglingId(null)
@@ -496,10 +511,10 @@ export default function AdminTemplates() {
                       onClick={() => toggleActive(t)}
                       disabled={togglingId === t.id}
                       title={t.active ? 'Click to deactivate — template will be hidden from the public site but kept here for reactivation' : 'Click to activate — template will be visible on the public site again'}
-                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer disabled:opacity-50 disabled:cursor-wait ${
+                      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer disabled:opacity-60 disabled:cursor-wait select-none ${
                         t.active
-                          ? 'bg-[#10B981]/10 text-[#10B981] hover:bg-[#10B981]/20'
-                          : 'bg-[#74777e]/10 text-[#74777e] hover:bg-[#74777e]/20'
+                          ? 'bg-[#10B981]/15 text-[#10B981] hover:bg-[#10B981]/25 hover:shadow-sm border border-[#10B981]/30'
+                          : 'bg-[#74777e]/10 text-[#74777e] hover:bg-[#74777e]/20 hover:shadow-sm border border-[#74777e]/20'
                       }`}
                     >
                       {togglingId === t.id ? (
@@ -509,8 +524,13 @@ export default function AdminTemplates() {
                         </>
                       ) : (
                         <>
-                          <span className={`w-1.5 h-1.5 rounded-full ${t.active ? 'bg-[#10B981]' : 'bg-[#74777e]'}`} />
+                          <span className={`relative w-2 h-2 rounded-full ${t.active ? 'bg-[#10B981]' : 'bg-[#74777e]'}`}>
+                            {t.active && (
+                              <span className="absolute inset-0 rounded-full bg-[#10B981] animate-ping opacity-75"></span>
+                            )}
+                          </span>
                           {t.active ? 'Active' : 'Inactive'}
+                          <span className="opacity-50 text-[10px] ml-0.5">⇄</span>
                         </>
                       )}
                     </button>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useAppStore } from '@/lib/store'
 import TemplateCard from './TemplateCard'
 import { Button } from '@/components/ui/button'
@@ -29,17 +29,57 @@ export default function TemplateGrid() {
   const [activeCategory, setActiveCategory] = useState('All')
   const [search, setSearch] = useState('')
   const [visibleCount, setVisibleCount] = useState(12) // Start with 12, load more on scroll
+  const lastFetchRef = useRef<number>(0)
 
+  // Always fetch fresh templates (bypassing browser cache) so the public
+  // Templates page reflects admin changes (active/inactive toggles) immediately.
+  // We re-fetch on mount, on window focus (when user returns from another tab),
+  // and on visibility change (when user returns to this tab from another).
   useEffect(() => {
-    // Use cache: 'no-store' so the public Templates page always reflects
-    // the latest admin changes (active/inactive toggles, edits, deletes).
-    fetch('/api/templates', { cache: 'no-store' })
-      .then(res => res.json())
-      .then(data => {
+    const fetchTemplates = async () => {
+      try {
+        // Use cache-busting query param + no-store headers
+        const res = await fetch(`/api/templates?_t=${Date.now()}`, {
+          cache: 'no-store',
+          headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
+        })
+        const data = await res.json()
         const list = Array.isArray(data) ? data : (Array.isArray(data?.data) ? data.data : [])
-        setTemplates(list)
-      })
-      .catch(() => setTemplates([]))
+        // Defensive: only show active templates (in case the API returns all)
+        const activeList = list.filter((t: Template) => t.active !== false)
+        setTemplates(activeList)
+        lastFetchRef.current = Date.now()
+      } catch {
+        setTemplates([])
+      }
+    }
+
+    fetchTemplates()
+
+    // Re-fetch when the tab becomes visible again (user navigated away and came back)
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        // Only re-fetch if it's been more than 5 seconds since the last fetch
+        if (Date.now() - lastFetchRef.current > 5000) {
+          fetchTemplates()
+        }
+      }
+    }
+
+    // Re-fetch when the window regains focus (user switched tabs/windows)
+    const handleFocus = () => {
+      if (Date.now() - lastFetchRef.current > 5000) {
+        fetchTemplates()
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    window.addEventListener('focus', handleFocus)
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      window.removeEventListener('focus', handleFocus)
+    }
   }, [])
 
   const filtered = templates.filter(t => {

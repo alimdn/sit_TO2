@@ -59,8 +59,17 @@ export interface StoredTestimonial {
 
 // ─────────────────────────────────────────────────────────────────────
 // Detect whether Vercel Blob is configured
+// DISABLED: Vercel Blob free tier was exhausted (2000 ops/month limit hit).
+// The app now uses Supabase as the sole data store. The local filesystem
+// fallback (/tmp/wfs-data/) remains as a last-resort write cache for
+// serverless environments where Supabase may be temporarily unreachable.
+// To re-enable Blob, set BLOB_READ_WRITE_TOKEN AND change the constant
+// below to true. Otherwise Blob calls are skipped entirely.
 // ─────────────────────────────────────────────────────────────────────
+const BLOB_ENABLED = false // hard-disabled — Supabase is now primary store
+
 function isBlobConfigured(): boolean {
+  if (!BLOB_ENABLED) return false
   return !!(process.env.BLOB_READ_WRITE_TOKEN)
 }
 

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heritage Organic | Aseer Cultural Journeys</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --warm-cream: #FCF4E7;
+    --warm-cream-bright: #fff8f0;
+    --terracotta: #844432;
+    --terracotta-dark: #672e1d;
+    --moss-olive: #948951;
+    --ink-stone: #1A1A1A;
+    --parchment: #F2EFE9;
+    --border-stone: #53433f;
+    --outline: #86736e;
+  }
+  body {
+    background: var(--warm-cream-bright);
+    color: var(--ink-stone);
+    font-family: 'Hanken Grotesk', sans-serif;
+    line-height: 1.6;
+  }
+  .font-serif { font-family: 'Libre Caslon Text', serif; }
+  .label-caps {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .btn-primary {
+    background: var(--terracotta);
+    color: var(--warm-cream);
+    padding: 14px 32px;
+    border-radius: 4px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    display: inline-block;
+    border: 1px solid var(--terracotta-dark);
+  }
+  .btn-primary:hover {
+    background: var(--terracotta-dark);
+    transform: translateY(-1px);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink-stone);
+    padding: 14px 32px;
+    border-radius: 4px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid var(--ink-stone);
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+  .btn-ghost:hover {
+    background: var(--ink-stone);
+    color: var(--warm-cream);
+  }
+  .card {
+    background: var(--parchment);
+    border: 1px solid rgba(132, 68, 50, 0.15);
+    box-shadow: 0 4px 24px rgba(132, 68, 50, 0.06);
+    border-radius: 8px;
+    transition: all 0.4s ease;
+  }
+  .card:hover {
+    box-shadow: 0 8px 32px rgba(132, 68, 50, 0.12);
+    transform: translateY(-4px);
+  }
+  .divider-star::before,
+  .divider-star::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--ink-stone);
+    opacity: 0.3;
+  }
+  .divider-star span {
+    padding: 0 16px;
+    color: var(--terracotta);
+    font-size: 18px;
+  }
+  .nav-link {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-stone);
+    transition: color 0.3s;
+  }
+  .nav-link:hover { color: var(--terracotta); }
+  .nav-blur {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(252, 244, 231, 0.85);
+    border-bottom: 1px solid rgba(26, 26, 26, 0.08);
+  }
+  .number-display {
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    font-size: 24px;
+    color: var(--terracotta);
+  }
+  .image-frame {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(132, 68, 50, 0.1);
+  }
+  .image-frame img {
+    transition: transform 0.6s ease;
+  }
+  .image-frame:hover img {
+    transform: scale(1.05);
+  }
+  .input-field {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--ink-stone);
+    padding: 12px 0;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 16px;
+    color: var(--ink-stone);
+    width: 100%;
+    transition: border-color 0.3s;
+  }
+  .input-field:focus {
+    outline: none;
+    border-color: var(--terracotta);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 60px;
+    animation: marquee 30s linear infinite;
+    white-space: nowrap;
+  }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .hero-image {
+    background: linear-gradient(135deg, rgba(132, 68, 50, 0.4) 0%, rgba(148, 137, 81, 0.3) 100%),
+                url('https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?w=1600&q=80') center/cover;
+  }
+  .section-gap { padding: 80px 0; }
+  @media (min-width: 768px) { .section-gap { padding: 120px 0; } }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+  }
+  .fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 1s ease-out forwards;
+  }
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav-blur sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-5 md:px-16 py-5 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-3">
+      <span class="text-2xl text-[color:var(--terracotta)]">✴︎</span>
+      <span class="font-serif text-2xl tracking-tight">Bilad Al-Aseer</span>
+    </a>
+    <div class="hidden md:flex items-center gap-10">
+      <a href="#stories" class="nav-link">Stories</a>
+      <a href="#experiences" class="nav-link">Experiences</a>
+      <a href="#people" class="nav-link">People</a>
+      <a href="#journal" class="nav-link">Journal</a>
+      <a href="#contact" class="btn-ghost text-xs">Plan a Journey</a>
+    </div>
+    <button class="md:hidden">
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="relative hero-image min-h-[85vh] flex items-end">
+  <div class="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/80 via-[#1A1A1A]/20 to-transparent"></div>
+  <div class="relative z-10 max-w-7xl mx-auto px-5 md:px-16 pb-20 text-white">
+    <div class="fade-up" style="animation-delay: 0.1s;">
+      <p class="label-caps text-[color:var(--warm-cream)] opacity-90 mb-4">A Heritage Organic Experience · Est. 2025</p>
+      <h1 class="font-serif text-5xl md:text-7xl leading-[1.1] mb-6 max-w-3xl" style="letter-spacing: -0.02em;">
+        Where <em class="italic">stone</em> remembers<br>and <em class="italic">stories</em> breathe.
+      </h1>
+      <p class="text-lg md:text-xl max-w-2xl opacity-90 mb-8 leading-relaxed">
+        A 9-day immersive journey through the Aseer region — where every village holds a verse, every meal tells a tale, and every trail leads to a memory older than the mountains themselves.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <a href="#experiences" class="btn-primary">Begin the Story</a>
+        <a href="#stories" class="btn-ghost" style="color: white; border-color: white;">Read the Journal</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Intro Section -->
+<section class="section-gap">
+  <div class="max-w-5xl mx-auto px-5 md:px-16">
+    <div class="flex items-center justify-between mb-16">
+      <span class="number-display">01</span>
+      <div class="h-px flex-1 mx-8 bg-[color:var(--ink-stone)] opacity-30"></div>
+      <span class="label-caps text-[color:var(--terracotta)]">The Philosophy</span>
+    </div>
+    <h2 class="font-serif text-4xl md:text-6xl leading-[1.2] mb-8" style="letter-spacing: -0.02em;">
+      We don't sell <em class="italic">tours</em>.<br>
+      We curate <em class="italic">passages</em>.
+    </h2>
+    <div class="grid md:grid-cols-2 gap-12 text-lg leading-relaxed">
+      <p>
+        Aseer is not a destination — it is a dialogue. Between mist and stone, between olive groves and ancient fortresses, between the women who weave and the men who carve. Our journeys are designed not to show you Aseer, but to let Aseer show itself to you, slowly, the way the morning mist lifts from Sarawat's peaks.
+      </p>
+      <p>
+        Every experience is hand-woven with local families, artisans, and storytellers who have called these mountains home for generations. No staged authenticity. No tourist spectacles. Just the raw, quiet poetry of a region that has remained gloriously itself for thousands of years.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Experiences Section -->
+<section id="experiences" class="section-gap bg-[color:var(--warm-cream)]">
+  <div class="max-w-7xl mx-auto px-5 md:px-16">
+    <div class="flex items-center justify-between mb-16">
+      <span class="number-display">02</span>
+      <div class="h-px flex-1 mx-8 bg-[color:var(--ink-stone)] opacity-30"></div>
+      <span class="label-caps text-[color:var(--terracotta)]">Curated Experiences</span>
+    </div>
+    <h2 class="font-serif text-4xl md:text-6xl leading-[1.2] mb-4" style="letter-spacing: -0.02em;">
+      Nine days. <em class="italic">Eight chapters.</em>
+    </h2>
+    <p class="text-lg opacity-70 mb-16 max-w-2xl">Each experience is a chapter in a larger story — designed to be lived in sequence, but savored individually.</p>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="card overflow-hidden">
+        <div class="image-frame rounded-none border-0">
+          <img src="https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=800&q=80" alt="Stone villages" class="w-full h-64 object-cover">
+        </div>
+        <div class="p-8">
+          <span class="number-display">01</span>
+          <h3 class="font-serif text-2xl mt-2 mb-3">The Stone Village Awakening</h3>
+          <p class="text-sm leading-relaxed opacity-80 mb-4">Begin at dawn in Habalah, where stone houses cling to cliffs and the call to prayer echoes across centuries.</p>
+          <span class="label-caps text-[color:var(--terracotta)]">Day 1–2 · Easy</span>
+        </div>
+      </div>
+
+      <div class="card overflow-hidden">
+        <div class="image-frame rounded-none border-0">
+          <img src="https://images.unsplash.com/photo-1605649461784-edc8da1b5d4d?w=800&q=80" alt="Olive harvest" class="w-full h-64 object-cover">
+        </div>
+        <div class="p-8">
+          <span class="number-display">02</span>
+          <h3 class="font-serif text-2xl mt-2 mb-3">The Olive Harvest Ritual</h3>
+          <p class="text-sm leading-relaxed opacity-80 mb-4">Work alongside the Al-Qahtani family in their 400-year-old grove. Press oil by stone. Taste bread baked in the same oven your grandmother would have used.</p>
+          <span class="label-caps text-[color:var(--terracotta)]">Day 3 · Moderate</span>
+        </div>
+      </div>
+
+      <div class="card overflow-hidden">
+        <div class="image-frame rounded-none border-0">
+          <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=80" alt="Mountain trail" class="w-full h-64 object-cover">
+        </div>
+        <div class="p-8">
+          <span class="number-display">03</span>
+          <h3 class="font-serif text-2xl mt-2 mb-3">Sarawat Heights Trek</h3>
+          <p class="text-sm leading-relaxed opacity-80 mb-4">A two-day ascent with a Bedouin guide who reads the mountain like a book. Sleep under a sky so dense with stars it feels heavy.</p>
+          <span class="label-caps text-[color:var(--terracotta)]">Day 4–5 · Challenging</span>
+        </div>
+      </div>
+
+      <div class="card overflow-hidden">
+        <div class="image-frame rounded-none border-0">
+          <img src="https://images.unsplash.com/photo-1574484284002-952d92456975?w=800&q=80" alt="Artisan weaving" class="w-full h-64 object-cover">
+        </div>
+        <div class="p-8">
+          <span class="number-display">04</span>
+          <h3 class="font-serif text-2xl mt-2 mb-3">The Weavers of Tanomah</h3>
+          <p class="text-sm leading-relaxed opacity-80 mb-4">Sit with Fatima and her daughters as they weave Sadu patterns older than memory. Learn the language of geometric symbols.</p>
+          <span class="label-caps text-[color:var(--terracotta)]">Day 6 · Easy</span>
+        </div>
+      </div>
+
+      <div class="card overflow-hidden">
+        <div class="image-frame rounded-none border-0">
+          <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80" alt="Cuisine" class="w-full h-64 object-cover">
+        </div>
+        <div class="p-8">
+          <span class="number-display">05</span>
+          <h3 class="font-serif text-2xl mt-2 mb-3">A Kitchen in the Clouds</h3>
+          <p class="text-sm leading-relaxed opacity-80 mb-4">A private cooking session with Chef Hassan in his mountain kitchen. Honey from his hives, herbs from his garden, recipes from his great-grandmother.</p>
+          <span class="label-caps text-[color:var(--terracotta)]">Day 7 · Easy</span>
+        </div>
+      </div>
+
+      <div class="card overflow-hidden">
+        <div class="image-frame rounded-none border-0">
+          <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&q=80" alt="Festival" class="w-full h-64 object-cover">
+        </div>
+        <div class="p-8">
+          <span class="number-display">06</span>
+          <h3 class="font-serif text-2xl mt-2 mb-3">The Aseer Summer Festival</h3>
+          <p class="text-sm leading-relaxed opacity-80 mb-4">Join the region's largest gathering — flower crowns, folk dances, poetry duels. A celebration that has welcomed travelers for over 60 years.</p>
+          <span class="label-caps text-[color:var(--terracotta)]">Day 8–9 · Festive</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Marquee: People of the Story -->
+<section id="people" class="py-16 bg-[color:var(--ink-stone)] text-[color:var(--warm-cream)] overflow-hidden">
+  <div class="max-w-7xl mx-auto px-5 md:px-16 mb-8">
+    <span class="label-caps opacity-60">The People of the Story</span>
+  </div>
+  <div class="marquee-track font-serif text-3xl md:text-5xl italic">
+    <span>Fatima Al-Qahtani</span>
+    <span>✴︎</span>
+    <span>Hassan Al-Ghamdi</span>
+    <span>✴︎</span>
+    <span>Noura Al-Asiri</span>
+    <span>✴︎</span>
+    <span>Mohammed Al-Shahrani</span>
+    <span>✴︎</span>
+    <span>Aisha Al-Subaie</span>
+    <span>✴︎</span>
+    <span>Fatima Al-Qahtani</span>
+    <span>✴︎</span>
+    <span>Hassan Al-Ghamdi</span>
+    <span>✴︎</span>
+    <span>Noura Al-Asiri</span>
+    <span>✴︎</span>
+    <span>Mohammed Al-Shahrani</span>
+    <span>✴︎</span>
+    <span>Aisha Al-Subaie</span>
+    <span>✴︎</span>
+  </div>
+</section>
+
+<!-- Testimonial / Editorial Quote -->
+<section class="section-gap">
+  <div class="max-w-5xl mx-auto px-5 md:px-16 text-center">
+    <div class="flex items-center justify-center mb-12 divider-star">
+      <span>✴︎</span>
+    </div>
+    <p class="font-serif text-3xl md:text-5xl italic leading-[1.3] mb-12" style="letter-spacing: -0.01em;">
+      "I came looking for a holiday. I left with a homeland I never knew I had."
+    </p>
+    <div class="flex items-center justify-center gap-4">
+      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop" alt="Layla" class="w-14 h-14 rounded-full object-cover">
+      <div class="text-left">
+        <div class="font-semibold">Layla M.</div>
+        <div class="text-sm opacity-60">London → Abha · Spring 2025</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Journal Preview -->
+<section id="journal" class="section-gap bg-[color:var(--warm-cream)]">
+  <div class="max-w-7xl mx-auto px-5 md:px-16">
+    <div class="flex items-center justify-between mb-16">
+      <span class="number-display">04</span>
+      <div class="h-px flex-1 mx-8 bg-[color:var(--ink-stone)] opacity-30"></div>
+      <span class="label-caps text-[color:var(--terracotta)]">Field Notes</span>
+    </div>
+    <h2 class="font-serif text-4xl md:text-6xl leading-[1.2] mb-16" style="letter-spacing: -0.02em;">
+      From the <em class="italic">Journal</em>
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-12">
+      <article>
+        <div class="image-frame mb-6">
+          <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80" alt="Journal 1" class="w-full h-72 object-cover">
+        </div>
+        <span class="label-caps text-[color:var(--terracotta)]">Essay · 7 min read</span>
+        <h3 class="font-serif text-2xl mt-3 mb-3">The Language of Sadu Weaving</h3>
+        <p class="text-sm opacity-70 mb-4">How geometric patterns carry the memories of Bedouin women across generations — and what we lose when we forget how to read them.</p>
+        <a href="#" class="label-caps text-[color:var(--ink-stone)] hover:text-[color:var(--terracotta)] transition">Read More →</a>
+      </article>
+
+      <article>
+        <div class="image-frame mb-6">
+          <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80" alt="Journal 2" class="w-full h-72 object-cover">
+        </div>
+        <span class="label-caps text-[color:var(--terracotta)]">Field Report · 5 min read</span>
+        <h3 class="font-serif text-2xl mt-3 mb-3">Coffee, Cardamom, and Time</h3>
+        <p class="text-sm opacity-70 mb-4">A morning with Abu Saeed in his diwan. Why a single cup of Arabic coffee can take two hours — and why you should let it.</p>
+        <a href="#" class="label-caps text-[color:var(--ink-stone)] hover:text-[color:var(--terracotta)] transition">Read More →</a>
+      </article>
+
+      <article>
+        <div class="image-frame mb-6">
+          <img src="https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=800&q=80" alt="Journal 3" class="w-full h-72 object-cover">
+        </div>
+        <span class="label-caps text-[color:var(--terracotta)]">Photo Story · 3 min read</span>
+        <h3 class="font-serif text-2xl mt-3 mb-3">Mist Over Sarawat</h3>
+        <p class="text-sm opacity-70 mb-4">A photographic essay on the daily transformation of the Sarawat mountains — when stone becomes cloud and cloud becomes stone.</p>
+        <a href="#" class="label-caps text-[color:var(--ink-stone)] hover:text-[color:var(--terracotta)] transition">Read More →</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CTA / Plan a Journey -->
+<section id="contact" class="section-gap">
+  <div class="max-w-4xl mx-auto px-5 md:px-16 text-center">
+    <div class="flex items-center justify-center mb-12 divider-star">
+      <span>✴︎</span>
+    </div>
+    <h2 class="font-serif text-4xl md:text-6xl leading-[1.2] mb-6" style="letter-spacing: -0.02em;">
+      Begin your <em class="italic">passage</em>.
+    </h2>
+    <p class="text-lg opacity-70 mb-12 max-w-2xl mx-auto">
+      Tell us what draws you to Aseer. We'll craft a chapter that is yours alone.
+    </p>
+
+    <form class="text-left max-w-2xl mx-auto space-y-8">
+      <div class="grid md:grid-cols-2 gap-8">
+        <div>
+          <label class="label-caps block mb-3">Your Name</label>
+          <input type="text" class="input-field" placeholder="Layla Mahmoud">
+        </div>
+        <div>
+          <label class="label-caps block mb-3">Email</label>
+          <input type="email" class="input-field" placeholder="you@example.com">
+        </div>
+      </div>
+      <div>
+        <label class="label-caps block mb-3">When do you wish to travel?</label>
+        <input type="text" class="input-field" placeholder="Spring 2026, ideally 9 days">
+      </div>
+      <div>
+        <label class="label-caps block mb-3">Tell us what you seek</label>
+        <textarea rows="4" class="input-field" placeholder="I want to learn the stories of the weavers..."></textarea>
+      </div>
+      <div class="text-center pt-6">
+        <button type="button" class="btn-primary">Send the Letter</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-[color:var(--ink-stone)] text-[color:var(--warm-cream)] py-20">
+  <div class="max-w-7xl mx-auto px-5 md:px-16">
+    <div class="grid md:grid-cols-4 gap-12 mb-16">
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="text-2xl text-[color:var(--terracotta)]">✴︎</span>
+          <span class="font-serif text-2xl">Bilad Al-Aseer</span>
+        </div>
+        <p class="opacity-70 max-w-md leading-relaxed">
+          Heritage Organic Journeys. Curated passages through the Aseer region, designed in partnership with the families who have called these mountains home for generations.
+        </p>
+      </div>
+      <div>
+        <h4 class="label-caps mb-6 opacity-60">Journeys</h4>
+        <ul class="space-y-3 text-sm opacity-80">
+          <li><a href="#" class="hover:text-[color:var(--terracotta)] transition">The Stone Awakening</a></li>
+          <li><a href="#" class="hover:text-[color:var(--terracotta)] transition">Olive Harvest</a></li>
+          <li><a href="#" class="hover:text-[color:var(--terracotta)] transition">Sarawat Trek</a></li>
+          <li><a href="#" class="hover:text-[color:var(--terracotta)] transition">Custom Chapters</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="label-caps mb-6 opacity-60">Contact</h4>
+        <ul class="space-y-3 text-sm opacity-80">
+          <li>Abha, Aseer Region</li>
+          <li>hello@biladaseer.com</li>
+          <li>+966 50 000 0000</li>
+        </ul>
+      </div>
+    </div>
+    <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs opacity-50">
+      <p>© 2025 Bilad Al-Aseer · Heritage Organic. All rights reserved.</p>
+      <p>Crafted with care in the clouds of Sarawat.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

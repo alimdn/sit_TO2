@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumina Wellness System | Metabolic Restoration</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep-charcoal: #121414;
+    --vibrant-olive: #8C943E;
+    --vibrant-olive-dark: #6F7527;
+    --soft-cream: #F9F7F2;
+    --parchment: #F2EFE9;
+    --muted-gold: #C5A368;
+    --success-green: #2D5A27;
+    --outline: #747878;
+  }
+  body {
+    background: var(--soft-cream);
+    color: var(--deep-charcoal);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+  .font-display { font-family: 'Montserrat', sans-serif; }
+  .font-body { font-family: 'Source Serif 4', serif; }
+  .font-ui { font-family: 'Inter', sans-serif; }
+  .label-caps {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .btn-primary {
+    background: var(--vibrant-olive);
+    color: white;
+    padding: 16px 32px;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--vibrant-olive-dark);
+  }
+  .btn-primary:hover {
+    background: var(--vibrant-olive-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(140, 148, 62, 0.25);
+  }
+  .btn-secondary {
+    background: var(--deep-charcoal);
+    color: white;
+    padding: 16px 32px;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-secondary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(18, 20, 20, 0.25);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--deep-charcoal);
+    padding: 16px 32px;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    border: 1px solid var(--deep-charcoal);
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-ghost:hover {
+    background: var(--deep-charcoal);
+    color: white;
+  }
+  .nav-blur {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(249, 247, 242, 0.9);
+    border-bottom: 1px solid rgba(18, 20, 20, 0.08);
+  }
+  .nav-link {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--deep-charcoal);
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-link:hover { color: var(--vibrant-olive); }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--vibrant-olive);
+    transition: width 0.3s;
+  }
+  .nav-link:hover::after { width: 100%; }
+  .card-parchment {
+    background: var(--parchment);
+    border-radius: 8px;
+    box-shadow: 0 4px 32px rgba(18, 20, 20, 0.05);
+    transition: all 0.4s ease;
+  }
+  .card-parchment:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 48px rgba(18, 20, 20, 0.1);
+  }
+  .accent-bar-left {
+    border-left: 4px solid var(--deep-charcoal);
+    padding-left: 24px;
+  }
+  .star { color: var(--muted-gold); }
+  .stat-number {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--vibrant-olive);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .input-field {
+    background: transparent;
+    border: 1px solid rgba(18, 20, 20, 0.2);
+    border-radius: 4px;
+    padding: 14px 18px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: var(--deep-charcoal);
+    width: 100%;
+    transition: all 0.3s;
+  }
+  .input-field:focus {
+    outline: none;
+    border-color: var(--vibrant-olive);
+    box-shadow: 0 0 0 3px rgba(140, 148, 62, 0.15);
+  }
+  .section-gap { padding: 80px 0; }
+  @media (min-width: 768px) { .section-gap { padding: 120px 0; } }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+  }
+  .badge-gold {
+    background: rgba(197, 163, 104, 0.15);
+    color: var(--muted-gold);
+    padding: 6px 14px;
+    border-radius: 9999px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgba(197, 163, 104, 0.3);
+  }
+  .badge-green {
+    background: rgba(45, 90, 39, 0.1);
+    color: var(--success-green);
+    padding: 6px 14px;
+    border-radius: 9999px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgba(45, 90, 39, 0.2);
+  }
+  .fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 1s ease-out forwards;
+  }
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav-blur sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-5 md:px-16 py-5 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 28px;">eco</span>
+      <span class="font-display text-xl font-bold tracking-tight">Lumina</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#program" class="nav-link">Program</a>
+      <a href="#method" class="nav-link">Method</a>
+      <a href="#science" class="nav-link">Science</a>
+      <a href="#stories" class="nav-link">Stories</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+      <a href="#cart" class="nav-link"><span class="material-symbols-outlined" style="font-size: 20px;">shopping_bag</span></a>
+      <a href="#profile" class="nav-link"><span class="material-symbols-outlined" style="font-size: 20px;">person</span></a>
+      <a href="#start" class="btn-ghost text-xs">Start Now</a>
+    </div>
+    <button class="md:hidden">
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="section-gap relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-5 md:px-16">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      <div class="fade-up" style="animation-delay: 0.1s;">
+        <span class="badge-gold mb-6">
+          <span class="material-symbols-outlined" style="font-size: 14px;">verified</span>
+          100% Money-Back Guarantee
+        </span>
+        <h1 class="font-display text-5xl md:text-7xl font-bold leading-[1.05] mb-6" style="letter-spacing: -0.02em;">
+          Rebuild your <span style="color: var(--vibrant-olive);">metabolism</span>.
+          Restore your <em class="font-body italic" style="font-weight: 400;">vitality</em>.
+        </h1>
+        <p class="font-body text-xl leading-relaxed opacity-80 mb-8 max-w-xl">
+          A science-backed, 12-week journey that gently guides your body back to its natural rhythm. No restriction. No shame. Just restoration.
+        </p>
+        <div class="flex flex-wrap gap-4 mb-8">
+          <a href="#start" class="btn-primary">
+            Begin Your Restoration
+            <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+          </a>
+          <a href="#science" class="btn-ghost">
+            Read the Science
+          </a>
+        </div>
+        <div class="flex items-center gap-6 text-sm">
+          <div class="flex items-center gap-1">
+            <span class="star">★★★★★</span>
+            <span class="ml-2 font-semibold">4.9/5</span>
+          </div>
+          <div class="opacity-60">|</div>
+          <div class="opacity-70">12,400+ members restored</div>
+        </div>
+      </div>
+      <div class="relative">
+        <div class="card-parchment overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=1200&q=80" alt="Wellness" class="w-full h-[480px] object-cover">
+        </div>
+        <div class="absolute -bottom-6 -left-6 card-parchment p-6 hidden md:block" style="max-width: 240px;">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="material-symbols-outlined text-[color:var(--success-green)]" style="font-size: 20px;">trending_up</span>
+            <span class="label-caps text-[color:var(--success-green)]">Average Result</span>
+          </div>
+          <p class="font-display text-3xl font-bold">+42%</p>
+          <p class="text-sm opacity-70">metabolic flexibility in 12 weeks</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trust / Stats Strip -->
+<section class="bg-[color:var(--deep-charcoal)] text-white py-16">
+  <div class="max-w-7xl mx-auto px-5 md:px-16">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div>
+        <div class="stat-number">12,400+</div>
+        <div class="label-caps opacity-70 mt-2">Members Restored</div>
+      </div>
+      <div>
+        <div class="stat-number">94%</div>
+        <div class="label-caps opacity-70 mt-2">Completion Rate</div>
+      </div>
+      <div>
+        <div class="stat-number">12</div>
+        <div class="label-caps opacity-70 mt-2">Week Program</div>
+      </div>
+      <div>
+        <div class="stat-number">4.9</div>
+        <div class="label-caps opacity-70 mt-2">Average Rating</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Method Section -->
+<section id="method" class="section-gap">
+  <div class="max-w-7xl mx-auto px-5 md:px-16">
+    <div class="text-center mb-20">
+      <span class="label-caps text-[color:var(--vibrant-olive)] mb-4 block">The Lumina Method</span>
+      <h2 class="font-display text-4xl md:text-6xl font-bold leading-[1.1] mb-6" style="letter-spacing: -0.02em;">
+        Three pillars.<br>One transformation.
+      </h2>
+      <p class="font-body text-lg max-w-2xl mx-auto opacity-80">
+        Our method is built on three pillars of metabolic health, working in harmony to restore your body's natural rhythm.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="card-parchment p-10">
+        <div class="w-14 h-14 rounded-lg flex items-center justify-center mb-6" style="background: rgba(140, 148, 62, 0.12);">
+          <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 28px;">restaurant</span>
+        </div>
+        <h3 class="font-display text-2xl font-bold mb-4">Nourish</h3>
+        <p class="font-body leading-relaxed opacity-80 mb-6">
+          Whole-food, olive-oil-forward nutrition. No counting calories — just eating in rhythm with your biology. We design your plate around what your metabolism actually needs.
+        </p>
+        <ul class="space-y-3 text-sm">
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check_circle</span>
+            <span>Personalized meal architecture</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check_circle</span>
+            <span>60+ chef-designed recipes</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check_circle</span>
+            <span>Grocery delivery integration</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card-parchment p-10">
+        <div class="w-14 h-14 rounded-lg flex items-center justify-center mb-6" style="background: rgba(18, 20, 20, 0.08);">
+          <span class="material-symbols-outlined text-[color:var(--deep-charcoal)]" style="font-size: 28px;">bedtime</span>
+        </div>
+        <h3 class="font-display text-2xl font-bold mb-4">Restore</h3>
+        <p class="font-body leading-relaxed opacity-80 mb-6">
+          Sleep architecture and circadian re-alignment. The most underrated lever in metabolic health — and the one we've engineered most precisely.
+        </p>
+        <ul class="space-y-3 text-sm">
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check_circle</span>
+            <span>Daily sleep score tracking</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check_circle</span>
+            <span>Light exposure protocols</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check_circle</span>
+            <span>Wind-down audio sessions</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card-parchment p-10">
+        <div class="w-14 h-14 rounded-lg flex items-center justify-center mb-6" style="background: rgba(197, 163, 104, 0.15);">
+          <span class="material-symbols-outlined text-[color:var(--muted-gold)]" style="font-size: 28px;">directions_run</span>
+        </div>
+        <h3 class="font-display text-2xl font-bold mb-4">Move</h3>
+        <p class="font-body leading-relaxed opacity-80 mb-6">
+          Movement that builds rather than depletes. Resistance training calibrated to your metabolic baseline — gentle enough to sustain, potent enough to transform.
+        </p>
+        <ul class="space-y-3 text-sm">
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check_circle</span>
+            <span>Adaptive weekly programming</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check_circle</span>
+            <span>20-minute guided sessions</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check_circle</span>
+            <span>Form-feedback video AI</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Curriculum / Structured Data List -->
+<section id="program" class="section-gap bg-[color:var(--parchment)]">
+  <div class="max-w-7xl mx-auto px-5 md:px-16">
+    <div class="grid lg:grid-cols-2 gap-16">
+      <div>
+        <span class="label-caps text-[color:var(--vibrant-olive)] mb-4 block">12-Week Curriculum</span>
+        <h2 class="font-display text-4xl md:text-6xl font-bold leading-[1.1] mb-6" style="letter-spacing: -0.02em;">
+          A chapter<br>each week.
+        </h2>
+        <p class="font-body text-lg opacity-80 mb-8">
+          The program unfolds in three phases — Foundation, Restoration, and Integration. Each phase builds on the last, gently increasing depth and intensity.
+        </p>
+        <a href="#start" class="btn-secondary">
+          See Full Syllabus
+          <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+        </a>
+      </div>
+
+      <div class="space-y-6">
+        <div class="accent-bar-left">
+          <span class="label-caps text-[color:var(--vibrant-olive)]">Phase 01 · Weeks 1–4</span>
+          <h3 class="font-display text-2xl font-bold mt-2 mb-2">Foundation</h3>
+          <p class="font-body opacity-80">Establish your metabolic baseline. Gentle shifts in meal timing, light exposure, and sleep preparation. No dramatic changes — just intentional ones.</p>
+        </div>
+        <div class="accent-bar-left">
+          <span class="label-caps text-[color:var(--vibrant-olive)]">Phase 02 · Weeks 5–8</span>
+          <h3 class="font-display text-2xl font-bold mt-2 mb-2">Restoration</h3>
+          <p class="font-body opacity-80">Deepen the practice. Introduce resistance training, refine your nutrition architecture, and begin to feel the shift — more energy, better sleep, clearer thinking.</p>
+        </div>
+        <div class="accent-bar-left">
+          <span class="label-caps text-[color:var(--vibrant-olive)]">Phase 03 · Weeks 9–12</span>
+          <h3 class="font-display text-2xl font-bold mt-2 mb-2">Integration</h3>
+          <p class="font-body opacity-80">Make it permanent. We help you translate the program into a sustainable lifestyle — with quarterly check-ins and lifetime access to the Lumina community.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section id="stories" class="section-gap">
+  <div class="max-w-7xl mx-auto px-5 md:px-16">
+    <div class="text-center mb-16">
+      <span class="label-caps text-[color:var(--vibrant-olive)] mb-4 block">Stories of Restoration</span>
+      <h2 class="font-display text-4xl md:text-6xl font-bold leading-[1.1]" style="letter-spacing: -0.02em;">
+        What our members say.
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="card-parchment p-8">
+        <div class="flex gap-1 mb-4">
+          <span class="star">★★★★★</span>
+        </div>
+        <p class="font-body italic text-lg leading-relaxed mb-6">
+          "After 12 weeks, I have more energy at 47 than I did at 27. The sleep protocol alone changed my life — I no longer wake up exhausted."
+        </p>
+        <div class="flex items-center gap-3 pt-4 border-t border-[color:var(--deep-charcoal)]/10">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop" alt="Sarah" class="w-12 h-12 rounded-full object-cover">
+          <div>
+            <div class="font-semibold">Sarah Chen</div>
+            <div class="text-sm opacity-60">Marketing Director · 12 weeks complete</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-parchment p-8">
+        <div class="flex gap-1 mb-4">
+          <span class="star">★★★★★</span>
+        </div>
+        <p class="font-body italic text-lg leading-relaxed mb-6">
+          "I'd tried every diet. Every program. Lumina was the first that didn't feel like a punishment. It felt like finally listening to my body."
+        </p>
+        <div class="flex items-center gap-3 pt-4 border-t border-[color:var(--deep-charcoal)]/10">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop" alt="James" class="w-12 h-12 rounded-full object-cover">
+          <div>
+            <div class="font-semibold">James Okonkwo</div>
+            <div class="text-sm opacity-60">Software Engineer · Week 9</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-parchment p-8">
+        <div class="flex gap-1 mb-4">
+          <span class="star">★★★★★</span>
+        </div>
+        <p class="font-body italic text-lg leading-relaxed mb-6">
+          "The community is what surprised me most. I thought I was signing up for a program. I found a circle of people who actually understood."
+        </p>
+        <div class="flex items-center gap-3 pt-4 border-t border-[color:var(--deep-charcoal)]/10">
+          <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop" alt="Maya" class="w-12 h-12 rounded-full object-cover">
+          <div>
+            <div class="font-semibold">Maya Patel</div>
+            <div class="text-sm opacity-60">Teacher · 24 weeks complete</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing Section -->
+<section id="pricing" class="section-gap bg-[color:var(--parchment)]">
+  <div class="max-w-7xl mx-auto px-5 md:px-16">
+    <div class="text-center mb-16">
+      <span class="label-caps text-[color:var(--vibrant-olive)] mb-4 block">Choose Your Path</span>
+      <h2 class="font-display text-4xl md:text-6xl font-bold leading-[1.1] mb-4" style="letter-spacing: -0.02em;">
+        Begin where you are.
+      </h2>
+      <p class="font-body text-lg opacity-80 max-w-2xl mx-auto">
+        All plans include the 12-week curriculum, mobile app, and community access. Cancel anytime.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <div class="bg-white rounded-xl p-10 border border-[color:var(--deep-charcoal)]/10">
+        <h3 class="font-display text-xl font-bold mb-2">Self-Guided</h3>
+        <p class="text-sm opacity-70 mb-6">For the independent restorer</p>
+        <div class="mb-6">
+          <span class="font-display text-4xl font-bold">$49</span>
+          <span class="text-sm opacity-70">/month</span>
+        </div>
+        <ul class="space-y-3 mb-8 text-sm">
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check</span>
+            <span>Full 12-week curriculum</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check</span>
+            <span>Mobile app access</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check</span>
+            <span>Community forum</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check</span>
+            <span>Recipe library</span>
+          </li>
+        </ul>
+        <a href="#" class="btn-ghost w-full justify-center">Start Self-Guided</a>
+      </div>
+
+      <div class="bg-[color:var(--deep-charcoal)] text-white rounded-xl p-10 relative shadow-2xl md:-translate-y-4">
+        <span class="badge-gold absolute -top-3 left-1/2 -translate-x-1/2" style="background: var(--muted-gold); color: white; border-color: var(--muted-gold);">
+          ★ Most Popular
+        </span>
+        <h3 class="font-display text-xl font-bold mb-2">Coached</h3>
+        <p class="text-sm opacity-70 mb-6">With a dedicated restoration guide</p>
+        <div class="mb-6">
+          <span class="font-display text-4xl font-bold">$149</span>
+          <span class="text-sm opacity-70">/month</span>
+        </div>
+        <ul class="space-y-3 mb-8 text-sm">
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check</span>
+            <span>Everything in Self-Guided</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check</span>
+            <span>Weekly 1:1 coaching call</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check</span>
+            <span>Personalized meal plans</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check</span>
+            <span>Direct message access</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check</span>
+            <span>Bloodwork interpretation</span>
+          </li>
+        </ul>
+        <a href="#" class="btn-primary w-full justify-center">Start Coached</a>
+      </div>
+
+      <div class="bg-white rounded-xl p-10 border border-[color:var(--deep-charcoal)]/10">
+        <h3 class="font-display text-xl font-bold mb-2">Concierge</h3>
+        <p class="text-sm opacity-70 mb-6">Full clinical supervision</p>
+        <div class="mb-6">
+          <span class="font-display text-4xl font-bold">$499</span>
+          <span class="text-sm opacity-70">/month</span>
+        </div>
+        <ul class="space-y-3 mb-8 text-sm">
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check</span>
+            <span>Everything in Coached</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check</span>
+            <span>MD-supervised protocol</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check</span>
+            <span>Quarterly bloodwork</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check</span>
+            <span>Custom supplement protocol</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 18px;">check</span>
+            <span>24/7 priority support</span>
+          </li>
+        </ul>
+        <a href="#" class="btn-ghost w-full justify-center">Apply for Concierge</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section id="start" class="section-gap bg-[color:var(--deep-charcoal)] text-white">
+  <div class="max-w-4xl mx-auto px-5 md:px-16 text-center">
+    <span class="badge-gold mb-6">
+      <span class="material-symbols-outlined" style="font-size: 14px;">verified</span>
+      100% Money-Back Guarantee · First 30 Days
+    </span>
+    <h2 class="font-display text-4xl md:text-6xl font-bold leading-[1.1] mb-6" style="letter-spacing: -0.02em;">
+      Your restoration<br>begins today.
+    </h2>
+    <p class="font-body text-xl opacity-80 mb-12 max-w-2xl mx-auto">
+      Join 12,400+ members who chose to listen to their bodies. Begin with our free metabolic assessment.
+    </p>
+    <form class="max-w-md mx-auto flex flex-col sm:flex-row gap-3">
+      <input type="email" placeholder="your@email.com" class="input-field" style="background: white;">
+      <button type="button" class="btn-primary whitespace-nowrap">Get Free Assessment</button>
+    </form>
+    <p class="text-xs opacity-60 mt-6">No credit card required. Unsubscribe anytime.</p>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-[color:var(--deep-charcoal)] text-white py-16 border-t border-white/10">
+  <div class="max-w-7xl mx-auto px-5 md:px-16">
+    <div class="grid md:grid-cols-4 gap-12 mb-12">
+      <div class="md:col-span-1">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="material-symbols-outlined text-[color:var(--vibrant-olive)]" style="font-size: 28px;">eco</span>
+          <span class="font-display text-xl font-bold">Lumina</span>
+        </div>
+        <p class="text-sm opacity-70 leading-relaxed">
+          Restoring metabolic health through science, care, and community.
+        </p>
+      </div>
+      <div>
+        <h4 class="label-caps opacity-60 mb-4">Program</h4>
+        <ul class="space-y-2 text-sm opacity-80">
+          <li><a href="#" class="hover:text-[color:var(--vibrant-olive)] transition">The Method</a></li>
+          <li><a href="#" class="hover:text-[color:var(--vibrant-olive)] transition">Curriculum</a></li>
+          <li><a href="#" class="hover:text-[color:var(--vibrant-olive)] transition">Science</a></li>
+          <li><a href="#" class="hover:text-[color:var(--vibrant-olive)] transition">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="label-caps opacity-60 mb-4">Resources</h4>
+        <ul class="space-y-2 text-sm opacity-80">
+          <li><a href="#" class="hover:text-[color:var(--vibrant-olive)] transition">Blog</a></li>
+          <li><a href="#" class="hover:text-[color:var(--vibrant-olive)] transition">Podcast</a></li>
+          <li><a href="#" class="hover:text-[color:var(--vibrant-olive)] transition">Community</a></li>
+          <li><a href="#" class="hover:text-[color:var(--vibrant-olive)] transition">Help Center</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="label-caps opacity-60 mb-4">Company</h4>
+        <ul class="space-y-2 text-sm opacity-80">
+          <li><a href="#" class="hover:text-[color:var(--vibrant-olive)] transition">About</a></li>
+          <li><a href="#" class="hover:text-[color:var(--vibrant-olive)] transition">Careers</a></li>
+          <li><a href="#" class="hover:text-[color:var(--vibrant-olive)] transition">Press</a></li>
+          <li><a href="#" class="hover:text-[color:var(--vibrant-olive)] transition">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs opacity-50">
+      <p>© 2025 Lumina Wellness. All rights reserved.</p>
+      <p>Made with care for your restoration.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

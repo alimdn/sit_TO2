@@ -271,16 +271,29 @@ function createModelAdapter(table: string) {
     },
 
     async create(args: CreateArgs) {
-      const { data, error } = await getClient()
+      // Inject defaults for NOT NULL fields that Prisma would auto-generate
+      const data = { ...args.data }
+      if (!data.id) {
+        // Generate a CUID-like ID
+        data.id = `${table.toLowerCase().slice(0, 3)}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+      }
+      if (!data.createdAt) {
+        data.createdAt = new Date().toISOString()
+      }
+      // updatedAt is NOT NULL on most tables
+      if (!data.updatedAt && table !== 'ContactMessage' && table !== 'Testimonial' && table !== 'FAQ' && table !== 'Payment' && table !== 'SiteSetting') {
+        data.updatedAt = new Date().toISOString()
+      }
+      const { data: result, error } = await getClient()
         .from(table)
-        .insert(args.data)
+        .insert(data)
         .select('*')
         .single()
       if (error) {
         console.error(`[db] ${table}.create error:`, error.message)
         throw new Error(error.message)
       }
-      return data
+      return result
     },
 
     async update(args: UpdateArgs) {

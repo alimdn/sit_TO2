@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Check, Sparkles, ArrowRight, Star } from 'lucide-react'
 import { useAppStore } from '@/lib/store'
 
-type BillingType = 'monthly' | 'semi_annual' | 'annual'
+type BillingType = 'monthly' | 'semi_annual' | 'annual' | 'store'
 
 interface Plan {
   id: string
@@ -58,6 +58,23 @@ const FALLBACK_PLANS: Record<BillingType, { price: number; period: string; label
       'Database setup & management',
       'Dedicated project manager',
       '2 months free',
+    ],
+  },
+  store: {
+    price: 100, period: 'month', label: 'Store Package', savings: 'Daily backups + e-commerce + all services', badge: 'Premium',
+    features: [
+      'Everything in Annual Plan, plus:',
+      'Daily automated backups (vs weekly in lower tiers)',
+      'Full e-commerce / store functionality',
+      'Unlimited products & categories',
+      'Payment gateway integration (Stripe / PayPal)',
+      'Inventory management dashboard',
+      'Order tracking & customer accounts',
+      '100 GB hosting storage',
+      'Priority 24/7 support with dedicated manager',
+      'Advanced SEO & analytics dashboard',
+      'Same 5-7 business days delivery',
+      'All previous services included',
     ],
   },
 }
@@ -198,16 +215,46 @@ export default function PlansPage() {
               <span className="text-[9px] font-bold text-[#10B981] uppercase tracking-wide ml-1">Best Value</span>
             )}
           </button>
+          <button
+            onClick={() => setBilling('store')}
+            className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
+              billing === 'store'
+                ? 'bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white shadow-md'
+                : 'text-[#43474d] hover:text-[#000f22]'
+            }`}
+          >
+            🛍️ Store
+            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
+              billing === 'store'
+                ? 'bg-white/20 text-white'
+                : 'bg-[#F59E0B]/10 text-[#F59E0B]'
+            }`}>
+              $100
+            </span>
+            {billing !== 'store' && (
+              <span className="text-[9px] font-bold text-[#F59E0B] uppercase tracking-wide ml-1">Premium</span>
+            )}
+          </button>
         </div>
       </div>
 
       {/* Single Pricing Card */}
       <div className="max-w-lg mx-auto mb-16">
-        <div className="relative rounded-2xl bg-gradient-to-br from-[#000f22] via-[#0A2540] to-[#0A2540] p-8 text-white shadow-2xl ring-1 ring-[#00D1FF]/30 overflow-hidden">
+        <div className={`relative rounded-2xl p-8 text-white shadow-2xl overflow-hidden transition-all duration-300 ${
+          billing === 'store'
+            ? 'bg-gradient-to-br from-[#1a1a2e] via-[#3a2a0a] to-[#1a1a2e] ring-2 ring-[#F59E0B]/50'
+            : 'bg-gradient-to-br from-[#000f22] via-[#0A2540] to-[#0A2540] ring-1 ring-[#00D1FF]/30'
+        }`}>
           {/* Best Value badge (only when annual is selected) */}
           {billing === 'annual' && (
             <div className="absolute -top-2 -right-2 bg-[#10B981] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-bl-xl rounded-tr-2xl shadow-lg z-10">
               ★ Best Value
+            </div>
+          )}
+          {/* Premium badge (only when store is selected) */}
+          {billing === 'store' && (
+            <div className="absolute -top-2 -right-2 bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-bl-xl rounded-tr-2xl shadow-lg z-10 flex items-center gap-1">
+              <span>🛍️</span> Premium Store
             </div>
           )}
           {/* Background decoration */}
@@ -257,14 +304,21 @@ export default function PlansPage() {
             {/* CTA Button */}
             <Button
               onClick={handleSubscribe}
-              className="w-full h-12 bg-[#00D1FF] hover:bg-[#00b8e6] text-[#000f22] font-semibold text-base"
+              className={`w-full h-12 font-semibold text-base transition-colors ${
+                billing === 'store'
+                  ? 'bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#B45309] text-white shadow-lg shadow-[#F59E0B]/30'
+                  : 'bg-[#00D1FF] hover:bg-[#00b8e6] text-[#000f22]'
+              }`}
             >
-              Get Started
+              {billing === 'store' ? '🛍️ Get Store Package' : 'Get Started'}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
 
             <p className="text-center text-xs text-[#768dad] mt-3">
-              No hidden fees. Cancel anytime.
+              {billing === 'store'
+                ? 'Includes daily backups + e-commerce + all services · 5-7 day delivery'
+                : 'No hidden fees. Cancel anytime.'
+              }
             </p>
           </div>
         </div>

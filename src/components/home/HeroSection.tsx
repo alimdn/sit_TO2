@@ -88,15 +88,12 @@ export default function HeroSection() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="animate-fade-in-up">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00D1FF]/10 border border-[#00D1FF]/20 mb-6">
-              <span className="w-2 h-2 rounded-full bg-[#00D1FF] animate-pulse" />
-              <span className="text-[#00D1FF] text-xs font-medium">{badge}</span>
-            </div>
-
-            {/* Pricing badge - prominent */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#10B981]/15 border border-[#10B981]/30 mb-6">
-              <span className="text-[#10B981] text-sm font-bold">Starting at $30/month</span>
-              <span className="text-[#768dad] text-xs">· Hosting Included</span>
+            {/* Premium Store Package announcement — replaces old AI-Powered badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#F59E0B]/15 to-[#10B981]/15 border border-[#F59E0B]/30 mb-6">
+              <span className="text-base">🛍️</span>
+              <span className="text-[#F59E0B] text-sm font-bold">New: Store Package</span>
+              <span className="text-[#768dad] text-xs">·</span>
+              <span className="text-white text-xs">$100/month · Daily Backups Included</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-4" style={{ letterSpacing: '-0.02em' }}>

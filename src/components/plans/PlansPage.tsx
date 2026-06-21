@@ -5,7 +5,9 @@ import { Button } from '@/components/ui/button'
 import { Check, Sparkles, ArrowRight, Star } from 'lucide-react'
 import { useAppStore } from '@/lib/store'
 
-type BillingType = 'monthly' | 'semi_annual' | 'annual' | 'store'
+type PlanType = 'regular' | 'store'
+type BillingCycle = 'monthly' | 'semi_annual' | 'annual'
+type BillingType = BillingCycle | 'store' | 'store_semi_annual' | 'store_annual'
 
 interface Plan {
   id: string
@@ -77,6 +79,39 @@ const FALLBACK_PLANS: Record<BillingType, { price: number; period: string; label
       'All previous services included',
     ],
   },
+  store_semi_annual: {
+    price: 550, period: '6 months', label: 'Store Package (Semi-Annual)', savings: 'Save $50 vs monthly · Daily backups + all services', badge: '-8%',
+    features: [
+      'Everything in Store Monthly, plus:',
+      'Save $50 vs paying monthly',
+      'Daily automated backups',
+      'Full e-commerce / store functionality',
+      'Unlimited products & categories',
+      'Payment gateway integration (Stripe / PayPal)',
+      'Inventory management dashboard',
+      'Order tracking & customer accounts',
+      '100 GB hosting storage',
+      'Priority 24/7 support with dedicated manager',
+      'Same 5-7 business days delivery',
+    ],
+  },
+  store_annual: {
+    price: 1100, period: 'year', label: 'Store Package (Annual)', savings: 'Save $100 vs monthly · Best Store value', badge: '-8%',
+    features: [
+      'Everything in Store Semi-Annual, plus:',
+      'Save $100 vs paying monthly',
+      'Best value for Store Package',
+      'Daily automated backups',
+      'Full e-commerce / store functionality',
+      'Unlimited products & categories',
+      'Payment gateway integration (Stripe / PayPal)',
+      'Inventory management dashboard',
+      'Order tracking & customer accounts',
+      '100 GB hosting storage',
+      'Priority 24/7 support with dedicated manager',
+      'Same 5-7 business days delivery',
+    ],
+  },
 }
 
 // When a plan from the API matches one of these intervals, use its price/features.
@@ -98,11 +133,18 @@ function safeParseFeatures(raw: string | undefined | null): string[] {
 
 export default function PlansPage() {
   const { setCurrentPage, user } = useAppStore()
-  const [billing, setBilling] = useState<BillingType>('monthly')
+  const [planType, setPlanType] = useState<PlanType>('regular')
+  const [cycle, setCycle] = useState<BillingCycle>('monthly')
   const [plans, setPlans] = useState<Plan[]>([])
   const [testimonials, setTestimonials] = useState<Array<{
     id: string; name: string; role: string; content: string; rating: number
   }>>([])
+
+  // Compute billing key based on planType + cycle
+  const billing: BillingType =
+    planType === 'store'
+      ? cycle === 'monthly' ? 'store' : cycle === 'semi_annual' ? 'store_semi_annual' : 'store_annual'
+      : cycle
 
   useEffect(() => {
     fetch('/api/plans')
@@ -165,94 +207,111 @@ export default function PlansPage() {
         </p>
       </div>
 
-      {/* Billing Toggle - 3 options */}
-      <div className="flex justify-center mb-10">
-        <div className="inline-flex items-center bg-[#f1f4f7] rounded-xl p-1.5 gap-1">
-          <button
-            onClick={() => setBilling('monthly')}
-            className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
-              billing === 'monthly'
-                ? 'bg-[#000f22] text-white shadow-md'
-                : 'text-[#43474d] hover:text-[#000f22]'
-            }`}
-          >
-            Monthly
-          </button>
-          <button
-            onClick={() => setBilling('semi_annual')}
-            className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
-              billing === 'semi_annual'
-                ? 'bg-[#000f22] text-white shadow-md'
-                : 'text-[#43474d] hover:text-[#000f22]'
-            }`}
-          >
-            Semi-Annual
-            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
-              billing === 'semi_annual'
-                ? 'bg-[#00D1FF] text-[#000f22]'
-                : 'bg-[#F59E0B]/10 text-[#F59E0B]'
-            }`}>
-              -11%
-            </span>
-          </button>
-          <button
-            onClick={() => setBilling('annual')}
-            className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
-              billing === 'annual'
-                ? 'bg-[#000f22] text-white shadow-md'
-                : 'text-[#43474d] hover:text-[#000f22]'
-            }`}
-          >
-            Annual
-            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
-              billing === 'annual'
-                ? 'bg-[#00D1FF] text-[#000f22]'
-                : 'bg-[#10B981]/10 text-[#10B981]'
-            }`}>
-              -17%
-            </span>
-            {billing !== 'annual' && (
-              <span className="text-[9px] font-bold text-[#10B981] uppercase tracking-wide ml-1">Best Value</span>
-            )}
-          </button>
-          <button
-            onClick={() => setBilling('store')}
-            className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
-              billing === 'store'
-                ? 'bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white shadow-md'
-                : 'text-[#43474d] hover:text-[#000f22]'
-            }`}
-          >
-            🛍️ Store
-            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
-              billing === 'store'
-                ? 'bg-white/20 text-white'
-                : 'bg-[#F59E0B]/10 text-[#F59E0B]'
-            }`}>
-              $100
-            </span>
-            {billing !== 'store' && (
-              <span className="text-[9px] font-bold text-[#F59E0B] uppercase tracking-wide ml-1">Premium</span>
-            )}
-          </button>
+      {/* Plan Type Toggle — Regular vs Store Package */}
+      <div className="flex flex-col items-center gap-6 mb-10">
+        <div>
+          <p className="text-center text-xs text-[#4F5B76] mb-3 uppercase tracking-wider font-semibold">Choose Plan Type</p>
+          <div className="inline-flex items-center bg-[#f1f4f7] rounded-xl p-1.5 gap-1">
+            <button
+              onClick={() => setPlanType('regular')}
+              className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                planType === 'regular'
+                  ? 'bg-[#000f22] text-white shadow-md'
+                  : 'text-[#43474d] hover:text-[#000f22]'
+              }`}
+            >
+              Regular
+            </button>
+            <button
+              onClick={() => setPlanType('store')}
+              className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
+                planType === 'store'
+                  ? 'bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white shadow-md'
+                  : 'text-[#43474d] hover:text-[#000f22]'
+              }`}
+            >
+              🛍️ Store Package
+              {planType !== 'store' && (
+                <span className="text-[9px] font-bold text-[#F59E0B] uppercase tracking-wide ml-1">Premium</span>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Billing Cycle Toggle — Monthly / Semi-Annual / Annual */}
+        <div>
+          <p className="text-center text-xs text-[#4F5B76] mb-3 uppercase tracking-wider font-semibold">Billing Cycle</p>
+          <div className="inline-flex items-center bg-[#f1f4f7] rounded-xl p-1.5 gap-1">
+            <button
+              onClick={() => setCycle('monthly')}
+              className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                cycle === 'monthly'
+                  ? planType === 'store' ? 'bg-[#F59E0B] text-white shadow-md' : 'bg-[#000f22] text-white shadow-md'
+                  : 'text-[#43474d] hover:text-[#000f22]'
+              }`}
+            >
+              Monthly
+            </button>
+            <button
+              onClick={() => setCycle('semi_annual')}
+              className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
+                cycle === 'semi_annual'
+                  ? planType === 'store' ? 'bg-[#F59E0B] text-white shadow-md' : 'bg-[#000f22] text-white shadow-md'
+                  : 'text-[#43474d] hover:text-[#000f22]'
+              }`}
+            >
+              Semi-Annual
+              <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
+                cycle === 'semi_annual'
+                  ? planType === 'store'
+                    ? 'bg-white/20 text-white'
+                    : 'bg-[#00D1FF] text-[#000f22]'
+                  : 'bg-[#F59E0B]/10 text-[#F59E0B]'
+              }`}>
+                {planType === 'store' ? '-8%' : '-11%'}
+              </span>
+            </button>
+            <button
+              onClick={() => setCycle('annual')}
+              className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
+                cycle === 'annual'
+                  ? planType === 'store' ? 'bg-[#F59E0B] text-white shadow-md' : 'bg-[#000f22] text-white shadow-md'
+                  : 'text-[#43474d] hover:text-[#000f22]'
+              }`}
+            >
+              Annual
+              <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
+                cycle === 'annual'
+                  ? planType === 'store'
+                    ? 'bg-white/20 text-white'
+                    : 'bg-[#00D1FF] text-[#000f22]'
+                  : 'bg-[#10B981]/10 text-[#10B981]'
+              }`}>
+                {planType === 'store' ? '-8%' : '-17%'}
+              </span>
+              {planType !== 'store' && cycle !== 'annual' && (
+                <span className="text-[9px] font-bold text-[#10B981] uppercase tracking-wide ml-1">Best Value</span>
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Single Pricing Card */}
       <div className="max-w-lg mx-auto mb-16">
         <div className={`relative rounded-2xl p-8 text-white shadow-2xl overflow-hidden transition-all duration-300 ${
-          billing === 'store'
+          planType === 'store'
             ? 'bg-gradient-to-br from-[#1a1a2e] via-[#3a2a0a] to-[#1a1a2e] ring-2 ring-[#F59E0B]/50'
             : 'bg-gradient-to-br from-[#000f22] via-[#0A2540] to-[#0A2540] ring-1 ring-[#00D1FF]/30'
         }`}>
-          {/* Best Value badge (only when annual is selected) */}
+          {/* Best Value badge (only when regular annual is selected) */}
           {billing === 'annual' && (
             <div className="absolute -top-2 -right-2 bg-[#10B981] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-bl-xl rounded-tr-2xl shadow-lg z-10">
               ★ Best Value
             </div>
           )}
-          {/* Premium badge (only when store is selected) */}
-          {billing === 'store' && (
+          {/* Premium badge (any store plan selected) */}
+          {planType === 'store' && (
             <div className="absolute -top-2 -right-2 bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-bl-xl rounded-tr-2xl shadow-lg z-10 flex items-center gap-1">
               <span>🛍️</span> Premium Store
             </div>
@@ -305,17 +364,17 @@ export default function PlansPage() {
             <Button
               onClick={handleSubscribe}
               className={`w-full h-12 font-semibold text-base transition-colors ${
-                billing === 'store'
+                planType === 'store'
                   ? 'bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#B45309] text-white shadow-lg shadow-[#F59E0B]/30'
                   : 'bg-[#00D1FF] hover:bg-[#00b8e6] text-[#000f22]'
               }`}
             >
-              {billing === 'store' ? '🛍️ Get Store Package' : 'Get Started'}
+              {planType === 'store' ? '🛍️ Get Store Package' : 'Get Started'}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
 
             <p className="text-center text-xs text-[#768dad] mt-3">
-              {billing === 'store'
+              {planType === 'store'
                 ? 'Includes daily backups + e-commerce + all services · 5-7 day delivery'
                 : 'No hidden fees. Cancel anytime.'
               }

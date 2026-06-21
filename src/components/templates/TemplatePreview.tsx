@@ -60,6 +60,8 @@ const SIMILARITY_OPTIONS = [
 export default function TemplatePreview() {
   const { previewTemplate, setPreviewTemplate, setCurrentPage, user, setCheckoutData } = useAppStore()
   const [template, setTemplate] = useState<Template | null>(null)
+  const [templateError, setTemplateError] = useState<string | null>(null)
+  const [iframeLoaded, setIframeLoaded] = useState(false)
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([])
   const [billing, setBilling] = useState<'monthly' | 'semi_annual' | 'annual'>('monthly')
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])
@@ -111,10 +113,15 @@ export default function TemplatePreview() {
   useEffect(() => {
     if (!previewTemplate) return
     let cancelled = false
+    setTemplate(null)
+    setTemplateError(null)
     fetch(`/api/templates/${previewTemplate}`)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`)
+        return res.json()
+      })
       .then(data => {
-        if (!cancelled) {
+        if (!cancelled && data && data.id) {
           setTemplate(data)
           const templateFeatures: string[] = data?.features ? JSON.parse(data.features) : []
           // Only auto-select the first 5 features (within the free limit).
@@ -122,10 +129,18 @@ export default function TemplatePreview() {
           // customer can manually add them as paid extras (+$3 each).
           setSelectedFeatures(templateFeatures.slice(0, FREE_FEATURES_LIMIT))
           setExtraTemplateFeatures(templateFeatures.slice(FREE_FEATURES_LIMIT))
+        } else if (!cancelled) {
+          setTemplateError('Template not found')
         }
       })
-      .catch(() => { if (!cancelled) setTemplate(null) })
-    return () => { cancelled = true; setTemplate(null) }
+      .catch((e) => {
+        console.error('[TemplatePreview] Failed to load template:', e)
+        if (!cancelled) {
+          setTemplate(null)
+          setTemplateError('Failed to load template. Please try again.')
+        }
+      })
+    return () => { cancelled = true; setTemplate(null); setTemplateError(null) }
   }, [previewTemplate])
 
   // Fetch plan prices once so admin changes propagate to this preview.
@@ -315,7 +330,7 @@ export default function TemplatePreview() {
                 {/* Live Preview action bar */}
                 <div className="mt-3 flex items-center gap-3">
                   <button
-                    onClick={() => setShowFullPreview(true)}
+                    onClick={() => { setIframeLoaded(false); setShowFullPreview(true) }}
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#000f22] hover:bg-[#0A2540] text-white text-xs font-medium transition-colors relative overflow-hidden group/lp"
                   >
                     <span className="absolute inset-0 bg-gradient-to-r from-[#00D1FF]/0 via-[#00D1FF]/10 to-[#00D1FF]/0 translate-x-[-100%] group-hover/lp:translate-x-[100%] transition-transform duration-700" />
@@ -860,9 +875,23 @@ export default function TemplatePreview() {
               {/* Add-ons list — hidden from sidebar, features section under image is sufficient */}
             </div>
           </div>
+        ) : templateError ? (
+          <div className="flex flex-col items-center justify-center py-32 gap-4">
+            <div className="w-12 h-12 rounded-full bg-[#fee2e2] flex items-center justify-center">
+              <svg className="w-6 h-6 text-[#dc2626]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+            </div>
+            <p className="text-[#dc2626] text-sm font-medium">{templateError}</p>
+            <button
+              onClick={() => setPreviewTemplate(null)}
+              className="text-sm text-[#4F5B76] hover:text-[#000f22] underline"
+            >
+              Close and try again
+            </button>
+          </div>
         ) : (
-          <div className="flex items-center justify-center py-32">
-            <div className="w-8 h-8 border-3 border-[#00D1FF] border-t-transparent rounded-full animate-spin" />
+          <div className="flex flex-col items-center justify-center py-32 gap-3">
+            <div className="w-8 h-8 border-[3px] border-[#00D1FF] border-t-transparent rounded-full animate-spin" />
+            <p className="text-xs text-[#4F5B76]">Loading template...</p>
           </div>
         )}
       </div>
@@ -925,13 +954,21 @@ export default function TemplatePreview() {
             {/* Browser content area */}
             <div className="flex-1 overflow-hidden bg-white relative">
               {(template.livePreview || template.previewUrl) ? (
-                <iframe
-                  src={template.livePreview || template.previewUrl}
-                  title={`${template.title} — Live Preview`}
-                  className="w-full h-full border-0"
-                  sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-                  loading="lazy"
-                />
+                <>
+                  {!iframeLoaded && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-white z-10 gap-3">
+                      <div className="w-10 h-10 border-[3px] border-[#00D1FF] border-t-transparent rounded-full animate-spin" />
+                      <p className="text-xs text-[#4F5B76]">Loading live preview...</p>
+                    </div>
+                  )}
+                  <iframe
+                    src={template.livePreview || template.previewUrl}
+                    title={`${template.title} — Live Preview`}
+                    className="w-full h-full border-0"
+                    sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                    onLoad={() => setIframeLoaded(true)}
+                  />
+                </>
               ) : (
                 <img
                   src={template.image}

@@ -92,7 +92,7 @@ function TemplatesPage() {
         </div>
         <TemplateGrid />
       </div>
-      <Suspense fallback={<div className="fixed inset-0 z-50 bg-[#f7fafd] flex items-center justify-center"><div className="w-8 h-8 border-3 border-[#00D1FF] border-t-transparent rounded-full animate-spin" /></div>}>
+      <Suspense fallback={<div className="fixed inset-0 z-50 bg-[#f7fafd] flex items-center justify-center"><div className="w-8 h-8 border-[3px] border-[#00D1FF] border-t-transparent rounded-full animate-spin" /></div>}>
         <TemplatePreview />
       </Suspense>
     </div>

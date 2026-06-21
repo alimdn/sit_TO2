@@ -52,7 +52,6 @@ export default function Footer() {
   const siteDesc = settings.site_description || DEFAULTS.site_description
   const contactEmail = settings.contact_email || DEFAULTS.contact_email
   const contactAddressRaw = settings.contact_address || DEFAULTS.contact_address
-  const contactAddress = contactAddressRaw.replace(/\n/g, '<br />')
 
   // Split brand name to highlight suffix (e.g. "WebForge" → "Web" + "Forge")
   // If the name contains "Forge", highlight it; otherwise highlight last 5 chars.
@@ -125,7 +124,7 @@ export default function Footer() {
                 </a>
               </li>
               {contactAddressRaw && (
-                <li dangerouslySetInnerHTML={{ __html: contactAddress }} />
+                <li className="whitespace-pre-line">{contactAddressRaw}</li>
               )}
             </ul>
           </div>

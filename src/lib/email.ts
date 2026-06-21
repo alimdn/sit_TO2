@@ -107,7 +107,7 @@ function emailWrapper(content: string): string {
     <div style="${baseStyle}">
       <div style="${headerStyle}">
         <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">
-          Web<span style="color: #00D1FF;">Flow</span>Sub
+          Web<span style="color: #00D1FF;">Forge</span>
         </h1>
       </div>
       <div style="padding: 32px 40px;">

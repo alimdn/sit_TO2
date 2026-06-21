@@ -36,10 +36,14 @@ const FREE_FEATURES_LIMIT = 5
 
 // Hardcoded fallback prices — used if /api/plans is unreachable.
 // These mirror the production values and are kept in sync manually.
+// Includes all 6 plans (3 regular + 3 store variants).
 const FALLBACK_PRICES: Record<string, number> = {
   monthly: 30,
   semi_annual: 160,
   annual: 300,
+  store: 100,
+  store_semi_annual: 550,
+  store_annual: 1100,
 }
 
 interface PaymentGateway {
@@ -167,7 +171,7 @@ export default function CheckoutPage() {
 
     try {
       // Create order with all features data
-      await fetch('/api/orders', {
+      const orderRes = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -206,6 +210,10 @@ export default function CheckoutPage() {
         }),
       })
 
+      if (!orderRes.ok) {
+        console.error('[CheckoutPage] Order creation HTTP error:', orderRes.status)
+      }
+
       // Send invoice email
       if (user?.email) {
         try {
@@ -231,8 +239,16 @@ export default function CheckoutPage() {
           })
         } catch { /* email failure shouldn't block checkout */ }
       }
-    } catch {
-      // silently continue even if order creation fails (e.g. Vercel serverless)
+    } catch (orderError) {
+      console.error('[CheckoutPage] Order creation failed:', orderError)
+      // Show error toast but still redirect — order data is in checkoutData
+      // and admin can manually follow up. Better than blocking the user.
+      try {
+        const { toast } = await import('sonner')
+        toast.error('Order processing issue', {
+          description: 'Your payment was received but order creation had a problem. Our team will contact you shortly.',
+        })
+      } catch {}
     }
     setTimeout(() => {
       setProcessing(false)

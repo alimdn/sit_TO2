@@ -87,16 +87,9 @@ function applyFilters(query: any, where?: PrismaWhere): any {
 
   for (const [key, value] of Object.entries(where)) {
     if (key === 'AND' && Array.isArray(value)) {
-      // AND: each filter must match — chain with .and()
-      const filters = value.map((f) => buildFilterString(f)).filter(Boolean)
-      if (filters.length) {
-        q = q.or(filters.join(','))
-        // Actually, supabase: .or with comma = OR. For AND we need .and() — but supabase-js uses nested filters.
-        // Simpler: apply each AND filter as its own .eq/.contains chain.
-        q = query
-        for (const f of value) {
-          q = applyFilters(q, f)
-        }
+      // AND: each filter must match — apply each as its own filter chain
+      for (const f of value) {
+        q = applyFilters(q, f)
       }
       continue
     }

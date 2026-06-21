@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Check, Sparkles, ArrowRight, Star } from 'lucide-react'
 import { useAppStore } from '@/lib/store'
+import { toast } from 'sonner'
 
 type PlanType = 'regular' | 'store'
 type BillingCycle = 'monthly' | 'semi_annual' | 'annual'
@@ -177,21 +178,36 @@ export default function PlansPage() {
   const currentBadge = fallback.badge
   const currentFeatures = apiPlan ? safeParseFeatures(apiPlan.features) : fallback.features
 
-  const handleSubscribe = () => {
+  const [subscribing, setSubscribing] = useState(false)
+
+  const handleSubscribe = async () => {
     if (!user) {
       setCurrentPage('login')
       return
     }
-    fetch('/api/subscriptions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ planId: billing }),
-    })
-      .then(() => {
+    setSubscribing(true)
+    try {
+      const res = await fetch('/api/subscriptions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user.id, planId: billing }),
+      })
+      if (res.ok) {
+        toast.success('Subscription activated successfully!', {
+          description: `You're now subscribed to the ${currentLabel}.`,
+        })
         setCurrentPage('dashboard')
         window.scrollTo({ top: 0, behavior: 'smooth' })
-      })
-      .catch(() => {})
+      } else {
+        const err = await res.json().catch(() => ({}))
+        const msg = err?.error || `Failed to subscribe (HTTP ${res.status})`
+        toast.error(msg)
+      }
+    } catch (e) {
+      toast.error('Network error. Please try again.')
+    } finally {
+      setSubscribing(false)
+    }
   }
 
   return (
@@ -363,14 +379,24 @@ export default function PlansPage() {
             {/* CTA Button */}
             <Button
               onClick={handleSubscribe}
+              disabled={subscribing}
               className={`w-full h-12 font-semibold text-base transition-colors ${
                 planType === 'store'
                   ? 'bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#B45309] text-white shadow-lg shadow-[#F59E0B]/30'
                   : 'bg-[#00D1FF] hover:bg-[#00b8e6] text-[#000f22]'
               }`}
             >
-              {planType === 'store' ? '🛍️ Get Store Package' : 'Get Started'}
-              <ArrowRight className="ml-2 h-4 w-4" />
+              {subscribing ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  {planType === 'store' ? '🛍️ Get Store Package' : 'Get Started'}
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </>
+              )}
             </Button>
 
             <p className="text-center text-xs text-[#768dad] mt-3">

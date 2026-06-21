@@ -84,7 +84,7 @@ export default function TestimonialsSection() {
             What Our Clients Say
           </h2>
           <p className="mt-4 text-[#4F5B76] max-w-2xl mx-auto">
-            Join hundreds of satisfied customers who have transformed their online presence with WebForge.
+            Read what our customers say about their experience with WebForge.
           </p>
         </div>
 

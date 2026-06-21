@@ -38,11 +38,9 @@ export default function TemplateGrid() {
   useEffect(() => {
     const fetchTemplates = async () => {
       try {
-        // Use cache-busting query param + no-store headers
-        const res = await fetch(`/api/templates?_t=${Date.now()}`, {
-          cache: 'no-store',
-          headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
-        })
+        // cache: 'no-store' is sufficient to bypass browser cache and
+        // always fetch fresh data from the server.
+        const res = await fetch('/api/templates', { cache: 'no-store' })
         const data = await res.json()
         const list = Array.isArray(data) ? data : (Array.isArray(data?.data) ? data.data : [])
         // Defensive: only show active templates (in case the API returns all)

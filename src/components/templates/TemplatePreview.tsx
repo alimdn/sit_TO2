@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, ChevronDown, PenLine, LayoutDashboard, Clock, Search, AlertTriangle, ExternalLink, RotateCw } from 'lucide-react'
+import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, PenLine, LayoutDashboard, Clock, Search, AlertTriangle, ExternalLink, RotateCw } from 'lucide-react'
 
 interface Template {
   id: string
@@ -63,16 +63,20 @@ export default function TemplatePreview() {
   const [templateError, setTemplateError] = useState<string | null>(null)
   const [iframeLoaded, setIframeLoaded] = useState(false)
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([])
-  const [billing, setBilling] = useState<'monthly' | 'semi_annual' | 'annual'>('monthly')
+  const [billing, setBilling] = useState<'monthly' | 'semi_annual' | 'annual' | 'store' | 'store_semi_annual' | 'store_annual'>('monthly')
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])
   const [showFeaturePicker, setShowFeaturePicker] = useState(false)
   const [customFeatureInput, setCustomFeatureInput] = useState('')
 
   // Plan prices loaded from /api/plans so admin changes reflect here.
+  // Includes all 6 plans (3 regular + 3 store variants).
   const [planPrices, setPlanPrices] = useState<Record<string, number>>({
     monthly: 30,
     semi_annual: 160,
     annual: 300,
+    store: 100,
+    store_semi_annual: 550,
+    store_annual: 1100,
   })
 
   // Additional info & similar site
@@ -93,22 +97,26 @@ export default function TemplatePreview() {
   // Full screen preview
   const [showFullPreview, setShowFullPreview] = useState(false)
 
-  // Reset when template changes
-  const prevTemplateRef = useState<string | null>(null)
-  if (prevTemplateRef[0] !== previewTemplate) {
-    prevTemplateRef[1](previewTemplate)
-    if (previewTemplate) {
-      setSelectedAddOns([])
-      setBilling('monthly')
-      setShowFeaturePicker(false)
-      setAdditionalInfo('')
-      setSimilarSiteUrl('')
-      setSelectedSimilarities([])
-      setDomainQuery('')
-      setDomainResults([])
-      setSelectedDomain(null)
+  // Reset add-on state when the previewed template changes.
+  // Implemented as a useEffect (not setState-during-render) to avoid
+  // the React anti-pattern of calling setState in the render phase.
+  const prevTemplateRef = useRef<string | null>(null)
+  useEffect(() => {
+    if (prevTemplateRef.current !== previewTemplate) {
+      prevTemplateRef.current = previewTemplate
+      if (previewTemplate) {
+        setSelectedAddOns([])
+        setBilling('monthly')
+        setShowFeaturePicker(false)
+        setAdditionalInfo('')
+        setSimilarSiteUrl('')
+        setSelectedSimilarities([])
+        setDomainQuery('')
+        setDomainResults([])
+        setSelectedDomain(null)
+      }
     }
-  }
+  }, [previewTemplate])
 
   useEffect(() => {
     if (!previewTemplate) return
@@ -315,7 +323,7 @@ export default function TemplatePreview() {
               >
                 <span>Get This Template</span>
                 <span className="opacity-80">·</span>
-                <span className="opacity-90">$30/month</span>
+                <span className="opacity-90">${planPrices[billing] || 30}/{billing === 'annual' || billing === 'store_annual' ? 'year' : billing === 'semi_annual' || billing === 'store_semi_annual' ? '6mo' : 'month'}</span>
               </button>
             </div>
           )}
@@ -869,7 +877,7 @@ export default function TemplatePreview() {
                     onClick={handleProceedToCheckout}
                     className="w-full bg-[#10B981] hover:bg-[#059669] text-white font-semibold h-12 text-base shadow-md shadow-[#10B981]/20"
                   >
-                    Get This Template — $30/month
+                    Get This Template — ${planPrices[billing] || 30}/{billing === 'annual' || billing === 'store_annual' ? 'year' : billing === 'semi_annual' || billing === 'store_semi_annual' ? '6mo' : 'month'}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
 

@@ -95,6 +95,81 @@ export async function seedDatabase() {
     },
   })
 
+  // Store Package plans (3 variants)
+  const storeMonthlyPlan = await db.subscriptionPlan.create({
+    data: {
+      name: 'Store Package',
+      price: 100,
+      currency: 'USD',
+      interval: 'store',
+      features: JSON.stringify([
+        'Everything in Annual Plan, plus:',
+        'Daily automated backups (vs weekly in lower tiers)',
+        'Full e-commerce / store functionality',
+        'Unlimited products & categories',
+        'Payment gateway integration (Stripe / PayPal)',
+        'Inventory management dashboard',
+        'Order tracking & customer accounts',
+        '100 GB hosting storage',
+        'Priority 24/7 support with dedicated manager',
+        'Advanced SEO & analytics dashboard',
+        'Same 5-7 business days delivery',
+        'All previous services included',
+      ]),
+      popular: false,
+      active: true,
+    },
+  })
+
+  const storeSemiAnnualPlan = await db.subscriptionPlan.create({
+    data: {
+      name: 'Store Package (Semi-Annual)',
+      price: 550,
+      currency: 'USD',
+      interval: 'store_semi_annual',
+      features: JSON.stringify([
+        'Everything in Store Monthly, plus:',
+        'Save $50 vs paying monthly',
+        'Daily automated backups',
+        'Full e-commerce / store functionality',
+        'Unlimited products & categories',
+        'Payment gateway integration (Stripe / PayPal)',
+        'Inventory management dashboard',
+        'Order tracking & customer accounts',
+        '100 GB hosting storage',
+        'Priority 24/7 support with dedicated manager',
+        'Same 5-7 business days delivery',
+      ]),
+      popular: false,
+      active: true,
+    },
+  })
+
+  const storeAnnualPlan = await db.subscriptionPlan.create({
+    data: {
+      name: 'Store Package (Annual)',
+      price: 1100,
+      currency: 'USD',
+      interval: 'store_annual',
+      features: JSON.stringify([
+        'Everything in Store Semi-Annual, plus:',
+        'Save $100 vs paying monthly',
+        'Best value for Store Package',
+        'Daily automated backups',
+        'Full e-commerce / store functionality',
+        'Unlimited products & categories',
+        'Payment gateway integration (Stripe / PayPal)',
+        'Inventory management dashboard',
+        'Order tracking & customer accounts',
+        '100 GB hosting storage',
+        'Priority 24/7 support with dedicated manager',
+        'Same 5-7 business days delivery',
+      ]),
+      popular: false,
+      active: true,
+    },
+  })
+
   // Create templates
   const templates = [
     {

@@ -20,7 +20,7 @@ export interface CheckoutData {
   templateImage: string
   templateCategory: string
   templateFeatures: string[]
-  billing: 'monthly' | 'semi_annual' | 'annual'
+  billing: 'monthly' | 'semi_annual' | 'annual' | 'store' | 'store_semi_annual' | 'store_annual'
   selectedAddOns: string[]
   additionalInfo?: string
   similarSiteUrl?: string

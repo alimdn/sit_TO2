@@ -37,21 +37,25 @@ export async function GET() {
     getDeletedTemplateIds(),
   ])
 
-  // 3) Merge
+  // 3) Merge: DB first (source of truth), then Blob overrides (only for
+  //    templates NOT in the DB), then fallback seed templates.
+  //    This ensures that when admin toggles active=false on a DB template,
+  //    the Blob's stale active=true doesn't override it.
   const merged: any[] = []
   const seenIds = new Set<string>()
   const seenTitles = new Set<string>()
 
-  // 3a. Admin overrides first (BOTH active and inactive — admin needs to see all)
-  for (const t of adminTemplates) {
+  // 3a. DB rows first — DB is the source of truth (includes BOTH active and inactive)
+  for (const t of dbTemplates) {
     if (deletedIds.has(t.id)) continue
     merged.push(t)
     seenIds.add(t.id)
     seenTitles.add(t.title)
   }
 
-  // 3b. DB rows (when available) — include inactive ones too
-  for (const t of dbTemplates) {
+  // 3b. Blob overrides — only for templates NOT already in the DB
+  //     (These are legacy templates from before the DB was set up.)
+  for (const t of adminTemplates) {
     if (deletedIds.has(t.id)) continue
     if (seenIds.has(t.id)) continue
     if (seenTitles.has(t.title)) continue

@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
       // Generate a unique public_id based on timestamp
       public_id: `${uploadFolder}_${Date.now()}`,
       // Auto-tag for easy management
-      tags: [uploadFolder, 'webflowsub'],
+      tags: [uploadFolder, 'webforge'],
       // Overwrite if same public_id exists
       overwrite: false,
       // Generate eager transformations for common sizes

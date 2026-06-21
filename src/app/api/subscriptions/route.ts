@@ -71,8 +71,13 @@ export async function POST(req: NextRequest) {
     }
 
     let plan
-    // Try lookup by interval first (PlansPage sends interval strings)
-    plan = await db.subscriptionPlan.findFirst({ where: { interval: planId, active: true } })
+    // Try lookup by interval first (PlansPage sends interval strings).
+    // findMany with take:1 is the adapter's equivalent of findFirst.
+    const plans = await db.subscriptionPlan.findMany({
+      where: { interval: planId, active: true },
+      take: 1,
+    })
+    plan = plans[0]
     // Fallback to lookup by id (cuid)
     if (!plan) {
       try {

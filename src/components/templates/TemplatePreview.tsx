@@ -31,6 +31,7 @@ const SHARED_ADD_ONS = [
   { id: 'security', name: 'Advanced Security Suite', description: 'DDoS protection, malware scanning, 2FA & security monitoring' },
   { id: 'backup', name: 'Automated Backups', description: 'Daily backups with one-click restore & 30-day retention' },
   { id: 'speed', name: 'Performance Booster', description: 'CDN, image optimization, lazy loading & Core Web Vitals tuning' },
+  { id: 'like_button', name: 'Like / Favorite Button', description: 'Animated like button with particle effects (React component)' },
 ]
 
 // ─── Regular-only Add-Ons (NOT shown for Store Package) ───

@@ -32,6 +32,32 @@ const ADD_ONS = [
   { id: 'speed', name: 'Performance Booster', description: 'CDN, image optimization, lazy loading & Core Web Vitals tuning' },
 ]
 
+// Store-specific add-ons — shown when the customer selects Store Package.
+// These are e-commerce focused enhancements on top of the Store base features.
+// First 10 are free; extras are +$3/mo each.
+const STORE_ADD_ONS = [
+  { id: 'store_seo', name: 'E-Commerce SEO Suite', description: 'Product schema, rich snippets, category optimization & conversion tracking' },
+  { id: 'store_analytics', name: 'Sales Analytics Pro', description: 'Revenue dashboards, customer journeys, funnel analysis & A/B testing' },
+  { id: 'store_multilang', name: 'Multi-Language Store', description: 'Translate your store into up to 8 languages with currency auto-switching' },
+  { id: 'store_blog', name: 'Content Marketing Hub', description: 'Blog, lookbooks, gift guides & email newsletter integration' },
+  { id: 'store_social', name: 'Social Commerce Sync', description: 'Instagram/Facebook/TikTok shop sync, auto-post & social ads' },
+  { id: 'store_chat', name: 'AI Sales Chatbot', description: '24/7 AI chatbot for product recommendations, FAQs & order tracking' },
+  { id: 'store_security', name: 'Fraud Protection Suite', description: 'AI fraud detection, chargeback alerts, PCI compliance & SSL monitoring' },
+  { id: 'store_backup', name: 'Real-time Backup Mirror', description: 'Real-time database replication + hourly snapshots + 90-day retention' },
+  { id: 'store_speed', name: 'Store Performance Turbo', description: 'Edge caching, image CDN, lazy load & Core Web Vitals < 1.5s' },
+  { id: 'store_loyalty', name: 'Loyalty & Rewards Pro', description: 'Points engine, VIP tiers, referral program & birthday rewards' },
+  { id: 'store_email', name: 'Email Marketing Automation', description: 'Welcome series, abandoned cart, post-purchase & win-back flows' },
+  { id: 'store_sms', name: 'SMS Marketing & Notifications', description: 'Order updates, delivery alerts, promo campaigns & 2FA SMS' },
+  { id: 'store_reviews', name: 'Reviews & UGC Engine', description: 'Photo/video reviews, Q&A, automated review requests & moderation' },
+  { id: 'store_abandoned', name: 'Abandoned Cart Recovery Pro', description: 'Multi-channel recovery (email + SMS + push) with AI timing' },
+  { id: 'store_subscriptions', name: 'Subscription Box Module', description: 'Recurring billing, customizable boxes, skip/pause & customer portal' },
+  { id: 'store_marketplace', name: 'Multi-Vendor Marketplace', description: 'Vendor onboarding, commission splits, vendor dashboards & payouts' },
+  { id: 'store_b2b', name: 'B2B Wholesale Tier', description: 'Wholesale pricing, bulk order forms, quote requests & net-30 terms' },
+  { id: 'store_integrations', name: 'ERP & Accounting Sync', description: 'QuickBooks, Xero, SAP, ShipStation, Mailchimp & Zapier integrations' },
+  { id: 'store_ar', name: 'AR Product Try-On', description: '3D product viewer & augmented reality try-on for fashion/beauty/home' },
+  { id: 'store_localization', name: 'Global Tax & Duties', description: 'Real-time tax calculation, HS codes, duty estimates & IOSS compliance' },
+]
+
 const EXTRA_FEATURES_POOL = [
   'Responsive Design', 'SEO Optimized', 'Contact Forms', 'Analytics Integration',
   'Multi-page Layout', 'Newsletter Signup', 'Image Gallery', 'Video Support',
@@ -157,9 +183,10 @@ export default function TemplatePreview() {
   }, [previewTemplate])
 
   // When the user switches plan type (Regular ↔ Store), reset the selected
-  // features so the new pool's auto-selected features show up correctly.
+  // features and add-ons so the new pool's auto-selected items show up correctly.
   // We pre-select the first N features from the new pool (5 for Regular,
   // 10 for Store) so the user sees a sensible default set immediately.
+  // Add-ons are reset to empty (user picks manually).
   const prevPlanTypeRef = useRef<'regular' | 'store'>('regular')
   useEffect(() => {
     if (prevPlanTypeRef.current !== planType) {
@@ -168,6 +195,8 @@ export default function TemplatePreview() {
       const pool = planType === 'store' ? STORE_FEATURES_POOL : EXTRA_FEATURES_POOL
       const limit = planType === 'store' ? 10 : FREE_FEATURES_LIMIT
       setSelectedFeatures(pool.slice(0, limit))
+      // Reset add-ons (different IDs for Regular vs Store)
+      setSelectedAddOns([])
       setShowFeaturePicker(false)
     }
   }, [planType])
@@ -234,9 +263,17 @@ export default function TemplatePreview() {
 
   const extraFeaturesCount = Math.max(0, selectedFeatures.length - currentFreeLimit)
   const extraFeatureCost = extraFeaturesCount * 3
-  const addOnCostMonthly = selectedAddOns.length * 3
-  const addOnCostSemiAnnual = selectedAddOns.length * 18
-  const addOnCostAnnual = selectedAddOns.length * 36
+
+  // Add-on free limit: 0 for Regular (all add-ons are paid at $3/mo each),
+  // 10 for Store Package (first 10 add-ons free, extras +$3/mo each)
+  const addOnFreeLimit = planType === 'store' ? 10 : 0
+  const extraAddOnsCount = Math.max(0, selectedAddOns.length - addOnFreeLimit)
+  const addOnCostMonthly = extraAddOnsCount * 3
+  const addOnCostSemiAnnual = extraAddOnsCount * 18
+  const addOnCostAnnual = extraAddOnsCount * 36
+
+  // The current add-ons list (Regular or Store-specific)
+  const currentAddOns = planType === 'store' ? STORE_ADD_ONS : ADD_ONS
 
   // Domain cost calculation
   const domainBaseIncluded = 50
@@ -872,6 +909,85 @@ export default function TemplatePreview() {
                   </div>
                 )}
               </div>
+
+              {/* Add-ons Section — Premium enhancements
+                  Different lists for Regular vs Store Package.
+                  Regular: all add-ons are +$3/mo each (no free ones).
+                  Store: first 10 free, extras +$3/mo each. */}
+              <div className={`bg-white rounded-2xl p-5 border shadow-card ${
+                planType === 'store' ? 'border-[#F59E0B]/30' : 'border-[#e6ebf1]'
+              }`}>
+                <div className="flex items-center justify-between mb-2">
+                  <h2 className="text-base font-bold text-[#000f22] flex items-center gap-2">
+                    {planType === 'store' && <ShoppingCart className="h-4 w-4 text-[#F59E0B]" />}
+                    {planType === 'store' ? 'Store Add-Ons' : 'Add-Ons'}
+                  </h2>
+                  <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${
+                    planType === 'store' ? 'bg-[#F59E0B]/15 text-[#92400E]' : 'bg-[#f1f4f7] text-[#4F5B76]'
+                  }`} translate="no" lang="en">
+                    {selectedAddOns.length} selected
+                    {planType === 'store' && ` · ${addOnFreeLimit} free`}
+                  </span>
+                </div>
+
+                {planType === 'store' ? (
+                  <p className="text-xs text-[#4F5B76] mb-3">
+                    First {addOnFreeLimit} free. Extra: <span className="font-semibold text-[#000f22]" translate="no" lang="en">+$3/{period}</span> each.
+                  </p>
+                ) : (
+                  <p className="text-xs text-[#4F5B76] mb-3">
+                    Each add-on: <span className="font-semibold text-[#000f22]" translate="no" lang="en">+$3/{period}</span>
+                  </p>
+                )}
+
+                {/* Add-ons grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {currentAddOns.map((addOn, i) => {
+                    const isSelected = selectedAddOns.includes(addOn.id)
+                    const isFreeAddOn = planType === 'store' && i < addOnFreeLimit
+                    return (
+                      <button
+                        key={addOn.id}
+                        onClick={() => toggleAddOn(addOn.id)}
+                        className={`text-left p-3 rounded-xl border transition-all duration-200 ${
+                          isSelected
+                            ? planType === 'store'
+                              ? 'border-[#F59E0B] bg-[#FFF8E1] ring-1 ring-[#F59E0B]/30'
+                              : 'border-[#00D1FF] bg-[#00D1FF]/5 ring-1 ring-[#00D1FF]/30'
+                            : 'border-[#e6ebf1] hover:border-[#c4c6ce] bg-white'
+                        }`}
+                      >
+                        <div className="flex items-start gap-2">
+                          <div className={`w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                            isSelected
+                              ? planType === 'store' ? 'border-[#F59E0B] bg-[#F59E0B]' : 'border-[#00D1FF] bg-[#00D1FF]'
+                              : 'border-[#c4c6ce]'
+                          }`}>
+                            {isSelected && <Check className="h-2.5 w-2.5 text-white" />}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="text-xs font-semibold text-[#000f22] truncate">{addOn.name}</span>
+                              {planType === 'store' && isFreeAddOn ? (
+                                <span className="text-[9px] font-bold text-[#10B981] flex-shrink-0" translate="no" lang="en">FREE</span>
+                              ) : (
+                                <span className="text-[9px] font-bold text-[#F59E0B] flex-shrink-0" translate="no" lang="en">+$3</span>
+                              )}
+                            </div>
+                            <p className="text-[10px] text-[#74777e] leading-relaxed mt-0.5 line-clamp-2">{addOn.description}</p>
+                          </div>
+                        </div>
+                      </button>
+                    )
+                  })}
+                </div>
+
+                {planType === 'store' && selectedAddOns.length > addOnFreeLimit && (
+                  <p className="text-[10px] text-[#F59E0B] mt-2 font-medium">
+                    {selectedAddOns.length - addOnFreeLimit} extra add-on{selectedAddOns.length - addOnFreeLimit > 1 ? 's' : ''} beyond the {addOnFreeLimit} free included (+$3/{period} each)
+                  </p>
+                )}
+              </div>
             </div>
 
             {/* Right: Pricing & Add-ons (1 column) */}
@@ -958,14 +1074,21 @@ export default function TemplatePreview() {
                     </div>
                   )}
 
-                  {selectedAddOns.map((addOnId) => {
-                    const addOn = ADD_ONS.find(a => a.id === addOnId)
-                    return addOn ? (
+                  {selectedAddOns.map((addOnId, idx) => {
+                    const addOn = currentAddOns.find(a => a.id === addOnId)
+                    if (!addOn) return null
+                    // For Store: first 10 add-ons are free (no extra charge in summary)
+                    const isFreeAddOn = planType === 'store' && idx < addOnFreeLimit
+                    return (
                       <div key={addOnId} className="flex justify-between text-sm" translate="no" lang="en">
                         <span className="text-[#768dad] truncate mr-2">{addOn.name}</span>
-                        <span className="text-[#00D1FF] flex-shrink-0">+{billing === 'monthly' ? '$3/mo' : billing === 'semi_annual' ? '$18/6mo' : '$36/yr'}</span>
+                        {isFreeAddOn ? (
+                          <span className="text-[#10B981] flex-shrink-0">FREE</span>
+                        ) : (
+                          <span className="text-[#00D1FF] flex-shrink-0">+{billing === 'monthly' ? '$3/mo' : billing === 'semi_annual' ? '$18/6mo' : '$36/yr'}</span>
+                        )}
                       </div>
-                    ) : null
+                    )
                   })}
 
                   {selectedDomain && domainMonthlyInstallment > 0 && (

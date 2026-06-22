@@ -47,6 +47,42 @@ const EXTRA_FEATURES_POOL = [
   'Pricing Tables', 'Waitlist Signup', 'Product Demo', 'Documentation',
 ]
 
+// Store-specific features pool — shown when the customer selects Store Package.
+// These replace the regular template features in the Features section.
+// The free limit is 10 (vs 5 for regular plans).
+const STORE_FEATURES_POOL = [
+  'Daily Automated Backups',
+  'Full E-Commerce Functionality',
+  'Unlimited Products & Categories',
+  'Payment Gateway Integration (Stripe / PayPal)',
+  'Inventory Management Dashboard',
+  'Order Tracking System',
+  'Customer Accounts & Login',
+  'Shopping Cart & Secure Checkout',
+  '100 GB Hosting Storage',
+  'Priority 24/7 Support',
+  'Advanced SEO & Analytics',
+  'Product Search & Filtering',
+  'Discount Codes & Promotions',
+  'Wishlist & Favorites',
+  'Product Reviews & Ratings',
+  'Email Notifications',
+  'Invoice Generation',
+  'Multi-Currency Support',
+  'Tax Calculation',
+  'Shipping Rate Management',
+  'Abandoned Cart Recovery',
+  'Sales Reports & Charts',
+  'Mobile-Responsive Store',
+  'Social Media Store Sync',
+  'Loyalty Program Module',
+  'Gift Card System',
+  'Subscription Products',
+  'Digital Product Downloads',
+  'Bulk Product Import/Export',
+  'Multi-Vendor Support',
+]
+
 const FREE_FEATURES_LIMIT = 5
 
 const SIMILARITY_OPTIONS = [
@@ -120,6 +156,22 @@ export default function TemplatePreview() {
     }
   }, [previewTemplate])
 
+  // When the user switches plan type (Regular ↔ Store), reset the selected
+  // features so the new pool's auto-selected features show up correctly.
+  // We pre-select the first N features from the new pool (5 for Regular,
+  // 10 for Store) so the user sees a sensible default set immediately.
+  const prevPlanTypeRef = useRef<'regular' | 'store'>('regular')
+  useEffect(() => {
+    if (prevPlanTypeRef.current !== planType) {
+      prevPlanTypeRef.current = planType
+      // Reset selected features and pre-select from the new pool
+      const pool = planType === 'store' ? STORE_FEATURES_POOL : EXTRA_FEATURES_POOL
+      const limit = planType === 'store' ? 10 : FREE_FEATURES_LIMIT
+      setSelectedFeatures(pool.slice(0, limit))
+      setShowFeaturePicker(false)
+    }
+  }, [planType])
+
   useEffect(() => {
     if (!previewTemplate) return
     let cancelled = false
@@ -180,7 +232,7 @@ export default function TemplatePreview() {
   const storePriceSemiAnnual = planPrices.store_semi_annual ?? 550
   const storePriceAnnual = planPrices.store_annual ?? 1100
 
-  const extraFeaturesCount = Math.max(0, selectedFeatures.length - FREE_FEATURES_LIMIT)
+  const extraFeaturesCount = Math.max(0, selectedFeatures.length - currentFreeLimit)
   const extraFeatureCost = extraFeaturesCount * 3
   const addOnCostMonthly = selectedAddOns.length * 3
   const addOnCostSemiAnnual = selectedAddOns.length * 18
@@ -208,17 +260,9 @@ export default function TemplatePreview() {
     ? (billing === 'monthly' ? 'store' : billing === 'semi_annual' ? 'store_semi_annual' : 'store_annual')
     : billing
 
-  // Store Package extra features (shown in the Features section when Store is selected)
-  const STORE_PACKAGE_FEATURES = [
-    'Daily automated backups',
-    'Full e-commerce / store functionality',
-    'Unlimited products & categories',
-    'Payment gateway integration (Stripe / PayPal)',
-    'Inventory management dashboard',
-    'Order tracking & customer accounts',
-    '100 GB hosting storage',
-    'Priority 24/7 support with dedicated manager',
-  ]
+  // Dynamic free-feature limit based on plan type:
+  //   Regular = 5 free, Store = 10 free
+  const currentFreeLimit = planType === 'store' ? 10 : FREE_FEATURES_LIMIT
 
   const toggleAddOn = (id: string) => {
     setSelectedAddOns(prev => prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id])
@@ -294,7 +338,12 @@ export default function TemplatePreview() {
     }
   }
 
-  const availableFeatures = [...EXTRA_FEATURES_POOL, ...extraTemplateFeatures].filter(f => !selectedFeatures.includes(f))
+  // Available features depend on plan type:
+  // - Regular: uses EXTRA_FEATURES_POOL + template's extra features
+  // - Store: uses STORE_FEATURES_POOL (e-commerce focused)
+  const availableFeatures = planType === 'store'
+    ? STORE_FEATURES_POOL.filter(f => !selectedFeatures.includes(f))
+    : [...EXTRA_FEATURES_POOL, ...extraTemplateFeatures].filter(f => !selectedFeatures.includes(f))
 
   const handleProceedToCheckout = () => {
     if (!template) return
@@ -446,42 +495,27 @@ export default function TemplatePreview() {
                     </p>
                   </button>
                 </div>
-
-                {/* Store Package extra features (only shown when Store is selected) */}
-                {planType === 'store' && (
-                  <div className="mt-3 p-3 rounded-xl bg-gradient-to-r from-[#FFF8E1] to-[#FFFBF0] border border-[#F59E0B]/20">
-                    <p className="text-[11px] font-semibold text-[#92400E] mb-2 flex items-center gap-1.5">
-                      <ShoppingCart className="h-3.5 w-3.5" />
-                      Store Package includes these additional features:
-                    </p>
-                    <div className="grid grid-cols-2 gap-1.5">
-                      {STORE_PACKAGE_FEATURES.map((feature, i) => (
-                        <div key={i} className="flex items-center gap-1.5 text-[11px] text-[#4F5B76]">
-                          <Check className="h-3 w-3 text-[#F59E0B] flex-shrink-0" />
-                          <span>{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
 
               {/* Features - compact */}
               <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
                 <div className="flex items-center justify-between mb-2">
-                  <h2 className="text-base font-bold text-[#000f22]">Features</h2>
-                  <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[#f1f4f7] text-[#4F5B76]" translate="no" lang="en">
-                    {selectedFeatures.length} selected · {FREE_FEATURES_LIMIT} free
+                  <h2 className="text-base font-bold text-[#000f22] flex items-center gap-2">
+                    {planType === 'store' && <ShoppingCart className="h-4 w-4 text-[#F59E0B]" />}
+                    {planType === 'store' ? 'Store Features' : 'Features'}
+                  </h2>
+                  <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${planType === 'store' ? 'bg-[#F59E0B]/15 text-[#92400E]' : 'bg-[#f1f4f7] text-[#4F5B76]'}`} translate="no" lang="en">
+                    {selectedFeatures.length} selected · {currentFreeLimit} free
                   </span>
                 </div>
                 <p className="text-xs text-[#4F5B76] mb-3">
-                  First {FREE_FEATURES_LIMIT} free. Extra: <span className="font-semibold text-[#000f22]" translate="no" lang="en">+$3/{period}</span> each.
+                  First {currentFreeLimit} free. Extra: <span className="font-semibold text-[#000f22]" translate="no" lang="en">+$3/{period}</span> each.
                 </p>
 
                 {/* Selected features - compact grid */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
                   {selectedFeatures.map((feature, i) => {
-                    const isFree = i < FREE_FEATURES_LIMIT
+                    const isFree = i < currentFreeLimit
                     return (
                       <div key={i} className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg border text-xs transition-all ${
                         isFree ? 'bg-[#f7fafd] border-transparent' : 'bg-[#FFF8E1] border-[#FFE082]'
@@ -511,12 +545,16 @@ export default function TemplatePreview() {
                   <Button
                     variant="outline"
                     onClick={() => setShowFeaturePicker(!showFeaturePicker)}
-                    className="w-full border-dashed border-[#c4c6ce] hover:border-[#00D1FF] hover:bg-[#00D1FF]/5 text-[#74777e] hover:text-[#00D1FF] h-8 text-xs"
+                    className={`w-full border-dashed h-8 text-xs ${
+                      planType === 'store'
+                        ? 'border-[#F59E0B]/50 hover:border-[#F59E0B] hover:bg-[#F59E0B]/5 text-[#92400E] hover:text-[#F59E0B]'
+                        : 'border-[#c4c6ce] hover:border-[#00D1FF] hover:bg-[#00D1FF]/5 text-[#74777e] hover:text-[#00D1FF]'
+                    }`}
                   >
                     <Plus className="h-3.5 w-3.5 mr-1.5" />
-                    {selectedFeatures.length < FREE_FEATURES_LIMIT
-                      ? `Add Feature (${FREE_FEATURES_LIMIT - selectedFeatures.length} free left)`
-                      : 'Add Feature (+$3 each)'
+                    {selectedFeatures.length < currentFreeLimit
+                      ? `Add ${planType === 'store' ? 'Store ' : ''}Feature (${currentFreeLimit - selectedFeatures.length} free left)`
+                      : `Add ${planType === 'store' ? 'Store ' : ''}Feature (+$3 each)`
                     }
                   </Button>
 

@@ -63,7 +63,9 @@ export default function TemplatePreview() {
   const [templateError, setTemplateError] = useState<string | null>(null)
   const [iframeLoaded, setIframeLoaded] = useState(false)
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([])
-  const [billing, setBilling] = useState<'monthly' | 'semi_annual' | 'annual' | 'store' | 'store_semi_annual' | 'store_annual'>('monthly')
+  const [billing, setBilling] = useState<'monthly' | 'semi_annual' | 'annual'>('monthly')
+  // Plan type toggle: 'regular' (default) or 'store' (premium with e-commerce + daily backups)
+  const [planType, setPlanType] = useState<'regular' | 'store'>('regular')
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])
   const [showFeaturePicker, setShowFeaturePicker] = useState(false)
   const [customFeatureInput, setCustomFeatureInput] = useState('')
@@ -173,6 +175,11 @@ export default function TemplatePreview() {
   const basePriceMonthly = planPrices.monthly ?? 30
   const basePriceSemiAnnual = planPrices.semi_annual ?? 160
   const basePriceAnnual = planPrices.annual ?? 300
+  // Store Package prices
+  const storePriceMonthly = planPrices.store ?? 100
+  const storePriceSemiAnnual = planPrices.store_semi_annual ?? 550
+  const storePriceAnnual = planPrices.store_annual ?? 1100
+
   const extraFeaturesCount = Math.max(0, selectedFeatures.length - FREE_FEATURES_LIMIT)
   const extraFeatureCost = extraFeaturesCount * 3
   const addOnCostMonthly = selectedAddOns.length * 3
@@ -185,13 +192,33 @@ export default function TemplatePreview() {
   const domainMonthlyInstallment = domainExcess > 0 ? 3 : 0
   const domainInstallmentMonths = domainMonthlyInstallment > 0 ? Math.ceil(domainExcess / domainMonthlyInstallment) : 0
 
-  const basePrice = billing === 'monthly' ? basePriceMonthly : billing === 'semi_annual' ? basePriceSemiAnnual : basePriceAnnual
+  // Compute base price based on plan type + billing cycle
+  const basePrice = planType === 'store'
+    ? (billing === 'monthly' ? storePriceMonthly : billing === 'semi_annual' ? storePriceSemiAnnual : storePriceAnnual)
+    : (billing === 'monthly' ? basePriceMonthly : billing === 'semi_annual' ? basePriceSemiAnnual : basePriceAnnual)
   const billingMonths = billing === 'monthly' ? 1 : billing === 'semi_annual' ? 6 : 12
   const extraFeatureTotal = extraFeatureCost * billingMonths
   const addOnTotal = billing === 'monthly' ? addOnCostMonthly : billing === 'semi_annual' ? addOnCostSemiAnnual : addOnCostAnnual
   const domainInstallmentTotal = domainMonthlyInstallment * billingMonths
   const total = basePrice + extraFeatureTotal + addOnTotal + domainInstallmentTotal
   const period = billing === 'monthly' ? 'mo' : billing === 'semi_annual' ? '6mo' : 'yr'
+
+  // The effective billing interval sent to the API (store_* when Store Package is selected)
+  const effectiveBilling = planType === 'store'
+    ? (billing === 'monthly' ? 'store' : billing === 'semi_annual' ? 'store_semi_annual' : 'store_annual')
+    : billing
+
+  // Store Package extra features (shown in the Features section when Store is selected)
+  const STORE_PACKAGE_FEATURES = [
+    'Daily automated backups',
+    'Full e-commerce / store functionality',
+    'Unlimited products & categories',
+    'Payment gateway integration (Stripe / PayPal)',
+    'Inventory management dashboard',
+    'Order tracking & customer accounts',
+    '100 GB hosting storage',
+    'Priority 24/7 support with dedicated manager',
+  ]
 
   const toggleAddOn = (id: string) => {
     setSelectedAddOns(prev => prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id])
@@ -281,7 +308,7 @@ export default function TemplatePreview() {
       templateImage: template.image,
       templateCategory: template.category,
       templateFeatures: selectedFeatures,
-      billing,
+      billing: effectiveBilling,
       selectedAddOns,
       additionalInfo,
       similarSiteUrl,
@@ -316,15 +343,6 @@ export default function TemplatePreview() {
                   <Sparkles className="h-3 w-3 mr-1" /> Featured
                 </Badge>
               )}
-              {/* Prominent "Get This Template" CTA in top bar */}
-              <button
-                onClick={handleProceedToCheckout}
-                className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#10B981] hover:bg-[#059669] text-white text-xs font-semibold transition-colors shadow-sm"
-              >
-                <span>Get This Template</span>
-                <span className="opacity-80">·</span>
-                <span className="opacity-90">${planPrices[billing] || 30}/{billing === 'annual' || billing === 'store_annual' ? 'year' : billing === 'semi_annual' || billing === 'store_semi_annual' ? '6mo' : 'month'}</span>
-              </button>
             </div>
           )}
         </div>
@@ -356,6 +374,96 @@ export default function TemplatePreview() {
                   </button>
                   <span className="text-[10px] text-[#74777e]">View template in full screen</span>
                 </div>
+              </div>
+
+              {/* Plan Type Toggle — Regular vs Store Package
+                  This replaces the old green "Get This Template $30" button.
+                  Customer explicitly chooses plan type here. The rest of the
+                  page (features, add-ons, billing cycle) stays the same —
+                  only the pricing and Store-specific features change. */}
+              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
+                <h2 className="text-base font-bold text-[#000f22] mb-3">Choose Your Plan Type</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {/* Regular Plan Option */}
+                  <button
+                    onClick={() => setPlanType('regular')}
+                    className={`text-left p-4 rounded-xl border-2 transition-all duration-200 ${
+                      planType === 'regular'
+                        ? 'border-[#00D1FF] bg-[#00D1FF]/5 ring-1 ring-[#00D1FF]/30'
+                        : 'border-[#e6ebf1] hover:border-[#c4c6ce] bg-white'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-1.5">
+                      <div className="flex items-center gap-2">
+                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                          planType === 'regular' ? 'border-[#00D1FF] bg-[#00D1FF]' : 'border-[#c4c6ce]'
+                        }`}>
+                          {planType === 'regular' && <Check className="h-3 w-3 text-white" />}
+                        </div>
+                        <span className="font-bold text-sm text-[#000f22]">Regular Website</span>
+                      </div>
+                      <span className="text-sm font-bold text-[#000f22]">
+                        ${billing === 'monthly' ? basePriceMonthly : billing === 'semi_annual' ? basePriceSemiAnnual : basePriceAnnual}/{period}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-[#4F5B76] leading-relaxed">
+                      Professional website design + hosting + maintenance.
+                    </p>
+                  </button>
+
+                  {/* Store Package Option */}
+                  <button
+                    onClick={() => setPlanType('store')}
+                    className={`text-left p-4 rounded-xl border-2 transition-all duration-200 relative overflow-hidden ${
+                      planType === 'store'
+                        ? 'border-[#F59E0B] bg-gradient-to-br from-[#FFF8E1] to-[#FFFBF0] ring-1 ring-[#F59E0B]/30'
+                        : 'border-[#e6ebf1] hover:border-[#F59E0B]/50 bg-white'
+                    }`}
+                  >
+                    {planType === 'store' && (
+                      <div className="absolute top-0 right-0 bg-[#F59E0B] text-white text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-bl-lg">
+                        Selected
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between mb-1.5">
+                      <div className="flex items-center gap-2">
+                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                          planType === 'store' ? 'border-[#F59E0B] bg-[#F59E0B]' : 'border-[#c4c6ce]'
+                        }`}>
+                          {planType === 'store' && <Check className="h-3 w-3 text-white" />}
+                        </div>
+                        <span className="font-bold text-sm text-[#000f22] flex items-center gap-1">
+                          <ShoppingCart className="h-3.5 w-3.5 text-[#F59E0B]" />
+                          Store Package
+                        </span>
+                      </div>
+                      <span className="text-sm font-bold text-[#F59E0B]">
+                        ${billing === 'monthly' ? storePriceMonthly : billing === 'semi_annual' ? storePriceSemiAnnual : storePriceAnnual}/{period}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-[#4F5B76] leading-relaxed">
+                      Everything in Regular + e-commerce + daily backups + priority support.
+                    </p>
+                  </button>
+                </div>
+
+                {/* Store Package extra features (only shown when Store is selected) */}
+                {planType === 'store' && (
+                  <div className="mt-3 p-3 rounded-xl bg-gradient-to-r from-[#FFF8E1] to-[#FFFBF0] border border-[#F59E0B]/20">
+                    <p className="text-[11px] font-semibold text-[#92400E] mb-2 flex items-center gap-1.5">
+                      <ShoppingCart className="h-3.5 w-3.5" />
+                      Store Package includes these additional features:
+                    </p>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      {STORE_PACKAGE_FEATURES.map((feature, i) => (
+                        <div key={i} className="flex items-center gap-1.5 text-[11px] text-[#4F5B76]">
+                          <Check className="h-3 w-3 text-[#F59E0B] flex-shrink-0" />
+                          <span>{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Features - compact */}
@@ -775,8 +883,14 @@ export default function TemplatePreview() {
                     </button>
                   </div>
                   <div className="mt-2 text-center">
-                    <span className="text-[11px] text-[#768dad]" translate="no" lang="en">
-                      {billing === 'monthly' ? `$${basePriceMonthly}/month` : billing === 'semi_annual' ? `$${basePriceSemiAnnual}/6 months` : `$${basePriceAnnual}/year`}
+                    <span className={`text-[11px] ${planType === 'store' ? 'text-[#F59E0B] font-semibold' : 'text-[#768dad]'}`} translate="no" lang="en">
+                      {billing === 'monthly'
+                        ? `$${planType === 'store' ? storePriceMonthly : basePriceMonthly}/month`
+                        : billing === 'semi_annual'
+                          ? `$${planType === 'store' ? storePriceSemiAnnual : basePriceSemiAnnual}/6 months`
+                          : `$${planType === 'store' ? storePriceAnnual : basePriceAnnual}/year`
+                      }
+                      {planType === 'store' && <span className="ml-1">🛍️</span>}
                     </span>
                   </div>
                 </div>
@@ -792,8 +906,11 @@ export default function TemplatePreview() {
                   </div>
 
                   <div className="flex justify-between text-sm pt-2" translate="no" lang="en">
-                    <span className="text-[#768dad]">Plan ({billing === 'monthly' ? 'Monthly' : billing === 'semi_annual' ? 'Semi-Annual' : 'Annual'})</span>
-                    <span>${basePrice}/{period}</span>
+                    <span className="text-[#768dad] flex items-center gap-1">
+                      {planType === 'store' && <ShoppingCart className="h-3 w-3 text-[#F59E0B]" />}
+                      {planType === 'store' ? 'Store Package' : 'Plan'} ({billing === 'monthly' ? 'Monthly' : billing === 'semi_annual' ? 'Semi-Annual' : 'Annual'})
+                    </span>
+                    <span className={planType === 'store' ? 'text-[#F59E0B] font-medium' : ''}>${basePrice}/{period}</span>
                   </div>
 
                   {extraFeaturesCount > 0 && (
@@ -875,9 +992,13 @@ export default function TemplatePreview() {
 
                   <Button
                     onClick={handleProceedToCheckout}
-                    className="w-full bg-[#10B981] hover:bg-[#059669] text-white font-semibold h-12 text-base shadow-md shadow-[#10B981]/20"
+                    className={`w-full font-semibold h-12 text-base shadow-md transition-colors ${
+                      planType === 'store'
+                        ? 'bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#B45309] text-white shadow-[#F59E0B]/30'
+                        : 'bg-[#10B981] hover:bg-[#059669] text-white shadow-[#10B981]/20'
+                    }`}
                   >
-                    Get This Template — ${planPrices[billing] || 30}/{billing === 'annual' || billing === 'store_annual' ? 'year' : billing === 'semi_annual' || billing === 'store_semi_annual' ? '6mo' : 'month'}
+                    {planType === 'store' ? '🛍️ Get Store Package' : 'Get This Template'} — ${basePrice}/{period}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
 

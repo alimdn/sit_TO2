@@ -19,11 +19,12 @@ interface Template {
   livePreview?: string
 }
 
-const ADD_ONS = [
+// ─── Shared Add-Ons (appear in BOTH Regular and Store lists) ───
+// These are general-purpose enhancements suitable for any website type.
+const SHARED_ADD_ONS = [
   { id: 'seo', name: 'Advanced SEO Package', description: 'Optimized meta tags, sitemap, schema markup & weekly SEO reports' },
   { id: 'analytics', name: 'Analytics Dashboard', description: 'Real-time visitor tracking, conversion funnels & custom reports' },
   { id: 'multilang', name: 'Multi-Language Support', description: 'Translate your website into up to 5 languages with auto-detection' },
-  { id: 'ecommerce', name: 'E-Commerce Module', description: 'Product catalog, shopping cart, payment integration & inventory' },
   { id: 'blog', name: 'Blog & Content Studio', description: 'Full blogging platform with categories, tags, scheduling & newsletter' },
   { id: 'social', name: 'Social Media Integration', description: 'Auto-post, social feeds, share buttons & analytics tracking' },
   { id: 'chat', name: 'Live Chat Widget', description: 'Real-time chat with visitors, automated greetings & chatbot support' },
@@ -32,19 +33,19 @@ const ADD_ONS = [
   { id: 'speed', name: 'Performance Booster', description: 'CDN, image optimization, lazy loading & Core Web Vitals tuning' },
 ]
 
-// Store-specific add-ons — shown when the customer selects Store Package.
-// These are e-commerce focused enhancements on top of the Store base features.
-// First 10 are free; extras are +$3/mo each.
-const STORE_ADD_ONS = [
-  { id: 'store_seo', name: 'E-Commerce SEO Suite', description: 'Product schema, rich snippets, category optimization & conversion tracking' },
-  { id: 'store_analytics', name: 'Sales Analytics Pro', description: 'Revenue dashboards, customer journeys, funnel analysis & A/B testing' },
-  { id: 'store_multilang', name: 'Multi-Language Store', description: 'Translate your store into up to 8 languages with currency auto-switching' },
-  { id: 'store_blog', name: 'Content Marketing Hub', description: 'Blog, lookbooks, gift guides & email newsletter integration' },
-  { id: 'store_social', name: 'Social Commerce Sync', description: 'Instagram/Facebook/TikTok shop sync, auto-post & social ads' },
-  { id: 'store_chat', name: 'AI Sales Chatbot', description: '24/7 AI chatbot for product recommendations, FAQs & order tracking' },
-  { id: 'store_security', name: 'Fraud Protection Suite', description: 'AI fraud detection, chargeback alerts, PCI compliance & SSL monitoring' },
-  { id: 'store_backup', name: 'Real-time Backup Mirror', description: 'Real-time database replication + hourly snapshots + 90-day retention' },
-  { id: 'store_speed', name: 'Store Performance Turbo', description: 'Edge caching, image CDN, lazy load & Core Web Vitals < 1.5s' },
+// ─── Regular-only Add-Ons (NOT shown for Store Package) ───
+// Store Package already includes e-commerce in its base features, so this
+// basic e-commerce module is only offered to Regular plan customers.
+const REGULAR_ONLY_ADD_ONS = [
+  { id: 'ecommerce', name: 'E-Commerce Module', description: 'Product catalog, shopping cart, payment integration & inventory (basic)' },
+]
+
+// Regular Add-Ons = shared + regular-only
+const ADD_ONS = [...SHARED_ADD_ONS, ...REGULAR_ONLY_ADD_ONS]
+
+// ─── Store-only Add-Ons (NOT shown for Regular plan) ───
+// These are advanced e-commerce features that only make sense for stores.
+const STORE_ONLY_ADD_ONS = [
   { id: 'store_loyalty', name: 'Loyalty & Rewards Pro', description: 'Points engine, VIP tiers, referral program & birthday rewards' },
   { id: 'store_email', name: 'Email Marketing Automation', description: 'Welcome series, abandoned cart, post-purchase & win-back flows' },
   { id: 'store_sms', name: 'SMS Marketing & Notifications', description: 'Order updates, delivery alerts, promo campaigns & 2FA SMS' },
@@ -57,6 +58,10 @@ const STORE_ADD_ONS = [
   { id: 'store_ar', name: 'AR Product Try-On', description: '3D product viewer & augmented reality try-on for fashion/beauty/home' },
   { id: 'store_localization', name: 'Global Tax & Duties', description: 'Real-time tax calculation, HS codes, duty estimates & IOSS compliance' },
 ]
+
+// Store Add-Ons = shared + store-only
+// (shared add-ons come first, then store-specific ones)
+const STORE_ADD_ONS = [...SHARED_ADD_ONS, ...STORE_ONLY_ADD_ONS]
 
 const EXTRA_FEATURES_POOL = [
   'Responsive Design', 'SEO Optimized', 'Contact Forms', 'Analytics Integration',

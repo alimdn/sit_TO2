@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html class="dark" dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --font-serif: 'Playfair Display', 'serif';
+            --font-sans: 'Noto Sans Arabic', sans-serif;
+        }
+        body {
+            font-family: var(--font-sans);
+            background-color: #0f0f1a;
+            color: #e3e0f1;
+            overflow-x: hidden;
+        }
+        .serif-title {
+            font-family: var(--font-serif);
+        }
+        .glass-effect {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .blueprint-border {
+            border-bottom: 1px dashed rgba(146, 144, 151, 0.2);
+        }
+        .cyber-glow-hover:hover {
+            box-shadow: 0 0 20px rgba(255, 107, 129, 0.2);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "on-tertiary-container": "#9466ff",
+                "on-background": "#e3e0f1",
+                "surface-container-highest": "#343440",
+                "background": "#12121d",
+                "text-muted": "#8a8a9a",
+                "bg-base": "#0f0f1a",
+                "tertiary-fixed-dim": "#d0bcff",
+                "secondary": "#ffb2b7",
+                "on-surface": "#e3e0f1",
+                "primary-container": "#1a1a2e",
+                "outline-variant": "#47464c",
+                "on-surface-variant": "#c8c5cd",
+                "on-primary-container": "#83829b",
+                "surface-hover": "#22223a",
+                "accent-neon": "#ff6b81",
+                "primary": "#c6c4df",
+                "surface-card": "#1a1a2e",
+                "surface": "#12121d",
+                "surface-container": "#1f1e2a",
+                "surface-container-low": "#1b1a26",
+                "border-subtle": "#2a2a3e"
+              },
+              "spacing": {
+                "md": "16px",
+                "lg": "24px",
+                "xl": "40px",
+                "max-width": "1200px",
+                "margin-desktop": "30px"
+              }
+            }
+          }
+        }
+    </script>
+</head>
+<body class="selection:bg-accent-neon selection:text-white">
+<!-- Header / TopNavBar -->
+<header class="docked full-width top-0 sticky z-50 bg-surface/70 dark:bg-surface-container/70 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm">
+<nav class="flex justify-between items-center px-margin-desktop py-md max-w-max-width mx-auto">
+<div class="flex items-center gap-xl">
+<span class="font-headline-sm text-headline-sm font-black text-accent-neon dark:text-tertiary-fixed-dim">نظام الخدمات المتكاملة</span>
+<div class="hidden md:flex gap-md">
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" href="#">الرئيسية</a>
+<a class="font-label-lg text-label-lg text-primary border-b-2 border-accent-neon pb-1" href="#">الوكالة</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" href="#">إدارة المشاريع</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" href="#">متجر الألعاب</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" href="#">استشارات</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-hover/50 rounded-lg">search</button>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-lg font-label-lg transition-all active:scale-95">ابدأ الآن</button>
+</div>
+</nav>
+</header>
+<main class="max-w-max-width mx-auto px-margin-desktop py-xl">
+<!-- Hero Section: Minimalism Focus -->
+<section class="relative mb-32 pt-20">
+
+<div class="relative z-10 max-w-3xl">
+<h1 class="serif-title font-hero-display text-hero-display leading-tight mb-md">
+                    الوضوح هو جوهر <span class="text-accent-neon">القرار.</span>
+</h1>
+<p class="text-body-lg font-body-lg text-text-muted max-w-xl border-r-2 border-border-subtle pr-md">
+                    نحن نقدم حلولاً استشارية مبنية على الدقة المتناهية والبساطة، لضمان مستقبل أعمالكم في بيئة قانونية وإدارية معقدة.
+                </p>
+</div>
+</section>
+<!-- Services Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-32">
+<!-- Service 1: Legal Consultation -->
+<div class="md:col-span-8 group relative overflow-hidden bg-surface-card border border-border-subtle rounded-xl p-xl transition-all hover:-translate-y-1 hover:shadow-2xl">
+<div class="flex flex-col h-full justify-between">
+<div>
+<span class="material-symbols-outlined text-accent-neon text-4xl mb-lg" style="font-variation-settings: 'FILL' 1;">gavel</span>
+<h2 class="serif-title text-headline-lg font-headline-lg mb-md">الاستشارات القانونية</h2>
+<p class="text-body-md font-body-md text-text-muted max-w-lg mb-lg">
+                            تقديم المشورة القانونية الاستباقية للشركات والأفراد، مع التركيز على حماية المصالح التجارية والامتثال للأنظمة المحلية والدولية. نؤمن بأن القانون يجب أن يكون محركاً للنمو لا عائقاً له.
+                        </p>
+</div>
+<div class="flex items-center gap-md mt-xl">
+<ul class="flex flex-wrap gap-sm">
+<li class="bg-surface-hover px-md py-xs rounded-full text-caption font-caption text-primary">صياغة العقود</li>
+<li class="bg-surface-hover px-md py-xs rounded-full text-caption font-caption text-primary">التحكيم التجاري</li>
+<li class="bg-surface-hover px-md py-xs rounded-full text-caption font-caption text-primary">الملكية الفكرية</li>
+</ul>
+</div>
+</div>
+<div class="absolute bottom-0 left-0 w-full h-1 bg-accent-neon scale-x-0 group-hover:scale-x-100 transition-transform origin-right"></div>
+</div>
+<!-- Service 2: Feasibility Studies -->
+<div class="md:col-span-4 group relative overflow-hidden bg-surface-container-high border border-border-subtle rounded-xl p-lg transition-all hover:-translate-y-1">
+<span class="material-symbols-outlined text-primary text-3xl mb-md">analytics</span>
+<h2 class="serif-title text-headline-md font-headline-md mb-sm">دراسات الجدوى</h2>
+<p class="text-body-md font-body-md text-text-muted mb-lg">
+                    تحليل معمق للسوق والبيانات المالية لضمان جدوى استثماراتكم قبل البدء.
+                </p>
+<div class="mt-auto">
+<img alt="Data visualization dashboard" class="w-full h-32 object-cover rounded-lg grayscale hover:grayscale-0 transition-all duration-500" data-alt="A macro close-up of a high-resolution digital display showing sleek, minimalist financial charts and data visualizations. The lighting is moody and technical, with deep blacks and neon blue accents typical of a professional trading floor. The composition is clean and abstract, focusing on the geometric precision of the lines and data points to convey a sense of rigorous analysis and futuristic technology." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHvUb01gvBaoBOeoDNeI-4lx5vH2XksA58dylYcSXlDR8mmn8I6Iz0GeYyPtu2vmMn6xIncNlusT8yGoNwol12DURf5khse2XAoxp3eohRs4LGLyZXC5NYapyHqUUyDrpiMSiOy7OoxBVt5RjLDYaKi-QL_GaF0jAbaBAMNJLMJPO_rNM_n5iqfuCVoeewnrhxtVhN2XRauibmdIqYuxAa9OtsXfY5Wmcxjm2JspDAHLBTjaVOQHa5at_DMjer0ZV17N3gWvlP-Xfx"/>
+</div>
+</div>
+<!-- Service 3: Auditing -->
+<div class="md:col-span-5 group relative overflow-hidden bg-surface-container-low border border-border-subtle rounded-xl p-lg transition-all hover:-translate-y-1">
+<span class="material-symbols-outlined text-secondary text-3xl mb-md">fact_check</span>
+<h2 class="serif-title text-headline-md font-headline-md mb-sm">التدقيق والمراجعة</h2>
+<p class="text-body-md font-body-md text-text-muted mb-lg">
+                    خدمات تدقيق دقيقة تضمن الشفافية المالية والإدارية وفق المعايير العالمية.
+                </p>
+<div class="space-y-sm">
+<div class="blueprint-border py-xs flex justify-between items-center text-label-md font-label-md text-text-muted hover:text-on-surface">
+<span>التدقيق المالي</span>
+<span class="material-symbols-outlined text-sm">arrow_outward</span>
+</div>
+<div class="blueprint-border py-xs flex justify-between items-center text-label-md font-label-md text-text-muted hover:text-on-surface">
+<span>تدقيق نظم المعلومات</span>
+<span class="material-symbols-outlined text-sm">arrow_outward</span>
+</div>
+</div>
+</div>
+<!-- Feature Showcase: Asymmetric Content -->
+<div class="md:col-span-7 relative overflow-hidden rounded-xl h-64 bg-surface-container-lowest border border-border-subtle flex items-center px-xl">
+
+<div class="relative z-10">
+<h3 class="serif-title text-headline-sm font-headline-sm text-primary mb-xs">نهجنا التقني</h3>
+<p class="text-body-md font-body-md text-text-muted max-w-sm">
+                        نستخدم أحدث التقنيات السحابية لتأمين بياناتكم وتسهيل التواصل اللحظي مع المستشارين.
+                    </p>
+</div>
+</div>
+</section>
+<!-- Detailed Process List -->
+<section class="mb-32">
+<div class="flex items-end justify-between mb-xl">
+<h2 class="serif-title text-headline-lg font-headline-lg">كيف نعمل؟</h2>
+<span class="text-caption font-caption text-text-muted tracking-widest uppercase">Methodology</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-xl">
+<div class="p-lg border-r border-outline-variant/20 hover:border-accent-neon transition-colors">
+<span class="text-hero-display text-accent-neon/20 serif-title block mb-md">01</span>
+<h3 class="text-headline-sm font-headline-sm mb-sm">الاستماع والفهم</h3>
+<p class="text-body-md font-body-md text-text-muted">نبدأ بجلسات معمقة لفهم تحدياتكم وأهدافكم بدقة تامة.</p>
+</div>
+<div class="p-lg border-r border-outline-variant/20 hover:border-accent-neon transition-colors">
+<span class="text-hero-display text-accent-neon/20 serif-title block mb-md">02</span>
+<h3 class="text-headline-sm font-headline-sm mb-sm">التحليل الاستراتيجي</h3>
+<p class="text-body-md font-body-md text-text-muted">نقوم بتفكيك البيانات والقوانين لبناء مسار عمل آمن وفعال.</p>
+</div>
+<div class="p-lg border-r border-outline-variant/20 hover:border-accent-neon transition-colors">
+<span class="text-hero-display text-accent-neon/20 serif-title block mb-md">03</span>
+<h3 class="text-headline-sm font-headline-sm mb-sm">التنفيذ والمتابعة</h3>
+<p class="text-body-md font-body-md text-text-muted">نرافقكم في كل خطوة لضمان وصولكم للنتائج المرجوة.</p>
+</div>
+</div>
+</section>
+<!-- CTA Section with Glassmorphism -->
+<section class="relative p-xl rounded-2xl overflow-hidden bg-surface-container-high/50 backdrop-blur-md border border-white/5 text-center">
+<div class="absolute inset-0 bg-gradient-to-br from-accent-neon/10 via-transparent to-primary/5"></div>
+<div class="relative z-10">
+<h2 class="serif-title text-headline-lg font-headline-lg mb-md">جاهز لتطوير استراتيجيتك القادمة؟</h2>
+<p class="text-body-lg font-body-lg text-text-muted mb-xl max-w-2xl mx-auto">
+                    احجز جلستك الاستشارية الأولى اليوم مع فريقنا من الخبراء القانونيين والإداريين.
+                </p>
+<button class="bg-accent-neon text-white px-xl py-md rounded-full font-label-lg shadow-lg cyber-glow-hover transition-all flex items-center gap-md mx-auto">
+                    تواصل معنا الآن
+                    <span class="material-symbols-outlined">alternate_email</span>
+</button>
+</div>
+</section>
+</main>
+<!-- Footer Component -->
+<footer class="full-width py-xl mt-auto border-t border-outline-variant/10 bg-bg-base dark:bg-surface-container-lowest">
+<div class="flex flex-col items-center justify-between gap-lg px-margin-desktop max-w-max-width mx-auto md:flex-row-reverse">
+<div class="flex gap-lg">
+<a class="text-caption font-caption text-text-muted hover:text-primary transition-colors hover:underline" href="#">سياسة الخصوصية</a>
+<a class="text-caption font-caption text-text-muted hover:text-primary transition-colors hover:underline" href="#">شروط الخدمة</a>
+<a class="text-caption font-caption text-text-muted hover:text-primary transition-colors hover:underline" href="#">مركز المساعدة</a>
+<a class="text-caption font-caption text-text-muted hover:text-primary transition-colors hover:underline" href="#">اتصل بنا</a>
+</div>
+<div class="flex items-center gap-md">
+<span class="font-label-lg text-label-lg font-bold text-primary">نظام الخدمات المتكاملة</span>
+<span class="text-caption font-caption text-text-muted">© 2024 جميع الحقوق محفوظة للمنصة المتعددة</span>
+</div>
+</div>
+</footer>
+<!-- Side Navigation (Mobile Hidden) -->
+<aside class="h-full w-64 fixed right-0 top-0 hidden lg:flex flex-col bg-surface-container-low dark:bg-surface-container-lowest border-l border-outline-variant/20 shadow-xl p-lg space-y-md z-40">
+<div class="mb-xl pt-20">
+<div class="flex items-center gap-md mb-sm">
+<div class="w-10 h-10 rounded-full bg-accent-neon flex items-center justify-center text-white font-bold">BS</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm font-bold text-primary leading-none">بوابة الخدمات</h4>
+<p class="text-body-md font-body-md text-text-muted text-[10px]">إدارة الأنشطة التجارية</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-sm">
+<a class="flex items-center gap-md p-md rounded-lg text-on-surface-variant hover:bg-surface-hover hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined">palette</span>
+<span class="font-body-md text-body-md">الوكالة الرقمية</span>
+</a>
+<a class="flex items-center gap-md p-md rounded-lg text-on-surface-variant hover:bg-surface-hover hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined">dashboard_customize</span>
+<span class="font-body-md text-body-md">إدارة المهام</span>
+</a>
+<a class="flex items-center gap-md p-md rounded-lg text-on-surface-variant hover:bg-surface-hover hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined">sports_esports</span>
+<span class="font-body-md text-body-md">عالم الألعاب</span>
+</a>
+<a class="flex items-center gap-md p-md rounded-lg bg-primary-container text-on-primary-container border-r-4 border-accent-neon transition-all" href="#">
+<span class="material-symbols-outlined">gavel</span>
+<span class="font-body-md text-body-md">الاستشارات</span>
+</a>
+<a class="flex items-center gap-md p-md rounded-lg text-on-surface-variant hover:bg-surface-hover hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">الإعدادات</span>
+</a>
+</nav>
+<div class="mt-auto">
+<button class="w-full py-md rounded-xl border border-accent-neon/30 text-accent-neon font-label-lg hover:bg-accent-neon hover:text-white transition-all">
+                ترقية الحساب
+            </button>
+</div>
+</aside>
+<script>
+        // Micro-interactions
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>

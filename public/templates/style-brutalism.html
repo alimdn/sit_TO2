@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Brutalism — Raw & Bold Design</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Space Grotesk',system-ui,sans-serif}
+.mono{font-family:'JetBrains Mono',monospace}
+body{background:#fff;color:#000}
+.brutal-border{border:3px solid #000}
+.brutal-shadow{box-shadow:6px 6px 0 #000}
+.brutal-shadow-lg{box-shadow:8px 8px 0 #000}
+.brutal-hover{transition:all .15s}
+.brutal-hover:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 #000}
+.brutal-hover:active{transform:translate(3px,3px);box-shadow:0 0 0 #000}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.animate-fade-in{animation:fadeIn .4s ease-out}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:16px 24px;border:3px solid #000;box-shadow:6px 6px 0 #000;background:#FFE600;color:#000;font-weight:700;animation:fadeIn .3s}
+</style>
+</head>
+<body class="min-h-screen">
+<div id="toast-container"></div>
+
+<!-- Nav -->
+<nav class="sticky top-0 z-50 bg-white brutal-border border-t-0 border-l-0 border-r-0">
+  <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
+    <div class="flex items-center gap-2"><div class="w-10 h-10 bg-black flex items-center justify-center"><span class="text-yellow-400 font-bold text-xl">B</span></div><span class="text-xl font-bold uppercase">BRUTAL</span></div>
+    <div class="hidden md:flex items-center gap-6 text-sm font-bold uppercase"><a href="#work" class="hover:text-red-500">Work</a><a href="#pricing" class="hover:text-blue-500">Pricing</a><a href="#say" class="hover:text-yellow-500">Reviews</a></div>
+    <button onclick="showToast('LET'S GO!')" class="bg-black text-white px-5 py-2.5 font-bold text-sm uppercase brutal-hover brutal-shadow">Hire Us</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="py-20 px-4 border-b-[3px] border-black">
+  <div class="max-w-7xl mx-auto">
+    <div class="animate-fade-in">
+      <div class="inline-block bg-yellow-400 brutal-border brutal-shadow px-4 py-2 mb-6 font-bold text-sm uppercase">★ RAW DESIGN STUDIO</div>
+      <h1 class="text-6xl sm:text-7xl lg:text-8xl font-bold uppercase leading-none mb-6" style="letter-spacing:-0.03em">WE MAKE<br/><span class="text-red-500">BOLD</span> STUFF<br/>PERIOD.</h1>
+      <p class="text-xl font-medium max-w-xl mb-8">No fluff. No gradients. No soft shadows. Just raw, in-your-face design that demands attention.</p>
+      <div class="flex gap-4">
+        <button onclick="showToast('PROJECT STARTED!')" class="bg-black text-white px-8 py-4 font-bold text-lg uppercase brutal-hover brutal-shadow-lg">Start Project →</button>
+        <button onclick="document.getElementById('work').scrollIntoView({behavior:'smooth'})" class="bg-white brutal-border brutal-shadow px-8 py-4 font-bold text-lg uppercase brutal-hover">See Work</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="bg-black text-white py-12 border-b-[3px] border-black">
+  <div class="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+    <div><div class="text-5xl font-bold text-yellow-400">200+</div><div class="text-sm uppercase mt-1">Projects</div></div>
+    <div><div class="text-5xl font-bold text-red-500">50+</div><div class="text-sm uppercase mt-1">Clients</div></div>
+    <div><div class="text-5xl font-bold text-blue-500">15</div><div class="text-sm uppercase mt-1">Awards</div></div>
+    <div><div class="text-5xl font-bold text-green-500">99%</div><div class="text-sm uppercase mt-1">Happy</div></div>
+  </div>
+</section>
+
+<!-- Work -->
+<section id="work" class="py-20 px-4">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-5xl font-bold uppercase mb-10">OUR WORK<span class="text-red-500">.</span></h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="brutal-border brutal-shadow brutal-hover bg-white overflow-hidden"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop&q=80" alt="" class="w-full h-48 object-cover border-b-[3px] border-black"/><div class="p-5"><div class="bg-yellow-400 inline-block px-2 py-0.5 text-xs font-bold uppercase mb-2">WEB</div><h3 class="font-bold text-lg uppercase">Dashboard Pro</h3><p class="text-sm mt-1">Analytics that don't suck.</p></div></div>
+      <div class="brutal-border brutal-shadow brutal-hover bg-white overflow-hidden"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop&q=80" alt="" class="w-full h-48 object-cover border-b-[3px] border-black"/><div class="p-5"><div class="bg-red-500 text-white inline-block px-2 py-0.5 text-xs font-bold uppercase mb-2">APP</div><h3 class="font-bold text-lg uppercase">Mobile First</h3><p class="text-sm mt-1">Apps that slap.</p></div></div>
+      <div class="brutal-border brutal-shadow brutal-hover bg-white overflow-hidden"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=250&fit=crop&q=80" alt="" class="w-full h-48 object-cover border-b-[3px] border-black"/><div class="p-5"><div class="bg-blue-500 text-white inline-block px-2 py-0.5 text-xs font-bold uppercase mb-2">BRAND</div><h3 class="font-bold text-lg uppercase">Identity Kit</h3><p class="text-sm mt-1">Logos with attitude.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" class="py-20 px-4 bg-yellow-400 border-y-[3px] border-black">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-5xl font-bold uppercase mb-10 text-center">PRICING<span class="text-red-500">.</span></h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white brutal-border brutal-shadow brutal-hover p-8"><h3 class="text-2xl font-bold uppercase mb-2">BASIC</h3><div class="text-5xl font-bold mb-6">$499</div><ul class="space-y-3 mb-8 font-medium"><li>✓ 3 pages</li><li>✓ Mobile design</li><li>✓ 2 revisions</li></ul><button onclick="showToast('BASIC PLAN!')" class="w-full py-3 bg-black text-white font-bold uppercase brutal-hover brutal-shadow">Pick This</button></div>
+      <div class="bg-black text-white brutal-border brutal-shadow-lg p-8 relative" style="box-shadow:10px 10px 0 #FFE600"><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-red-500 text-white px-4 py-1 text-xs font-bold uppercase brutal-border">BEST</div><h3 class="text-2xl font-bold uppercase mb-2">PRO</h3><div class="text-5xl font-bold mb-6 text-yellow-400">$1,499</div><ul class="space-y-3 mb-8 font-medium"><li>✓ 10 pages</li><li>✓ Custom design</li><li>✓ Unlimited revisions</li></ul><button onclick="showToast('PRO PLAN!')" class="w-full py-3 bg-yellow-400 text-black font-bold uppercase brutal-hover brutal-shadow">Pick This</button></div>
+      <div class="bg-white brutal-border brutal-shadow brutal-hover p-8"><h3 class="text-2xl font-bold uppercase mb-2">BEAST</h3><div class="text-5xl font-bold mb-6">$4,999</div><ul class="space-y-3 mb-8 font-medium"><li>✓ Unlimited</li><li>✓ Full system</li><li>✓ 24/7 support</li></ul><button onclick="showToast('BEAST MODE!')" class="w-full py-3 bg-black text-white font-bold uppercase brutal-hover brutal-shadow">Pick This</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section id="say" class="py-20 px-4">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-5xl font-bold uppercase mb-10">WHAT THEY SAY<span class="text-blue-500">.</span></h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="brutal-border brutal-shadow bg-white p-7"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&q=80" alt="" class="w-14 h-14 brutal-border mb-4"/><p class="font-bold text-lg uppercase mb-2">"BOLD. LOUD."</p><p class="text-sm">Our traffic went up 300%. These guys don't mess around.</p><div class="mt-3 text-xs font-bold uppercase">— Sarah J., CEO</div></div>
+      <div class="brutal-border brutal-shadow bg-white p-7"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&q=80" alt="" class="w-14 h-14 brutal-border mb-4"/><p class="font-bold text-lg uppercase mb-2">"NO BS DESIGN."</p><p class="text-sm">They delivered in 5 days what others took 5 months to do.</p><div class="mt-3 text-xs font-bold uppercase">— Mike R., Founder</div></div>
+      <div class="brutal-border brutal-shadow bg-white p-7"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&q=80" alt="" class="w-14 h-14 brutal-border mb-4"/><p class="font-bold text-lg uppercase mb-2">"RAW POWER."</p><p class="text-sm">Best design investment we ever made. Period.</p><div class="mt-3 text-xs font-bold uppercase">— Emily D., CMO</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="bg-black text-white py-20 px-4 border-t-[3px] border-black">
+  <div class="max-w-4xl mx-auto text-center">
+    <h2 class="text-5xl sm:text-6xl font-bold uppercase mb-6">LET'S MAKE<br/><span class="text-yellow-400">SOMETHING BOLD</span></h2>
+    <button onclick="showToast('LET\'S GOOO!')" class="bg-yellow-400 text-black px-10 py-5 text-xl font-bold uppercase brutal-hover brutal-shadow-lg">Start Now →</button>
+  </div>
+</section>
+
+<footer class="py-8 px-4 border-t-[3px] border-black text-center font-bold uppercase text-sm">© 2026 BRUTAL · RAW DESIGN</footer>
+
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}))
+</script>
+</body>
+</html>

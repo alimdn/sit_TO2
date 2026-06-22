@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Check, ArrowLeft, CreditCard, ShieldCheck, Lock, AlertCircle, LayoutDashboard, Clock, Globe } from 'lucide-react'
+import { Check, ArrowLeft, CreditCard, ShieldCheck, Lock, AlertCircle, LayoutDashboard, Clock, Globe, Store, FileText } from 'lucide-react'
 
 const ADD_ON_NAMES: Record<string, string> = {
   seo: 'Advanced SEO Package',
@@ -36,11 +36,31 @@ const FREE_FEATURES_LIMIT = 5
 
 // Hardcoded fallback prices — used if /api/plans is unreachable.
 // These mirror the production values and are kept in sync manually.
+// Includes all 6 plans (3 regular + 3 store variants).
 const FALLBACK_PRICES: Record<string, number> = {
   monthly: 30,
   semi_annual: 160,
   annual: 300,
+  store: 100,
+  store_semi_annual: 550,
+  store_annual: 1100,
 }
+
+// Store Package adds these features on top of the regular plan features.
+// Displayed in the checkout summary so the customer sees what they get extra.
+const STORE_PACKAGE_FEATURES = [
+  'Daily automated backups',
+  'Full e-commerce / store functionality',
+  'Unlimited products & categories',
+  'Payment gateway integration (Stripe / PayPal)',
+  'Inventory management dashboard',
+  'Order tracking & customer accounts',
+  '100 GB hosting storage',
+  'Priority 24/7 support with dedicated manager',
+]
+
+// Plan type options for the toggle at the top of checkout
+type PlanType = 'regular' | 'store'
 
 interface PaymentGateway {
   id: string
@@ -56,6 +76,15 @@ export default function CheckoutPage() {
   const [processing, setProcessing] = useState(false)
   const [planPrices, setPlanPrices] = useState<Record<string, number>>(FALLBACK_PRICES)
   const [gateways, setGateways] = useState<PaymentGateway[]>([])
+  // Plan type toggle: 'regular' (default) or 'store' (premium with e-commerce + daily backups)
+  // The user can upgrade to Store Package at checkout — this changes the pricing
+  // and adds Store-specific features. They cannot pay less than the Store price
+  // because selecting 'store' switches the billing to store_* intervals.
+  const [planType, setPlanType] = useState<PlanType>(() => {
+    // Initialize from checkoutData.billing if it's already a store plan
+    const b = checkoutData?.billing
+    return b === 'store' || b === 'store_semi_annual' || b === 'store_annual' ? 'store' : 'regular'
+  })
 
   // Fetch plan prices and active payment gateways from API so admin changes reflect here.
   useEffect(() => {
@@ -99,8 +128,21 @@ export default function CheckoutPage() {
 
   const { templateTitle, templateImage, templateCategory, templateFeatures, billing, selectedAddOns, domain, domainPrice } = checkoutData
 
+  // Compute the effective billing interval based on planType toggle.
+  // If the user selects 'store', we map the regular billing cycle to its
+  // store equivalent (monthly→store, semi_annual→store_semi_annual, annual→store_annual).
+  // This ensures the customer pays the Store price when they select Store Package.
+  const effectiveBilling =
+    planType === 'store'
+      ? billing === 'monthly'
+        ? 'store'
+        : billing === 'semi_annual'
+          ? 'store_semi_annual'
+          : 'store_annual'
+      : billing
+
   // Use API price when available, else fallback
-  const basePrice = planPrices[billing] ?? FALLBACK_PRICES[billing] ?? 30
+  const basePrice = planPrices[effectiveBilling] ?? FALLBACK_PRICES[effectiveBilling] ?? (planType === 'store' ? 100 : 30)
   const billingMonths = billing === 'monthly' ? 1 : billing === 'semi_annual' ? 6 : 12
   const addOnUnitCost = selectedAddOns.length * 3 * billingMonths
   const addOnTotal = addOnUnitCost
@@ -114,6 +156,10 @@ export default function CheckoutPage() {
   const domainInstallmentTotal = domainMonthlyInstallment * billingMonths
   const total = basePrice + addOnTotal + extraFeatureTotal + domainInstallmentTotal
   const period = billing === 'monthly' ? 'mo' : billing === 'semi_annual' ? '6mo' : 'yr'
+
+  // Plan type display info
+  const planTypeLabel = planType === 'store' ? 'Store Package' : 'Regular'
+  const planTypeColor = planType === 'store' ? '#F59E0B' : '#00D1FF'
 
   // Build payment methods list: prefer active gateways from API, fallback to defaults
   const buildMethodList = () => {
@@ -148,8 +194,11 @@ export default function CheckoutPage() {
     setProcessing(true)
 
     // Build invoice items
+    const planLabel = planType === 'store'
+      ? (billing === 'monthly' ? 'Store Monthly' : billing === 'semi_annual' ? 'Store Semi-Annual' : 'Store Annual')
+      : (billing === 'monthly' ? 'Monthly' : billing === 'semi_annual' ? 'Semi-Annual' : 'Annual')
     const invoiceItems: { description: string; amount: number }[] = [
-      { description: `${templateTitle} — ${billing === 'monthly' ? 'Monthly' : billing === 'semi_annual' ? 'Semi-Annual' : 'Annual'} Plan`, amount: basePrice },
+      { description: `${templateTitle} — ${planLabel} Plan${planType === 'store' ? ' (Store Package)' : ''}`, amount: basePrice },
     ]
     if (extraFeaturesCount > 0) {
       invoiceItems.push({ description: `Extra Features (${extraFeaturesCount} x $3/${period})`, amount: extraFeatureTotal })
@@ -167,7 +216,7 @@ export default function CheckoutPage() {
 
     try {
       // Create order with all features data
-      await fetch('/api/orders', {
+      const orderRes = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -175,10 +224,29 @@ export default function CheckoutPage() {
           templateId: checkoutData.templateId,
           status: 'pending',
           progress: 0,
-          milestones: JSON.stringify(['Order placed', 'Design in progress', 'Review', 'Delivery']),
+          // Send milestones as full objects so the admin panel can show
+          // status badges immediately. The first milestone (Order Confirmed)
+          // is auto-marked completed when the order is placed (payment received).
+          // 7-stage lifecycle with custom progress mapping:
+          //   1. Order Confirmed           → 17%
+          //   2. Design Phase              → 33%
+          //   3. Customer Review           → 50%
+          //   4. Development & Integration → 67%
+          //   5. Testing & QA              → 83%
+          //   6. Final Preview             → 83% (checkpoint, no increase)
+          //   7. Deployment & Delivery     → 100%
+          milestones: JSON.stringify([
+            { name: 'Order Confirmed',           status: 'completed', date: new Date().toISOString() },
+            { name: 'Design Phase',              status: 'pending' },
+            { name: 'Customer Review',           status: 'pending' },
+            { name: 'Development & Integration', status: 'pending' },
+            { name: 'Testing & QA',              status: 'pending' },
+            { name: 'Final Preview',             status: 'pending' },
+            { name: 'Deployment & Delivery',     status: 'pending' },
+          ]),
           templateFeatures: JSON.stringify(templateFeatures),
           addOns: JSON.stringify(selectedAddOns),
-          billing,
+          billing: effectiveBilling,
           additionalInfo: checkoutData.additionalInfo || null,
           similarSiteUrl: checkoutData.similarSiteUrl || null,
           similarSiteCriteria: JSON.stringify(checkoutData.similarSiteCriteria || []),
@@ -186,6 +254,10 @@ export default function CheckoutPage() {
           domainPrice: domainPrice || null,
         }),
       })
+
+      if (!orderRes.ok) {
+        console.error('[CheckoutPage] Order creation HTTP error:', orderRes.status)
+      }
 
       // Send invoice email
       if (user?.email) {
@@ -204,7 +276,7 @@ export default function CheckoutPage() {
                 date: invoiceDate,
                 items: invoiceItems,
                 total,
-                billing,
+                billing: effectiveBilling,
                 paymentMethod: effectiveMethod === 'card' ? 'Credit/Debit Card' : effectiveMethod === 'paypal' ? 'PayPal' : 'Bank Transfer',
                 siteUrl: `${window.location.origin}`,
               },
@@ -212,8 +284,16 @@ export default function CheckoutPage() {
           })
         } catch { /* email failure shouldn't block checkout */ }
       }
-    } catch {
-      // silently continue even if order creation fails (e.g. Vercel serverless)
+    } catch (orderError) {
+      console.error('[CheckoutPage] Order creation failed:', orderError)
+      // Show error toast but still redirect — order data is in checkoutData
+      // and admin can manually follow up. Better than blocking the user.
+      try {
+        const { toast } = await import('sonner')
+        toast.error('Order processing issue', {
+          description: 'Your payment was received but order creation had a problem. Our team will contact you shortly.',
+        })
+      } catch {}
     }
     setTimeout(() => {
       setProcessing(false)
@@ -244,6 +324,117 @@ export default function CheckoutPage() {
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back
         </Button>
+      </div>
+
+      {/* Plan Type Toggle — Regular vs Store Package
+          This is at the TOP of checkout so the customer explicitly chooses
+          which plan type they want. Selecting 'Store Package' switches pricing
+          to store_* intervals and adds Store-specific features. */}
+      <div className="bg-white rounded-2xl p-6 border border-[#e6ebf1] shadow-card mb-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-bold text-[#000f22] flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-[#000f22] flex items-center justify-center">
+              <FileText className="h-4 w-4 text-white" />
+            </div>
+            Choose Your Plan Type
+          </h2>
+          <Badge className={`text-xs ${planType === 'store' ? 'bg-[#F59E0B]/15 text-[#F59E0B] border border-[#F59E0B]/30' : 'bg-[#00D1FF]/10 text-[#00D1FF]'}`}>
+            {planType === 'store' ? '🛍️ Premium' : 'Standard'}
+          </Badge>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Regular Plan Option */}
+          <button
+            onClick={() => setPlanType('regular')}
+            className={`text-left p-5 rounded-xl border-2 transition-all duration-200 ${
+              planType === 'regular'
+                ? 'border-[#00D1FF] bg-[#00D1FF]/5 ring-1 ring-[#00D1FF]/30'
+                : 'border-[#e6ebf1] hover:border-[#c4c6ce] bg-white'
+            }`}
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                  planType === 'regular' ? 'border-[#00D1FF] bg-[#00D1FF]' : 'border-[#c4c6ce]'
+                }`}>
+                  {planType === 'regular' && <Check className="h-3 w-3 text-white" />}
+                </div>
+                <span className="font-bold text-[#000f22]">Regular Website</span>
+              </div>
+              <span className="text-sm font-bold text-[#000f22]">
+                ${planPrices[billing] ?? FALLBACK_PRICES[billing] ?? 30}/{period}
+              </span>
+            </div>
+            <p className="text-xs text-[#4F5B76] leading-relaxed mb-2">
+              Professional website design + hosting + maintenance. Perfect for business sites, portfolios, and landing pages.
+            </p>
+            <div className="flex flex-wrap gap-1">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#f1f4f7] text-[#4F5B76]">Hosting</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#f1f4f7] text-[#4F5B76]">SSL</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#f1f4f7] text-[#4F5B76]">Support</span>
+            </div>
+          </button>
+
+          {/* Store Package Option */}
+          <button
+            onClick={() => setPlanType('store')}
+            className={`text-left p-5 rounded-xl border-2 transition-all duration-200 relative overflow-hidden ${
+              planType === 'store'
+                ? 'border-[#F59E0B] bg-gradient-to-br from-[#FFF8E1] to-[#FFFBF0] ring-1 ring-[#F59E0B]/30'
+                : 'border-[#e6ebf1] hover:border-[#F59E0B]/50 bg-white'
+            }`}
+          >
+            {planType === 'store' && (
+              <div className="absolute top-0 right-0 bg-[#F59E0B] text-white text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-bl-lg">
+                Selected
+              </div>
+            )}
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                  planType === 'store' ? 'border-[#F59E0B] bg-[#F59E0B]' : 'border-[#c4c6ce]'
+                }`}>
+                  {planType === 'store' && <Check className="h-3 w-3 text-white" />}
+                </div>
+                <span className="font-bold text-[#000f22] flex items-center gap-1.5">
+                  <Store className="h-4 w-4 text-[#F59E0B]" />
+                  Store Package
+                </span>
+              </div>
+              <span className="text-sm font-bold text-[#F59E0B]">
+                ${planPrices[effectiveBilling === 'store' ? 'store' : effectiveBilling === 'store_semi_annual' ? 'store_semi_annual' : effectiveBilling === 'store_annual' ? 'store_annual' : 'store'] ?? FALLBACK_PRICES['store'] ?? 100}/{period}
+              </span>
+            </div>
+            <p className="text-xs text-[#4F5B76] leading-relaxed mb-2">
+              Everything in Regular + full e-commerce, daily backups, unlimited products, payment integration, and priority support.
+            </p>
+            <div className="flex flex-wrap gap-1">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#F59E0B]/10 text-[#92400E]">E-Commerce</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#F59E0B]/10 text-[#92400E]">Daily Backups</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#F59E0B]/10 text-[#92400E]">100GB</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#F59E0B]/10 text-[#92400E]">24/7 Priority</span>
+            </div>
+          </button>
+        </div>
+
+        {/* Store Package extra features summary (only shown when Store is selected) */}
+        {planType === 'store' && (
+          <div className="mt-4 p-4 rounded-xl bg-gradient-to-r from-[#FFF8E1] to-[#FFFBF0] border border-[#F59E0B]/20">
+            <p className="text-xs font-semibold text-[#92400E] mb-2 flex items-center gap-1.5">
+              <Store className="h-3.5 w-3.5" />
+              Store Package includes these additional features:
+            </p>
+            <div className="grid grid-cols-2 gap-1.5">
+              {STORE_PACKAGE_FEATURES.map((feature, i) => (
+                <div key={i} className="flex items-center gap-1.5 text-xs text-[#4F5B76]">
+                  <Check className="h-3 w-3 text-[#F59E0B] flex-shrink-0" />
+                  <span>{feature}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
@@ -427,8 +618,11 @@ export default function CheckoutPage() {
             {/* Price breakdown */}
             <div className="space-y-3 mb-5 pb-5 border-b border-[#768dad]/20">
               <div className="flex justify-between text-sm">
-                <span className="text-[#768dad]">Plan ({billing === 'monthly' ? 'Monthly' : billing === 'semi_annual' ? 'Semi-Annual' : 'Annual'})</span>
-                <span className="font-medium">${basePrice}.00/{period}</span>
+                <span className="text-[#768dad] flex items-center gap-1.5">
+                  {planType === 'store' && <Store className="h-3.5 w-3.5 text-[#F59E0B]" />}
+                  {planType === 'store' ? 'Store Package' : 'Plan'} ({billing === 'monthly' ? 'Monthly' : billing === 'semi_annual' ? 'Semi-Annual' : 'Annual'})
+                </span>
+                <span className={`font-medium ${planType === 'store' ? 'text-[#F59E0B]' : ''}`}>${basePrice}.00/{period}</span>
               </div>
 
               {extraFeaturesCount > 0 && (

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Monochrome Dark — Single Hue System</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Inter',system-ui,sans-serif}
+:root{--hue:210;--bg:hsl(var(--hue),20%,5%);--bg2:hsl(var(--hue),18%,8%);--bg3:hsl(var(--hue),15%,12%);--text:hsl(var(--hue),15%,85%);--text2:hsl(var(--hue),12%,60%);--text3:hsl(var(--hue),10%,35%);--accent:hsl(var(--hue),25%,55%);--border:hsl(var(--hue),15%,15%)}
+body{background:var(--bg);color:var(--text);overflow-x:hidden}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.animate-fade-in{animation:fadeIn .5s ease-out}
+.card{background:var(--bg2);border:1px solid var(--border);transition:all .3s}
+.card:hover{border-color:var(--accent);background:var(--bg3)}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:14px 20px;border-radius:8px;background:hsl(210,25%,15%);border:1px solid hsl(210,25%,25%);color:hsl(210,15%,85%);font-size:14px;animation:fadeIn .3s}
+</style>
+</head>
+<body class="min-h-screen">
+<div id="toast-container"></div>
+<nav class="sticky top-0 z-50 backdrop-blur-md" style="background:rgba(8,12,20,0.8);border-bottom:1px solid var(--border)">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+    <div class="flex items-center gap-2"><div class="w-8 h-8 rounded-lg" style="background:var(--accent)"></div><span class="text-lg font-bold" style="color:var(--text)">Monochrome</span></div>
+    <div class="hidden md:flex gap-8 text-sm" style="color:var(--text2)"><a href="#features" class="hover:text-white">Features</a><a href="#pricing" class="hover:text-white">Pricing</a></div>
+    <button onclick="showToast('Single hue. Infinite depth.')" class="px-5 py-2.5 rounded-lg text-sm font-semibold transition-all" style="background:hsl(210,25%,15%);border:1px solid hsl(210,25%,25%);color:hsl(210,20%,80%)">Get Started</button>
+  </div>
+</nav>
+<section class="py-24 px-6">
+  <div class="max-w-7xl mx-auto animate-fade-in">
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style="background:hsl(210,20%,10%);border:1px solid var(--border)"><span class="w-2 h-2 rounded-full animate-pulse" style="background:var(--accent)"></span><span class="text-xs font-medium" style="color:var(--accent)">SINGLE HUE SYSTEM</span></div>
+    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6" style="letter-spacing:-0.02em">One color.<br/><span style="color:var(--text3)">Infinite</span> depth.</h1>
+    <p class="text-lg leading-relaxed mb-8 max-w-lg" style="color:var(--text2)">A monochrome system using a single blue hue with varying lightness. Depth through contrast, not color variety.</p>
+    <button onclick="showToast('Monochrome activated.')" class="px-7 py-3.5 font-semibold rounded-xl transition-all hover:-translate-y-0.5" style="background:var(--accent);color:var(--bg)">Explore →</button>
+    <div class="flex gap-8 mt-12 pt-8 border-t" style="border-color:var(--border)">
+      <div><div class="text-3xl font-bold" style="color:var(--text)">50+</div><div class="text-xs mt-1" style="color:var(--text3)">SHADES</div></div>
+      <div class="w-px" style="background:var(--border)"></div>
+      <div><div class="text-3xl font-bold" style="color:var(--text)">1</div><div class="text-xs mt-1" style="color:var(--text3)">HUE</div></div>
+      <div class="w-px" style="background:var(--border)"></div>
+      <div><div class="text-3xl font-bold" style="color:var(--text)">WCAG</div><div class="text-xs mt-1" style="color:var(--text3)">AAA</div></div>
+    </div>
+  </div>
+</section>
+<section id="features" class="py-20 px-6 border-t" style="border-color:var(--border)">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14"><span class="text-xs font-semibold uppercase tracking-widest" style="color:var(--accent)">Features</span><h2 class="text-3xl sm:text-4xl font-bold mt-3">Single Hue Power</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-28 object-cover" style="filter:hue-rotate(210deg) saturate(0.3) brightness(0.6)"/><div class="p-6"><h3 class="font-bold mb-2">50+ Shades</h3><p class="text-sm" style="color:var(--text2)">From #050a12 to #4a6480. Every shade of one hue.</p></div></div>
+      <div class="card rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-28 object-cover" style="filter:hue-rotate(210deg) saturate(0.3) brightness(0.6)"/><div class="p-6"><h3 class="font-bold mb-2">Depth via Lightness</h3><p class="text-sm" style="color:var(--text2)">Hierarchy through lightness variations only.</p></div></div>
+      <div class="card rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-28 object-cover" style="filter:hue-rotate(210deg) saturate(0.3) brightness(0.6)"/><div class="p-6"><h3 class="font-bold mb-2">WCAG AAA</h3><p class="text-sm" style="color:var(--text2)">High contrast ratios for accessibility.</p></div></div>
+    </div>
+  </div>
+</section>
+<section id="pricing" class="py-20 px-6 border-t" style="border-color:var(--border)">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14"><h2 class="text-3xl font-bold">Pricing</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card rounded-2xl p-8"><h3 class="font-bold mb-1">Basic</h3><div class="text-4xl font-bold mb-4">$29</div><ul class="space-y-2 text-sm mb-6" style="color:var(--text2)"><li>✓ 10 shades</li><li>✓ Basic palette</li></ul><button onclick="showToast('Basic.')" class="w-full py-3 rounded-lg font-semibold text-sm" style="background:hsl(210,20%,12%);border:1px solid var(--border);color:var(--text)">Choose</button></div>
+      <div class="card rounded-2xl p-8 relative" style="border-color:var(--accent)"><div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 text-xs rounded-full" style="background:var(--accent);color:var(--bg)">POPULAR</div><h3 class="font-bold mb-1">Pro</h3><div class="text-4xl font-bold mb-4">$79</div><ul class="space-y-2 text-sm mb-6" style="color:var(--text2)"><li>✓ 50+ shades</li><li>✓ Full system</li><li>✓ Custom hue</li></ul><button onclick="showToast('Pro.')" class="w-full py-3 rounded-lg font-semibold text-sm" style="background:var(--accent);color:var(--bg)">Choose</button></div>
+      <div class="card rounded-2xl p-8"><h3 class="font-bold mb-1">Enterprise</h3><div class="text-4xl font-bold mb-4">$199</div><ul class="space-y-2 text-sm mb-6" style="color:var(--text2)"><li>✓ Everything</li><li>✓ Source</li></ul><button onclick="showToast('Enterprise.')" class="w-full py-3 rounded-lg font-semibold text-sm" style="background:hsl(210,20%,12%);border:1px solid var(--border);color:var(--text)">Choose</button></div>
+    </div>
+  </div>
+</section>
+<section class="py-20 px-6 border-t" style="border-color:var(--border)">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="card rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3" style="filter:saturate(0.2)"/><p class="text-sm italic" style="color:var(--text2)">"Elegant restraint. One color says it all."</p></div>
+    <div class="card rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3" style="filter:saturate(0.2)"/><p class="text-sm italic" style="color:var(--text2)">"The depth from a single hue is remarkable."</p></div>
+    <div class="card rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3" style="filter:saturate(0.2)"/><p class="text-sm italic" style="color:var(--text2)">"Monochrome done right. Sophisticated."</p></div>
+  </div>
+</section>
+<footer class="py-8 px-6 text-center text-sm" style="color:var(--text3);border-top:1px solid var(--border)">© 2026 Monochrome Dark Template</footer>
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}))
+</script>
+</body>
+</html>

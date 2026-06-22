@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bilad Al-Aseer | Spirit of Aseer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&amp;family=Hanken+Grotesk:wght@300;400;600;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#fff8f0",
+                        "surface": "#fff8f0",
+                        "primary-fixed": "#ffdbd1",
+                        "secondary-fixed-dim": "#d4c789",
+                        "terracotta": "#844432",
+                        "surface-container-low": "#fbf3e6",
+                        "on-surface-variant": "#53433f",
+                        "primary": "#672e1d",
+                        "primary-container": "#844432",
+                        "tertiary-container": "#575656",
+                        "primary-fixed-dim": "#ffb5a0",
+                        "background": "#fff8f0",
+                        "on-tertiary-container": "#cecbcb",
+                        "inverse-surface": "#343028",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-error-container": "#93000a",
+                        "moss-olive": "#948951",
+                        "on-primary-fixed": "#390b01",
+                        "secondary": "#685f2b",
+                        "inverse-primary": "#ffb5a0",
+                        "inverse-on-surface": "#f8f0e3",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e9e2d5",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e9e2d5",
+                        "ink-stone": "#1A1A1A",
+                        "surface-dim": "#e1d9cd",
+                        "on-primary-fixed-variant": "#713524",
+                        "surface-container-high": "#efe7da",
+                        "surface-container": "#f5ede0",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#f1e3a3",
+                        "error-container": "#ffdad6",
+                        "on-primary-container": "#ffbca9",
+                        "on-secondary-fixed-variant": "#4f4716",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "warm-cream": "#FCF4E7",
+                        "outline-variant": "#d9c2bc",
+                        "on-secondary-fixed": "#211c00",
+                        "tertiary": "#3f3f3f",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#1e1b14",
+                        "on-background": "#1e1b14",
+                        "on-secondary-container": "#6d632f",
+                        "secondary-container": "#eee0a0",
+                        "outline": "#86736e",
+                        "surface-tint": "#8e4c3a",
+                        "tertiary-fixed-dim": "#c8c6c5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "section-gap": "120px",
+                        "base": "8px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "number-display": ["Libre Caslon Text"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-xl": ["Libre Caslon Text"],
+                        "headline-lg": ["Libre Caslon Text"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "label-caps": ["Hanken Grotesk"],
+                        "headline-md": ["Libre Caslon Text"]
+                    },
+                    "fontSize": {
+                        "number-display": ["24px", {"lineHeight": "1", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-xl-mobile": ["40px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                        "headline-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                        "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                        "body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-caps": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-nav {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .stagger-grid > div:nth-child(even) {
+            transform: translateY(40px);
+        }
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 40s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .border-pattern {
+            border-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0L24 16L40 20L24 24L20 40L16 24L0 20L16 16Z' fill='%23844432' opacity='0.2'/%3E%3C/svg%3E") 20 repeat;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface selection:bg-terracotta selection:text-white">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-warm-cream/80 backdrop-blur-md border-b border-terracotta/10 shadow-sm transition-all duration-300">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<a class="font-headline-md text-headline-md text-terracotta uppercase tracking-tighter" href="#">Bilad Al-Aseer</a>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="font-label-caps text-label-caps text-terracotta border-b-2 border-terracotta pb-1 font-semibold transition-colors duration-300" href="#discover">Discover Aseer</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-terracotta transition-colors duration-300" href="#activities">Activities</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-terracotta transition-colors duration-300" href="#people">People of Aseer</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-terracotta transition-colors duration-300" href="#why">Why Aseer?</a>
+</nav>
+<button class="bg-terracotta text-warm-cream px-6 py-2 rounded-sm font-label-caps text-label-caps hover:bg-primary transition-all scale-95 duration-200 ease-in-out">
+                Book Now
+            </button>
+</div>
+</header>
+<!-- Hero Section -->
+<section class="relative min-h-screen flex items-center pt-24 overflow-hidden">
+
+<div class="relative z-10 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="md:col-span-8 flex flex-col justify-center">
+<span class="font-label-caps text-label-caps text-terracotta mb-6 block tracking-widest">AUTHENTICITY • HERITAGE • WONDER</span>
+<h1 class="font-headline-xl text-headline-xl-mobile md:text-headline-xl text-terracotta mb-8 leading-tight">
+                    Let the Spirit of <br/><span class="italic">Aseer Awaken</span><br/> Your Senses
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-12">
+                    Because we love Aseer, we decided to narrate it as it is. In its original details, its captivating simplicity, and the honesty of those who lived it. No artificial experiences here—just living stories.
+                </p>
+<div class="flex gap-4">
+<button class="bg-terracotta text-warm-cream px-10 py-4 font-label-caps text-label-caps tracking-widest hover:bg-primary transition-all">
+                        EXPLORE NOW
+                    </button>
+</div>
+</div>
+<div class="md:col-span-4 relative hidden md:block">
+<div class="aspect-[3/4] border border-terracotta/20 p-4">
+<img class="w-full h-full object-cover" data-alt="A majestic aerial view of the Aseer mountains in Saudi Arabia at dawn. The morning mist swirls around the rugged green peaks and traditional stone villages. The lighting is soft and golden, creating a soulful and atmospheric heritage travel mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuACI2NkPrPBj_EU41EfdLjdFQfNTHhyOhTJprke_65PFlxwWAqVVrYWcc8r5z9pox6RHRUqKwkrKfDBwqSxiyC9cvY3bbmSVF92cN9pSzOIWAxXSoHZTiZ0JO1IHo9zSBgxwnvXTMQnjhfIuFiOceqnC3m88TBG-TaW2HEilbsnshde_QT9d3pofhNnsY0vJ0vdlwAL7qajBUNWlY6GCMBBFzQFIaXxZa7WKlvJ_YIpYnnyfDxExuMV-FmyEER4oU0px54DS02kSv0E"/>
+</div>
+<!-- Star Decoration -->
+<div class="absolute -bottom-8 -left-8 text-terracotta opacity-40">
+<span class="material-symbols-outlined text-6xl">star</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Marquee Text -->
+<div class="py-12 bg-ink-stone overflow-hidden border-y border-terracotta/20">
+<div class="marquee-container">
+<div class="marquee-content flex gap-12 items-center">
+<span class="font-headline-md text-headline-md text-warm-cream italic opacity-80">Honest Human Experience</span>
+<span class="text-terracotta">✴︎</span>
+<span class="font-headline-md text-headline-md text-warm-cream italic opacity-80">Immersion in Heritage</span>
+<span class="text-terracotta">✴︎</span>
+<span class="font-headline-md text-headline-md text-warm-cream italic opacity-80">Return to the Self</span>
+<span class="text-terracotta">✴︎</span>
+<span class="font-headline-md text-headline-md text-warm-cream italic opacity-80">A Sense of Belonging</span>
+<span class="text-terracotta">✴︎</span>
+<!-- Duplicate for seamless loop -->
+<span class="font-headline-md text-headline-md text-warm-cream italic opacity-80">Honest Human Experience</span>
+<span class="text-terracotta">✴︎</span>
+<span class="font-headline-md text-headline-md text-warm-cream italic opacity-80">Immersion in Heritage</span>
+<span class="text-terracotta">✴︎</span>
+<span class="font-headline-md text-headline-md text-warm-cream italic opacity-80">Return to the Self</span>
+<span class="text-terracotta">✴︎</span>
+</div>
+</div>
+</div>
+<!-- Philosophy Section -->
+<section class="py-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto text-center" id="discover">
+<div class="max-w-4xl mx-auto">
+<h2 class="font-headline-lg text-headline-lg text-terracotta mb-8">When the Experience Lives Within You, <br/><span class="italic">The Stories of Aseer Stay With You</span></h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-16">
+                Aseer is not just a destination; it's a digital vessel for cultural storytelling. Here, every stone has a voice, and every mountain breeze tells a tale of resilience and hospitality.
+            </p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="p-8 border border-terracotta/10 bg-warm-cream shadow-sm hover:shadow-md transition-shadow">
+<span class="material-symbols-outlined text-4xl text-terracotta mb-4">home_pin</span>
+<h3 class="font-label-caps text-label-caps text-terracotta mb-2 uppercase">Rooted Stays</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Live in traditional stone houses that breathe with the history of generations.</p>
+</div>
+<div class="p-8 border border-terracotta/10 bg-warm-cream shadow-sm hover:shadow-md transition-shadow">
+<span class="material-symbols-outlined text-4xl text-terracotta mb-4">nature_people</span>
+<h3 class="font-label-caps text-label-caps text-terracotta mb-2 uppercase">Local Connection</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Guided by villagers who don't just show you the path, but share their life.</p>
+</div>
+<div class="p-8 border border-terracotta/10 bg-warm-cream shadow-sm hover:shadow-md transition-shadow">
+<span class="material-symbols-outlined text-4xl text-terracotta mb-4">restaurant</span>
+<h3 class="font-label-caps text-label-caps text-terracotta mb-2 uppercase">Heritage Tastes</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Flavors of the land, from mountain honey to slow-cooked regional feasts.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Categories Section (Asymmetric Storytelling Layout) -->
+<section class="bg-ink-stone text-warm-cream py-section-gap" id="activities">
+<div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<header class="flex justify-between items-end mb-24">
+<div>
+<span class="font-label-caps text-label-caps text-terracotta mb-4 block">CHAPTERS OF ASEER</span>
+<h2 class="font-headline-lg text-headline-lg">Choose Your Experience</h2>
+</div>
+<div class="hidden md:block">
+<span class="material-symbols-outlined text-4xl text-terracotta">keyboard_double_arrow_down</span>
+</div>
+</header>
+<!-- Grid Items -->
+<div class="space-y-32">
+<!-- 01 Village Houses -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
+<div class="md:col-span-6 order-2 md:order-1">
+<span class="font-number-display text-number-display text-terracotta block mb-6">01</span>
+<h3 class="font-headline-md text-headline-md mb-6 uppercase tracking-tight">Village Houses</h3>
+<p class="font-body-lg text-body-lg text-warm-cream/70 mb-8 max-w-lg">
+                            In the heart of Aseer villages, the rural house stands as a witness to a vibrant life. Every architectural detail brings us back to the brilliance of nature. These are not just places to stay, but invitations to dialogue with the earth.
+                        </p>
+<button class="border border-terracotta text-terracotta px-8 py-3 font-label-caps text-label-caps hover:bg-terracotta hover:text-warm-cream transition-all">
+                            BOOK A STAY
+                        </button>
+</div>
+<div class="md:col-span-6 order-1 md:order-2">
+<div class="aspect-video border border-terracotta/20 p-4 relative group overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Close-up of a traditional Aseer stone house with colorful geometric patterns painted around the windows. The texture of the ancient stones is tactile and rich. Warm evening sunlight hits the facade, highlighting the craftsmanship and heritage of Saudi rural architecture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkdyjklsO2VX2ohmhNBqpLEC_q-luv8X902aYqGEPj9PNk5Qa3nUA9tIKGcamwwZE9X8vqqZO-U0rC3xEzXtFNm5Q90bBFMmiDypLwlKjgE1UzvEani8iD4ZQ4EjPIMlY-_jiPJgBIsNO8ahzuFAgxJWlQfoYqV6OcKuCVclQH7j9KBqCBz7v-NJk58XGm7zwsXKWYANXGMYBr_4ON-7cY98MJs78RXvfDkBzWpaqj7_Xi62_lkm-YZ6pf05GdRZeaI9i7juoLJ4uT"/>
+<div class="absolute inset-0 bg-ink-stone/20 group-hover:bg-transparent transition-colors"></div>
+</div>
+</div>
+</div>
+<!-- 02 Trips & Experiences -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
+<div class="md:col-span-6">
+<div class="aspect-[4/3] border border-terracotta/20 p-4 relative overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A group of travelers sitting with a local villager in Aseer, sharing traditional coffee in a lush mountain valley. The atmosphere is intimate and authentic, showing real human connection. The surrounding landscape features tiered agricultural fields and foggy peaks." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGPmWSIEADQiYO_-OMOcu_A55tIzI-fC4Ip1kAFOt7iwrdtXWiC_BDkfDhUnS5oVrOoRivyIEATwnACPacnSQAsuNSjE3IzTTHszFy8XUR2k1XsEvCLLPsXHYSaPgpUnKnO1oj3GuhcRVMPZGjt78_yfCs6GzBx7LMO6zp8oU6yx6OdfQ4ny2KFklv_dge4C7956CYDFUENzKgU-kycaLXrNTWsMzUkxXuPbWev3wysqJvjlKktaO2E20spSQHKSnIfTAk7_bfJ5_X"/>
+</div>
+</div>
+<div class="md:col-span-6 flex flex-col md:pl-12">
+<span class="font-number-display text-number-display text-terracotta block mb-6">02</span>
+<h3 class="font-headline-md text-headline-md mb-6 uppercase tracking-tight">Trips &amp; Experiences</h3>
+<p class="font-body-lg text-body-lg text-warm-cream/70 mb-8">
+                            Your chance for a real connection with nature, yourself, and your roots. Learn how to breathe slowly and enjoy the forgotten quiet rhythm. Touch authentic art, and taste beauty that isn't manufactured... but felt.
+                        </p>
+<button class="border border-terracotta text-terracotta px-8 py-3 font-label-caps text-label-caps hover:bg-terracotta hover:text-warm-cream transition-all self-start">
+                            DISCOVER TRIPS
+                        </button>
+</div>
+</div>
+<!-- 03 Cafes & Tables -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
+<div class="md:col-span-6 order-2 md:order-1">
+<span class="font-number-display text-number-display text-terracotta block mb-6">03</span>
+<h3 class="font-headline-md text-headline-md mb-6 uppercase tracking-tight">Cafes &amp; Tables</h3>
+<p class="font-body-lg text-body-lg text-warm-cream/70 mb-8 max-w-lg">
+                            The Aseeri kitchen is a master storyteller of hospitality. Every dish is a message from the village to the world. We blend traditional flavors with contemporary touches in a sincere harmony that doesn't distort the original.
+                        </p>
+<button class="border border-terracotta text-terracotta px-8 py-3 font-label-caps text-label-caps hover:bg-terracotta hover:text-warm-cream transition-all">
+                            RESERVE A TABLE
+                        </button>
+</div>
+<div class="md:col-span-6 order-1 md:order-2">
+<div class="aspect-square max-w-md mx-auto border border-terracotta/20 p-4">
+<img class="w-full h-full object-cover" data-alt="A beautifully set traditional dining table in Aseer, featuring regional dishes like Aseeri honey, dates, and slow-cooked meat. The table is made of rustic wood and set in a terrace overlooking the mountains. The lighting is warm and candle-lit, evoking a luxury heritage dining experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMaDK15W-b8kM83qYu4LJdzJSGRJArSBmc9jbyGUMNedf2qX5-UbpXa96HiDrvpfDmWu1Lgn1UkC7RVHXyAGykXuX-hxd9lmcE1DYP23MzNKxfaAJxHHQP_QOv_HL-G7YWfMTtgbzS35lETbXxAmnbx9ncIOp80g-I34PkP4mHxbEU_Lh7JVYaHgUMKtEjyYzN5ToxZqjlLooioPAVBHwvwB63g9sck9i_3OAnntdO9mglIC4yTZOBQhcfu63-mzqgyeNl8yNiCd2n"/>
+</div>
+</div>
+</div>
+<!-- 04 & 05 Bento Hybrid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="p-12 border border-terracotta/20 bg-primary/20 flex flex-col justify-between">
+<div>
+<span class="font-number-display text-number-display text-terracotta block mb-6">04</span>
+<h3 class="font-headline-md text-headline-md mb-6 uppercase tracking-tight">From Aseer</h3>
+<p class="font-body-md text-body-md text-warm-cream/70 mb-8">
+                                Products of the land, harvested by hands and nurtured by hearts. Honey, crafts, and the essence of mountain life.
+                            </p>
+</div>
+<button class="text-terracotta font-label-caps text-label-caps flex items-center gap-2 hover:translate-x-2 transition-transform">
+                            SHOP COLLECTION <span class="material-symbols-outlined">arrow_right_alt</span>
+</button>
+</div>
+<div class="p-12 border border-terracotta/20 bg-moss-olive/10 flex flex-col justify-between">
+<div>
+<span class="font-number-display text-number-display text-terracotta block mb-6">05</span>
+<h3 class="font-headline-md text-headline-md mb-6 uppercase tracking-tight">Nature Adventures</h3>
+<p class="font-body-md text-body-md text-warm-cream/70 mb-8">
+                                Not just passing through nature, but engaging with it. Hiking, cycling, and mountaineering that return you to yourself.
+                            </p>
+</div>
+<button class="text-terracotta font-label-caps text-label-caps flex items-center gap-2 hover:translate-x-2 transition-transform">
+                            BOOK ADVENTURE <span class="material-symbols-outlined">arrow_right_alt</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Map/CTA Section -->
+<section class="relative h-[600px] flex items-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover" data-alt="A landscape view of a vintage 4x4 vehicle parked on a mountain ridge in Aseer, Saudi Arabia. The background shows layers of misty blue mountains under a soft sky. The mood is adventurous yet contemplative, echoing the invitation to find oneself in the landscape." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8iMtSSZWX7d5_OoJUWutDKs-kX1x67Xyun_UjKGU_SxXLGXYI2jo4LoI_mGXW2hRxMWaD0O-xGHuCiOuAoeHfWq-U3MY8rp-qclLhoN8fJo19Q-U5HZhDXmCoStdTZXFvMXXowRW7MrlRLALXRQXRfKaDDzlDXEp5EmM5BkyhagxwjR26-ZU0Z7AnTjyTJKMhAp8iR9PunR1POSQ4wDW1v-AIx4lpQOSX-_eoAsifwe_TlkI5X52OCdT9ROoKAiZQkstVhjI_4-y7"/>
+<div class="absolute inset-0 bg-ink-stone/40"></div>
+</div>
+<div class="relative z-10 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto text-center text-warm-cream">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg mb-8">How to Reach? Yes, we will guide you on the map.</h2>
+<p class="font-body-lg text-body-lg max-w-2xl mx-auto mb-12 italic">
+                "But most importantly: arrive ready to leave a piece of your heart, and take a piece of the soul of this land with you."
+            </p>
+<button class="bg-terracotta text-warm-cream px-10 py-4 font-label-caps text-label-caps tracking-widest hover:bg-primary transition-all shadow-xl">
+                VIEW MAP LOCATION
+            </button>
+</div>
+</section>
+<!-- Contextual Information -->
+<section class="py-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" id="why">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-24 items-start">
+<div class="space-y-16">
+<div>
+<h4 class="font-label-caps text-label-caps text-terracotta mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-xl">cloud</span> ATMOSPHERE &amp; WEATHER
+                    </h4>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                        In Aseer villages, the weather is like nowhere else... a mixture of cold breezes passing through the trees and light fog caressing the peaks at dawn. Expect moderate to cold temperatures, even in the summer months.
+                    </p>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps text-terracotta mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-xl">favorite</span> HOSPITALITY &amp; VALUES
+                    </h4>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                        Hospitality here is not a ritual... it's a habit practiced by hearts before hands. Do not be surprised if you are invited into a home for coffee—it's a sincere expression of love.
+                    </p>
+</div>
+</div>
+<div class="bg-warm-cream border border-terracotta/20 p-12">
+<h3 class="font-headline-md text-headline-md text-terracotta mb-8">Start Your Journey...</h3>
+<ul class="space-y-6">
+<li class="flex gap-4">
+<span class="font-number-display text-terracotta">01</span>
+<p class="font-body-md">Fly to Abha International Airport.</p>
+</li>
+<li class="flex gap-4 border-t border-terracotta/10 pt-6">
+<span class="font-number-display text-terracotta">02</span>
+<p class="font-body-md">Find us in the village of Al-Shaddadi, just 40 minutes away.</p>
+</li>
+<li class="flex gap-4 border-t border-terracotta/10 pt-6">
+<span class="font-number-display text-terracotta">03</span>
+<p class="font-body-md">No 4x4 vehicle needed—the roads are paved and welcoming.</p>
+</li>
+</ul>
+<div class="mt-12 flex items-center gap-4 text-moss-olive">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">location_on</span>
+<span class="font-label-caps text-label-caps">ABHA, ASEER PROVINCE</span>
+</div>
+</div>
+</div>
+</section>
+<!-- People of the Story -->
+<section class="bg-ink-stone text-warm-cream py-section-gap overflow-hidden" id="people">
+<div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto mb-16">
+<h2 class="font-headline-lg text-headline-lg mb-4">We Are the Story... Not Behind the Scenes</h2>
+<p class="font-body-lg text-body-lg text-warm-cream/60 max-w-2xl">
+                The faces of Aseer. Those who opened their homes, cooked with love, and shared their heritage. This project is their voice.
+            </p>
+</div>
+<div class="flex gap-8 px-margin-mobile overflow-x-auto pb-12 snap-x hide-scrollbar">
+<!-- Person 1 -->
+<div class="min-w-[300px] snap-center">
+<div class="aspect-square border border-terracotta/40 p-2 mb-6">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" data-alt="Portrait of a young Saudi man from Aseer with traditional headwear, smiling warmly. The background is a blurred mountain village. The photography style is editorial, high-contrast, and focused on his expressive features, capturing authentic local hospitality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgN04En20uJ2mDc3n-_g5jYAJh_TBAhj5GbKQvRs3sNSzJbHWgFwm5vW5sfIfbj3ZWV5jndOvJcZH3eX1wfwxXktVA5dpP6gDYY3sexrVmGlXvUAjfnGkLMRTW673BOcBnYAfFpncwx3Z3X10cnQ_ZCB9V_VCuiYYaKAh569yi4yaJqB3m_HgoobwAQfZnB4ffcmHTfLPipsHyBkVHLmByb-6jAtsIqdJ-QFcJtFojxMPoz1s2ZZvcjEbERhK5wDTDP_fIAZKh_Kc6"/>
+</div>
+<h4 class="font-label-caps text-label-caps text-terracotta">Ziyad Abdullah</h4>
+<p class="font-body-md text-warm-cream/50 text-sm">Experience Guide</p>
+</div>
+<!-- Person 2 -->
+<div class="min-w-[300px] snap-center">
+<div class="aspect-square border border-terracotta/40 p-2 mb-6">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" data-alt="Portrait of an elderly Aseeri craftsman working with mountain honey. His hands are weathered and strong, showing a life of dedication to the land. The lighting is dramatic and warm, highlighting the textures of his traditional attire and the golden honey." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDy3sKVGm0M8WmHRm2YiPMWKDb3NhsybZPeQH-5czA80IHat48TfwcOkVXKdCo49NTBss6kv3V37C--6n1ETsm2VJ8-7sxjd_Pq0QZ0EO23LXfz77T_o4r6QOjlPkQaTRgfyA2fMfITSDkXwdlYpezteTvJIa8jYcbGnz3NBxHefyHk4r6Dz5n4zxT-s76oL1t59D0awvB3q3AMOT-jnXS4ZReWwHeBO9vl5fM1xk_rtVdyNAHj1F-TD85eJelvgyF-FvEHFoF8gLKW"/>
+</div>
+<h4 class="font-label-caps text-label-caps text-terracotta">Mohammed Abdullah</h4>
+<p class="font-body-md text-warm-cream/50 text-sm">Harvest Master</p>
+</div>
+<!-- Person 3 -->
+<div class="min-w-[300px] snap-center">
+<div class="aspect-square border border-terracotta/40 p-2 mb-6">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" data-alt="Portrait of a local Aseeri woman storyteller, wearing traditional jewelry and a headscarf. Her eyes are bright and full of wisdom. The background shows the intricate painted patterns of a village house interior. The mood is soulful and culturally rich." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyx5PrG0MGR-W6YMi3acYGqhtyJtO9aoJ9dCPCjxvO_Sr3dOifYgHUetwOcoM_L5q_4pUhu5MmerIV3g9wEZqh85RJxOyKloSC9ko2zyuD6tv178aLkozUV2C0m0qvvqJRPieOkAyJzRpqWJvULsinHfYZMwhygjQgW3PFY-TkbZqpQrzXHAMTK_yPY_4UX-ETB43SeeakFtCSzC4GS75Zp8xywVA2oqWAk_PtwqeLsVyi0Hc--va40uLALTwkKBGE3ikn-V-JVXeW"/>
+</div>
+<h4 class="font-label-caps text-label-caps text-terracotta">Muzoon Mukhafah</h4>
+<p class="font-body-md text-warm-cream/50 text-sm">Cultural Custodian</p>
+</div>
+<!-- Person 4 -->
+<div class="min-w-[300px] snap-center">
+<div class="aspect-square border border-terracotta/40 p-2 mb-6">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" data-alt="Portrait of a young Aseeri chef plating a traditional dish. He looks at the camera with pride. The kitchen behind him is a mix of modern equipment and traditional stone ovens. The style is high-end culinary photography with a heritage soul." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmHtguj_BUsbjfAWWtcAlkZIcWz3iYawAwjre7gLSs3FBqOg3DmyfkzA-ouT-oaO7D5It9pjFu9PgG3M6lJeFNeE9O7qYFha4trEhNXC3uVZ0R5EyYOKgV7j7CC8wZIW1AbWLMCT_Cv6cquAAI1YW0kaTyIua-mfDMmJy9ttSRgX_xa3b1X802-ZG5T8f4gbd5nsWwUcDGJJsKvNL-60GzjqMsWPqNa-3EKg1fQ2W06hliUlVoOvpYWl-TpaYqgEv_xYtLV0pH_--j"/>
+</div>
+<h4 class="font-label-caps text-label-caps text-terracotta">Yousef Ibrahim</h4>
+<p class="font-body-md text-warm-cream/50 text-sm">Heritage Chef</p>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-ink-stone text-warm-cream pt-section-gap pb-8 border-t border-terracotta/20">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto mb-24">
+<div class="col-span-1 md:col-span-1">
+<a class="font-headline-md text-headline-md text-warm-cream uppercase tracking-tighter block mb-6" href="#">Bilad Al-Aseer</a>
+<p class="font-body-md text-warm-cream/60 max-w-xs">
+                    Celebrating the raw beauty of Aseer through story-first heritage experiences.
+                </p>
+</div>
+<div>
+<h5 class="font-label-caps text-label-caps text-terracotta mb-6">EXPERIENCES</h5>
+<ul class="space-y-4 font-body-md text-warm-cream/70">
+<li><a class="hover:text-terracotta transition-all" href="#">Village Houses</a></li>
+<li><a class="hover:text-terracotta transition-all" href="#">Trips &amp; Experiences</a></li>
+<li><a class="hover:text-terracotta transition-all" href="#">Cafes &amp; Tables</a></li>
+<li><a class="hover:text-terracotta transition-all" href="#">Nature Adventures</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-label-caps text-label-caps text-terracotta mb-6">QUICK LINKS</h5>
+<ul class="space-y-4 font-body-md text-warm-cream/70">
+<li><a class="hover:text-terracotta transition-all" href="#">Discover Aseer</a></li>
+<li><a class="hover:text-terracotta transition-all" href="#">People of Aseer</a></li>
+<li><a class="hover:text-terracotta transition-all" href="#">Why Aseer?</a></li>
+<li><a class="hover:text-terracotta transition-all" href="#">Book Now</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-label-caps text-label-caps text-terracotta mb-6">CONNECT</h5>
+<div class="flex gap-4 mb-8">
+<a class="w-10 h-10 border border-terracotta/30 flex items-center justify-center hover:bg-terracotta transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">public</span>
+</a>
+<a class="w-10 h-10 border border-terracotta/30 flex items-center justify-center hover:bg-terracotta transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">camera</span>
+</a>
+<a class="w-10 h-10 border border-terracotta/30 flex items-center justify-center hover:bg-terracotta transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">chat</span>
+</a>
+</div>
+<form class="space-y-4">
+<label class="font-label-caps text-label-caps text-xs opacity-50 block uppercase">STAY IN THE STORY</label>
+<input class="bg-transparent border-b border-warm-cream/20 w-full py-2 focus:border-terracotta outline-none font-body-md" placeholder="YOUR EMAIL ADDRESS" type="email"/>
+</form>
+</div>
+</div>
+<div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto pt-8 border-t border-warm-cream/10 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-label-caps text-label-caps text-xs opacity-40">© 2024 BILAD AL-ASEER. ALL RIGHTS RESERVED.</p>
+<div class="flex gap-8 opacity-40 font-label-caps text-xs">
+<a class="hover:opacity-100" href="#">PRIVACY POLICY</a>
+<a class="hover:opacity-100" href="#">TERMS OF SERVICE</a>
+</div>
+</div>
+</footer>
+<!-- WhatsApp FAB (Contextual) -->
+<a class="fixed bottom-8 right-8 z-50 bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform md:hidden lg:flex" href="https://wa.me/966509113333">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">chat</span>
+</a>
+<script>
+        // Simple header background change on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('py-2', 'bg-warm-cream/95');
+                header.classList.remove('py-4', 'bg-warm-cream/80');
+            } else {
+                header.classList.add('py-4', 'bg-warm-cream/80');
+                header.classList.remove('py-2', 'bg-warm-cream/95');
+            }
+        });
+
+        // Hide FAB on specific sections if needed
+        const fab = document.querySelector('.fixed.bottom-8');
+        const footer = document.querySelector('footer');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    fab.style.opacity = '0';
+                    fab.style.pointerEvents = 'none';
+                } else {
+                    fab.style.opacity = '1';
+                    fab.style.pointerEvents = 'auto';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        observer.observe(footer);
+    </script>
+</body></html>

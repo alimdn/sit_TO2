@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dark Mode — Neon Tech Aesthetic</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Inter',system-ui,sans-serif}
+body{background:#0a0a0a;color:#f0f0f0;overflow-x:hidden}
+.mono{font-family:'JetBrains Mono',monospace}
+.neon-cyan{text-shadow:0 0 10px rgba(0,212,255,0.6),0 0 20px rgba(0,212,255,0.3)}
+.neon-purple{text-shadow:0 0 10px rgba(124,92,255,0.6),0 0 20px rgba(124,92,255,0.3)}
+.neon-border-cyan{border:1px solid rgba(0,212,255,0.3);box-shadow:0 0 15px rgba(0,212,255,0.15),inset 0 0 15px rgba(0,212,255,0.05)}
+.neon-border-purple{border:1px solid rgba(124,92,255,0.3);box-shadow:0 0 15px rgba(124,92,255,0.15),inset 0 0 15px rgba(124,92,255,0.05)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+.animate-fade-in{animation:fadeIn .5s ease-out}
+.animate-pulse-slow{animation:pulse 3s infinite}
+.card-hover{transition:all .3s}
+.card-hover:hover{border-color:rgba(0,212,255,0.5);box-shadow:0 0 25px rgba(0,212,255,0.2)}
+.grid-bg{background-image:linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);background-size:40px 40px}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:16px 24px;border-radius:12px;background:rgba(0,212,255,0.15);border:1px solid rgba(0,212,255,0.4);backdrop-filter:blur(10px);color:#00d4ff;font-family:'JetBrains Mono',monospace;font-size:14px;animation:fadeIn .3s}
+</style>
+</head>
+<body class="grid-bg">
+<div id="toast-container"></div>
+
+<!-- Nav -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-cyan-500/10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+    <div class="flex items-center gap-2"><div class="w-9 h-9 rounded-lg neon-border-cyan flex items-center justify-center"><span class="text-cyan-400 font-bold mono">D</span></div><span class="text-xl font-bold">Dark<span class="text-cyan-400 neon-cyan">UI</span></span></div>
+    <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400"><a href="#features" class="hover:text-cyan-400">Features</a><a href="#showcase" class="hover:text-cyan-400">Showcase</a><a href="#pricing" class="hover:text-cyan-400">Pricing</a></div>
+    <button onclick="showToast('System ready.')" class="neon-border-cyan px-5 py-2.5 rounded-lg text-sm font-semibold text-cyan-400 hover:bg-cyan-500/10 transition-all">Launch</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+  <div class="absolute top-20 left-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl"></div>
+  <div class="absolute bottom-20 right-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl"></div>
+  <div class="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+    <div class="animate-fade-in">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full neon-border-cyan mb-6"><span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse-slow"></span><span class="text-cyan-400 text-xs font-medium mono tracking-wider">SYSTEM_ONLINE</span></div>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6" style="letter-spacing:-0.02em">Dark Mode<br/><span class="text-cyan-400 neon-cyan">Neon Aesthetic</span></h1>
+      <p class="text-lg text-gray-400 leading-relaxed mb-8 max-w-lg mono">Deep dark backgrounds, glowing neon accents, and a sophisticated tech-forward feel. Built for developers, by developers.</p>
+      <div class="flex gap-4">
+        <button onclick="showToast('Initializing...')" class="neon-border-cyan px-7 py-3.5 text-cyan-400 font-semibold rounded-xl hover:bg-cyan-500/10 transition-all">> Deploy Now</button>
+        <a href="#pricing" class="neon-border-purple px-7 py-3.5 text-purple-400 font-semibold rounded-xl hover:bg-purple-500/10 transition-all cursor-pointer">View Plans</a>
+      </div>
+      <div class="flex items-center gap-6 mt-12 pt-8 border-t border-white/5"><div><div class="text-3xl font-bold text-cyan-400 neon-cyan">99.9%</div><div class="text-xs text-gray-500 mt-1 mono">UPTIME</div></div><div class="w-px h-12 bg-white/5"></div><div><div class="text-3xl font-bold text-purple-400 neon-purple">10K+</div><div class="text-xs text-gray-500 mt-1 mono">DEVS</div></div><div class="w-px h-12 bg-white/5"></div><div><div class="text-3xl font-bold text-green-400">200+</div><div class="text-xs text-gray-500 mt-1 mono">STARS</div></div></div>
+    </div>
+    <div class="hidden lg:block">
+      <div class="relative">
+        <div class="absolute -inset-4 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-2xl blur-2xl"></div>
+        <div class="relative neon-border-cyan rounded-2xl overflow-hidden bg-black/60">
+          <div class="bg-black/90 px-4 py-2 flex items-center gap-2 border-b border-cyan-500/20"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div><span class="ml-2 text-xs text-gray-500 mono">~/dark-ui</span></div>
+          <div class="p-6"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80" alt="Dark Dashboard" class="w-full h-48 object-cover rounded-lg"/><div class="mt-4 space-y-2 mono text-xs"><div class="text-green-400">$ npm install @dark-ui/core</div><div class="text-cyan-400">✓ Installed 42 packages</div><div class="text-purple-400">→ Ready to build.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="py-20 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14"><span class="text-cyan-400 text-xs font-semibold uppercase tracking-widest mono">// Features</span><h2 class="text-3xl sm:text-4xl font-bold mt-3" style="letter-spacing:-0.02em">Built for the Dark Side</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="card-hover neon-border-cyan rounded-2xl overflow-hidden bg-black/40 p-6"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=200&fit=crop&q=80" alt="" class="w-full h-32 object-cover rounded-lg mb-4"/><div class="text-2xl mb-2">⚡</div><h3 class="font-bold mb-2 text-cyan-400">Neon Glow</h3><p class="text-sm text-gray-400">Glowing text and box shadows for a futuristic feel.</p></div>
+      <div class="card-hover neon-border-purple rounded-2xl overflow-hidden bg-black/40 p-6"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop&q=80" alt="" class="w-full h-32 object-cover rounded-lg mb-4"/><div class="text-2xl mb-2">🌙</div><h3 class="font-bold mb-2 text-purple-400">True Dark</h3><p class="text-sm text-gray-400">#0a0a0a background with high-contrast text ratios.</p></div>
+      <div class="card-hover neon-border-cyan rounded-2xl overflow-hidden bg-black/40 p-6"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=200&fit=crop&q=80" alt="" class="w-full h-32 object-cover rounded-lg mb-4"/><div class="text-2xl mb-2">⚡</div><h3 class="font-bold mb-2 text-cyan-400">Grid Pattern</h3><p class="text-sm text-gray-400">Subtle grid overlay for a tech-forward aesthetic.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" class="py-20 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14"><span class="text-cyan-400 mono text-xs">// Pricing</span><h2 class="text-3xl font-bold mt-3" style="letter-spacing:-0.02em">Choose Your Tier</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-hover neon-border-cyan rounded-2xl bg-black/40 p-8"><h3 class="font-bold text-cyan-400 mb-1">Dev</h3><p class="text-sm text-gray-500 mb-6 mono">For solo devs</p><div class="mb-6"><span class="text-4xl font-bold text-white">$0</span><span class="text-gray-500 mono text-sm">/free</span></div><ul class="space-y-3 mb-8 text-sm text-gray-400"><li class="flex gap-2"><span class="text-cyan-400">›</span> 10 components</li><li class="flex gap-2"><span class="text-cyan-400">›</span> Basic glow</li></ul><button onclick="showToast('Dev tier!')" class="w-full py-3 neon-border-cyan rounded-lg text-cyan-400 font-semibold text-sm">Start Free</button></div>
+      <div class="card-hover neon-border-purple rounded-2xl bg-black/40 p-8 relative"><div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-purple-500/20 border border-purple-500/40 text-purple-400 text-xs font-bold rounded-full mono">PRO</div><h3 class="font-bold text-purple-400 mb-1">Pro</h3><p class="text-sm text-gray-500 mb-6 mono">For teams</p><div class="mb-6"><span class="text-4xl font-bold text-white">$49</span><span class="text-gray-500 mono text-sm">/mo</span></div><ul class="space-y-3 mb-8 text-sm text-gray-400"><li class="flex gap-2"><span class="text-purple-400">›</span> 50 components</li><li class="flex gap-2"><span class="text-purple-400">›</span> Advanced glow</li><li class="flex gap-2"><span class="text-purple-400">›</span> Priority support</li></ul><button onclick="showToast('Pro tier!')" class="w-full py-3 neon-border-purple rounded-lg text-purple-400 font-semibold text-sm">Get Pro</button></div>
+      <div class="card-hover neon-border-cyan rounded-2xl bg-black/40 p-8"><h3 class="font-bold text-cyan-400 mb-1">Enterprise</h3><p class="text-sm text-gray-500 mb-6 mono">For orgs</p><div class="mb-6"><span class="text-4xl font-bold text-white">$99</span><span class="text-gray-500 mono text-sm">/mo</span></div><ul class="space-y-3 mb-8 text-sm text-gray-400"><li class="flex gap-2"><span class="text-cyan-400">›</span> Unlimited</li><li class="flex gap-2"><span class="text-cyan-400">›</span> Source code</li></ul><button onclick="showToast('Enterprise!')" class="w-full py-3 neon-border-cyan rounded-lg text-cyan-400 font-semibold text-sm">Contact</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section id="showcase" class="py-20 px-4">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14"><h2 class="text-3xl font-bold" style="letter-spacing:-0.02em">Developer Reviews</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-hover neon-border-cyan rounded-2xl bg-black/40 p-7"><div class="flex items-center gap-3 mb-4"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&q=80" alt="" class="w-12 h-12 rounded-full border border-cyan-500/30"/><div><div class="font-semibold text-sm text-cyan-400">@sarah_dev</div><div class="text-xs text-gray-500 mono">Frontend Dev</div></div></div><p class="text-sm text-gray-400 mono">"Finally a dark theme that doesn't hurt my eyes at 2am."</p></div>
+      <div class="card-hover neon-border-purple rounded-2xl bg-black/40 p-7"><div class="flex items-center gap-3 mb-4"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&q=80" alt="" class="w-12 h-12 rounded-full border border-purple-500/30"/><div><div class="font-semibold text-sm text-purple-400">@mike_codes</div><div class="text-xs text-gray-500 mono">Full Stack</div></div></div><p class="text-sm text-gray-400 mono">"The neon glow effects are chef's kiss. 🔥"</p></div>
+      <div class="card-hover neon-border-cyan rounded-2xl bg-black/40 p-7"><div class="flex items-center gap-3 mb-4"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&q=80" alt="" class="w-12 h-12 rounded-full border border-cyan-500/30"/><div><div class="font-semibold text-sm text-cyan-400">@emily_ships</div><div class="text-xs text-gray-500 mono">Tech Lead</div></div></div><p class="text-sm text-gray-400 mono">"Shipped our entire dashboard with this. Zero issues."</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-20 px-4"><div class="max-w-3xl mx-auto text-center"><div class="neon-border-cyan rounded-3xl bg-black/60 p-12"><h2 class="text-3xl font-bold mb-4 text-cyan-400 neon-cyan">Ready to Go Dark?</h2><p class="text-gray-400 mb-8 mono">Join 10,000+ developers building with DarkUI.</p><button onclick="showToast('Welcome to the dark side. 🌙')" class="neon-border-cyan px-8 py-4 text-cyan-400 font-semibold rounded-xl hover:bg-cyan-500/10 transition-all">Get Started Free</button></div></div></section>
+
+<footer class="py-8 px-4 text-center text-sm text-gray-600 mono">© 2026 DarkUI · Built in the dark</footer>
+
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent='> '+m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}))
+</script>
+</body>
+</html>

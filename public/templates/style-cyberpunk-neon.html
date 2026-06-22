@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cyberpunk Neon — Neon Future</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Inter',system-ui,sans-serif}
+.mono{font-family:'JetBrains Mono',monospace}
+body{background:#000;color:#fff;overflow-x:hidden}
+.neon-pink{color:#ff2d92;text-shadow:0 0 10px rgba(255,45,146,0.8),0 0 20px rgba(255,45,146,0.4)}
+.neon-cyan{color:#00fff0;text-shadow:0 0 10px rgba(0,255,240,0.8),0 0 20px rgba(0,255,240,0.4)}
+.neon-green{color:#39ff14;text-shadow:0 0 10px rgba(57,255,20,0.8),0 0 20px rgba(57,255,20,0.4)}
+.neon-border-p{border:1px solid rgba(255,45,146,0.4);box-shadow:0 0 15px rgba(255,45,146,0.15),inset 0 0 15px rgba(255,45,146,0.05)}
+.neon-border-c{border:1px solid rgba(0,255,240,0.4);box-shadow:0 0 15px rgba(0,255,240,0.15),inset 0 0 15px rgba(0,255,240,0.05)}
+@keyframes glitch{0%,100%{transform:translate(0)}20%{transform:translate(-2px,2px)}40%{transform:translate(-2px,-2px)}60%{transform:translate(2px,2px)}80%{transform:translate(2px,-2px)}}
+@keyframes scan{0%{transform:translateY(-100%)}100%{transform:translateY(100vh)}}
+.glitch{animation:glitch .3s infinite}
+.scanline{position:fixed;top:0;left:0;right:0;height:2px;background:rgba(0,255,240,0.1);animation:scan 4s linear infinite;pointer-events:none;z-index:100}
+.card-hover{transition:all .3s}
+.card-hover:hover{border-color:rgba(0,255,240,0.6);box-shadow:0 0 25px rgba(0,255,240,0.2)}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:16px 24px;border-radius:0;border:1px solid #00fff0;background:#000;color:#00fff0;font-family:'JetBrains Mono',monospace;animation:glitch .3s infinite}
+</style>
+</head>
+<body class="min-h-screen" style="background-image:linear-gradient(rgba(255,45,146,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,240,0.02) 1px,transparent 1px);background-size:50px 50px;">
+<div class="scanline"></div>
+<div id="toast-container"></div>
+
+<!-- Nav -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-pink-500/20">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+    <div class="flex items-center gap-2"><div class="w-9 h-9 neon-border-c flex items-center justify-center"><span class="mono text-cyan-400 font-bold text-sm">N7</span></div><span class="text-lg font-bold neon-pink">NEXUS//7</span></div>
+    <div class="hidden md:flex gap-8 text-sm mono"><a href="#products" class="text-gray-400 hover:text-pink-400">// PRODUCTS</a><a href="#docks" class="text-gray-400 hover:text-cyan-400">// DOCKS</a><a href="#net" class="text-gray-400 hover:text-green-400">// NETWORK</a></div>
+    <button onclick="showToast('JACK IN >>')" class="neon-border-p px-5 py-2.5 text-sm font-bold neon-pink mono hover:bg-pink-500/10">JACK_IN</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="pt-32 pb-20 px-6 relative overflow-hidden">
+  <div class="absolute top-20 left-1/4 w-72 h-72 bg-pink-500/10 rounded-full blur-3xl"></div>
+  <div class="absolute bottom-20 right-1/4 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl"></div>
+  <div class="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+    <div>
+      <div class="inline-flex items-center gap-2 px-4 py-2 neon-border-c mb-6"><span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span><span class="mono text-cyan-400 text-xs">SYSTEM_STATUS: ONLINE</span></div>
+      <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6" style="letter-spacing:-0.03em">WELCOME TO<br/><span class="neon-pink glitch">NIGHT CITY</span></h1>
+      <p class="text-lg text-gray-400 mb-8 max-w-lg mono">// Next-gen cyber solutions. Neural interfaces. Data streams. Everything connected.</p>
+      <div class="flex gap-4">
+        <button onclick="showToast('CONNECTED >>')" class="neon-border-p px-7 py-3.5 font-bold neon-pink mono hover:bg-pink-500/10">CONNECT_</button>
+        <a href="#products" class="neon-border-c px-7 py-3.5 font-bold neon-cyan mono hover:bg-cyan-500/10 cursor-pointer">VIEW_NET</a>
+      </div>
+      <div class="flex gap-8 mt-12 pt-8 border-t border-white/5">
+        <div><div class="text-3xl font-bold neon-green mono">2077</div><div class="text-xs text-gray-500 mono">YEAR</div></div>
+        <div class="w-px h-12 bg-white/5"></div>
+        <div><div class="text-3xl font-bold neon-pink mono">99.9%</div><div class="text-xs text-gray-500 mono">UPTIME</div></div>
+        <div class="w-px h-12 bg-white/5"></div>
+        <div><div class="text-3xl font-bold neon-cyan mono">12M+</div><div class="text-xs text-gray-500 mono">USERS</div></div>
+      </div>
+    </div>
+    <div class="relative">
+      <div class="absolute -inset-4 bg-gradient-to-r from-pink-500/20 to-cyan-500/20 blur-2xl"></div>
+      <div class="relative neon-border-c rounded-2xl overflow-hidden bg-black/60">
+        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&q=80" alt="Cyberpunk City" class="w-full h-72 object-cover"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+        <div class="absolute bottom-4 left-4 right-4">
+          <div class="neon-border-p bg-black/60 rounded-xl p-4 mono text-xs">
+            <div class="text-green-400">> system.init()</div>
+            <div class="text-cyan-400">> neural_link: ESTABLISHED</div>
+            <div class="text-pink-400">> welcome, runner.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Products -->
+<section id="products" class="py-20 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="mb-14"><span class="mono text-cyan-400 text-xs">// 02_PRODUCTS</span><h2 class="text-3xl sm:text-4xl font-bold mt-3 neon-pink">CYBER_WARE</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-hover neon-border-c rounded-2xl overflow-hidden bg-black/40"><img src="https://images.unsplash.com/photo-1535303311164-664fc9ec6532?w=400&h=200&fit=crop&q=80" alt="Neural" class="w-full h-40 object-cover"/><div class="p-6"><div class="mono text-xs text-green-400 mb-2">// NEURAL_01</div><h3 class="font-bold mb-2 neon-cyan">Neural Interface</h3><p class="text-sm text-gray-400 mono">Direct brain-to-net connection. 0ms latency.</p><div class="mt-4 flex justify-between items-center"><span class="mono text-pink-400 text-sm">$2,077</span><button onclick="showToast('ADDED_TO_CART >>')" class="mono text-xs neon-border-p px-3 py-1 text-pink-400">BUY_</button></div></div></div>
+      <div class="card-hover neon-border-p rounded-2xl overflow-hidden bg-black/40"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=200&fit=crop&q=80" alt="Cybernetic" class="w-full h-40 object-cover"/><div class="mono text-xs text-cyan-400 mb-2">// CYBER_02</div><div class="p-6"><h3 class="font-bold mb-2 neon-pink">Cybernetic Arm</h3><p class="text-sm text-gray-400 mono">Military-grade prosthetic. 10x strength.</p><div class="mt-4 flex justify-between items-center"><span class="mono text-cyan-400 text-sm">$15,000</span><button onclick="showToast('ADDED_TO_CART >>')" class="mono text-xs neon-border-c px-3 py-1 text-cyan-400">BUY_</button></div></div></div>
+      <div class="card-hover neon-border-c rounded-2xl overflow-hidden bg-black/40"><img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&h=200&fit=crop&q=80" alt="Data" class="w-full h-40 object-cover"/><div class="p-6"><div class="mono text-xs text-green-400 mb-2">// DATA_03</div><h3 class="font-bold mb-2 neon-cyan">Data Shard</h3><p class="text-sm text-gray-400 mono">Encrypted storage. 10TB neural data.</p><div class="mt-4 flex justify-between items-center"><span class="mono text-pink-400 text-sm">$500</span><button onclick="showToast('ADDED_TO_CART >>')" class="mono text-xs neon-border-p px-3 py-1 text-pink-400">BUY_</button></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section id="docks" class="py-20 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="mb-14"><span class="mono text-pink-400 text-xs">// 03_PRICING</span><h2 class="text-3xl sm:text-4xl font-bold mt-3 neon-cyan">ACCESS_TIERS</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-hover neon-border-c rounded-2xl bg-black/40 p-8"><div class="mono text-xs text-cyan-400 mb-2">// TIER_01</div><h3 class="font-bold neon-cyan mb-1">ROOKIE</h3><div class="text-4xl font-bold mono mb-4">$29</div><ul class="space-y-2 text-sm text-gray-400 mono mb-6"><li>> Basic access</li><li>> 5GB data</li><li>> Community net</li></ul><button onclick="showToast('TIER_01 SELECTED')" class="w-full py-3 neon-border-c text-cyan-400 mono font-bold text-sm">SELECT_</button></div>
+      <div class="card-hover neon-border-p rounded-2xl bg-black/40 p-8 relative"><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-pink-500 text-black text-xs px-3 py-0.5 mono font-bold">ELITE</div><div class="mono text-xs text-pink-400 mb-2">// TIER_02</div><h3 class="font-bold neon-pink mb-1">RUNNER</h3><div class="text-4xl font-bold mono mb-4">$79</div><ul class="space-y-2 text-sm text-gray-400 mono mb-6"><li>> Full access</li><li>> 100GB data</li><li>> Priority net</li><li>> Neural boost</li></ul><button onclick="showToast('TIER_02 SELECTED')" class="w-full py-3 neon-border-p text-pink-400 mono font-bold text-sm">SELECT_</button></div>
+      <div class="card-hover neon-border-c rounded-2xl bg-black/40 p-8"><div class="mono text-xs text-green-400 mb-2">// TIER_03</div><h3 class="font-bold neon-green mb-1">LEGEND</h3><div class="text-4xl font-bold mono mb-4">$199</div><ul class="space-y-2 text-sm text-gray-400 mono mb-6"><li>> Everything</li><li>> Unlimited data</li><li>> Private net</li></ul><button onclick="showToast('TIER_03 SELECTED')" class="w-full py-3 neon-border-c text-cyan-400 mono font-bold text-sm">SELECT_</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- Network/Testimonials -->
+<section id="net" class="py-20 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="mb-14"><span class="mono text-green-400 text-xs">// 04_NETWORK</span><h2 class="text-3xl sm:text-4xl font-bold mt-3 neon-green">RUNNER_LOGS</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-hover neon-border-c rounded-2xl bg-black/40 p-7"><div class="flex items-center gap-3 mb-4"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full neon-border-c"/><div><div class="text-sm font-bold neon-cyan mono">@V_RUNNER</div><div class="text-xs text-gray-500 mono">Net Runner</div></div></div><p class="text-sm text-gray-400 mono">// "Best neural interface I've ever used. 0ms latency is insane."</p></div>
+      <div class="card-hover neon-border-p rounded-2xl bg-black/40 p-7"><div class="flex items-center gap-3 mb-4"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full neon-border-p"/><div><div class="text-sm font-bold neon-pink mono">@GHOST_42</div><div class="text-xs text-gray-500 mono">Hacker</div></div></div><p class="text-sm text-gray-400 mono">// "The data encryption is unbreakable. Trust me, I tried."</p></div>
+      <div class="card-hover neon-border-c rounded-2xl bg-black/40 p-7"><div class="flex items-center gap-3 mb-4"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full neon-border-c"/><div><div class="text-sm font-bold neon-green mono">@NOMAD_V</div><div class="text-xs text-gray-500 mono">Mercenary</div></div></div><p class="text-sm text-gray-400 mono">// "Cybernetic arm changed my life. Worth every credit."</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-20 px-6"><div class="max-w-3xl mx-auto text-center"><div class="neon-border-p bg-black/60 p-12 rounded-2xl"><h2 class="text-4xl font-bold neon-pink mb-4 mono">JACK IN.</h2><p class="text-gray-400 mb-8 mono">// Your cyber future starts now.</p><button onclick="showToast('WELCOME, RUNNER. >>')" class="neon-border-c px-8 py-4 font-bold neon-cyan mono hover:bg-cyan-500/10">INITIATE_</button></div></div></section>
+
+<!-- Footer -->
+<footer class="py-12 px-6 border-t border-white/5">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+    <div><div class="flex items-center gap-2 mb-4"><div class="w-8 h-8 neon-border-c flex items-center justify-center"><span class="mono text-cyan-400 text-xs font-bold">N7</span></div><span class="font-bold neon-pink">NEXUS//7</span></div><p class="text-sm text-gray-500 mono">// Cyber solutions for the future.</p></div>
+    <div><h4 class="text-xs font-bold mono text-gray-400 mb-3">// PRODUCTS</h4><ul class="space-y-2 text-sm text-gray-500 mono"><li>Neural Interface</li><li>Cybernetic Arms</li><li>Data Shards</li><li>Holo Displays</li></ul></div>
+    <div><h4 class="text-xs font-bold mono text-gray-400 mb-3">// COMPANY</h4><ul class="space-y-2 text-sm text-gray-500 mono"><li>About Us</li><li>Careers</li><li>Press Kit</li><li>Contact</li></ul></div>
+    <div><h4 class="text-xs font-bold mono text-gray-400 mb-3">// CONNECT</h4><ul class="space-y-2 text-sm text-gray-500 mono"><li>support@nexus7.net</li><li>+1 (555) CYB-2077</li><li>Night City, NC</li></ul></div>
+  </div>
+  <div class="max-w-7xl mx-auto mt-8 pt-8 border-t border-white/5 flex justify-between items-center"><p class="text-xs text-gray-600 mono">© 2077 NEXUS//7. ALL RIGHTS RESERVED.</p><p class="text-xs text-gray-600 mono">// SYSTEM v2.077</p></div>
+</footer>
+
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}))
+</script>
+</body>
+</html>

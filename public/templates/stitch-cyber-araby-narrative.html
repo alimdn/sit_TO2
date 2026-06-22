@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>السرد السيبراني العربي | Cyber-Araby Narrative</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-base: #0f0f1a;
+    --surface-card: #1a1a2e;
+    --surface-hover: #22223a;
+    --surface-inset: #12121f;
+    --text-primary: #eaeaea;
+    --text-muted: #8a8a9a;
+    --border-subtle: #2a2a3e;
+    --accent-crimson: #e94560;
+    --accent-crimson-light: #ff6b81;
+    --accent-purple: #d0bcff;
+    --accent-emerald: #10b981;
+    --accent-blue: #3b82f6;
+    --accent-amber: #f59e0b;
+  }
+  * { font-family: 'Noto Sans Arabic', sans-serif; }
+  body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    line-height: 1.8;
+  }
+  .glass {
+    background: rgba(26, 26, 46, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-subtle);
+  }
+  .glass-strong {
+    background: rgba(15, 15, 26, 0.85);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid var(--border-subtle);
+  }
+  .cyber-glow {
+    box-shadow: 0 0 20px rgba(233, 69, 96, 0.4);
+  }
+  .cyber-glow-strong {
+    box-shadow: 0 0 30px rgba(233, 69, 96, 0.6), 0 0 60px rgba(233, 69, 96, 0.2);
+  }
+  .hero-title {
+    background: linear-gradient(135deg, #ff6b81 0%, #d0bcff 50%, #c6c4df 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .narrative-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  .narrative-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 0%, rgba(233, 69, 96, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .narrative-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--accent-crimson);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 30px rgba(233, 69, 96, 0.2);
+  }
+  .narrative-card:hover::before {
+    opacity: 1;
+  }
+  .section-number {
+    font-size: 8rem;
+    font-weight: 900;
+    color: var(--surface-card);
+    opacity: 0.4;
+    position: absolute;
+    top: -2rem;
+    left: -1rem;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent-crimson) 0%, var(--accent-crimson-light) 100%);
+    color: white;
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-weight: 700;
+    transition: all 0.3s;
+    box-shadow: 0 0 20px rgba(233, 69, 96, 0.4);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(233, 69, 96, 0.7);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--accent-crimson-light);
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-weight: 600;
+    border: 1px solid var(--border-subtle);
+    transition: all 0.3s;
+  }
+  .btn-ghost:hover {
+    border-color: var(--accent-crimson);
+    background: rgba(233, 69, 96, 0.1);
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+    background: rgba(208, 188, 255, 0.15);
+    color: var(--accent-purple);
+    border: 1px solid rgba(208, 188, 255, 0.3);
+  }
+  .chip-success { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.3); }
+  .chip-info { background: rgba(59, 130, 246, 0.15); color: var(--accent-blue); border-color: rgba(59, 130, 246, 0.3); }
+  .chip-amber { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); border-color: rgba(245, 158, 11, 0.3); }
+  .chip-crimson { background: rgba(233, 69, 96, 0.15); color: var(--accent-crimson-light); border-color: rgba(233, 69, 96, 0.3); }
+  .narrative-divider {
+    border-top: 1px dashed var(--border-subtle);
+  }
+  .input-field {
+    background: var(--surface-inset);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    padding: 12px 16px;
+    border-radius: 8px;
+    transition: all 0.3s;
+    width: 100%;
+  }
+  .input-field:focus {
+    outline: none;
+    border-color: var(--accent-crimson);
+    box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.15);
+  }
+  .nav-link {
+    color: var(--text-muted);
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-link:hover {
+    color: var(--accent-crimson-light);
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    right: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-crimson);
+    transition: width 0.3s;
+  }
+  .nav-link:hover::after {
+    width: 100%;
+  }
+  .glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.3;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .grid-pattern {
+    background-image:
+      linear-gradient(rgba(42, 42, 62, 0.3) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(42, 42, 62, 0.3) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+  .narrative-badge {
+    background: linear-gradient(135deg, var(--surface-card) 0%, var(--surface-hover) 100%);
+    border: 1px solid var(--border-subtle);
+    padding: 8px 18px;
+    border-radius: 9999px;
+    font-size: 13px;
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--accent-emerald);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--accent-emerald);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.2); }
+  }
+  .fade-up {
+    animation: fadeUp 1s ease-out forwards;
+    opacity: 0;
+  }
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(20px); }
+  }
+  .stat-number {
+    background: linear-gradient(135deg, var(--accent-crimson-light) 0%, var(--accent-purple) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    font-weight: 900;
+  }
+  .timeline-item {
+    position: relative;
+    padding-right: 2rem;
+    border-right: 2px solid var(--border-subtle);
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    right: -7px;
+    top: 8px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent-crimson);
+    box-shadow: 0 0 12px var(--accent-crimson);
+  }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+  }
+</style>
+</head>
+<body>
+
+<!-- Background Glow Orbs -->
+<div class="glow-orb" style="width: 500px; height: 500px; background: #e94560; top: -100px; right: -100px;"></div>
+<div class="glow-orb" style="width: 600px; height: 600px; background: #d0bcff; top: 40%; left: -200px;"></div>
+<div class="glow-orb" style="width: 400px; height: 400px; background: #3b82f6; bottom: 0; right: 30%;"></div>
+
+<!-- Navigation -->
+<nav class="glass-strong sticky top-0 z-50 border-b border-[#2a2a3e]">
+  <div class="max-w-[1200px] mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-lg flex items-center justify-center cyber-glow" style="background: linear-gradient(135deg, #e94560, #d0bcff);">
+        <span class="material-symbols-outlined text-white" style="font-size: 24px;">auto_awesome</span>
+      </div>
+      <div>
+        <div class="font-black text-lg" style="color: var(--text-primary);">السَّرد السيبراني</div>
+        <div class="text-xs" style="color: var(--text-muted);">Cyber-Araby Narrative</div>
+      </div>
+    </div>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#narrative" class="nav-link text-sm font-medium">السرد</a>
+      <a href="#services" class="nav-link text-sm font-medium">الخدمات</a>
+      <a href="#process" class="nav-link text-sm font-medium">المنهجية</a>
+      <a href="#showcase" class="nav-link text-sm font-medium">الأعمال</a>
+      <a href="#voices" class="nav-link text-sm font-medium">أصوات</a>
+      <a href="#contact" class="nav-link text-sm font-medium">تواصل</a>
+    </div>
+    <button class="btn-primary text-sm hidden md:block">ابدأ الرحلة</button>
+    <button class="md:hidden text-white">
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="relative pt-20 pb-32 px-6 grid-pattern">
+  <div class="max-w-[1200px] mx-auto relative z-10">
+    <div class="fade-up flex justify-center mb-8">
+      <div class="narrative-badge">
+        <span class="pulse-dot"></span>
+        <span>وكالة سرد رقمي عربية · جيل 2026</span>
+      </div>
+    </div>
+
+    <h1 class="fade-up text-center text-5xl md:text-7xl font-black leading-tight mb-6" style="animation-delay: 0.1s;">
+      <span class="hero-title">نَنسجُ حكاياتٍ</span><br>
+      <span class="hero-title">من بَياناتٍ وضَوء</span>
+    </h1>
+
+    <p class="fade-up text-center text-lg md:text-xl max-w-3xl mx-auto mb-10" style="color: var(--text-muted); animation-delay: 0.2s;">
+      في تقاطع الجمالية العربية مع الهاوية السيبرانية، نبني تجارب رقمية لا تُنسى. كل مشروع هو رحلة سردية متعددة الطبقات، مصممة بدقة على شبكة من 8 بكسل، ومضاءة بتوهج نيون يرشد العين نحو المعنى.
+    </p>
+
+    <div class="fade-up flex flex-wrap gap-4 justify-center mb-16" style="animation-delay: 0.3s;">
+      <button class="btn-primary flex items-center gap-2">
+        <span class="material-symbols-outlined" style="font-size: 20px;">rocket_launch</span>
+        ابدأ مشروعك
+      </button>
+      <button class="btn-ghost flex items-center gap-2">
+        <span class="material-symbols-outlined" style="font-size: 20px;">play_circle</span>
+        شاهد فيديو تعريفي
+      </button>
+    </div>
+
+    <!-- Stats Strip -->
+    <div class="fade-up glass rounded-2xl p-8 grid grid-cols-2 md:grid-cols-4 gap-6" style="animation-delay: 0.4s;">
+      <div class="text-center">
+        <div class="stat-number text-4xl mb-1">+140</div>
+        <div class="text-sm" style="color: var(--text-muted);">قصة رقمية مُنفذة</div>
+      </div>
+      <div class="text-center">
+        <div class="stat-number text-4xl mb-1">38</div>
+        <div class="text-sm" style="color: var(--text-muted);">علامة عربية</div>
+      </div>
+      <div class="text-center">
+        <div class="stat-number text-4xl mb-1">+9</div>
+        <div class="text-sm" style="color: var(--text-muted);">سنوات خبرة</div>
+      </div>
+      <div class="text-center">
+        <div class="stat-number text-4xl mb-1">24/7</div>
+        <div class="text-sm" style="color: var(--text-muted);">دعم استراتيجي</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Narrative Intro Section -->
+<section id="narrative" class="relative py-24 px-6">
+  <div class="max-w-[1200px] mx-auto relative">
+    <span class="section-number">01</span>
+    <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <div class="chip chip-crimson mb-6">
+          <span class="material-symbols-outlined" style="font-size: 14px;">auto_stories</span>
+          فلسفة السرد
+        </div>
+        <h2 class="text-4xl md:text-5xl font-black mb-6 leading-tight">
+          كل علامةٍ تجارية<br>
+          <span style="color: var(--accent-crimson-light);">حكايةٌ تنتظرُ أن تُروى</span>
+        </h2>
+        <p class="text-base mb-4" style="color: var(--text-muted);">
+          نؤمن بأن التصميم ليس تزييناً، بل بنية سردية كاملة. نبدأ من الفكرة الجوهرية، نحللها إلى عناصرها الأساسية، ثم نعيد تركيبها بصرياً عبر طبقات شفافة ومرئية، تماماً كما يفعل الروائي ماهر يشيد عالماً متعدد الأبعاد.
+        </p>
+        <p class="text-base mb-6" style="color: var(--text-muted);">
+          نظامنا مبني على ثلاثية: العمق عبر الشفافية (Glassmorphism)، التوهج كأداة إرشاد (Cyber Glow)، واللغة العربية كنواة تصميمية وليست مجرد ترجمة. هذه ليست مجرد أداة، بل فلسفة عمل متكاملة.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="chip">RTL-First</span>
+          <span class="chip chip-success">Noto Sans Arabic</span>
+          <span class="chip chip-info">8px Rhythm</span>
+          <span class="chip chip-amber">14px Gutter</span>
+        </div>
+      </div>
+      <div class="glass rounded-2xl p-8 relative">
+        <div class="absolute -top-3 -right-3 chip chip-crimson">
+          <span class="material-symbols-outlined" style="font-size: 14px;">code</span>
+          design-tokens.json
+        </div>
+        <pre class="text-sm overflow-x-auto leading-relaxed" style="color: var(--text-muted);"><code>{
+  <span style="color: #ff6b81;">"background"</span>: <span style="color: #10b981;">"#0f0f1a"</span>,
+  <span style="color: #ff6b81;">"surface"</span>: {
+    <span style="color: #d0bcff;">"card"</span>: <span style="color: #10b981;">"#1a1a2e"</span>,
+    <span style="color: #d0bcff;">"hover"</span>: <span style="color: #10b981;">"#22223a"</span>,
+    <span style="color: #d0bcff;">"inset"</span>: <span style="color: #10b981;">"#12121f"</span>
+  },
+  <span style="color: #ff6b81;">"accent"</span>: {
+    <span style="color: #d0bcff;">"crimson"</span>: <span style="color: #10b981;">"#e94560"</span>,
+    <span style="color: #d0bcff;">"purple"</span>:  <span style="color: #10b981;">"#d0bcff"</span>,
+    <span style="color: #d0bcff;">"emerald"</span>: <span style="color: #10b981;">"#10b981"</span>
+  },
+  <span style="color: #ff6b81;">"radius"</span>: { <span style="color: #d0bcff;">"sm"</span>: <span style="color: #10b981;">8</span>, <span style="color: #d0bcff;">"lg"</span>: <span style="color: #10b981;">16</span>, <span style="color: #d0bcff;">"pill"</span>: <span style="color: #10b981;">9999</span> },
+  <span style="color: #ff6b81;">"glow"</span>: <span style="color: #10b981;">"0 0 20px rgba(233,69,96,.5)"</span>
+}</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services Section -->
+<section id="services" class="relative py-24 px-6">
+  <div class="max-w-[1200px] mx-auto relative">
+    <span class="section-number">02</span>
+    <div class="relative z-10">
+      <div class="text-center mb-16">
+        <div class="chip chip-info mb-4">
+          <span class="material-symbols-outlined" style="font-size: 14px;">hub</span>
+          خدماتنا السردية
+        </div>
+        <h2 class="text-4xl md:text-5xl font-black mb-4">
+          أربعُ طبقاتٍ من <span style="color: var(--accent-purple);">الإبداع الرقمي</span>
+        </h2>
+        <p class="text-base max-w-2xl mx-auto" style="color: var(--text-muted);">
+          نقدم منظومة متكاملة من الخدمات، كل منها مصممة لتعزيز الطبقة السردية التي تسبقها، من الاستراتيجية إلى الإطلاق.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="narrative-card rounded-2xl p-6">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: rgba(233, 69, 96, 0.15);">
+            <span class="material-symbols-outlined" style="color: var(--accent-crimson-light); font-size: 28px;">lightbulb</span>
+          </div>
+          <h3 class="text-xl font-bold mb-3">الاستراتيجية السردية</h3>
+          <p class="text-sm mb-4" style="color: var(--text-muted);">نحلل العلامة، نستخرج الفكرة الجوهرية، نبني خريطة السرد التي ستوجه كل قرار تصميمي لاحق.</p>
+          <div class="narrative-divider pt-3 mt-3">
+            <span class="text-xs" style="color: var(--accent-crimson-light);">+ تحليل · شخصية · رحلة</span>
+          </div>
+        </div>
+
+        <div class="narrative-card rounded-2xl p-6">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: rgba(208, 188, 255, 0.15);">
+            <span class="material-symbols-outlined" style="color: var(--accent-purple); font-size: 28px;">palette</span>
+          </div>
+          <h3 class="text-xl font-bold mb-3">الهوية البصرية</h3>
+          <p class="text-sm mb-4" style="color: var(--text-muted);">نظام تصميم كامل: ألوان، طباعة، أشكال، حركات. كل عنصر مستمد من فلسفة العلامة لا مفروض عليها.</p>
+          <div class="narrative-divider pt-3 mt-3">
+            <span class="text-xs" style="color: var(--accent-purple);">+ شعار · توكنز · دليل</span>
+          </div>
+        </div>
+
+        <div class="narrative-card rounded-2xl p-6">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: rgba(59, 130, 246, 0.15);">
+            <span class="material-symbols-outlined" style="color: var(--accent-blue); font-size: 28px;">code_blocks</span>
+          </div>
+          <h3 class="text-xl font-bold mb-3">التنفيذ التقني</h3>
+          <p class="text-sm mb-4" style="color: var(--text-muted);">كود نظيف، RTL-first، أداء عالٍ. نبني على Next.js و Tailwind، مع اختبارات وصولية صارمة.</p>
+          <div class="narrative-divider pt-3 mt-3">
+            <span class="text-xs" style="color: var(--accent-blue);">+ React · RTL · Lighthouse 95+</span>
+          </div>
+        </div>
+
+        <div class="narrative-card rounded-2xl p-6">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background: rgba(16, 185, 129, 0.15);">
+            <span class="material-symbols-outlined" style="color: var(--accent-emerald); font-size: 28px;">trending_up</span>
+          </div>
+          <h3 class="text-xl font-bold mb-3">النمو والتحليل</h3>
+          <p class="text-sm mb-4" style="color: var(--text-muted);">بعد الإطلاق، نراقب السرد. كيف يتفاعل الجمهور؟ ما الذي يعمل؟ نعدل، نحسّن، نعيد الحكاية.</p>
+          <div class="narrative-divider pt-3 mt-3">
+            <span class="text-xs" style="color: var(--accent-emerald);">+ A/B · حرارة · تحويلات</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Process Section -->
+<section id="process" class="relative py-24 px-6">
+  <div class="max-w-[1200px] mx-auto relative">
+    <span class="section-number">03</span>
+    <div class="relative z-10 grid md:grid-cols-2 gap-12">
+      <div>
+        <div class="chip chip-amber mb-4">
+          <span class="material-symbols-outlined" style="font-size: 14px;">route</span>
+          منهجية العمل
+        </div>
+        <h2 class="text-4xl md:text-5xl font-black mb-6 leading-tight">
+          من الفكرة إلى<br>
+          <span style="color: var(--accent-amber);">الإطلاق في 5 مراحل</span>
+        </h2>
+        <p class="text-base mb-8" style="color: var(--text-muted);">
+          عملية واضحة، شفافة، قابلة للقياس. لا مفاجآت ولا تأخيرات. في كل مرحلة، أنت شريك في السرد.
+        </p>
+        <button class="btn-ghost flex items-center gap-2">
+          <span class="material-symbols-outlined" style="font-size: 20px;">download</span>
+          حمّل ملف العملية الكامل (PDF)
+        </button>
+      </div>
+
+      <div class="space-y-6">
+        <div class="timeline-item pb-6">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="chip">المرحلة 01</span>
+            <span class="text-xs" style="color: var(--text-muted);">3-5 أيام</span>
+          </div>
+          <h4 class="text-lg font-bold mb-2">الاكتشاف والبحث</h4>
+          <p class="text-sm" style="color: var(--text-muted);">ورش عمل مكثفة لفهم العلامة، السوق، الجمهور، المنافسين. مخرج: وثيقة السرد الجوهرية.</p>
+        </div>
+
+        <div class="timeline-item pb-6">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="chip chip-info">المرحلة 02</span>
+            <span class="text-xs" style="color: var(--text-muted);">5-7 أيام</span>
+          </div>
+          <h4 class="text-lg font-bold mb-2">الإستراتيجية البصرية</h4>
+          <p class="text-sm" style="color: var(--text-muted);">بناء نظام التصميم: لوحة الألوان، التايبوغرافي، التوكنز. مخرج: مكتبة تصميم متكاملة.</p>
+        </div>
+
+        <div class="timeline-item pb-6">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="chip chip-success">المرحلة 03</span>
+            <span class="text-xs" style="color: var(--text-muted);">10-14 يوم</span>
+          </div>
+          <h4 class="text-lg font-bold mb-2">التصميم والنمذجة</h4>
+          <p class="text-sm" style="color: var(--text-muted);">تصاميم高清 لكل الصفحات، نماذج تفاعلية قابلة للنقر، اختبارات مستخدم مبكرة.</p>
+        </div>
+
+        <div class="timeline-item pb-6">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="chip chip-amber">المرحلة 04</span>
+            <span class="text-xs" style="color: var(--text-muted);">14-21 يوم</span>
+          </div>
+          <h4 class="text-lg font-bold mb-2">التنفيذ والبرمجة</h4>
+          <p class="text-sm" style="color: var(--text-muted);">كود نظيف، اختبارات وحدة، CI/CD، تحسين أداء، وصولية WCAG 2.1 AA.</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="chip chip-crimson">المرحلة 05</span>
+            <span class="text-xs" style="color: var(--text-muted);">2-3 أيام</span>
+          </div>
+          <h4 class="text-lg font-bold mb-2">الإطلاق والمراقبة</h4>
+          <p class="text-sm" style="color: var(--text-muted);">نشر، رصد، تدريب الفريق، خطة صيانة لـ 6 أشهر. لا نتركك بعد الإطلاق.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Showcase Section -->
+<section id="showcase" class="relative py-24 px-6 grid-pattern">
+  <div class="max-w-[1200px] mx-auto relative z-10">
+    <span class="section-number">04</span>
+    <div class="relative z-10">
+      <div class="text-center mb-16">
+        <div class="chip chip-success mb-4">
+          <span class="material-symbols-outlined" style="font-size: 14px;">collections</span>
+          مختارات من أعمالنا
+        </div>
+        <h2 class="text-4xl md:text-5xl font-black mb-4">
+          قصصٌ <span style="color: var(--accent-emerald);">صارت واقعاً رقمياً</span>
+        </h2>
+        <p class="text-base max-w-2xl mx-auto" style="color: var(--text-muted);">
+          كل مشروع أدناه يمثل رحلة فريدة. اضغط للاطلاع على دراسة الحالة الكاملة.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Project 1 -->
+        <div class="narrative-card rounded-2xl overflow-hidden group cursor-pointer">
+          <div class="h-48 relative overflow-hidden" style="background: linear-gradient(135deg, #e94560 0%, #d0bcff 100%);">
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span class="material-symbols-outlined text-white opacity-50" style="font-size: 100px;">banking</span>
+            </div>
+            <div class="absolute top-3 right-3 chip" style="background: rgba(15,15,26,0.7);">بنوك رقمية</div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-lg font-bold mb-2">بنك الرياض الرقمي</h3>
+            <p class="text-sm mb-4" style="color: var(--text-muted);">إعادة تصور تجربة مصرفية كاملة بأسلوب سينمائي.</p>
+            <div class="flex gap-2">
+              <span class="chip">+180% تفعيل</span>
+              <span class="chip chip-info">جائزة UX</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="narrative-card rounded-2xl overflow-hidden group cursor-pointer">
+          <div class="h-48 relative overflow-hidden" style="background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);">
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span class="material-symbols-outlined text-white opacity-50" style="font-size: 100px;">health_and_safety</span>
+            </div>
+            <div class="absolute top-3 right-3 chip" style="background: rgba(15,15,26,0.7);">صحة</div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-lg font-bold mb-2">طبيبك الأول</h3>
+            <p class="text-sm mb-4" style="color: var(--text-muted);">منصة طب عن بُعد بتجربة هادئة ومطمئنة للمستخدم.</p>
+            <div class="flex gap-2">
+              <span class="chip">+500K زائر</span>
+              <span class="chip chip-success">4.9 تقييم</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="narrative-card rounded-2xl overflow-hidden group cursor-pointer">
+          <div class="h-48 relative overflow-hidden" style="background: linear-gradient(135deg, #f59e0b 0%, #e94560 100%);">
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span class="material-symbols-outlined text-white opacity-50" style="font-size: 100px;">restaurant</span>
+            </div>
+            <div class="absolute top-3 right-3 chip" style="background: rgba(15,15,26,0.7);">مطاعم</div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-lg font-bold mb-2">مطبخ الأصالة</h3>
+            <p class="text-sm mb-4" style="color: var(--text-muted);">قصة تراثية معاصرة لعلامة مطاعم خليجية فاخرة.</p>
+            <div class="flex gap-2">
+              <span class="chip">+220% حجوزات</span>
+              <span class="chip chip-amber">Top 10</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 4 -->
+        <div class="narrative-card rounded-2xl overflow-hidden group cursor-pointer">
+          <div class="h-48 relative overflow-hidden" style="background: linear-gradient(135deg, #d0bcff 0%, #e94560 100%);">
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span class="material-symbols-outlined text-white opacity-50" style="font-size: 100px;">school</span>
+            </div>
+            <div class="absolute top-3 right-3 chip" style="background: rgba(15,15,26,0.7);">تعليم</div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-lg font-bold mb-2">أكاديمية المعرفة</h3>
+            <p class="text-sm mb-4" style="color: var(--text-muted);">منصة تعلم عربية بتجربة بصرية محفزة للطلاب.</p>
+            <div class="flex gap-2">
+              <span class="chip">+90% إكمال</span>
+              <span class="chip chip-crimson">جديد</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 5 -->
+        <div class="narrative-card rounded-2xl overflow-hidden group cursor-pointer">
+          <div class="h-48 relative overflow-hidden" style="background: linear-gradient(135deg, #3b82f6 0%, #d0bcff 100%);">
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span class="material-symbols-outlined text-white opacity-50" style="font-size: 100px;">flight</span>
+            </div>
+            <div class="absolute top-3 right-3 chip" style="background: rgba(15,15,26,0.7);">سفر</div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-lg font-bold mb-2">رحلات العربية</h3>
+            <p class="text-sm mb-4" style="color: var(--text-muted);">منصة حجوزات سفر بتجربة سردية للوجهات.</p>
+            <div class="flex gap-2">
+              <span class="chip">+150% مبيعات</span>
+              <span class="chip chip-info">Awwwards</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 6 -->
+        <div class="narrative-card rounded-2xl overflow-hidden group cursor-pointer">
+          <div class="h-48 relative overflow-hidden" style="background: linear-gradient(135deg, #e94560 0%, #10b981 100%);">
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span class="material-symbols-outlined text-white opacity-50" style="font-size: 100px;">storefront</span>
+            </div>
+            <div class="absolute top-3 right-3 chip" style="background: rgba(15,15,26,0.7);">تجارة</div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-lg font-bold mb-2">سوق الحرفيين</h3>
+            <p class="text-sm mb-4" style="color: var(--text-muted);">متجر عربي للحرف اليدوية بقصص الصُنّاع.</p>
+            <div class="flex gap-2">
+              <span class="chip">+300% AOV</span>
+              <span class="chip chip-success">مميز</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Voices / Testimonials -->
+<section id="voices" class="relative py-24 px-6">
+  <div class="max-w-[1200px] mx-auto relative">
+    <span class="section-number">05</span>
+    <div class="relative z-10">
+      <div class="text-center mb-16">
+        <div class="chip mb-4">
+          <span class="material-symbols-outlined" style="font-size: 14px;">record_voice_over</span>
+          أصواتٌ من الطريق
+        </div>
+        <h2 class="text-4xl md:text-5xl font-black mb-4">
+          ماذا قال <span style="color: var(--accent-purple);">شركاؤنا؟</span>
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="glass rounded-2xl p-6">
+          <div class="flex gap-1 mb-4">
+            <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 20px;">star</span>
+            <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 20px;">star</span>
+            <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 20px;">star</span>
+            <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 20px;">star</span>
+            <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 20px;">star</span>
+          </div>
+          <p class="text-base mb-6 leading-relaxed" style="color: var(--text-primary);">
+            "لم يكونوا مجرد وكالة تصميم، بل شركاء سرد. أعادوا صياغة هويتنا بطريقة لم نتخيلها، وزادت مبيعاتنا بنسبة 180% خلال 6 أشهر."
+          </p>
+          <div class="narrative-divider pt-4 flex items-center gap-3">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold" style="background: linear-gradient(135deg, #e94560, #d0bcff); color: white;">س</div>
+            <div>
+              <div class="font-bold text-sm">سارة المنصوري</div>
+              <div class="text-xs" style="color: var(--text-muted);">المديرة التنفيذية · بنك الرياض الرقمي</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl p-6">
+          <div class="flex gap-1 mb-4">
+            <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 20px;">star</span>
+            <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 20px;">star</span>
+            <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 20px;">star</span>
+            <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 20px;">star</span>
+            <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 20px;">star</span>
+          </div>
+          <p class="text-base mb-6 leading-relaxed" style="color: var(--text-primary);">
+            "أبهرنا اهتمامهم بالتفاصيل العربية. كل عنصر كان مدروساً بدقة، من اللغة إلى الأيقونات. النتيجة فاقت توقعاتنا بكثير."
+          </p>
+          <div class="narrative-divider pt-4 flex items-center gap-3">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold" style="background: linear-gradient(135deg, #10b981, #3b82f6); color: white;">ع</div>
+            <div>
+              <div class="font-bold text-sm">عبدالله الحربي</div>
+              <div class="text-xs" style="color: var(--text-muted);">مؤسس · مطبخ الأصالة</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl p-6">
+          <div class="flex gap-1 mb-4">
+            <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 20px;">star</span>
+            <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 20px;">star</span>
+            <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 20px;">star</span>
+            <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 20px;">star</span>
+            <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 20px;">star</span>
+          </div>
+          <p class="text-base mb-6 leading-relaxed" style="color: var(--text-primary);">
+            "فريق محترف، استثنائي في التواصل. المنهجية واضحة، المواعيد دقيقة، والنتيجة تتحدث عن نفسها. أوصي بهم بثقة."
+          </p>
+          <div class="narrative-divider pt-4 flex items-center gap-3">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold" style="background: linear-gradient(135deg, #d0bcff, #e94560); color: white;">ل</div>
+            <div>
+              <div class="font-bold text-sm">ليلى القاسمي</div>
+              <div class="text-xs" style="color: var(--text-muted);">رئيسة قسم · أكاديمية المعرفة</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact CTA -->
+<section id="contact" class="relative py-24 px-6">
+  <div class="max-w-[1200px] mx-auto relative z-10">
+    <div class="glass-strong rounded-3xl p-12 md:p-16 text-center relative overflow-hidden">
+      <div class="absolute inset-0 grid-pattern opacity-30"></div>
+      <div class="relative z-10">
+        <div class="chip chip-crimson mb-6">
+          <span class="material-symbols-outlined" style="font-size: 14px;">edit_note</span>
+          ابدأ حكايتك معنا
+        </div>
+        <h2 class="text-4xl md:text-6xl font-black mb-6 leading-tight">
+          <span class="hero-title">لنبدأ السرد القادم</span>
+        </h2>
+        <p class="text-base md:text-lg max-w-2xl mx-auto mb-10" style="color: var(--text-muted);">
+          أخبرنا عن علامتك، عن حكايتك، عن الجمهور الذي تطمح للوصول إليه. سنرد عليك خلال 24 ساعة بخطة أولية.
+        </p>
+
+        <form class="max-w-2xl mx-auto text-right space-y-4">
+          <div class="grid md:grid-cols-2 gap-4">
+            <input type="text" placeholder="الاسم الكامل" class="input-field">
+            <input type="email" placeholder="البريد الإلكتروني" class="input-field">
+          </div>
+          <div class="grid md:grid-cols-2 gap-4">
+            <input type="text" placeholder="اسم العلامة التجارية" class="input-field">
+            <select class="input-field">
+              <option value="">نوع المشروع</option>
+              <option>هوية بصرية</option>
+              <option>موقع إلكتروني</option>
+              <option>تطبيق جوال</option>
+              <option>منصة متكاملة</option>
+            </select>
+          </div>
+          <textarea rows="4" placeholder="أخبرنا عن حكايتك..." class="input-field"></textarea>
+
+          <div class="flex flex-wrap gap-3 justify-center pt-2">
+            <button type="button" class="btn-primary flex items-center gap-2">
+              <span class="material-symbols-outlined" style="font-size: 20px;">send</span>
+              أرسل الرسالة
+            </button>
+            <button type="button" class="btn-ghost flex items-center gap-2">
+              <span class="material-symbols-outlined" style="font-size: 20px;">calendar_month</span>
+              احجز مكالمة
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="relative pt-16 pb-8 px-6 border-t" style="border-color: var(--border-subtle);">
+  <div class="max-w-[1200px] mx-auto">
+    <div class="grid md:grid-cols-4 gap-8 mb-12">
+      <div class="md:col-span-1">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center cyber-glow" style="background: linear-gradient(135deg, #e94560, #d0bcff);">
+            <span class="material-symbols-outlined text-white" style="font-size: 24px;">auto_awesome</span>
+          </div>
+          <div>
+            <div class="font-black text-lg">السَّرد السيبراني</div>
+            <div class="text-xs" style="color: var(--text-muted);">Cyber-Araby Narrative</div>
+          </div>
+        </div>
+        <p class="text-sm" style="color: var(--text-muted);">
+          وكالة سرد رقمي عربية، نمزج الجمالية بالتقنية لنحكي قصصاً لا تُنسى.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="font-bold mb-4 text-sm">الخدمات</h4>
+        <ul class="space-y-2 text-sm" style="color: var(--text-muted);">
+          <li><a href="#" class="hover:text-[#ff6b81] transition">الاستراتيجية السردية</a></li>
+          <li><a href="#" class="hover:text-[#ff6b81] transition">الهوية البصرية</a></li>
+          <li><a href="#" class="hover:text-[#ff6b81] transition">التنفيذ التقني</a></li>
+          <li><a href="#" class="hover:text-[#ff6b81] transition">النمو والتحليل</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-bold mb-4 text-sm">الشركة</h4>
+        <ul class="space-y-2 text-sm" style="color: var(--text-muted);">
+          <li><a href="#" class="hover:text-[#ff6b81] transition">من نحن</a></li>
+          <li><a href="#" class="hover:text-[#ff6b81] transition">فريقنا</a></li>
+          <li><a href="#" class="hover:text-[#ff6b81] transition">الأعمال</a></li>
+          <li><a href="#" class="hover:text-[#ff6b81] transition">المدونة</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-bold mb-4 text-sm">تواصل معنا</h4>
+        <ul class="space-y-3 text-sm" style="color: var(--text-muted);">
+          <li class="flex items-center gap-2">
+            <span class="material-symbols-outlined" style="font-size: 18px; color: var(--accent-crimson-light);">mail</span>
+            hello@cyber-araby.com
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="material-symbols-outlined" style="font-size: 18px; color: var(--accent-crimson-light);">call</span>
+            +966 50 000 0000
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="material-symbols-outlined" style="font-size: 18px; color: var(--accent-crimson-light);">location_on</span>
+            الرياض · دبي · القاهرة
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="narrative-divider pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-xs" style="color: var(--text-muted);">
+        © 2026 السَّرد السيبراني. كل الحقوق محفوظة.
+      </p>
+      <div class="flex gap-3">
+        <a href="#" class="w-9 h-9 rounded-full flex items-center justify-center border transition hover:border-[#e94560]" style="border-color: var(--border-subtle); color: var(--text-muted);">
+          <span class="material-symbols-outlined" style="font-size: 18px;">share</span>
+        </a>
+        <a href="#" class="w-9 h-9 rounded-full flex items-center justify-center border transition hover:border-[#e94560]" style="border-color: var(--border-subtle); color: var(--text-muted);">
+          <span class="material-symbols-outlined" style="font-size: 18px;">work</span>
+        </a>
+        <a href="#" class="w-9 h-9 rounded-full flex items-center justify-center border transition hover:border-[#e94560]" style="border-color: var(--border-subtle); color: var(--text-muted);">
+          <span class="material-symbols-outlined" style="font-size: 18px;">play_circle</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

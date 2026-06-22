@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useAppStore } from '@/lib/store'
 import TemplateCard from './TemplateCard'
 import { Button } from '@/components/ui/button'
@@ -28,15 +28,56 @@ export default function TemplateGrid() {
   const [templates, setTemplates] = useState<Template[]>([])
   const [activeCategory, setActiveCategory] = useState('All')
   const [search, setSearch] = useState('')
+  const [visibleCount, setVisibleCount] = useState(12) // Start with 12, load more on scroll
+  const lastFetchRef = useRef<number>(0)
 
+  // Always fetch fresh templates (bypassing browser cache) so the public
+  // Templates page reflects admin changes (active/inactive toggles) immediately.
+  // We re-fetch on mount, on window focus (when user returns from another tab),
+  // and on visibility change (when user returns to this tab from another).
   useEffect(() => {
-    fetch('/api/templates')
-      .then(res => res.json())
-      .then(data => {
+    const fetchTemplates = async () => {
+      try {
+        // cache: 'no-store' is sufficient to bypass browser cache and
+        // always fetch fresh data from the server.
+        const res = await fetch('/api/templates', { cache: 'no-store' })
+        const data = await res.json()
         const list = Array.isArray(data) ? data : (Array.isArray(data?.data) ? data.data : [])
-        setTemplates(list)
-      })
-      .catch(() => setTemplates([]))
+        // Defensive: only show active templates (in case the API returns all)
+        const activeList = list.filter((t: Template) => t.active !== false)
+        setTemplates(activeList)
+        lastFetchRef.current = Date.now()
+      } catch {
+        setTemplates([])
+      }
+    }
+
+    fetchTemplates()
+
+    // Re-fetch when the tab becomes visible again (user navigated away and came back)
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        // Only re-fetch if it's been more than 5 seconds since the last fetch
+        if (Date.now() - lastFetchRef.current > 5000) {
+          fetchTemplates()
+        }
+      }
+    }
+
+    // Re-fetch when the window regains focus (user switched tabs/windows)
+    const handleFocus = () => {
+      if (Date.now() - lastFetchRef.current > 5000) {
+        fetchTemplates()
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    window.addEventListener('focus', handleFocus)
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      window.removeEventListener('focus', handleFocus)
+    }
   }, [])
 
   const filtered = templates.filter(t => {
@@ -45,6 +86,10 @@ export default function TemplateGrid() {
                        t.description.toLowerCase().includes(search.toLowerCase())
     return matchCategory && matchSearch
   })
+
+  // Only render the first `visibleCount` templates — pagination/infinite scroll
+  const visibleTemplates = filtered.slice(0, visibleCount)
+  const hasMore = filtered.length > visibleCount
 
   return (
     <div>
@@ -77,12 +122,25 @@ export default function TemplateGrid() {
       </div>
 
       {/* Grid */}
-      {filtered.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((template) => (
-            <TemplateCard key={template.id} template={template} />
-          ))}
-        </div>
+      {visibleTemplates.length > 0 ? (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {visibleTemplates.map((template) => (
+              <TemplateCard key={template.id} template={template} />
+            ))}
+          </div>
+          {hasMore && (
+            <div className="text-center mt-10">
+              <Button
+                onClick={() => setVisibleCount(prev => prev + 12)}
+                variant="outline"
+                className="border-[#000f22] text-[#000f22] hover:bg-[#000f22] hover:text-white h-11 px-8"
+              >
+                Load More ({filtered.length - visibleCount} remaining)
+              </Button>
+            </div>
+          )}
+        </>
       ) : (
         <div className="text-center py-16">
           <p className="text-[#4F5B76] text-lg">No templates found matching your criteria.</p>

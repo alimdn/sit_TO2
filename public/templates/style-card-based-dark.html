@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Card-Based Dark — Modular Layout</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Inter',system-ui,sans-serif}
+body{background:#0a0a0a;color:#fff;overflow-x:hidden}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.animate-fade-in{animation:fadeIn .4s ease-out}
+.modular-card{background:#141414;border:1px solid rgba(255,255,255,0.06);border-radius:16px;transition:all .3s;overflow:hidden}
+.modular-card:hover{transform:translateY(-6px);border-color:rgba(0,212,255,0.2);box-shadow:0 20px 40px rgba(0,0,0,0.3)}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:16px 24px;border-radius:12px;background:rgba(0,212,255,0.15);border:1px solid rgba(0,212,255,0.3);color:#00d4ff;font-weight:500;animation:fadeIn .3s}
+</style>
+</head>
+<body class="min-h-screen">
+<div id="toast-container"></div>
+<nav class="sticky top-0 z-50 bg-black/60 backdrop-blur-md border-b border-white/5">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+    <div class="flex items-center gap-2"><div class="w-8 h-8 bg-cyan-500/20 rounded-lg flex items-center justify-center"><div class="grid grid-cols-2 gap-0.5"><div class="w-1.5 h-1.5 bg-cyan-400 rounded-sm"></div><div class="w-1.5 h-1.5 bg-gray-600 rounded-sm"></div><div class="w-1.5 h-1.5 bg-gray-600 rounded-sm"></div><div class="w-1.5 h-1.5 bg-cyan-400 rounded-sm"></div></div></div><span class="text-lg font-bold">Card<span class="text-cyan-400">Base</span></span></div>
+    <div class="hidden md:flex gap-8 text-sm text-gray-400"><a href="#cards" class="hover:text-cyan-400">Cards</a><a href="#pricing" class="hover:text-cyan-400">Pricing</a></div>
+    <button onclick="showToast('Card system ready.')" class="bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 px-5 py-2.5 rounded-lg text-sm font-semibold">Get Started</button>
+  </div>
+</nav>
+<section class="py-20 px-6">
+  <div class="max-w-7xl mx-auto animate-fade-in">
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 mb-6"><span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span><span class="text-cyan-400 text-xs font-medium">MODULAR CARD SYSTEM</span></div>
+    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6" style="letter-spacing:-0.02em">Content in<br/><span class="text-cyan-400">modular cards.</span></h1>
+    <p class="text-lg text-gray-400 mb-8 max-w-lg">Every piece of content lives in its own card. Clean grid, consistent spacing, easy to scan.</p>
+    <button onclick="showToast('Exploring cards!')" class="bg-cyan-500 hover:bg-cyan-600 text-black px-7 py-3.5 font-semibold rounded-xl transition-all">Browse Cards →</button>
+  </div>
+</section>
+<section id="cards" class="py-12 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="modular-card"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=200&fit=crop&q=80" alt="" class="w-full h-40 object-cover"/><div class="p-6"><div class="flex items-center gap-2 mb-3"><div class="w-8 h-8 bg-cyan-500/10 rounded-lg flex items-center justify-center"><span class="text-cyan-400">📊</span></div><span class="text-xs text-gray-500 uppercase tracking-wider">Analytics</span></div><h3 class="font-bold mb-2">Revenue Dashboard</h3><p class="text-sm text-gray-400">Track your MRR, churn, and growth in real-time.</p><button onclick="showToast('Card opened!')" class="mt-4 text-sm font-semibold text-cyan-400 hover:text-cyan-300">View →</button></div></div>
+      <div class="modular-card"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop&q=80" alt="" class="w-full h-40 object-cover"/><div class="p-6"><div class="flex items-center gap-2 mb-3"><div class="w-8 h-8 bg-purple-500/10 rounded-lg flex items-center justify-center"><span class="text-purple-400">🎯</span></div><span class="text-xs text-gray-500 uppercase tracking-wider">Marketing</span></div><h3 class="font-bold mb-2">Campaign Tracker</h3><p class="text-sm text-gray-400">Monitor your marketing campaigns across channels.</p><button onclick="showToast('Card opened!')" class="mt-4 text-sm font-semibold text-purple-400 hover:text-purple-300">View →</button></div></div>
+      <div class="modular-card"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=200&fit=crop&q=80" alt="" class="w-full h-40 object-cover"/><div class="p-6"><div class="flex items-center gap-2 mb-3"><div class="w-8 h-8 bg-green-500/10 rounded-lg flex items-center justify-center"><span class="text-green-400">👥</span></div><span class="text-xs text-gray-500 uppercase tracking-wider">Users</span></div><h3 class="font-bold mb-2">User Management</h3><p class="text-sm text-gray-400">Manage users, roles, and permissions easily.</p><button onclick="showToast('Card opened!')" class="mt-4 text-sm font-semibold text-green-400 hover:text-green-300">View →</button></div></div>
+      <div class="modular-card"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=200&fit=crop&q=80" alt="" class="w-full h-40 object-cover"/><div class="p-6"><div class="flex items-center gap-2 mb-3"><div class="w-8 h-8 bg-orange-500/10 rounded-lg flex items-center justify-center"><span class="text-orange-400">⚡</span></div><span class="text-xs text-gray-500 uppercase tracking-wider">Performance</span></div><h3 class="font-bold mb-2">Speed Monitor</h3><p class="text-sm text-gray-400">Core Web Vitals and page speed tracking.</p><button onclick="showToast('Card opened!')" class="mt-4 text-sm font-semibold text-orange-400 hover:text-orange-300">View →</button></div></div>
+      <div class="modular-card"><img src="https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=400&h=200&fit=crop&q=80" alt="" class="w-full h-40 object-cover"/><div class="p-6"><div class="flex items-center gap-2 mb-3"><div class="w-8 h-8 bg-pink-500/10 rounded-lg flex items-center justify-center"><span class="text-pink-400">🔒</span></div><span class="text-xs text-gray-500 uppercase tracking-wider">Security</span></div><h3 class="font-bold mb-2">Security Audit</h3><p class="text-sm text-gray-400">Automated security scanning and alerts.</p><button onclick="showToast('Card opened!')" class="mt-4 text-sm font-semibold text-pink-400 hover:text-pink-300">View →</button></div></div>
+      <div class="modular-card"><img src="https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?w=400&h=200&fit=crop&q=80" alt="" class="w-full h-40 object-cover"/><div class="p-6"><div class="flex items-center gap-2 mb-3"><div class="w-8 h-8 bg-blue-500/10 rounded-lg flex items-center justify-center"><span class="text-blue-400">📱</span></div><span class="text-xs text-gray-500 uppercase tracking-wider">Mobile</span></div><h3 class="font-bold mb-2">Mobile Sync</h3><p class="text-sm text-gray-400">Cross-device synchronization and status.</p><button onclick="showToast('Card opened!')" class="mt-4 text-sm font-semibold text-blue-400 hover:text-blue-300">View →</button></div></div>
+    </div>
+  </div>
+</section>
+<section id="pricing" class="py-20 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14"><h2 class="text-3xl font-bold">Pricing</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="modular-card p-8"><h3 class="font-bold mb-1">Starter</h3><div class="text-4xl font-bold mb-4">$29</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>✓ 10 card types</li><li>✓ Basic grid</li></ul><button onclick="showToast('Starter!')" class="w-full py-3 bg-white/5 border border-white/10 rounded-lg font-semibold text-sm text-cyan-400">Choose</button></div>
+      <div class="modular-card p-8 relative" style="border-color:rgba(0,212,255,0.3)"><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-cyan-500 text-black text-xs px-3 py-0.5 rounded-full font-bold">POPULAR</div><h3 class="font-bold mb-1">Pro</h3><div class="text-4xl font-bold mb-4">$79</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>✓ 50 card types</li><li>✓ Custom grid</li><li>✓ Hover effects</li></ul><button onclick="showToast('Pro!')" class="w-full py-3 bg-cyan-500 text-black rounded-lg font-semibold text-sm">Choose</button></div>
+      <div class="modular-card p-8"><h3 class="font-bold mb-1">Enterprise</h3><div class="text-4xl font-bold mb-4">$199</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>✓ Unlimited</li><li>✓ Source</li></ul><button onclick="showToast('Enterprise!')" class="w-full py-3 bg-white/5 border border-white/10 rounded-lg font-semibold text-sm text-cyan-400">Choose</button></div>
+    </div>
+  </div>
+</section>
+<section class="py-20 px-6">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="modular-card p-7"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-400 italic">"The card system is so clean and organized."</p></div>
+    <div class="modular-card p-7"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-400 italic">"Modular cards made our dashboard 10x better."</p></div>
+    <div class="modular-card p-7"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-400 italic">"Best card-based layout system I've used."</p></div>
+  </div>
+</section>
+<footer class="py-8 text-center text-sm text-gray-600">© 2026 Card-Based Dark Template</footer>
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}))
+</script>
+</body>
+</html>

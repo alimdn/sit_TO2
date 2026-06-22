@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Montana's Bar & Grill | Fort McMurray, AB</title>
+  <meta name="description" content="Montana's Bar & Grill - Fort McMurray's favorite sports bar. Great food, cold drinks, and live sports on big screens. Located at 9705 Hardin St.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #d4a030;
+      --primary-dark: #b8860b;
+      --primary-light: #f0d078;
+      --accent: #c0392b;
+      --bg-dark: #1a1a2e;
+      --bg-darker: #0f0f1a;
+      --glass-bg: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.12);
+      --glass-bg-hover: rgba(255, 255, 255, 0.14);
+      --text-white: #ffffff;
+      --text-muted: rgba(255, 255, 255, 0.65);
+      --text-gold: #f0d078;
+      --shadow-glow: 0 8px 32px rgba(212, 160, 48, 0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-darker);
+      color: var(--text-white);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ========== GLASSMORPHISM UTILITIES ========== */
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+    }
+    .glass-strong {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 20px;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+    }
+    .glass-card:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(212, 160, 48, 0.3);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-glow);
+    }
+    .glass-nav {
+      background: rgba(15, 15, 26, 0.75);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-btn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(240, 208, 120, 0.3);
+      border-radius: 12px;
+      color: #fff;
+      font-weight: 600;
+      padding: 14px 32px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .glass-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(212, 160, 48, 0.35);
+      background: linear-gradient(135deg, var(--primary-light), var(--primary));
+    }
+    .glass-btn-outline {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary-light);
+      border-radius: 12px;
+      font-weight: 600;
+      padding: 14px 32px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .glass-btn-outline:hover {
+      background: rgba(212, 160, 48, 0.1);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(212, 160, 48, 0.2);
+    }
+
+    /* ========== HERO SECTION ========== */
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=1600&q=80') center/cover no-repeat;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(15, 15, 26, 0.88), rgba(26, 26, 46, 0.75));
+    }
+    .hero-particles {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--primary);
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: floatParticle 8s infinite ease-in-out;
+    }
+    .particle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+    .particle:nth-child(2) { top: 60%; left: 20%; animation-delay: 2s; }
+    .particle:nth-child(3) { top: 30%; left: 70%; animation-delay: 4s; }
+    .particle:nth-child(4) { top: 80%; left: 80%; animation-delay: 1s; }
+    .particle:nth-child(5) { top: 50%; left: 50%; animation-delay: 3s; }
+    .particle:nth-child(6) { top: 10%; left: 90%; animation-delay: 5s; }
+
+    @keyframes floatParticle {
+      0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+      50% { transform: translateY(-30px) translateX(20px); opacity: 0.7; }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 2rem;
+      max-width: 900px;
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: 8px 20px;
+      background: rgba(212, 160, 48, 0.15);
+      border: 1px solid rgba(212, 160, 48, 0.3);
+      border-radius: 50px;
+      color: var(--text-gold);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #fff, var(--text-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-10px); }
+    }
+
+    /* ========== NAVIGATION ========== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+    }
+    .navbar.scrolled {
+      padding: 0.6rem 2rem;
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--primary-light);
+      text-decoration: none;
+    }
+    .logo span { color: #fff; }
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--primary-light); }
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .nav-toggle span {
+      width: 24px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* ========== SECTIONS ========== */
+    section { padding: 6rem 2rem; }
+    .section-title {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+    .section-title h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+    .section-title .divider {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      margin: 0 auto 1rem;
+      border-radius: 2px;
+    }
+    .section-title p {
+      color: var(--text-muted);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+
+    /* ========== ABOUT ========== */
+    #about { background: var(--bg-dark); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .about-image {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .about-image img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 20px;
+    }
+    .about-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(212, 160, 48, 0.2);
+      border-radius: 20px;
+    }
+    .about-text h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+    .about-text p {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .stat-card {
+      text-align: center;
+      padding: 1.5rem 1rem;
+    }
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-light);
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* ========== MENU ========== */
+    #menu { background: var(--bg-darker); }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .menu-item {
+      padding: 2rem;
+    }
+    .menu-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+    .menu-item-header h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+    }
+    .menu-item-header .price {
+      color: var(--primary-light);
+      font-weight: 700;
+      font-size: 1.1rem;
+      white-space: nowrap;
+      margin-left: 1rem;
+    }
+    .menu-item .desc {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    .menu-item .tag {
+      display: inline-block;
+      margin-top: 0.75rem;
+      padding: 4px 12px;
+      background: rgba(212, 160, 48, 0.15);
+      border-radius: 50px;
+      font-size: 0.75rem;
+      color: var(--text-gold);
+      font-weight: 500;
+    }
+
+    /* ========== FEATURES ========== */
+    #features { background: var(--bg-dark); }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    .feature-card {
+      padding: 2rem;
+      text-align: center;
+    }
+    .feature-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 1.25rem;
+      background: linear-gradient(135deg, rgba(212, 160, 48, 0.2), rgba(212, 160, 48, 0.05));
+      border: 1px solid rgba(212, 160, 48, 0.2);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+    }
+    .feature-card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .feature-card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* ========== HOURS & LOCATION ========== */
+    #contact { background: var(--bg-darker); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+    .hours-panel { padding: 2.5rem; }
+    .hours-panel h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .hours-row:last-child { border-bottom: none; }
+    .hours-day { font-weight: 500; }
+    .hours-time { color: var(--text-muted); }
+    .hours-row.closed .hours-day { color: var(--accent); }
+    .hours-row.closed .hours-time { color: rgba(255, 255, 255, 0.35); }
+
+    .location-panel { padding: 2.5rem; }
+    .location-panel h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .location-info { display: flex; flex-direction: column; gap: 1.25rem; }
+    .info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .info-icon {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      background: rgba(212, 160, 48, 0.12);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .info-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--primary-light);
+      fill: none;
+      stroke-width: 2;
+    }
+    .info-text strong { display: block; font-size: 0.95rem; }
+    .info-text span { color: var(--text-muted); font-size: 0.9rem; }
+    .map-container {
+      margin-top: 2rem;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .map-container iframe {
+      width: 100%;
+      height: 250px;
+      border: none;
+      filter: grayscale(0.5) brightness(0.8);
+    }
+
+    /* ========== GALLERY ========== */
+    #gallery { background: var(--bg-dark); }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .gallery-item {
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .gallery-item:hover img { transform: scale(1.08); }
+    .gallery-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .gallery-item:hover::after { opacity: 1; }
+
+    /* ========== CTA ========== */
+    .cta-section {
+      text-align: center;
+      padding: 6rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(212, 160, 48, 0.1), rgba(192, 57, 43, 0.08));
+    }
+    .cta-glass {
+      position: relative;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 4rem 3rem;
+    }
+    .cta-glass h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+    }
+    .cta-glass p {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+    }
+
+    /* ========== FOOTER ========== */
+    footer {
+      background: var(--bg-darker);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 3rem 2rem 2rem;
+    }
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+    .footer-brand .logo { font-size: 1.4rem; }
+    .footer-brand p {
+      color: var(--text-muted);
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+    .footer-col h4 {
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      font-size: 0.95rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.6rem; }
+    .footer-col a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s;
+    }
+    .footer-col a:hover { color: var(--primary-light); }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 2rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-bottom p { color: var(--text-muted); font-size: 0.85rem; }
+    .social-links { display: flex; gap: 0.75rem; }
+    .social-link {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .social-link:hover {
+      background: rgba(212, 160, 48, 0.15);
+      border-color: rgba(212, 160, 48, 0.3);
+      color: var(--primary-light);
+    }
+
+    /* ========== PRIDE BADGE ========== */
+    .pride-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 6px 14px;
+      background: linear-gradient(135deg, rgba(255, 0, 0, 0.15), rgba(255, 165, 0, 0.15), rgba(255, 255, 0, 0.15), rgba(0, 128, 0, 0.15), rgba(0, 0, 255, 0.15), rgba(128, 0, 128, 0.15));
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 50px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 1rem;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-links.active {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(15, 15, 26, 0.95);
+        backdrop-filter: blur(24px);
+        padding: 1.5rem 2rem;
+        gap: 1.25rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .nav-toggle { display: flex; }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .footer-content { grid-template-columns: 1fr 1fr; }
+      .about-stats { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+      section { padding: 4rem 1.5rem; }
+    }
+    @media (max-width: 480px) {
+      .gallery-grid { grid-template-columns: 1fr; }
+      .footer-content { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2.5rem; }
+      .menu-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar glass-nav" id="navbar">
+    <a href="#" class="logo">Montana<span>'s</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="tel:7807152751" class="glass-btn" style="padding: 10px 24px; font-size: 0.9rem;">Call Us</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-particles">
+      <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+      <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">Sports Bar &amp; Grill</div>
+      <h1>Welcome to Montana's</h1>
+      <p>Fort McMurray's premier destination for great food, cold drinks, and live sports. Relax with friends in our warm, inviting atmosphere.</p>
+      <div class="hero-buttons">
+        <a href="#menu" class="glass-btn">View Menu</a>
+        <a href="#contact" class="glass-btn-outline">Find Us</a>
+      </div>
+      <div class="pride-badge">LGBTQ+ Friendly Space</div>
+    </div>
+    <div class="scroll-indicator">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image">
+          <img src="https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=800&q=80" alt="Montana's Bar interior">
+        </div>
+        <div class="about-text">
+          <h3>A Fort McMurray Tradition</h3>
+          <p>Montana's has been the beating heart of Fort McMurray's social scene for years. Nestled in the heart of downtown, we combine the warmth of a neighborhood pub with the excitement of a full-service sports bar. Whether you're catching the big game, enjoying a casual dinner, or celebrating a special occasion, Montana's is the place to be.</p>
+          <p>Our kitchen serves up hearty comfort food, from juicy burgers and crispy wings to fresh salads and signature poutines. Our bar is stocked with a wide selection of local and international beers, craft cocktails, and an impressive whiskey collection.</p>
+          <div class="about-stats">
+            <div class="stat-card glass-card">
+              <div class="stat-number">15+</div>
+              <div class="stat-label">Draft Beers</div>
+            </div>
+            <div class="stat-card glass-card">
+              <div class="stat-number">12</div>
+              <div class="stat-label">HD Screens</div>
+            </div>
+            <div class="stat-card glass-card">
+              <div class="stat-number">$$</div>
+              <div class="stat-label">$20-30/person</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section id="menu">
+    <div class="container">
+      <div class="section-title">
+        <h2>Our Menu</h2>
+        <div class="divider"></div>
+        <p>Classic bar favorites made with quality ingredients and a whole lot of flavor</p>
+      </div>
+      <div class="menu-grid">
+        <div class="menu-item glass-card">
+          <div class="menu-item-header">
+            <h3>The Montana Burger</h3>
+            <span class="price">$16</span>
+          </div>
+          <p class="desc">Half-pound beef patty, aged cheddar, crispy bacon, lettuce, tomato, pickles, and our secret Montana sauce on a brioche bun. Served with fries.</p>
+          <span class="tag">Best Seller</span>
+        </div>
+        <div class="menu-item glass-card">
+          <div class="menu-item-header">
+            <h3>Crispy Chicken Wings</h3>
+            <span class="price">$14</span>
+          </div>
+          <p class="desc">A full pound of crispy fried wings tossed in your choice of Buffalo, BBQ, Honey Garlic, or Dry Rub. Served with ranch dip.</p>
+          <span class="tag">Fan Favorite</span>
+        </div>
+        <div class="menu-item glass-card">
+          <div class="menu-item-header">
+            <h3>Loaded Poutine</h3>
+            <span class="price">$13</span>
+          </div>
+          <p class="desc">Crispy fries topped with rich beef gravy, melted cheese curds, and your choice of bacon, pulled pork, or jalapenos.</p>
+          <span class="tag">Canadian Classic</span>
+        </div>
+        <div class="menu-item glass-card">
+          <div class="menu-item-header">
+            <h3>Nachos Supreme</h3>
+            <span class="price">$15</span>
+          </div>
+          <p class="desc">Tortilla chips piled high with melted cheddar and jack cheese, jalapenos, salsa, sour cream, guacamole, and ground beef.</p>
+          <span class="tag">Perfect to Share</span>
+        </div>
+        <div class="menu-item glass-card">
+          <div class="menu-item-header">
+            <h3>Caesar Salad</h3>
+            <span class="price">$12</span>
+          </div>
+          <p class="desc">Crisp romaine lettuce, parmesan shavings, garlic croutons, and our house-made Caesar dressing. Add grilled chicken for $4.</p>
+          <span class="tag">Light Option</span>
+        </div>
+        <div class="menu-item glass-card">
+          <div class="menu-item-header">
+            <h3>Ribeye Steak</h3>
+            <span class="price">$28</span>
+          </div>
+          <p class="desc">10oz AAA Alberta ribeye, grilled to perfection. Served with garlic mashed potatoes and seasonal vegetables.</p>
+          <span class="tag">Premium Cut</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="container">
+      <div class="section-title">
+        <h2>What Makes Us Special</h2>
+        <div class="divider"></div>
+        <p>Everything you need for the perfect night out, all under one roof</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card glass-card">
+          <div class="feature-icon">&#127916;</div>
+          <h3>Live Sports</h3>
+          <p>12 HD screens across the bar showing all the big games, fights, and events. Never miss a moment of the action.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">&#127866;</div>
+          <h3>Craft Drinks</h3>
+          <p>15+ beers on tap, signature cocktails, and a curated selection of whiskies and spirits from around the world.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">&#127911;</div>
+          <h3>Pool &amp; Games</h3>
+          <p>Challenge friends to a game of pool, darts, or try our arcade games. The perfect way to unwind after work.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">&#127869;</div>
+          <h3>Great Food</h3>
+          <p>From classic pub grub to chef-inspired specials, our kitchen delivers bold flavors and generous portions every time.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">&#127881;</div>
+          <h3>Private Events</h3>
+          <p>Host your birthday, corporate event, or team party in our private area. Custom packages and catering available.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">&#128663;</div>
+          <h3>Easy Parking</h3>
+          <p>Free on-site parking available for all guests. Located right on Hardin St with easy access from downtown.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="container">
+      <div class="section-title">
+        <h2>Take a Look Inside</h2>
+        <div class="divider"></div>
+        <p>Get a feel for the Montana's experience before you visit</p>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=600&q=80" alt="Montana's bar area">
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1529260830199-42c24126f198?w=600&q=80" alt="Montana's dining area">
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=600&q=80" alt="Montana's drinks">
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=600&q=80" alt="Montana's pool table area">
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Montana's food">
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80" alt="Montana's atmosphere">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT / HOURS / LOCATION -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-title">
+        <h2>Visit Us</h2>
+        <div class="divider"></div>
+        <p>We'd love to see you. Come grab a drink, catch a game, and make some memories.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="hours-panel glass">
+          <h3>&#128336; Opening Hours</h3>
+          <div class="hours-row closed">
+            <span class="hours-day">Monday</span>
+            <span class="hours-time">Closed</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day">Tuesday</span>
+            <span class="hours-time">11:00 AM - 10:00 PM</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day">Wednesday</span>
+            <span class="hours-time">11:00 AM - 10:00 PM</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day">Thursday</span>
+            <span class="hours-time">11:00 AM - 10:00 PM</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day">Friday</span>
+            <span class="hours-time">11:00 AM - 11:00 PM</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day">Saturday</span>
+            <span class="hours-time">11:00 AM - 11:00 PM</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day">Sunday</span>
+            <span class="hours-time">11:00 AM - 10:00 PM</span>
+          </div>
+        </div>
+        <div class="location-panel glass">
+          <h3>&#128205; Find Us</h3>
+          <div class="location-info">
+            <div class="info-item">
+              <div class="info-icon">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div class="info-text">
+                <strong>Address</strong>
+                <span>9705 Hardin St, Fort McMurray, AB T9H 1L2</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon">
+                <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+              </div>
+              <div class="info-text">
+                <strong>Phone</strong>
+                <span>(780) 715-2751</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+              </div>
+              <div class="info-text">
+                <strong>Website</strong>
+                <span>montanas.ca</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+              </div>
+              <div class="info-text">
+                <strong>Price Range</strong>
+                <span>$20 - $30 per person</span>
+              </div>
+            </div>
+          </div>
+          <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2537.1!2d-111.3800!3d56.7260!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s9705+Hardin+St%2C+Fort+McMurray%2C+AB+T9H+1L2!5e0!3m2!1sen!2sca!4v1" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-glass glass-strong">
+      <h2>Ready to Have a Great Time?</h2>
+      <p>Drop by Montana's today or give us a call to reserve a table for your group. Walk-ins are always welcome!</p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="tel:7807152751" class="glass-btn">Call (780) 715-2751</a>
+        <a href="https://montanas.ca" target="_blank" class="glass-btn-outline" rel="noopener">Visit montanas.ca</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <a href="#" class="logo">Montana<span>'s</span></a>
+        <p>Fort McMurray's favorite sports bar and grill. Great food, cold drinks, live sports, and good times since day one. Located at 9705 Hardin St.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#menu">Our Menu</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Hours</h4>
+        <ul>
+          <li><a href="#contact">Tue-Thu: 11am-10pm</a></li>
+          <li><a href="#contact">Fri-Sat: 11am-11pm</a></li>
+          <li><a href="#contact">Sunday: 11am-10pm</a></li>
+          <li><a href="#contact">Monday: Closed</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:7807152751">(780) 715-2751</a></li>
+          <li><a href="https://montanas.ca" target="_blank" rel="noopener">montanas.ca</a></li>
+          <li><a href="https://maps.google.com/?q=9705+Hardin+St+Fort+McMurray+AB" target="_blank" rel="noopener">Get Directions</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Montana's Bar &amp; Grill. All rights reserved.</p>
+      <div class="social-links">
+        <a href="#" class="social-link" aria-label="Facebook">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+        </a>
+        <a href="#" class="social-link" aria-label="Instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <a href="#" class="social-link" aria-label="Twitter">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => navLinks.classList.remove('active'));
+    });
+
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          const offset = 80;
+          const top = target.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

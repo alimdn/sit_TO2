@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrightSmile Dental — Modern Dental Care</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ========== CSS VARIABLES ========== */
+:root {
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #0f1629;
+  --bg-tertiary: #141c35;
+  --glass-bg: rgba(15, 22, 41, 0.55);
+  --glass-bg-light: rgba(15, 22, 41, 0.35);
+  --glass-bg-hover: rgba(15, 22, 41, 0.7);
+  --glass-border: rgba(56, 189, 248, 0.12);
+  --glass-border-hover: rgba(56, 189, 248, 0.3);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --glass-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.4);
+  --accent: #0284c7;
+  --accent-light: #38bdf8;
+  --accent-glow: rgba(2, 132, 199, 0.25);
+  --accent-gradient: linear-gradient(135deg, #0284c7, #38bdf8);
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --radius: 16px;
+  --radius-lg: 24px;
+  --radius-sm: 10px;
+  --radius-full: 9999px;
+  --blur: 20px;
+  --blur-heavy: 30px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --container: 1200px;
+  --section-pad: 100px;
+}
+
+/* ========== RESET & BASE ========== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; transition: var(--transition); }
+ul { list-style: none; }
+img { max-width: 100%; display: block; }
+button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+section { padding: var(--section-pad) 0; }
+
+/* ========== GLASS PANEL ========== */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: var(--glass-shadow);
+  transition: var(--transition);
+}
+.glass:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--glass-shadow-lg), 0 0 30px var(--accent-glow);
+}
+.glass-static {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: var(--glass-shadow);
+}
+
+/* ========== SECTION HEADERS ========== */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--accent-light);
+  margin-bottom: 16px;
+}
+.section-label svg { width: 18px; height: 18px; }
+.section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  line-height: 1.25;
+}
+.section-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  line-height: 1.7;
+}
+.section-header-center { text-align: center; }
+.section-header-center .section-subtitle { margin: 0 auto; }
+
+/* ========== BUTTONS ========== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 32px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--accent-gradient);
+  color: #fff;
+  box-shadow: 0 4px 20px var(--accent-glow);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(2, 132, 199, 0.4);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1.5px solid var(--glass-border-hover);
+  backdrop-filter: blur(10px);
+}
+.btn-outline:hover {
+  background: rgba(56, 189, 248, 0.08);
+  border-color: var(--accent-light);
+  transform: translateY(-2px);
+}
+.btn svg { width: 18px; height: 18px; }
+
+/* ========== NAVBAR ========== */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 16px 0;
+  transition: var(--transition);
+}
+.navbar.scrolled {
+  background: rgba(10, 14, 26, 0.85);
+  backdrop-filter: blur(var(--blur-heavy));
+  -webkit-backdrop-filter: blur(var(--blur-heavy));
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.nav-logo svg { color: var(--accent-light); }
+.nav-logo span {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.nav-links a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  position: relative;
+  padding: 4px 0;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent-gradient);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+.nav-links a:hover { color: var(--text-primary); }
+.nav-links a:hover::after { width: 100%; }
+.nav-cta .btn { padding: 10px 24px; font-size: 14px; }
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  padding: 4px;
+}
+.nav-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: var(--transition);
+}
+.nav-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.nav-toggle.active span:nth-child(2) { opacity: 0; }
+.nav-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+/* ========== HERO ========== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding-top: 80px;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 14, 26, 0.7) 0%,
+    rgba(10, 14, 26, 0.85) 50%,
+    rgba(10, 14, 26, 0.95) 100%
+  );
+  z-index: 1;
+}
+.hero-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--accent-light);
+  border-radius: 50%;
+  opacity: 0;
+  animation: floatParticle 8s infinite;
+}
+@keyframes floatParticle {
+  0% { opacity: 0; transform: translateY(100vh) scale(0); }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% { opacity: 0; transform: translateY(-10vh) scale(1); }
+}
+.hero-content {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  max-width: 750px;
+  padding: 0 24px;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  border-radius: var(--radius-full);
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-light);
+  letter-spacing: 1px;
+  margin-bottom: 28px;
+  backdrop-filter: blur(10px);
+}
+.hero-badge svg { width: 16px; height: 16px; }
+.hero-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  line-height: 1.15;
+}
+.hero-title .highlight {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 560px;
+  margin: 0 auto 36px;
+  line-height: 1.8;
+}
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ========== ABOUT ========== */
+.about { position: relative; }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.about-image {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.about-image img {
+  width: 100%;
+  height: 450px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+}
+.about-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+  pointer-events: none;
+}
+.about-image .experience-badge {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  padding: 16px 24px;
+  border-radius: var(--radius);
+  background: rgba(2, 132, 199, 0.2);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  text-align: center;
+}
+.about-image .experience-badge .number {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-light);
+  display: block;
+  line-height: 1;
+}
+.about-image .experience-badge .text {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.about-text p {
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  line-height: 1.8;
+}
+.about-text p:last-of-type { margin-bottom: 32px; }
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.stat-card {
+  text-align: center;
+  padding: 20px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+}
+.stat-card .stat-number {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+.stat-card .stat-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+}
+
+/* ========== SERVICES ========== */
+.services { position: relative; }
+.services .section-header-center { margin-bottom: 56px; }
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.service-card {
+  padding: 36px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent-gradient);
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+  transform-origin: left;
+}
+.service-card:hover::before { transform: scaleX(1); }
+.service-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  transition: var(--transition);
+}
+.service-card:hover .service-icon {
+  background: rgba(56, 189, 248, 0.15);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+.service-icon svg { width: 26px; height: 26px; color: var(--accent-light); }
+.service-card h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+}
+.service-price {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-light);
+  margin-bottom: 12px;
+}
+.service-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ========== TEAM ========== */
+.team { position: relative; }
+.team .section-header-center { margin-bottom: 56px; }
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.team-card {
+  text-align: center;
+  padding: 36px 24px;
+  overflow: hidden;
+}
+.team-avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  background: var(--accent-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: 3px solid var(--glass-border);
+  overflow: hidden;
+}
+.team-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.team-avatar svg {
+  width: 44px;
+  height: 44px;
+  color: rgba(255, 255, 255, 0.6);
+}
+.team-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+}
+.team-card .team-role {
+  font-size: 0.85rem;
+  color: var(--accent-light);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.team-card .team-exp {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ========== REVIEWS ========== */
+.reviews { position: relative; }
+.reviews .section-header-center { margin-bottom: 56px; }
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.review-card {
+  padding: 36px 28px;
+  position: relative;
+}
+.review-stars {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+.review-stars svg { width: 18px; height: 18px; color: #fbbf24; fill: #fbbf24; }
+.review-card blockquote {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 24px;
+  font-style: italic;
+}
+.review-card blockquote::before {
+  content: '\201C';
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  color: var(--accent-light);
+  opacity: 0.3;
+  line-height: 0;
+  display: block;
+  margin-bottom: 8px;
+}
+.review-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.review-author-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.review-author-avatar svg { width: 20px; height: 20px; color: #fff; }
+.review-author-info h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.review-author-info span {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ========== HOURS & LOCATION ========== */
+.location-section { position: relative; }
+.location-section .section-header-center { margin-bottom: 56px; }
+.location-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.hours-card {
+  padding: 40px 32px;
+}
+.hours-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 28px;
+  color: var(--text-primary);
+}
+.hours-list { display: flex; flex-direction: column; gap: 12px; }
+.hours-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--glass-bg-light);
+  border: 1px solid transparent;
+  transition: var(--transition);
+}
+.hours-item:hover {
+  border-color: var(--glass-border);
+  background: rgba(56, 189, 248, 0.05);
+}
+.hours-item .day {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+.hours-item .time {
+  font-size: 0.9rem;
+  color: var(--accent-light);
+  font-weight: 500;
+}
+.hours-item .closed {
+  color: #f87171;
+}
+.location-card {
+  padding: 40px 32px;
+}
+.location-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 28px;
+  color: var(--text-primary);
+}
+.location-info { display: flex; flex-direction: column; gap: 16px; margin-bottom: 28px; }
+.location-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.location-info-item svg {
+  width: 20px;
+  height: 20px;
+  color: var(--accent-light);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.location-info-item p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.location-map {
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+}
+.location-map iframe {
+  width: 100%;
+  height: 220px;
+  border: none;
+  filter: grayscale(0.3) brightness(0.8);
+  transition: var(--transition);
+}
+.location-map:hover iframe { filter: grayscale(0) brightness(1); }
+
+/* ========== CTA ========== */
+.cta {
+  position: relative;
+  padding: 100px 0;
+}
+.cta-inner {
+  text-align: center;
+  padding: 64px 40px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, rgba(2, 132, 199, 0.15), rgba(56, 189, 248, 0.05));
+  backdrop-filter: blur(var(--blur-heavy));
+  border: 1px solid rgba(56, 189, 248, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+.cta-inner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 50%, rgba(56, 189, 248, 0.06), transparent 50%),
+              radial-gradient(circle at 70% 50%, rgba(2, 132, 199, 0.04), transparent 50%);
+  animation: ctaGlow 6s ease-in-out infinite alternate;
+}
+@keyframes ctaGlow {
+  0% { transform: translateX(-5%); }
+  100% { transform: translateX(5%); }
+}
+.cta-inner h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+.cta-inner p {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 520px;
+  margin: 0 auto 32px;
+  position: relative;
+  z-index: 1;
+}
+.cta-inner .btn { position: relative; z-index: 1; }
+
+/* ========== FOOTER ========== */
+.footer {
+  padding: 64px 0 0;
+  border-top: 1px solid var(--glass-border);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 48px;
+}
+.footer-brand .nav-logo { margin-bottom: 16px; }
+.footer-brand p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+.footer-socials {
+  display: flex;
+  gap: 12px;
+}
+.footer-socials a {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: var(--glass-bg-light);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+.footer-socials a:hover {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: var(--accent-light);
+  transform: translateY(-2px);
+}
+.footer-socials a svg { width: 18px; height: 18px; color: var(--text-secondary); }
+.footer-socials a:hover svg { color: var(--accent-light); }
+.footer h4 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+.footer ul { display: flex; flex-direction: column; gap: 10px; }
+.footer ul a {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+.footer ul a:hover { color: var(--accent-light); transform: translateX(4px); display: inline-block; }
+.footer-hours-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.footer-hours-item .fh-day { font-weight: 500; color: var(--text-secondary); }
+.footer-hours-item .fh-time { color: var(--text-muted); }
+.footer-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+.footer-contact-item svg { width: 16px; height: 16px; color: var(--accent-light); flex-shrink: 0; }
+.footer-bottom {
+  border-top: 1px solid var(--glass-border);
+  padding: 20px 0;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  .about-image img { height: 350px; }
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+  .location-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+@media (max-width: 768px) {
+  :root { --section-pad: 70px; }
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 280px;
+    height: 100vh;
+    flex-direction: column;
+    background: rgba(10, 14, 26, 0.95);
+    backdrop-filter: blur(var(--blur-heavy));
+    border-left: 1px solid var(--glass-border);
+    padding: 80px 32px 32px;
+    gap: 24px;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .nav-links.open { right: 0; }
+  .nav-links a { font-size: 1rem; }
+  .nav-toggle { display: flex; }
+  .services-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: 1fr; max-width: 380px; margin: 0 auto; }
+  .reviews-grid { grid-template-columns: 1fr; }
+  .about-stats { grid-template-columns: repeat(2, 1fr); }
+  .hero-title { font-size: clamp(2rem, 7vw, 3rem); }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+  .cta-inner { padding: 48px 24px; }
+}
+@media (max-width: 480px) {
+  .container { padding: 0 16px; }
+  .hero-buttons { flex-direction: column; align-items: center; }
+  .hero-buttons .btn { width: 100%; max-width: 280px; }
+  .about-image img { height: 260px; }
+}
+
+/* ========== MOBILE NAV OVERLAY ========== */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.nav-overlay.active { display: block; opacity: 1; }
+
+/* ========== SCROLLBAR ========== */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--bg-tertiary); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ========== ANIMATIONS ========== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeInUp 0.8s ease forwards; }
+.fade-in-d1 { animation-delay: 0.1s; opacity: 0; }
+.fade-in-d2 { animation-delay: 0.2s; opacity: 0; }
+.fade-in-d3 { animation-delay: 0.3s; opacity: 0; }
+.fade-in-d4 { animation-delay: 0.4s; opacity: 0; }
+</style>
+</head>
+<body>
+
+<!-- ========== NAVBAR ========== -->
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <a href="#" class="nav-logo">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+        <path d="M16 2C12 2 9 5 9 8v2c-2.2.5-4 2.5-4 5v4c0 3 2.2 5.5 5 5.9V24c0 4 3 7 6 7s6-3 6-7v-1.1c2.8-.4 5-2.9 5-5.9v-4c0-2.5-1.8-4.5-4-5V8c0-3-3-6-7-6zm-1 23c0 .6.4 1 1 1s1-.4 1-1v-3h-2v3zm-3-15c0-1.7 1.3-3 3-3h2c1.7 0 3 1.3 3 3v1.5h-8V10zm10 9c0 2.2-1.8 4-4 4h-4c-2.2 0-4-1.8-4-4v-4c0-2.2 1.8-4 4-4h4c2.2 0 4 1.8 4 4v4z" fill="currentColor"/>
+      </svg>
+      <span>BrightSmile</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#location">Contact</a></li>
+      <li class="nav-cta"><a href="#cta" class="btn btn-primary">Book Appointment</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-overlay" id="navOverlay"></div>
+
+<!-- ========== HERO ========== -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <img src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&w=1920&q=80" alt="Dental Clinic" loading="eager">
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-particles" id="particles"></div>
+  <div class="hero-content">
+    <div class="hero-badge fade-in fade-in-d1">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      Your Smile, Our Priority
+    </div>
+    <h1 class="hero-title fade-in fade-in-d2">
+      <span class="highlight">BrightSmile</span> Dental
+    </h1>
+    <p class="hero-subtitle fade-in fade-in-d3">
+      Experience modern dental care in a comfortable, welcoming environment. 
+      Our team of specialists combines advanced technology with a gentle touch 
+      to give you the smile you deserve.
+    </p>
+    <div class="hero-buttons fade-in fade-in-d4">
+      <a href="#cta" class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Book Now
+      </a>
+      <a href="#services" class="btn btn-outline">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>
+        View Services
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== ABOUT ========== -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-image">
+        <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=800&q=80" alt="Modern dental clinic interior">
+        <div class="experience-badge glass-static">
+          <span class="number">15+</span>
+          <span class="text">Years of Excellence</span>
+        </div>
+      </div>
+      <div class="about-text">
+        <span class="section-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          About Our Clinic
+        </span>
+        <h2 class="section-title">Compassionate Care,<br>Exceptional Results</h2>
+        <p>
+          At BrightSmile Dental, we believe everyone deserves access to world-class dental care. 
+          Founded in 2009, our clinic has grown from a small practice into one of Toronto's most 
+          trusted dental centers, serving over 10,000 patients with dedication and expertise.
+        </p>
+        <p>
+          Our patient-first philosophy means we take the time to listen, understand your needs, 
+          and develop personalized treatment plans. We invest in the latest technology — from 
+          digital X-rays to laser dentistry — ensuring precise diagnoses and comfortable procedures.
+        </p>
+        <div class="about-stats">
+          <div class="stat-card">
+            <div class="stat-number">15+</div>
+            <div class="stat-label">Years Exp.</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">10K+</div>
+            <div class="stat-label">Patients</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">8</div>
+            <div class="stat-label">Specialists</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">4.9</div>
+            <div class="stat-label">Rating</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SERVICES ========== -->
+<section class="services" id="services">
+  <div class="container">
+    <div class="section-header-center">
+      <span class="section-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+        What We Offer
+      </span>
+      <h2 class="section-title">Our Dental Services</h2>
+      <p class="section-subtitle">
+        From routine checkups to advanced cosmetic procedures, we provide a full range of dental services tailored to your needs.
+      </p>
+    </div>
+    <div class="services-grid">
+
+      <!-- Service 1 -->
+      <div class="service-card glass">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.8 2.3A.3.3 0 105 2H4a2 2 0 00-2 2v5a6 6 0 006 6v0a6 6 0 006-6V4a2 2 0 00-2-2h-1a.2.2 0 10.1.3"/><path d="M8 15v1a6 6 0 006 6v0a6 6 0 006-6v-4"/><circle cx="20" cy="10" r="2"/></svg>
+        </div>
+        <h3>General Dentistry</h3>
+        <div class="service-price">Starting at $80</div>
+        <p>Comprehensive exams, cleanings, fillings, and preventive care to maintain your oral health and catch issues early.</p>
+      </div>
+
+      <!-- Service 2 -->
+      <div class="service-card glass">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"/><circle cx="12" cy="12" r="4"/></svg>
+        </div>
+        <h3>Teeth Whitening</h3>
+        <div class="service-price">Starting at $150</div>
+        <p>Professional-grade whitening treatments that brighten your smile by several shades in just one visit. Safe and effective.</p>
+      </div>
+
+      <!-- Service 3 -->
+      <div class="service-card glass">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/><line x1="12" y1="12" x2="12" y2="14"/></svg>
+        </div>
+        <h3>Dental Implants</h3>
+        <div class="service-price">Starting at $500</div>
+        <p>Premium titanium implants that look, feel, and function like natural teeth. Restored confidence with lasting results.</p>
+      </div>
+
+      <!-- Service 4 -->
+      <div class="service-card glass">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+        </div>
+        <h3>Orthodontics</h3>
+        <div class="service-price">Starting at $300</div>
+        <p>Traditional braces and clear aligners to straighten teeth and correct bite issues for patients of all ages.</p>
+      </div>
+
+      <!-- Service 5 -->
+      <div class="service-card glass">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h3>Root Canal</h3>
+        <div class="service-price">Starting at $400</div>
+        <p>Gentle, pain-free root canal therapy using advanced techniques. Save your natural teeth and eliminate discomfort.</p>
+      </div>
+
+      <!-- Service 6 -->
+      <div class="service-card glass">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </div>
+        <h3>Cosmetic Veneers</h3>
+        <div class="service-price">Starting at $600</div>
+        <p>Custom porcelain veneers crafted to transform your smile. Correct chips, gaps, and discoloration with natural-looking results.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== TEAM ========== -->
+<section class="team" id="team">
+  <div class="container">
+    <div class="section-header-center">
+      <span class="section-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        Meet the Experts
+      </span>
+      <h2 class="section-title">Our Dental Team</h2>
+      <p class="section-subtitle">
+        Highly qualified professionals dedicated to providing you with the highest standard of dental care.
+      </p>
+    </div>
+    <div class="team-grid">
+
+      <!-- Team Member 1 -->
+      <div class="team-card glass">
+        <div class="team-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <h3>Dr. Sarah Mitchell</h3>
+        <div class="team-role">General Dentistry</div>
+        <div class="team-exp">12 Years Experience</div>
+      </div>
+
+      <!-- Team Member 2 -->
+      <div class="team-card glass">
+        <div class="team-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <h3>Dr. James Chen</h3>
+        <div class="team-role">Orthodontics</div>
+        <div class="team-exp">10 Years Experience</div>
+      </div>
+
+      <!-- Team Member 3 -->
+      <div class="team-card glass">
+        <div class="team-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <h3>Dr. Emily Ross</h3>
+        <div class="team-role">Cosmetic Dentistry</div>
+        <div class="team-exp">8 Years Experience</div>
+      </div>
+
+      <!-- Team Member 4 -->
+      <div class="team-card glass">
+        <div class="team-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <h3>Dr. Michael Patel</h3>
+        <div class="team-role">Oral Surgery</div>
+        <div class="team-exp">15 Years Experience</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== REVIEWS ========== -->
+<section class="reviews" id="reviews">
+  <div class="container">
+    <div class="section-header-center">
+      <span class="section-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        Patient Stories
+      </span>
+      <h2 class="section-title">What Our Patients Say</h2>
+      <p class="section-subtitle">
+        Real experiences from real patients who trust us with their smiles.
+      </p>
+    </div>
+    <div class="reviews-grid">
+
+      <!-- Review 1 -->
+      <div class="review-card glass">
+        <div class="review-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <blockquote>I've been terrified of the dentist my whole life, but the team at BrightSmile completely changed that. Dr. Mitchell was so gentle and patient. My teeth have never looked better!</blockquote>
+        <div class="review-author">
+          <div class="review-author-avatar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div class="review-author-info">
+            <h4>Amanda Torres</h4>
+            <span>Patient since 2021</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Review 2 -->
+      <div class="review-card glass">
+        <div class="review-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <blockquote>The veneers Dr. Ross created for me are absolutely stunning. The entire process was smooth and transparent — no surprises. I recommend BrightSmile to everyone I know.</blockquote>
+        <div class="review-author">
+          <div class="review-author-avatar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div class="review-author-info">
+            <h4>David Kim</h4>
+            <span>Patient since 2020</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Review 3 -->
+      <div class="review-card glass">
+        <div class="review-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <blockquote>Dr. Patel performed my implant surgery and I couldn't be happier. Minimal discomfort, fast recovery, and a perfect result. This clinic truly sets the standard for dental care.</blockquote>
+        <div class="review-author">
+          <div class="review-author-avatar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div class="review-author-info">
+            <h4>Rachel Nguyen</h4>
+            <span>Patient since 2022</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== HOURS & LOCATION ========== -->
+<section class="location-section" id="location">
+  <div class="container">
+    <div class="section-header-center">
+      <span class="section-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Visit Us
+      </span>
+      <h2 class="section-title">Hours & Location</h2>
+      <p class="section-subtitle">
+        Conveniently located in downtown Toronto. Walk-ins welcome during business hours.
+      </p>
+    </div>
+    <div class="location-grid">
+
+      <!-- Hours Panel -->
+      <div class="hours-card glass-static">
+        <h3>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-light)" stroke-width="2" style="vertical-align: -5px; margin-right: 8px;"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Opening Hours
+        </h3>
+        <div class="hours-list">
+          <div class="hours-item">
+            <span class="day">Monday – Friday</span>
+            <span class="time">8:00 AM – 6:00 PM</span>
+          </div>
+          <div class="hours-item">
+            <span class="day">Saturday</span>
+            <span class="time">9:00 AM – 3:00 PM</span>
+          </div>
+          <div class="hours-item">
+            <span class="day">Sunday</span>
+            <span class="time closed">Closed</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Location Panel -->
+      <div class="location-card glass-static">
+        <h3>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-light)" stroke-width="2" style="vertical-align: -5px; margin-right: 8px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Our Location
+        </h3>
+        <div class="location-info">
+          <div class="location-info-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <p>789 Bay Street, Toronto, ON M5G 1A2</p>
+          </div>
+          <div class="location-info-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            <p>(416) 555-0288</p>
+          </div>
+          <div class="location-info-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+            <p>www.brightsmile.ca</p>
+          </div>
+        </div>
+        <div class="location-map">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2886.487465105328!2d-79.38714542434775!3d43.66289707109965!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882b34d1b5e7e3b9%3A0x2a7e3e3e3e3e3e3e!2s789%20Bay%20St%2C%20Toronto%2C%20ON%20M5G%201A2!5e0!3m2!1sen!2sca!4v1700000000000!5m2!1sen!2sca"
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade"
+            title="BrightSmile Dental Location">
+          </iframe>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== CTA ========== -->
+<section class="cta" id="cta">
+  <div class="container">
+    <div class="cta-inner">
+      <h2>Ready for a <span style="background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Brighter Smile</span>?</h2>
+      <p>Schedule your appointment today and take the first step toward the confident, healthy smile you deserve.</p>
+      <a href="#" class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Book Appointment
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+
+      <!-- Brand Column -->
+      <div class="footer-brand">
+        <a href="#" class="nav-logo">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+            <path d="M16 2C12 2 9 5 9 8v2c-2.2.5-4 2.5-4 5v4c0 3 2.2 5.5 5 5.9V24c0 4 3 7 6 7s6-3 6-7v-1.1c2.8-.4 5-2.9 5-5.9v-4c0-2.5-1.8-4.5-4-5V8c0-3-3-6-7-6zm-1 23c0 .6.4 1 1 1s1-.4 1-1v-3h-2v3zm-3-15c0-1.7 1.3-3 3-3h2c1.7 0 3 1.3 3 3v1.5h-8V10zm10 9c0 2.2-1.8 4-4 4h-4c-2.2 0-4-1.8-4-4v-4c0-2.2 1.8-4 4-4h4c2.2 0 4 1.8 4 4v4z" fill="currentColor"/>
+          </svg>
+          <span>BrightSmile</span>
+        </a>
+        <p>Providing exceptional dental care to the Toronto community since 2009. Your trusted partner for a healthier, brighter smile.</p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+          </a>
+          <a href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="#" aria-label="Twitter">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+          </a>
+          <a href="#" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 6a2 2 0 100-4 2 2 0 000 4z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links Column -->
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#team">Our Team</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#location">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+
+      <!-- Hours Column -->
+      <div>
+        <h4>Hours</h4>
+        <ul>
+          <li>
+            <div class="footer-hours-item">
+              <span class="fh-day">Mon – Fri</span>
+              <span class="fh-time">8AM – 6PM</span>
+            </div>
+          </li>
+          <li>
+            <div class="footer-hours-item">
+              <span class="fh-day">Saturday</span>
+              <span class="fh-time">9AM – 3PM</span>
+            </div>
+          </li>
+          <li>
+            <div class="footer-hours-item">
+              <span class="fh-day">Sunday</span>
+              <span class="fh-time">Closed</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Contact Column -->
+      <div>
+        <h4>Contact</h4>
+        <div class="footer-contact-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          789 Bay Street, Toronto
+        </div>
+        <div class="footer-contact-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          (416) 555-0288
+        </div>
+        <div class="footer-contact-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          info@brightsmile.ca
+        </div>
+      </div>
+
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 BrightSmile Dental. All rights reserved. Designed with care for your smile.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ========== JAVASCRIPT ========== -->
+<script>
+(function() {
+  // Navbar scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', function() {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  const navOverlay = document.getElementById('navOverlay');
+
+  function toggleNav() {
+    navToggle.classList.toggle('active');
+    navLinks.classList.toggle('open');
+    navOverlay.classList.toggle('active');
+    document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
+  }
+
+  navToggle.addEventListener('click', toggleNav);
+  navOverlay.addEventListener('click', toggleNav);
+
+  // Close mobile nav on link click
+  navLinks.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', function() {
+      if (navLinks.classList.contains('open')) {
+        toggleNav();
+      }
+    });
+  });
+
+  // Hero floating particles
+  const particlesContainer = document.getElementById('particles');
+  for (var i = 0; i < 30; i++) {
+    var particle = document.createElement('div');
+    particle.classList.add('particle');
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.width = (Math.random() * 4 + 2) + 'px';
+    particle.style.height = particle.style.width;
+    particle.style.animationDuration = (Math.random() * 6 + 5) + 's';
+    particle.style.animationDelay = (Math.random() * 8) + 's';
+    particle.style.opacity = Math.random() * 0.5 + 0.1;
+    particlesContainer.appendChild(particle);
+  }
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

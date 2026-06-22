@@ -55,7 +55,13 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   try {
     const { db } = await import('@/lib/db')
     const template = await db.template.update({ where: { id }, data: body })
-    return NextResponse.json(template)
+    // Only return if the DB actually had this template (template is non-null).
+    // If template is null, the ID doesn't exist in the DB — fall through to
+    // the Blob fallback so legacy templates (from before DB was set up) can
+    // still be updated.
+    if (template) {
+      return NextResponse.json(template)
+    }
   } catch (e) {
     // Fall through to Blob fallback
   }
@@ -111,8 +117,14 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
   // 1) Try DB first
   try {
     const { db } = await import('@/lib/db')
-    await db.template.delete({ where: { id } })
-    return NextResponse.json({ success: true })
+    const deleted = await db.template.delete({ where: { id } })
+    // If the DB had this template, we're done.
+    // Also write a deletion marker to the Blob store so that any stale Blob
+    // override doesn't reappear in the merged list.
+    if (deleted) {
+      try { await markTemplateDeleted(id) } catch {}
+      return NextResponse.json({ success: true })
+    }
   } catch (e) {
     // Fall through to Blob fallback
   }

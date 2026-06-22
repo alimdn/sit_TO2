@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="dark" dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --glass-bg: rgba(26, 26, 46, 0.7);
+            --cyber-glow: 0 0 20px rgba(255, 107, 129, 0.3);
+        }
+        body {
+            background-color: #0f0f1a;
+            color: #e3e0f1;
+            font-family: 'Noto Sans Arabic', sans-serif;
+            overflow-x: hidden;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: minmax(180px, auto);
+            gap: 14px;
+        }
+        @media (max-width: 800px) {
+            .bento-grid {
+                grid-template-columns: repeat(1, 1fr);
+            }
+        }
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(42, 42, 62, 0.5);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            transform: translateY(-4px);
+            border-color: #ff6b81;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3), var(--cyber-glow);
+        }
+        .cyber-button-glow {
+            box-shadow: 0 0 15px rgba(233, 69, 96, 0.4);
+        }
+        .cyber-button-glow:hover {
+            box-shadow: 0 0 25px rgba(233, 69, 96, 0.6);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .dashed-separator {
+            background-image: linear-gradient(to right, #47464c 33%, rgba(255,255,255,0) 0%);
+            background-position: bottom;
+            background-size: 10px 1px;
+            background-repeat: repeat-x;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-tertiary-container": "#9466ff",
+                "on-background": "#e3e0f1",
+                "warning-amber": "#f59e0b",
+                "surface-container-highest": "#343440",
+                "on-secondary": "#67001c",
+                "secondary-container": "#9e0030",
+                "background": "#12121d",
+                "text-muted": "#8a8a9a",
+                "bg-base": "#0f0f1a",
+                "tertiary-fixed-dim": "#d0bcff",
+                "secondary-fixed": "#ffdadb",
+                "secondary": "#ffb2b7",
+                "secondary-fixed-dim": "#ffb2b7",
+                "on-error": "#690005",
+                "on-surface": "#e3e0f1",
+                "primary-container": "#1a1a2e",
+                "surface-tint": "#c6c4df",
+                "on-error-container": "#ffdad6",
+                "inverse-surface": "#e3e0f1",
+                "error-container": "#93000a",
+                "on-tertiary-fixed-variant": "#5516be",
+                "primary-fixed-dim": "#c6c4df",
+                "inverse-primary": "#5d5c74",
+                "on-secondary-container": "#ffa7ae",
+                "on-primary-fixed": "#1a1a2e",
+                "success-emerald": "#10b981",
+                "on-tertiary-fixed": "#23005c",
+                "outline-variant": "#47464c",
+                "on-surface-variant": "#c8c5cd",
+                "on-primary-container": "#83829b",
+                "surface-hover": "#22223a",
+                "error": "#ffb4ab",
+                "accent-neon": "#ff6b81",
+                "tertiary": "#d0bcff",
+                "outline": "#929097",
+                "inverse-on-surface": "#302f3b",
+                "surface-dim": "#12121d",
+                "border-subtle": "#2a2a3e",
+                "surface-container-lowest": "#0d0d18",
+                "on-primary": "#2f2e43",
+                "surface-inset": "#12121f",
+                "surface-card": "#1a1a2e",
+                "primary": "#c6c4df",
+                "surface-variant": "#343440",
+                "tertiary-fixed": "#e9ddff",
+                "surface-bright": "#383845",
+                "surface": "#12121d",
+                "text-primary": "#eaeaea",
+                "surface-container": "#1f1e2a",
+                "on-primary-fixed-variant": "#45455b",
+                "info-blue": "#3b82f6",
+                "on-tertiary": "#3c0091",
+                "surface-container-high": "#292935",
+                "on-secondary-fixed": "#40000e",
+                "on-secondary-fixed-variant": "#91002b",
+                "surface-container-low": "#1b1a26",
+                "tertiary-container": "#24005d",
+                "danger-crimson": "#ef4444",
+                "primary-fixed": "#e2e0fc"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "md": "16px",
+                "xs": "4px",
+                "xl": "40px",
+                "lg": "24px",
+                "max-width": "1200px",
+                "sm": "8px",
+                "gutter": "14px",
+                "base": "4px",
+                "margin-desktop": "30px"
+            },
+            "fontSize": {
+                "label-md": ["11px", {"lineHeight": "1", "fontWeight": "600"}],
+                "hero-display-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "900"}],
+                "body-lg": ["15px", {"lineHeight": "1.8", "fontWeight": "400"}],
+                "headline-lg": ["28px", {"lineHeight": "1.4", "fontWeight": "800"}],
+                "hero-display": ["50px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "900"}],
+                "label-lg": ["12px", {"lineHeight": "1", "fontWeight": "700"}],
+                "caption": ["10px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                "body-md": ["13px", {"lineHeight": "1.8", "fontWeight": "400"}],
+                "headline-sm": ["18px", {"lineHeight": "1.6", "fontWeight": "700"}],
+                "headline-md": ["22px", {"lineHeight": "1.5", "fontWeight": "800"}]
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="bg-surface/70 dark:bg-surface-container/70 backdrop-blur-xl docked full-width top-0 sticky z-50 border-b border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-center px-margin-desktop py-md max-w-max-width mx-auto">
+<div class="flex items-center gap-lg">
+<span class="font-headline-sm text-headline-sm font-black text-accent-neon dark:text-tertiary-fixed-dim">نظام الخدمات المتكاملة</span>
+<div class="hidden md:flex gap-md items-center">
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" href="#">الرئيسية</a>
+<a class="font-label-lg text-label-lg text-primary border-b-2 border-accent-neon pb-1" href="#">الوكالة</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" href="#">إدارة المشاريع</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" href="#">متجر الألعاب</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" href="#">استشارات</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="bg-accent-neon text-on-primary px-lg py-sm rounded-lg font-label-lg text-label-lg cyber-button-glow active:scale-95 duration-150">ابدأ الآن</button>
+<img alt="صورة الملف الشخصي للمستخدم" class="w-10 h-10 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQjJfshO3t-VhmqFKgXEZx9eDaggUx2c7V0zeOhv1zMqV8Q8tQKfv8SDpHUVXdcifVTBelTv3YtKhKfA65l_gjNa_qpqlDlVH0Xj2bfUvQb4b8OVyxKtvw4i0Xrnx91Uz23EYohxUbi0pzMSYz3PBBhSKUcP4-PJ4oV0AoZjk0cNVdEz4-U_-cmUpmQcNrsg5d-oTLPNsYFu5JZvYac1icF2I8UxPmX5oM5LKBqP88eJSrIuhFAXW2XfIO_7yX3mxvum-DpCRn50sW"/>
+</div>
+</div>
+</nav>
+<main class="flex-grow max-w-max-width mx-auto px-margin-desktop py-xl w-full">
+<!-- Hero Section Header -->
+<header class="mb-xl text-center md:text-right">
+<h1 class="font-hero-display text-hero-display text-on-background mb-md">بوابة الخدمات التقنية</h1>
+<p class="font-body-lg text-body-lg text-text-muted max-w-2xl">استكشف الجيل القادم من أدوات إدارة الأعمال، المصممة خصيصاً للمبدعين والفرق التقنية المتقدمة.</p>
+</header>
+<!-- Bento Grid Services -->
+<div class="bento-grid">
+<!-- Large Feature: Task Management -->
+<div class="glass-card rounded-xl p-lg col-span-1 md:col-span-2 row-span-2 flex flex-col justify-between group overflow-hidden relative">
+<div class="relative z-10">
+<div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-md border border-primary/20">
+<span class="material-symbols-outlined text-accent-neon" style="font-variation-settings: 'FILL' 1;">dashboard_customize</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">إدارة المهام الذكية</h3>
+<p class="font-body-md text-body-md text-text-muted mb-lg">نظام متكامل يجمع بين الذكاء الاصطناعي وبساطة الاستخدام لتنظيم سير العمل اليومي بدقة متناهية.</p>
+</div>
+<div class="relative mt-auto">
+<img class="rounded-lg shadow-2xl opacity-60 group-hover:opacity-100 transition-opacity" data-alt="A sophisticated dark-themed dashboard UI showing a complex network of task cards and progress charts. The interface features vibrant neon accents in crimson and electric blue, reflecting a high-tech cyberpunk productivity tool. Soft glow effects emanate from the active elements against a deep cosmic background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiv-ESS65xQSCYedKqTF4H8zzVPE9jV2iUSMFLVQTuwSkyC_nVUdM9S-YMn1fp4EZPk_fOURMFuKsrV1p5qSJNmP-5Iy8NT15DqqM5owXV-dTVWbHsyS0dGZxvlPcHGTM4OT1kUk7gkCpooObdm9nqzDm6hki3-RXGpMgYxk74MdHX_S3XFUSbGpoLpSU2Cr-8s84k-jE4qrC98rLck2g_vJPGAiIKyXq6UO5nV-f_icBNCWfF-VH_S5RZBYr3KP3ZCVLcdJTV-d6o"/>
+</div>
+</div>
+<!-- Medium Feature: Time Tracking -->
+<div class="glass-card rounded-xl p-lg col-span-1 md:col-span-2 row-span-1 flex items-center gap-lg">
+<div class="flex-grow">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">تتبع الوقت</h3>
+<p class="font-body-md text-body-md text-text-muted">مؤقتات دقيقة وتقارير آلية لحساب ساعات العمل والإنتاجية.</p>
+</div>
+<div class="w-20 h-20 flex-shrink-0 bg-surface-container rounded-full border-4 border-accent-neon/20 flex items-center justify-center relative">
+<span class="material-symbols-outlined text-accent-neon text-4xl">timer</span>
+<div class="absolute inset-0 border-t-4 border-accent-neon rounded-full animate-spin" style="animation-duration: 3s;"></div>
+</div>
+</div>
+<!-- Small Feature: Reports -->
+<div class="glass-card rounded-xl p-lg col-span-1 row-span-1 flex flex-col justify-center text-center">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-5xl mb-sm">analytics</span>
+<h3 class="font-label-lg text-label-lg text-on-surface">التقارير الذكية</h3>
+<p class="font-caption text-caption text-text-muted mt-xs">تحليل البيانات بلحظة واحدة</p>
+</div>
+<!-- Small Feature: Cloud Sync -->
+<div class="glass-card rounded-xl p-lg col-span-1 row-span-1 flex flex-col justify-center text-center group">
+<div class="relative mx-auto mb-sm">
+<span class="material-symbols-outlined text-info-blue text-5xl group-hover:scale-110 transition-transform">cloud_sync</span>
+</div>
+<h3 class="font-label-lg text-label-lg text-on-surface">المزامنة السحابية</h3>
+<p class="font-caption text-caption text-text-muted mt-xs">بياناتك معك في كل مكان</p>
+</div>
+<!-- Medium Feature: Agency Services -->
+<div class="glass-card rounded-xl p-lg col-span-1 md:col-span-2 row-span-1 border-r-4 border-accent-neon flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">خدمات الوكالة الرقمية</h3>
+<p class="font-body-md text-body-md text-text-muted">نحول أفكارك إلى واقع رقمي مبهر.</p>
+</div>
+<span class="material-symbols-outlined text-accent-neon">rocket_launch</span>
+</div>
+<div class="flex gap-sm mt-md">
+<span class="bg-surface-hover px-sm py-1 rounded border border-outline-variant/30 text-caption font-caption">UI/UX</span>
+<span class="bg-surface-hover px-sm py-1 rounded border border-outline-variant/30 text-caption font-caption">Development</span>
+<span class="bg-surface-hover px-sm py-1 rounded border border-outline-variant/30 text-caption font-caption">Marketing</span>
+</div>
+</div>
+<!-- Wide Feature: Game Store -->
+<div class="glass-card rounded-xl p-lg col-span-1 md:col-span-2 row-span-1 flex items-center bg-gradient-to-l from-primary-container to-transparent">
+<div class="w-1/2">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">عالم الألعاب</h3>
+<p class="font-body-md text-body-md text-text-muted">متجر متكامل لأصول الألعاب والبرمجيات.</p>
+<button class="mt-md text-accent-neon font-label-lg text-label-lg flex items-center gap-xs hover:underline">
+                        تصفح المتجر <span class="material-symbols-outlined text-sm">arrow_back</span>
+</button>
+</div>
+<div class="w-1/2 flex justify-end">
+<span class="material-symbols-outlined text-8xl text-surface-container-highest opacity-40">sports_esports</span>
+</div>
+</div>
+<!-- Long Feature: Consultations -->
+<div class="glass-card rounded-xl p-lg col-span-1 row-span-2 flex flex-col justify-between bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]">
+<div class="text-right">
+<div class="w-10 h-10 bg-warning-amber/20 rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-warning-amber">gavel</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-sm">الاستشارات</h3>
+<p class="font-body-md text-body-md text-text-muted">جلسات تقنية متخصصة لتطوير أعمالك.</p>
+</div>
+<div class="dashed-separator py-md">
+<div class="flex -space-x-2 space-x-reverse mb-sm">
+<img alt="avatar" class="w-8 h-8 rounded-full border-2 border-surface-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-QkMYEXz7aIr4rH5Xm7BLsWOpBLh-D0f-hsjHWxmyKnexLdLoS1aMVr6HJm3omp0uNXBa1eNt1Rr7zk2nO7lULt2SoVwFHX0inB8TOk03Tvgacn2R2QR_-6bNhLgXPVWd5wh--O3u-xcdD9TzDO0ldWDFrtmUNivZvtUky9I3uMFTku3Y-KkLJtw-fKkVD77CoI9O3LnsDJ0bIis6vX6mwUudatE97K2qxBkwUgTei4dZRQLnaijca5FD_Y4Kvp1rtmqeqTZmmgRO"/>
+<img alt="avatar" class="w-8 h-8 rounded-full border-2 border-surface-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuvM1wAJz0jR9QS5sxWM7u_7-RNfdCN9d4p-3YB6L8s80SXkEgkETey2yfEEXnhIEo0T35x2xYo1LvnlN-aVwOwSDwFCEeUv-gWsavp6JixKWjDY62jl8mQT_Ku6KQ8D0tafnUn4qCYHbg54RY_DDXITzgW3s9KWB4uKsyDZJfMD2fWRjFHywKfx0mmKDWwjIMyLnV00V-7s8kA8vVlERDQmbktr-2yFL57dJ6havp97oeGwNA1ov6fcaujrOwFrKIFpV5yvcc72x6"/>
+<img alt="avatar" class="w-8 h-8 rounded-full border-2 border-surface-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGPYfMxQHM9gh4w5hBQgE7bN3oyLozSdFTx5VVAN8vcKgi8NYUojlYPWrNZ0q2NQiTDInQ0TjWi49ORu4cIhVmoSrlOecTcVDm1K8SjnpO8rYTRzMVVhnc-mkfKktD6kECVRPkcP4132CwgqoNx3F4GEn2b0Y65q2erEn8AQyVkhnHviObcRBx1oTKsDtHHFCD4pLv3UiXghkYTCdjRhisZwV8YiENAOddXtm9YUorgbdcgHFzPjeRNmKhs0fxIC0stjx3juyX54Zh"/>
+</div>
+<span class="text-caption font-caption text-accent-neon">+15 مستشار متاح</span>
+</div>
+</div>
+<!-- Small Feature: Automation -->
+<div class="glass-card rounded-xl p-lg col-span-1 row-span-1 flex flex-col items-center justify-center">
+<span class="material-symbols-outlined text-success-emerald text-4xl mb-2">auto_fix_high</span>
+<span class="font-label-lg text-label-lg">أتمتة المهام</span>
+</div>
+<!-- Medium Feature: Security -->
+<div class="glass-card rounded-xl p-lg col-span-1 md:col-span-2 row-span-1 flex items-center justify-between overflow-hidden relative">
+
+<div class="relative z-10">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">أمان فائق</h3>
+<p class="font-body-md text-body-md text-text-muted">تشفير من طرف إلى طرف لجميع مشاريعك.</p>
+</div>
+<div class="relative z-10 bg-surface-container/80 p-md rounded-xl backdrop-blur-md border border-outline-variant">
+<span class="material-symbols-outlined text-accent-neon text-4xl" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+</div>
+</div>
+</main>
+<!-- SideNavBar (Hidden on Mobile) -->
+<aside class="h-full w-64 fixed right-0 top-0 hidden lg:flex flex-col bg-surface-container-low dark:bg-surface-container-lowest border-l border-outline-variant/20 shadow-xl z-40 pt-24 p-lg space-y-md">
+<div class="flex flex-col items-center mb-xl text-center">
+<div class="w-16 h-16 bg-primary-container rounded-2xl flex items-center justify-center border border-accent-neon/30 mb-md">
+<span class="material-symbols-outlined text-accent-neon text-3xl">hub</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm font-bold text-primary">بوابة الخدمات</h2>
+<p class="font-body-md text-body-md text-text-muted">إدارة الأنشطة التجارية</p>
+</div>
+<nav class="flex flex-col space-y-sm">
+<a class="flex items-center gap-md p-md rounded-lg bg-primary-container text-on-primary-container border-r-4 border-accent-neon hover:translate-x-[-4px] transition-transform" href="#">
+<span class="material-symbols-outlined">palette</span>
+<span class="font-body-md text-body-md">الوكالة الرقمية</span>
+</a>
+<a class="flex items-center gap-md p-md rounded-lg text-text-muted hover:bg-surface-hover hover:text-on-surface hover:translate-x-[-4px] transition-transform" href="#">
+<span class="material-symbols-outlined">dashboard_customize</span>
+<span class="font-body-md text-body-md">إدارة المهام</span>
+</a>
+<a class="flex items-center gap-md p-md rounded-lg text-text-muted hover:bg-surface-hover hover:text-on-surface hover:translate-x-[-4px] transition-transform" href="#">
+<span class="material-symbols-outlined">sports_esports</span>
+<span class="font-body-md text-body-md">عالم الألعاب</span>
+</a>
+<a class="flex items-center gap-md p-md rounded-lg text-text-muted hover:bg-surface-hover hover:text-on-surface hover:translate-x-[-4px] transition-transform" href="#">
+<span class="material-symbols-outlined">gavel</span>
+<span class="font-body-md text-body-md">الاستشارات</span>
+</a>
+<a class="flex items-center gap-md p-md rounded-lg text-text-muted hover:bg-surface-hover hover:text-on-surface hover:translate-x-[-4px] transition-transform" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">الإعدادات</span>
+</a>
+</nav>
+<div class="mt-auto">
+<button class="w-full bg-surface-container-high text-primary border border-outline-variant py-md rounded-xl font-label-lg text-label-lg hover:bg-accent-neon hover:text-white transition-all active:scale-95">ترقية الحساب</button>
+</div>
+</aside>
+<!-- Footer -->
+<footer class="full-width py-xl mt-auto border-t border-outline-variant/10 flat no shadows bg-bg-base dark:bg-surface-container-lowest">
+<div class="flex flex-col items-center justify-between gap-lg px-margin-desktop max-w-max-width mx-auto md:flex-row-reverse">
+<div class="flex gap-lg">
+<a class="text-text-muted font-caption text-caption hover:text-primary transition-colors hover:underline" href="#">سياسة الخصوصية</a>
+<a class="text-text-muted font-caption text-caption hover:text-primary transition-colors hover:underline" href="#">شروط الخدمة</a>
+<a class="text-text-muted font-caption text-caption hover:text-primary transition-colors hover:underline" href="#">مركز المساعدة</a>
+<a class="text-text-muted font-caption text-caption hover:text-primary transition-colors hover:underline" href="#">اتصل بنا</a>
+</div>
+<div class="flex flex-col items-center md:items-start">
+<span class="font-label-lg text-label-lg font-bold text-primary mb-2">نظام الخدمات المتكاملة</span>
+<p class="text-text-muted font-caption text-caption">© 2024 جميع الحقوق محفوظة للمنصة المتعددة</p>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = 'translateY(-4px) scale(1)';
+            });
+        });
+    </script>
+</body></html>

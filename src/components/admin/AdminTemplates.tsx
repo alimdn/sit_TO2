@@ -12,7 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Plus, Pencil, Trash2, Eye, ExternalLink, RefreshCw, ImageOff } from 'lucide-react'
+import { Plus, Pencil, Trash2, Eye, ExternalLink, RefreshCw, ImageOff, Upload, Search, X, Filter } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface Template {
@@ -40,6 +40,11 @@ export default function AdminTemplates() {
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
+  const [uploadingImage, setUploadingImage] = useState(false)
+  // Search & filter state
+  const [search, setSearch] = useState('')
+  const [filterCategory, setFilterCategory] = useState<string>('all')
+  const [filterStatus, setFilterStatus] = useState<string>('all')
   const [form, setForm] = useState({
     title: '',
     description: '',
@@ -54,7 +59,11 @@ export default function AdminTemplates() {
   })
 
   const fetchTemplates = () => {
-    fetch('/api/templates', { cache: 'no-store' })
+    // Use the /admin endpoint which returns ALL templates (active + inactive).
+    // The public /api/templates only returns active ones, which would make
+    // toggled-off templates disappear from this admin view — making it look
+    // like Inactive was deleting them.
+    fetch('/api/templates/admin', { cache: 'no-store' })
       .then(r => r.json())
       .then(data => {
         if (Array.isArray(data)) setTemplates(data)
@@ -178,6 +187,60 @@ export default function AdminTemplates() {
     setPreviewTemplate(t)
   }
 
+  // Handle image file upload — converts to base64 and sends to Cloudinary
+  // via the /api/upload-image endpoint. The returned URL is stored in form.image.
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file')
+      return
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image must be less than 5MB')
+      return
+    }
+
+    setUploadingImage(true)
+    try {
+      // Convert to base64
+      const reader = new FileReader()
+      reader.onloadend = async () => {
+        const base64 = reader.result as string
+        try {
+          const res = await fetch('/api/upload-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ base64 }),
+          })
+          if (res.ok) {
+            const data = await res.json()
+            setForm({ ...form, image: data.url })
+            toast.success('Image uploaded to Cloudinary successfully')
+          } else {
+            const err = await res.json().catch(() => ({}))
+            toast.error(err?.error || 'Failed to upload image')
+          }
+        } catch {
+          toast.error('Network error during upload')
+        } finally {
+          setUploadingImage(false)
+        }
+      }
+      reader.readAsDataURL(file)
+    } catch (e) {
+      console.error('Image upload error:', e)
+      toast.error('Failed to read image file')
+      setUploadingImage(false)
+    }
+    // Reset the input so the same file can be selected again
+    e.target.value = ''
+  }
+
   const openLivePreview = (t: Template) => {
     const url = t.livePreview || t.previewUrl
     if (url) {
@@ -192,31 +255,72 @@ export default function AdminTemplates() {
   // is preserved (the API merges with the existing record).
   const [togglingId, setTogglingId] = useState<string | null>(null)
   const toggleActive = async (t: Template) => {
+    if (togglingId === t.id) return // Prevent double-clicks
     setTogglingId(t.id)
     const newActive = !t.active
-    // Optimistically update the UI
-    setTemplates(prev => prev.map(x => x.id === t.id ? { ...x, active: newActive } : x))
+    const previousActive = t.active // Keep reference for revert
+
+    // Optimistically update the UI immediately
+    setTemplates(prev => prev.map(x => x.id === t.id ? { ...x, active: newActive, updatedAt: new Date().toISOString() } : x))
+
     try {
       const res = await fetch(`/api/templates/${t.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
+        cache: 'no-store',
         body: JSON.stringify({ active: newActive }),
       })
+
       if (res.ok) {
-        toast.success(`Template ${newActive ? 'activated' : 'deactivated'} successfully`)
+        const updatedTemplate = await res.json().catch(() => null)
+        // Sync the local state with the server's response (in case the API returned merged data)
+        if (updatedTemplate && updatedTemplate.id) {
+          setTemplates(prev => prev.map(x => x.id === t.id ? { ...x, ...updatedTemplate } : x))
+        }
+        toast.success(`Template ${newActive ? 'activated' : 'deactivated'} successfully`, {
+          description: newActive
+            ? 'It is now visible on the public website.'
+            : 'It is now hidden from the public website but kept here for reactivation.',
+        })
       } else {
         // Revert on failure
-        setTemplates(prev => prev.map(x => x.id === t.id ? { ...x, active: !newActive } : x))
+        setTemplates(prev => prev.map(x => x.id === t.id ? { ...x, active: previousActive } : x))
         const err = await res.json().catch(() => ({}))
         toast.error(err?.error || `Failed to toggle (HTTP ${res.status})`)
       }
     } catch (e) {
       // Revert on network error
-      setTemplates(prev => prev.map(x => x.id === t.id ? { ...x, active: !newActive } : x))
+      setTemplates(prev => prev.map(x => x.id === t.id ? { ...x, active: previousActive } : x))
       toast.error('Network error while toggling template status')
     } finally {
       setTogglingId(null)
     }
+  }
+
+  // Filter logic for search & filters
+  const filteredTemplates = templates.filter(t => {
+    const q = search.trim().toLowerCase()
+    const matchSearch = !q ||
+      t.title.toLowerCase().includes(q) ||
+      t.description.toLowerCase().includes(q) ||
+      t.category.toLowerCase().includes(q) ||
+      (t.features || '').toLowerCase().includes(q) ||
+      (t.industries || '').toLowerCase().includes(q)
+    const matchCategory = filterCategory === 'all' || t.category === filterCategory
+    const matchStatus =
+      filterStatus === 'all' ||
+      (filterStatus === 'active' && t.active) ||
+      (filterStatus === 'inactive' && !t.active) ||
+      (filterStatus === 'featured' && t.featured)
+    return matchSearch && matchCategory && matchStatus
+  })
+
+  const hasActiveFilters = search.trim() !== '' || filterCategory !== 'all' || filterStatus !== 'all'
+
+  const clearFilters = () => {
+    setSearch('')
+    setFilterCategory('all')
+    setFilterStatus('all')
   }
 
   return (
@@ -224,8 +328,17 @@ export default function AdminTemplates() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-[#000f22]">Templates Management</h2>
-          <p className="text-xs text-[#4F5B76] mt-1">
-            {templates.length} templates · Changes are saved to Vercel Blob and reflect on the site immediately.
+          <p className="text-xs text-[#4F5B76] mt-1 flex items-center gap-3 flex-wrap">
+            <span>
+              <span className="font-semibold text-[#10B981]">{templates.filter(t => t.active).length}</span> active
+              <span className="mx-1">·</span>
+              <span className="font-semibold text-[#74777e]">{templates.filter(t => !t.active).length}</span> inactive
+              <span className="mx-1">·</span>
+              <span>{templates.length} total</span>
+            </span>
+            <span className="text-[#74777e]">
+              Inactive templates are hidden from the public site but kept here for reactivation.
+            </span>
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -241,6 +354,88 @@ export default function AdminTemplates() {
           <Button onClick={openCreate} className="bg-[#000f22] hover:bg-[#0A2540] text-white h-9">
             <Plus className="h-4 w-4 mr-2" /> Add Template
           </Button>
+        </div>
+      </div>
+
+      {/* Search & Filters Bar */}
+      <div className="bg-white rounded-xl border border-[#e6ebf1] shadow-card p-4 space-y-3">
+        <div className="flex flex-col md:flex-row md:items-center gap-3">
+          {/* Search Input */}
+          <div className="relative flex-1 min-w-[240px]">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#74777e] pointer-events-none" />
+            <Input
+              placeholder="Search by title, description, category, features, or industries..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-10 pr-9 h-9 border-[#e6ebf1] focus:border-[#00D1FF]"
+            />
+            {search && (
+              <button
+                onClick={() => setSearch('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#74777e] hover:text-[#000f22]"
+                title="Clear search"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+
+          {/* Category Filter */}
+          <Select value={filterCategory} onValueChange={setFilterCategory}>
+            <SelectTrigger className="w-full md:w-[180px] h-9 border-[#e6ebf1]">
+              <div className="flex items-center gap-2">
+                <Filter className="h-3.5 w-3.5 text-[#74777e]" />
+                <SelectValue placeholder="All Categories" />
+              </div>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Categories</SelectItem>
+              {categories.map(c => (
+                <SelectItem key={c} value={c}>{c}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          {/* Status Filter */}
+          <Select value={filterStatus} onValueChange={setFilterStatus}>
+            <SelectTrigger className="w-full md:w-[160px] h-9 border-[#e6ebf1]">
+              <div className="flex items-center gap-2">
+                <Filter className="h-3.5 w-3.5 text-[#74777e]" />
+                <SelectValue placeholder="All Status" />
+              </div>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
+              <SelectItem value="active">Active Only</SelectItem>
+              <SelectItem value="inactive">Inactive Only</SelectItem>
+              <SelectItem value="featured">Featured Only</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {/* Clear Filters Button */}
+          {hasActiveFilters && (
+            <Button
+              variant="outline"
+              onClick={clearFilters}
+              className="h-9 border-[#e6ebf1] hover:bg-[#f7fafd] whitespace-nowrap"
+            >
+              <X className="h-4 w-4 mr-1" />
+              Clear
+            </Button>
+          )}
+        </div>
+
+        {/* Results summary */}
+        <div className="flex items-center justify-between text-xs text-[#4F5B76] pt-1 border-t border-[#f1f4f7]">
+          <span>
+            Showing <span className="font-semibold text-[#000f22]">{filteredTemplates.length}</span> of{' '}
+            <span className="font-semibold text-[#000f22]">{templates.length}</span> templates
+          </span>
+          {hasActiveFilters && (
+            <span className="text-[#00D1FF] font-medium">
+              Filters active
+            </span>
+          )}
         </div>
       </div>
 
@@ -264,7 +459,25 @@ export default function AdminTemplates() {
                   </TableCell>
                 </TableRow>
               )}
-              {templates.map((t) => (
+              {templates.length > 0 && filteredTemplates.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center py-8 text-[#4F5B76]">
+                    <div className="flex flex-col items-center gap-2">
+                      <Search className="h-8 w-8 text-[#74777e]/40" />
+                      <span>No templates match your search or filters.</span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={clearFilters}
+                        className="mt-2 h-8 border-[#e6ebf1] hover:bg-[#f7fafd]"
+                      >
+                        <X className="h-3.5 w-3.5 mr-1" /> Clear Filters
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              )}
+              {filteredTemplates.map((t) => (
                 <TableRow key={t.id}>
                   <TableCell>
                     {t.image ? (
@@ -297,11 +510,11 @@ export default function AdminTemplates() {
                     <button
                       onClick={() => toggleActive(t)}
                       disabled={togglingId === t.id}
-                      title={t.active ? 'Click to deactivate (hide from public site)' : 'Click to activate (show on public site)'}
-                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer disabled:opacity-50 disabled:cursor-wait ${
+                      title={t.active ? 'Click to deactivate — template will be hidden from the public site but kept here for reactivation' : 'Click to activate — template will be visible on the public site again'}
+                      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer disabled:opacity-60 disabled:cursor-wait select-none ${
                         t.active
-                          ? 'bg-[#10B981]/10 text-[#10B981] hover:bg-[#10B981]/20'
-                          : 'bg-[#74777e]/10 text-[#74777e] hover:bg-[#74777e]/20'
+                          ? 'bg-[#10B981]/15 text-[#10B981] hover:bg-[#10B981]/25 hover:shadow-sm border border-[#10B981]/30'
+                          : 'bg-[#74777e]/10 text-[#74777e] hover:bg-[#74777e]/20 hover:shadow-sm border border-[#74777e]/20'
                       }`}
                     >
                       {togglingId === t.id ? (
@@ -311,8 +524,13 @@ export default function AdminTemplates() {
                         </>
                       ) : (
                         <>
-                          <span className={`w-1.5 h-1.5 rounded-full ${t.active ? 'bg-[#10B981]' : 'bg-[#74777e]'}`} />
+                          <span className={`relative w-2 h-2 rounded-full ${t.active ? 'bg-[#10B981]' : 'bg-[#74777e]'}`}>
+                            {t.active && (
+                              <span className="absolute inset-0 rounded-full bg-[#10B981] animate-ping opacity-75"></span>
+                            )}
+                          </span>
                           {t.active ? 'Active' : 'Inactive'}
+                          <span className="opacity-50 text-[10px] ml-0.5">⇄</span>
                         </>
                       )}
                     </button>
@@ -410,12 +628,54 @@ export default function AdminTemplates() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Image URL <span className="text-[#ba1a1a]">*</span></Label>
+                <Label>Template Image <span className="text-[#ba1a1a]">*</span></Label>
+                {/* Image preview */}
+                {form.image && (
+                  <div className="relative rounded-xl overflow-hidden border border-[#e6ebf1] mb-2 bg-[#f7fafd]">
+                    <img
+                      src={form.image}
+                      alt="Template preview"
+                      className="w-full h-32 object-cover"
+                      onError={(e) => {
+                        ;(e.target as HTMLImageElement).style.opacity = '0.3'
+                      }}
+                    />
+                  </div>
+                )}
+                {/* Upload from file */}
+                <div className="flex gap-2">
+                  <label className="flex-1 cursor-pointer">
+                    <div className="flex items-center justify-center gap-2 px-4 py-2.5 border-2 border-dashed border-[#c4c6ce] hover:border-[#00D1FF] rounded-xl text-xs text-[#74777e] hover:text-[#00D1FF] hover:bg-[#00D1FF]/5 transition-all">
+                      {uploadingImage ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-[#00D1FF] border-t-transparent rounded-full animate-spin" />
+                          Uploading...
+                        </>
+                      ) : (
+                        <>
+                          <Upload className="h-4 w-4" />
+                          Upload Image
+                        </>
+                      )}
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleImageUpload}
+                      disabled={uploadingImage}
+                    />
+                  </label>
+                </div>
+                {/* URL input */}
                 <Input
                   value={form.image}
                   onChange={(e) => setForm({ ...form, image: e.target.value })}
-                  placeholder="/images/template-xyz.png"
+                  placeholder="https://res.cloudinary.com/... or /images/template.png"
                 />
+                <p className="text-[10px] text-[#74777e]">
+                  Upload a file (auto-uploads to Cloudinary) or paste an image URL directly.
+                </p>
               </div>
             </div>
             <div className="space-y-2">

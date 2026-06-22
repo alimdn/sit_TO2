@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Claymorphism Dark — Soft Clay UI</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Inter',system-ui,sans-serif}
+body{background:#1a1625;color:#e5e5e5;overflow-x:hidden}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.animate-fade-in{animation:fadeIn .5s ease-out}
+.clay{background:#241f33;box-shadow:8px 8px 16px rgba(0,0,0,0.4),-6px -6px 14px rgba(255,255,255,0.04);border-radius:24px}
+.clay-inset{background:#1a1625;box-shadow:inset 6px 6px 12px rgba(0,0,0,0.3),inset -4px -4px 10px rgba(255,255,255,0.03);border-radius:20px}
+.clay-hover{transition:all .3s}
+.clay-hover:hover{transform:translateY(-4px);box-shadow:10px 10px 20px rgba(0,0,0,0.4),-8px -8px 16px rgba(255,255,255,0.05)}
+.clay-btn{background:#241f33;box-shadow:6px 6px 12px rgba(0,0,0,0.3),-4px -4px 10px rgba(255,255,255,0.05);border-radius:18px;transition:all .2s}
+.clay-btn:active{box-shadow:inset 4px 4px 8px rgba(0,0,0,0.3),inset -3px -3px 8px rgba(255,255,255,0.03)}
+.card-hover{transition:all .3s}
+.card-hover:hover{transform:translateY(-6px)}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:16px 24px;border-radius:20px;background:#241f33;box-shadow:6px 6px 12px rgba(0,0,0,0.3),-4px -4px 10px rgba(255,255,255,0.05);color:#fbbf24;font-weight:500;animation:fadeIn .3s}
+</style>
+</head>
+<body class="min-h-screen">
+<div id="toast-container"></div>
+<nav class="sticky top-0 z-50 bg-[#1a1625]/90 backdrop-blur-md">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+    <div class="flex items-center gap-2"><div class="w-10 h-10 clay flex items-center justify-center"><span class="text-amber-400 text-lg">◉</span></div><span class="text-lg font-bold">Clay<span class="text-amber-400">Soft</span></span></div>
+    <div class="hidden md:flex gap-8 text-sm text-gray-400"><a href="#features" class="hover:text-amber-400">Features</a><a href="#pricing" class="hover:text-amber-400">Pricing</a></div>
+    <button onclick="showToast('Soft and squishy! 🟡')" class="clay-btn px-5 py-2.5 text-sm font-semibold text-amber-400">Get Started</button>
+  </div>
+</nav>
+<section class="py-20 px-6">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+    <div class="animate-fade-in">
+      <div class="inline-flex items-center gap-2 px-4 py-2 clay mb-6"><span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span><span class="text-amber-400 text-xs font-medium">SOFT · SQUISHY · TACTILE</span></div>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6" style="letter-spacing:-0.02em">Soft like<br/><span class="text-amber-400">clay.</span> Feel it.</h1>
+      <p class="text-lg text-gray-400 mb-8 max-w-lg">Elements that look like Play-Doh. Puffy buttons, soft shadows, warm pastel colors. You'll want to touch every pixel.</p>
+      <div class="flex gap-4">
+        <button onclick="showToast('So squishy! 🟠')" class="clay-btn px-7 py-3.5 font-semibold text-amber-400">Touch Me →</button>
+        <button class="clay-btn px-7 py-3.5 font-semibold text-purple-400">View More</button>
+      </div>
+    </div>
+    <div class="space-y-4">
+      <div class="clay p-6"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=180&fit=crop&q=80" alt="" class="w-full h-32 object-cover rounded-2xl clay-inset p-1 mb-4"/><div class="grid grid-cols-3 gap-3"><div class="clay-inset p-4 text-center"><div class="text-2xl font-bold text-amber-400">98%</div><div class="text-xs text-gray-500">Soft</div></div><div class="clay-inset p-4 text-center"><div class="text-2xl font-bold text-purple-400">15K</div><div class="text-xs text-gray-500">Users</div></div><div class="clay-inset p-4 text-center"><div class="text-2xl font-bold text-pink-400">4.9★</div><div class="text-xs text-gray-500">Rating</div></div></div></div>
+    </div>
+  </div>
+</section>
+<section id="features" class="py-20 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14"><span class="text-amber-400 text-xs font-semibold uppercase tracking-widest">Features</span><h2 class="text-3xl sm:text-4xl font-bold mt-3">Clay Benefits</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="clay clay-hover p-7"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-32 object-cover rounded-2xl clay-inset p-1 mb-4"/><div class="w-12 h-12 clay-inset rounded-full flex items-center justify-center mb-4"><span class="text-2xl">🟡</span></div><h3 class="font-bold mb-2 text-amber-300">Puffy Shapes</h3><p class="text-sm text-gray-400">Rounded, soft elements that feel like clay.</p></div>
+      <div class="clay clay-hover p-7"><img src="https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-32 object-cover rounded-2xl clay-inset p-1 mb-4"/><div class="w-12 h-12 clay-inset rounded-full flex items-center justify-center mb-4"><span class="text-2xl">🟣</span></div><h3 class="font-bold mb-2 text-purple-300">Warm Colors</h3><p class="text-sm text-gray-400">Pastel tones — peach, lavender, mint.</p></div>
+      <div class="clay clay-hover p-7"><img src="https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-32 object-cover rounded-2xl clay-inset p-1 mb-4"/><div class="w-12 h-12 clay-inset rounded-full flex items-center justify-center mb-4"><span class="text-2xl">🟠</span></div><h3 class="font-bold mb-2 text-orange-300">Tactile Feel</h3><p class="text-sm text-gray-400">Inner+outer shadows create a 3D clay look.</p></div>
+    </div>
+  </div>
+</section>
+<section id="pricing" class="py-20 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14"><h2 class="text-3xl font-bold">Pricing</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="clay clay-hover p-8"><h3 class="font-bold text-amber-300 mb-1">Soft</h3><div class="text-4xl font-bold mb-4">$29</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>🟡 10 clay components</li><li>🟡 Basic shadows</li></ul><button onclick="showToast('Soft plan! 🟡')" class="clay-btn w-full py-3 text-amber-400 font-semibold text-sm">Choose</button></div>
+      <div class="clay p-8 relative" style="box-shadow:10px 10px 20px rgba(0,0,0,0.4),-8px -8px 16px rgba(255,255,255,0.06)"><div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 clay text-amber-400 text-xs font-bold rounded-full">SQUISHY</div><h3 class="font-bold text-purple-300 mb-1">Squishy</h3><div class="text-4xl font-bold mb-4">$79</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>🟣 50 components</li><li>🟣 Full clay system</li><li>🟣 Custom colors</li></ul><button onclick="showToast('Squishy plan! 🟣')" class="clay-btn w-full py-3 text-purple-400 font-semibold text-sm">Choose</button></div>
+      <div class="clay clay-hover p-8"><h3 class="font-bold text-orange-300 mb-1">Mold</h3><div class="text-4xl font-bold mb-4">$199</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>🟠 Everything</li><li>🟠 Source code</li></ul><button onclick="showToast('Mold plan! 🟠')" class="clay-btn w-full py-3 text-orange-400 font-semibold text-sm">Choose</button></div>
+    </div>
+  </div>
+</section>
+<section class="py-20 px-6">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="clay p-7"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full clay-inset p-0.5 mb-3"/><p class="text-sm text-gray-400 italic">"My users literally said 'I want to touch the buttons.'"</p></div>
+    <div class="clay p-7"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full clay-inset p-0.5 mb-3"/><p class="text-sm text-gray-400 italic">"Softest UI I've ever seen. Love the clay feel."</p></div>
+    <div class="clay p-7"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full clay-inset p-0.5 mb-3"/><p class="text-sm text-gray-400 italic">"Warm colors + soft shadows = instant happiness."</p></div>
+  </div>
+</section>
+<footer class="py-8 px-6 text-center text-sm text-gray-600">© 2026 ClaySoft Template · Made with clay 🟡</footer>
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}))
+</script>
+</body>
+</html>

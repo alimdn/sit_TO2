@@ -48,8 +48,8 @@ export interface EmailOptions {
 }
 
 export async function sendEmail({ to, subject, html, from }: EmailOptions) {
-  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'WebFlowSub'
-  const senderEmail = process.env.EMAIL_FROM || 'noreply@webflowsub.com'
+  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'WebForge'
+  const senderEmail = process.env.EMAIL_FROM || 'noreply@webforge.com'
   const fromAddress = from || `"${siteName}" <${senderEmail}>`
 
   let transporter
@@ -107,7 +107,7 @@ function emailWrapper(content: string): string {
     <div style="${baseStyle}">
       <div style="${headerStyle}">
         <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 700; letter-spacing: -0.02em;">
-          Web<span style="color: #00D1FF;">Flow</span>Sub
+          Web<span style="color: #00D1FF;">Forge</span>
         </h1>
       </div>
       <div style="padding: 32px 40px;">
@@ -115,7 +115,7 @@ function emailWrapper(content: string): string {
       </div>
       <div style="${footerStyle}">
         <p style="margin: 0; color: #74777e; font-size: 12px;">
-          © ${new Date().getFullYear()} WebFlowSub — Professional Website Design on Subscription
+          © ${new Date().getFullYear()} WebForge — Professional Website Design on Subscription
         </p>
         <p style="margin: 8px 0 0; color: #74777e; font-size: 11px;">
           This is an automated email. Please do not reply directly.
@@ -257,7 +257,7 @@ export function deliveryEmailTemplate(data: {
     </div>
 
     <p style="margin: 0; font-size: 13px; color: #4F5B76; line-height: 1.6;">
-      Thank you for choosing WebFlowSub. We're excited to have you on board!
+      Thank you for choosing WebForge. We're excited to have you on board!
     </p>
   `
 

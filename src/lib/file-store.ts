@@ -59,8 +59,17 @@ export interface StoredTestimonial {
 
 // ─────────────────────────────────────────────────────────────────────
 // Detect whether Vercel Blob is configured
+// DISABLED: Vercel Blob free tier was exhausted (2000 ops/month limit hit).
+// The app now uses Supabase as the sole data store. The local filesystem
+// fallback (/tmp/wfs-data/) remains as a last-resort write cache for
+// serverless environments where Supabase may be temporarily unreachable.
+// To re-enable Blob, set BLOB_READ_WRITE_TOKEN AND change the constant
+// below to true. Otherwise Blob calls are skipped entirely.
 // ─────────────────────────────────────────────────────────────────────
+const BLOB_ENABLED = false // hard-disabled — Supabase is now primary store
+
 function isBlobConfigured(): boolean {
+  if (!BLOB_ENABLED) return false
   return !!(process.env.BLOB_READ_WRITE_TOKEN)
 }
 
@@ -185,7 +194,6 @@ async function blobWriteMessage(data: StoredContactMessage): Promise<void> {
       access: 'public',
       addRandomSuffix: false,
       contentType: 'application/json',
-      allowOverwrite: true,
     })
   } catch (e) {
     console.error('blob message write failed:', e)
@@ -244,7 +252,6 @@ async function blobUpdateMessage(id: string, updates: Partial<StoredContactMessa
       access: 'public',
       addRandomSuffix: false,
       contentType: 'application/json',
-      allowOverwrite: true,
     })
   } catch (e) {
     console.error('blob message update failed:', e)
@@ -260,7 +267,6 @@ async function blobWriteReview(data: StoredTestimonial): Promise<void> {
       access: 'public',
       addRandomSuffix: false,
       contentType: 'application/json',
-      allowOverwrite: true,
     })
   } catch (e) {
     console.error('blob review write failed:', e)
@@ -318,7 +324,6 @@ async function blobUpdateReview(id: string, updates: Partial<StoredTestimonial>)
       access: 'public',
       addRandomSuffix: false,
       contentType: 'application/json',
-      allowOverwrite: true,
     })
   } catch (e) {
     console.error('blob review update failed:', e)
@@ -553,7 +558,6 @@ async function blobWriteTemplate(t: StoredTemplate): Promise<void> {
       access: 'public',
       addRandomSuffix: false,
       contentType: 'application/json',
-      allowOverwrite: true,
     })
     // Remove deletion marker if present
     try {
@@ -571,18 +575,39 @@ async function blobListTemplates(): Promise<StoredTemplate[]> {
   try {
     const list = await blob.list({ prefix: 'templates/' })
     const items: StoredTemplate[] = []
-    const fetches = list.blobs.map(async (b: { url: string }) => {
+    const fetches = list.blobs.map(async (b: { url: string; pathname?: string }) => {
       try {
+        // Skip deletion markers (they live under 'templates-deleted/' which
+        // also matches the 'templates/' prefix — filter them out explicitly)
+        if (b.pathname && b.pathname.includes('templates-deleted/')) return
         const res = await fetch(b.url, { cache: 'no-store' })
         if (!res.ok) return
         const text = await res.text()
-        items.push(JSON.parse(text))
+        const parsed = JSON.parse(text) as StoredTemplate
+        // Skip if this is a deletion marker disguised as a template
+        if ((parsed as any).deletedAt) return
+        items.push(parsed)
       } catch {
         // skip
       }
     })
     await Promise.all(fetches)
-    return items
+
+    // Deduplicate by id — if multiple blobs exist for the same id (e.g.
+    // from older writes before allowOverwrite was set), keep the one with
+    // the most recent updatedAt.
+    const byId = new Map<string, StoredTemplate>()
+    for (const t of items) {
+      const existing = byId.get(t.id)
+      if (!existing) {
+        byId.set(t.id, t)
+      } else {
+        const a = new Date(t.updatedAt || t.createdAt || 0).getTime()
+        const b = new Date(existing.updatedAt || existing.createdAt || 0).getTime()
+        if (a > b) byId.set(t.id, t)
+      }
+    }
+    return Array.from(byId.values())
   } catch (e) {
     console.error('blob template list failed:', e)
     return []
@@ -596,9 +621,13 @@ async function blobListDeletedTemplateIds(): Promise<Set<string>> {
     const list = await blob.list({ prefix: 'templates-deleted/' })
     const ids = new Set<string>()
     for (const b of list.blobs) {
-      // Extract id from pathname: 'templates-deleted/<id>.json'
-      const match = b.pathname?.match(/templates-deleted\/(.+)\.json$/)
-      if (match) ids.add(match[1])
+      // Extract id from pathname. Format: 'templates-deleted/<id>.json'
+      // The id may contain hyphens, so we match everything between the last
+      // '/' and '.json'.
+      const pn = b.pathname || ''
+      const filename = pn.split('/').pop() || ''
+      const id = filename.replace(/\.json$/, '')
+      if (id) ids.add(id)
     }
     return ids
   } catch {
@@ -617,7 +646,6 @@ async function blobMarkTemplateDeleted(id: string): Promise<void> {
         access: 'public',
         addRandomSuffix: false,
         contentType: 'application/json',
-        allowOverwrite: true,
       }
     )
     // Remove override blob if present
@@ -677,4 +705,457 @@ export async function markTemplateDeleted(id: string): Promise<void> {
 export async function getTemplateById(id: string): Promise<StoredTemplate | null> {
   const all = await getAdminTemplates()
   return all.find(t => t.id === id) || null
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// PLANS — append-only override store (same pattern as templates)
+// ═════════════════════════════════════════════════════════════════════
+// Base plans live in fallback-data.ts (read-only seed). Admin can
+// CREATE new plans, EDIT existing ones (creating an override), or
+// DELETE any plan. We track:
+//   plans/<id>.json        → upserted plan (create or edit)
+//   plans-deleted/<id>.json→ marker file meaning "this id is deleted"
+
+export interface StoredPlan {
+  id: string
+  name: string
+  price: number
+  currency: string
+  interval: string        // 'monthly' | 'semi_annual' | 'annual'
+  features: string        // JSON string of string[]
+  popular: boolean
+  active: boolean
+  createdAt: string
+  updatedAt?: string
+}
+
+const PLAN_DIR = path.join(DATA_DIR, 'plans')
+const PLAN_DELETED_DIR = path.join(DATA_DIR, 'plans-deleted')
+
+// ─── Local fs helpers ──────────────────────────────────────────────────
+async function localWritePlan(p: StoredPlan): Promise<void> {
+  try {
+    await fs.mkdir(PLAN_DIR, { recursive: true })
+    await fs.writeFile(path.join(PLAN_DIR, `${p.id}.json`), JSON.stringify(p, null, 2), 'utf-8')
+    await fs.unlink(path.join(PLAN_DELETED_DIR, `${p.id}.json`)).catch(() => {})
+  } catch (e) {
+    console.error('local plan write failed:', e)
+  }
+}
+
+async function localListPlans(): Promise<StoredPlan[]> {
+  try {
+    await fs.mkdir(PLAN_DIR, { recursive: true })
+    const files = await fs.readdir(PLAN_DIR)
+    const items: StoredPlan[] = []
+    for (const f of files) {
+      if (!f.endsWith('.json')) continue
+      try {
+        const raw = await fs.readFile(path.join(PLAN_DIR, f), 'utf-8')
+        items.push(JSON.parse(raw))
+      } catch { /* skip */ }
+    }
+    return items
+  } catch {
+    return []
+  }
+}
+
+async function localListDeletedPlanIds(): Promise<Set<string>> {
+  try {
+    await fs.mkdir(PLAN_DELETED_DIR, { recursive: true })
+    const files = await fs.readdir(PLAN_DELETED_DIR)
+    const ids = new Set<string>()
+    for (const f of files) {
+      if (f.endsWith('.json')) ids.add(f.replace(/\.json$/, ''))
+    }
+    return ids
+  } catch {
+    return new Set()
+  }
+}
+
+async function localMarkPlanDeleted(id: string): Promise<void> {
+  try {
+    await fs.mkdir(PLAN_DELETED_DIR, { recursive: true })
+    await fs.writeFile(
+      path.join(PLAN_DELETED_DIR, `${id}.json`),
+      JSON.stringify({ id, deletedAt: new Date().toISOString() }),
+      'utf-8'
+    )
+    await fs.unlink(path.join(PLAN_DIR, `${id}.json`)).catch(() => {})
+  } catch (e) {
+    console.error('local plan delete failed:', e)
+  }
+}
+
+// ─── Blob helpers ──────────────────────────────────────────────────────
+async function blobWritePlan(p: StoredPlan): Promise<void> {
+  const blob = await blobHead()
+  if (!blob) return
+  try {
+    await blob.put(`plans/${p.id}.json`, JSON.stringify(p, null, 2), {
+      access: 'public',
+      addRandomSuffix: false,
+      contentType: 'application/json',
+    })
+    try {
+      const list = await blob.list({ prefix: `plans-deleted/${p.id}.json` })
+      for (const b of list.blobs) await blob.del(b.url)
+    } catch {}
+  } catch (e) {
+    console.error('blob plan write failed:', e)
+  }
+}
+
+async function blobListPlans(): Promise<StoredPlan[]> {
+  const blob = await blobHead()
+  if (!blob) return []
+  try {
+    const list = await blob.list({ prefix: 'plans/' })
+    const items: StoredPlan[] = []
+    const fetches = list.blobs.map(async (b: { url: string; pathname?: string }) => {
+      try {
+        if (b.pathname && b.pathname.includes('plans-deleted/')) return
+        const res = await fetch(b.url, { cache: 'no-store' })
+        if (!res.ok) return
+        const text = await res.text()
+        const parsed = JSON.parse(text) as StoredPlan
+        if ((parsed as any).deletedAt) return
+        items.push(parsed)
+      } catch { /* skip */ }
+    })
+    await Promise.all(fetches)
+
+    // Dedupe by id — keep the most recent updatedAt
+    const byId = new Map<string, StoredPlan>()
+    for (const p of items) {
+      const existing = byId.get(p.id)
+      if (!existing) {
+        byId.set(p.id, p)
+      } else {
+        const a = new Date(p.updatedAt || p.createdAt || 0).getTime()
+        const b = new Date(existing.updatedAt || existing.createdAt || 0).getTime()
+        if (a > b) byId.set(p.id, p)
+      }
+    }
+    return Array.from(byId.values())
+  } catch (e) {
+    console.error('blob plan list failed:', e)
+    return []
+  }
+}
+
+async function blobListDeletedPlanIds(): Promise<Set<string>> {
+  const blob = await blobHead()
+  if (!blob) return new Set()
+  try {
+    const list = await blob.list({ prefix: 'plans-deleted/' })
+    const ids = new Set<string>()
+    for (const b of list.blobs) {
+      const pn = b.pathname || ''
+      const filename = pn.split('/').pop() || ''
+      const id = filename.replace(/\.json$/, '')
+      if (id) ids.add(id)
+    }
+    return ids
+  } catch {
+    return new Set()
+  }
+}
+
+async function blobMarkPlanDeleted(id: string): Promise<void> {
+  const blob = await blobHead()
+  if (!blob) return
+  try {
+    await blob.put(
+      `plans-deleted/${id}.json`,
+      JSON.stringify({ id, deletedAt: new Date().toISOString() }, null, 2),
+      {
+        access: 'public',
+        addRandomSuffix: false,
+        contentType: 'application/json',
+      }
+    )
+    try {
+      const list = await blob.list({ prefix: `plans/${id}.json` })
+      for (const b of list.blobs) await blob.del(b.url)
+    } catch {}
+  } catch (e) {
+    console.error('blob plan delete failed:', e)
+  }
+}
+
+// ─── Unified public API ────────────────────────────────────────────────
+
+export async function getAdminPlans(): Promise<StoredPlan[]> {
+  let items: StoredPlan[] = []
+  if (isBlobConfigured()) {
+    items = await blobListPlans()
+  }
+  const localItems = await localListPlans()
+  const seen = new Set(items.map(i => i.id))
+  for (const li of localItems) {
+    if (!seen.has(li.id)) {
+      items.push(li)
+      seen.add(li.id)
+    }
+  }
+  return items
+}
+
+export async function getDeletedPlanIds(): Promise<Set<string>> {
+  let ids = new Set<string>()
+  if (isBlobConfigured()) {
+    ids = await blobListDeletedPlanIds()
+  }
+  const localIds = await localListDeletedPlanIds()
+  for (const id of localIds) ids.add(id)
+  return ids
+}
+
+export async function upsertPlan(p: StoredPlan): Promise<StoredPlan> {
+  if (isBlobConfigured()) await blobWritePlan(p)
+  await localWritePlan(p)
+  return p
+}
+
+export async function markPlanDeleted(id: string): Promise<void> {
+  if (isBlobConfigured()) await blobMarkPlanDeleted(id)
+  await localMarkPlanDeleted(id)
+}
+
+export async function getPlanById(id: string): Promise<StoredPlan | null> {
+  const all = await getAdminPlans()
+  return all.find(p => p.id === id) || null
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// ORDERS — append-only store (no fallback seed; orders are created by
+// customers via the Checkout page). All orders live in Blob.
+// ═════════════════════════════════════════════════════════════════════
+
+export interface StoredOrder {
+  id: string
+  userId: string | null
+  templateId: string | null
+  status: string        // 'pending' | 'in_progress' | 'review' | 'completed'
+  progress: number      // 0-100
+  milestones: string    // JSON string of Milestone[]
+  notes: string | null
+  templateFeatures: string | null   // JSON string of string[]
+  addOns: string | null              // JSON string of string[]
+  billing: string | null             // 'monthly' | 'semi_annual' | 'annual'
+  additionalInfo: string | null
+  similarSiteUrl: string | null
+  similarSiteCriteria: string | null // JSON string of string[]
+  domain: string | null
+  domainPrice: number | null
+  customerName?: string | null       // denormalized for admin display when no userId
+  customerEmail?: string | null
+  startDate?: string | null          // ISO timestamp when work began (set on first PUT that starts progress)
+  deliveryDate?: string | null       // ISO timestamp — 7 days after startDate (deadline)
+  isDemo?: boolean                   // true = demo/test order (shows DEMO badge), false/undefined = real order
+  createdAt: string
+  updatedAt?: string
+}
+
+const ORDER_DIR = path.join(DATA_DIR, 'orders')
+
+// ─── Local fs helpers ──────────────────────────────────────────────────
+async function localWriteOrder(o: StoredOrder): Promise<void> {
+  try {
+    await fs.mkdir(ORDER_DIR, { recursive: true })
+    await fs.writeFile(path.join(ORDER_DIR, `${o.id}.json`), JSON.stringify(o, null, 2), 'utf-8')
+  } catch (e) {
+    console.error('local order write failed:', e)
+  }
+}
+
+async function localListOrders(): Promise<StoredOrder[]> {
+  try {
+    await fs.mkdir(ORDER_DIR, { recursive: true })
+    const files = await fs.readdir(ORDER_DIR)
+    const items: StoredOrder[] = []
+    for (const f of files) {
+      if (!f.endsWith('.json')) continue
+      try {
+        const raw = await fs.readFile(path.join(ORDER_DIR, f), 'utf-8')
+        items.push(JSON.parse(raw))
+      } catch { /* skip */ }
+    }
+    return items
+  } catch {
+    return []
+  }
+}
+
+async function localUpdateOrder(id: string, updates: Partial<StoredOrder>): Promise<void> {
+  try {
+    const file = path.join(ORDER_DIR, `${id}.json`)
+    const raw = await fs.readFile(file, 'utf-8')
+    const data: StoredOrder = JSON.parse(raw)
+    const updated = { ...data, ...updates, updatedAt: new Date().toISOString() }
+    await fs.writeFile(file, JSON.stringify(updated, null, 2), 'utf-8')
+  } catch {
+    // ignore
+  }
+}
+
+// ─── Blob helpers ──────────────────────────────────────────────────────
+async function blobWriteOrder(o: StoredOrder): Promise<void> {
+  const blob = await blobHead()
+  if (!blob) return
+  try {
+    await blob.put(`orders/${o.id}.json`, JSON.stringify(o, null, 2), {
+      access: 'public',
+      addRandomSuffix: false,
+      contentType: 'application/json',
+    })
+  } catch (e) {
+    console.error('blob order write failed:', e)
+  }
+}
+
+async function blobListOrders(): Promise<StoredOrder[]> {
+  const blob = await blobHead()
+  if (!blob) return []
+  try {
+    const list = await blob.list({ prefix: 'orders/' })
+    const items: StoredOrder[] = []
+    const fetches = list.blobs.map(async (b: { url: string }) => {
+      try {
+        const res = await fetch(b.url, { cache: 'no-store' })
+        if (!res.ok) return
+        const text = await res.text()
+        items.push(JSON.parse(text))
+      } catch { /* skip */ }
+    })
+    await Promise.all(fetches)
+
+    // Dedupe by id — keep most recent updatedAt
+    const byId = new Map<string, StoredOrder>()
+    for (const o of items) {
+      const existing = byId.get(o.id)
+      if (!existing) {
+        byId.set(o.id, o)
+      } else {
+        const a = new Date(o.updatedAt || o.createdAt || 0).getTime()
+        const b = new Date(existing.updatedAt || existing.createdAt || 0).getTime()
+        if (a > b) byId.set(o.id, o)
+      }
+    }
+    return Array.from(byId.values())
+  } catch (e) {
+    console.error('blob order list failed:', e)
+    return []
+  }
+}
+
+async function blobUpdateOrder(id: string, updates: Partial<StoredOrder>): Promise<void> {
+  const blob = await blobHead()
+  if (!blob) return
+  try {
+    const list = await blob.list({ prefix: `orders/${id}.json` })
+    if (list.blobs.length === 0) return
+    const res = await fetch(list.blobs[0].url, { cache: 'no-store' })
+    if (!res.ok) return
+    const data: StoredOrder = await res.json()
+    const updated = { ...data, ...updates, updatedAt: new Date().toISOString() }
+    await blob.put(`orders/${id}.json`, JSON.stringify(updated, null, 2), {
+      access: 'public',
+      addRandomSuffix: false,
+      contentType: 'application/json',
+    })
+  } catch (e) {
+    console.error('blob order update failed:', e)
+  }
+}
+
+// ─── Unified public API ────────────────────────────────────────────────
+
+export async function getAllOrders(): Promise<StoredOrder[]> {
+  let items: StoredOrder[] = []
+  if (isBlobConfigured()) {
+    items = await blobListOrders()
+  }
+  const localItems = await localListOrders()
+  const seen = new Set(items.map(i => i.id))
+  for (const li of localItems) {
+    if (!seen.has(li.id)) {
+      items.push(li)
+      seen.add(li.id)
+    }
+  }
+  // Sort newest first
+  items.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+  return items
+}
+
+export async function getOrdersByUser(userId: string): Promise<StoredOrder[]> {
+  const all = await getAllOrders()
+  return all.filter(o => o.userId === userId)
+}
+
+export async function getOrderById(id: string): Promise<StoredOrder | null> {
+  const all = await getAllOrders()
+  return all.find(o => o.id === id) || null
+}
+
+export async function createOrder(
+  data: Omit<StoredOrder, 'id' | 'createdAt'>
+): Promise<StoredOrder> {
+  const newOrder: StoredOrder = {
+    ...data,
+    id: 'ord-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  }
+  if (isBlobConfigured()) await blobWriteOrder(newOrder)
+  await localWriteOrder(newOrder)
+  return newOrder
+}
+
+export async function updateOrder(
+  id: string,
+  updates: Partial<StoredOrder>
+): Promise<StoredOrder | null> {
+  // Compute the updated object by merging existing + updates
+  const existing = await getOrderById(id)
+  if (!existing) return null
+  const updated: StoredOrder = {
+    ...existing,
+    ...updates,
+    updatedAt: new Date().toISOString(),
+  }
+  // Write to both Blob and local fs
+  if (isBlobConfigured()) await blobWriteOrder(updated)
+  await localWriteOrder(updated)
+  return updated
+}
+
+// Delete an order from both Blob and local fs.
+// In Blob, we delete the blob at orders/<id>.json.
+// In local fs, we unlink the file at ORDER_DIR/<id>.json.
+export async function deleteOrder(id: string): Promise<void> {
+  // 1) Delete from Blob
+  if (isBlobConfigured()) {
+    const blob = await blobHead()
+    if (blob) {
+      try {
+        const list = await blob.list({ prefix: `orders/${id}.json` })
+        for (const b of list.blobs) {
+          await blob.del(b.url)
+        }
+      } catch (e) {
+        console.error('blob order delete failed:', e)
+      }
+    }
+  }
+  // 2) Delete from local fs
+  try {
+    await fs.unlink(path.join(ORDER_DIR, `${id}.json`))
+  } catch {
+    // file may not exist — ignore
+  }
 }

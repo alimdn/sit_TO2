@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Scroll Animations Dark — Cinematic Motion</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Inter',system-ui,sans-serif}
+body{background:#060606;color:#fff;overflow-x:hidden}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(0.8)}to{opacity:1;transform:scale(1)}}
+@keyframes slideRight{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+.scroll-fade{opacity:0;transform:translateY(40px);transition:all .7s cubic-bezier(.4,0,.2,1)}
+.scroll-fade.visible{opacity:1;transform:translateY(0)}
+.scroll-scale{opacity:0;transform:scale(0.85);transition:all .7s ease}
+.scroll-scale.visible{opacity:1;transform:scale(1)}
+.scroll-left{opacity:0;transform:translateX(-50px);transition:all .7s ease}
+.scroll-left.visible{opacity:1;transform:translateX(0)}
+.scroll-right{opacity:0;transform:translateX(50px);transition:all .7s ease}
+.scroll-right.visible{opacity:1;transform:translateX(0)}
+.card-hover{transition:all .3s}
+.card-hover:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(236,72,153,0.1)}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:16px 24px;border-radius:12px;background:rgba(236,72,153,0.9);color:#fff;font-weight:500}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#ec4899,#8b5cf6);z-index:100;transition:width .1s}
+</style>
+</head>
+<body class="min-h-screen">
+<div class="progress-bar" id="progress" style="width:0"></div>
+<div id="toast-container"></div>
+<nav class="sticky top-0 z-50 bg-black/60 backdrop-blur-md border-b border-white/5">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+    <span class="text-lg font-bold">Scroll<span class="text-pink-400">/</span>Motion</span>
+    <div class="hidden md:flex gap-8 text-sm text-gray-400"><a href="#features" class="hover:text-pink-400">Features</a><a href="#pricing" class="hover:text-pink-400">Pricing</a></div>
+    <button onclick="showToast('Scroll to see magic!')" class="bg-pink-500/20 border border-pink-500/30 text-pink-300 px-5 py-2.5 rounded-lg text-sm font-semibold">Start Scrolling</button>
+  </div>
+</nav>
+<section class="py-32 px-6 text-center">
+  <div class="scroll-fade max-w-4xl mx-auto">
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-pink-500/10 mb-6"><span class="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span><span class="text-pink-400 text-xs font-medium">SCROLL-TRIGGERED MOTION</span></div>
+    <h1 class="text-5xl sm:text-7xl font-bold mb-6" style="letter-spacing:-0.03em">Every scroll<br/><span class="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">tells a story</span></h1>
+    <p class="text-lg text-gray-400 mb-8 max-w-xl mx-auto">Elements fade, slide, and scale as they enter the viewport. A cinematic experience that keeps users engaged.</p>
+    <button onclick="showToast('Keep scrolling! ↓')" class="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-8 py-3.5 font-semibold rounded-xl hover:shadow-xl hover:shadow-pink-500/30 transition-all">Begin ↓</button>
+  </div>
+</section>
+<section id="features" class="py-20 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="scroll-fade text-center mb-14"><h2 class="text-3xl sm:text-4xl font-bold">Animation Types</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="scroll-fade card-hover bg-white/5 border border-white/10 rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-28 object-cover"/><div class="p-5"><h3 class="font-bold text-sm text-pink-300">Fade In Up</h3><p class="text-xs text-gray-500 mt-1">Elements rise into view.</p></div></div>
+      <div class="scroll-scale card-hover bg-white/5 border border-white/10 rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-28 object-cover"/><div class="p-5"><h3 class="font-bold text-sm text-purple-300">Scale In</h3><p class="text-xs text-gray-500 mt-1">Elements grow into view.</p></div></div>
+      <div class="scroll-left card-hover bg-white/5 border border-white/10 rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-28 object-cover"/><div class="p-5"><h3 class="font-bold text-sm text-pink-300">Slide Left</h3><p class="text-xs text-gray-500 mt-1">Elements slide from left.</p></div></div>
+      <div class="scroll-right card-hover bg-white/5 border border-white/10 rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=300&h=160&fit=crop&q=80" alt="" class="w-full h-28 object-cover"/><div class="p-5"><h3 class="font-bold text-sm text-purple-300">Slide Right</h3><p class="text-xs text-gray-500 mt-1">Elements slide from right.</p></div></div>
+    </div>
+  </div>
+</section>
+<section id="pricing" class="py-20 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="scroll-fade text-center mb-14"><h2 class="text-3xl font-bold">Pricing</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="scroll-fade card-hover bg-white/5 border border-white/10 rounded-2xl p-8"><h3 class="font-bold mb-1">Basic</h3><div class="text-4xl font-bold mb-4">$29</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>✓ Fade animations</li><li>✓ Basic triggers</li></ul><button onclick="showToast('Basic!')" class="w-full py-3 bg-white/10 rounded-lg font-semibold text-sm">Choose</button></div>
+      <div class="scroll-scale card-hover bg-pink-500/10 border border-pink-500/30 rounded-2xl p-8"><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-pink-500 text-white text-xs px-3 py-0.5 rounded-full">BEST</div><h3 class="font-bold mb-1">Pro</h3><div class="text-4xl font-bold mb-4">$79</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>✓ All animations</li><li>✓ Custom triggers</li><li>✓ Parallax</li></ul><button onclick="showToast('Pro!')" class="w-full py-3 bg-pink-500 text-white rounded-lg font-semibold text-sm">Choose</button></div>
+      <div class="scroll-right card-hover bg-white/5 border border-white/10 rounded-2xl p-8"><h3 class="font-bold mb-1">Enterprise</h3><div class="text-4xl font-bold mb-4">$199</div><ul class="space-y-2 text-sm text-gray-400 mb-6"><li>✓ Everything</li><li>✓ Source</li></ul><button onclick="showToast('Enterprise!')" class="w-full py-3 bg-white/10 rounded-lg font-semibold text-sm">Choose</button></div>
+    </div>
+  </div>
+</section>
+<section class="py-20 px-6">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="scroll-fade card-hover bg-white/5 border border-white/10 rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-400 italic">"Users spend 50% more time scrolling. Incredible."</p></div>
+    <div class="scroll-left card-hover bg-white/5 border border-white/10 rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-400 italic">"The scroll animations feel cinematic and premium."</p></div>
+    <div class="scroll-right card-hover bg-white/5 border border-white/10 rounded-2xl p-7"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full mb-3"/><p class="text-sm text-gray-400 italic">"Every section reveal is a delight."</p></div>
+  </div>
+</section>
+<footer class="py-8 text-center text-sm text-gray-600">© 2026 Scroll Animations Dark Template</footer>
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+// Scroll-triggered animations
+const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.15});
+document.querySelectorAll('.scroll-fade,.scroll-scale,.scroll-left,.scroll-right').forEach(el=>observer.observe(el));
+// Progress bar
+window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-window.innerHeight;const p=(window.scrollY/h)*100;document.getElementById('progress').style.width=p+'%'});
+</script>
+</body>
+</html>

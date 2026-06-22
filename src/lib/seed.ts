@@ -12,7 +12,7 @@ export async function seedDatabase() {
 
   const admin = await db.user.create({
     data: {
-      email: 'admin@webflowsub.com',
+      email: 'admin@webforge.com',
       name: 'Admin User',
       password: adminPassword,
       role: 'admin',
@@ -21,7 +21,7 @@ export async function seedDatabase() {
 
   const demo = await db.user.create({
     data: {
-      email: 'demo@webflowsub.com',
+      email: 'demo@webforge.com',
       name: 'Demo User',
       password: demoPassword,
       role: 'user',
@@ -91,6 +91,81 @@ export async function seedDatabase() {
         '2 months free',
       ]),
       popular: true,
+      active: true,
+    },
+  })
+
+  // Store Package plans (3 variants)
+  const storeMonthlyPlan = await db.subscriptionPlan.create({
+    data: {
+      name: 'Store Package',
+      price: 100,
+      currency: 'USD',
+      interval: 'store',
+      features: JSON.stringify([
+        'Everything in Annual Plan, plus:',
+        'Daily automated backups (vs weekly in lower tiers)',
+        'Full e-commerce / store functionality',
+        'Unlimited products & categories',
+        'Payment gateway integration (Stripe / PayPal)',
+        'Inventory management dashboard',
+        'Order tracking & customer accounts',
+        '100 GB hosting storage',
+        'Priority 24/7 support with dedicated manager',
+        'Advanced SEO & analytics dashboard',
+        'Same 5-7 business days delivery',
+        'All previous services included',
+      ]),
+      popular: false,
+      active: true,
+    },
+  })
+
+  const storeSemiAnnualPlan = await db.subscriptionPlan.create({
+    data: {
+      name: 'Store Package (Semi-Annual)',
+      price: 550,
+      currency: 'USD',
+      interval: 'store_semi_annual',
+      features: JSON.stringify([
+        'Everything in Store Monthly, plus:',
+        'Save $50 vs paying monthly',
+        'Daily automated backups',
+        'Full e-commerce / store functionality',
+        'Unlimited products & categories',
+        'Payment gateway integration (Stripe / PayPal)',
+        'Inventory management dashboard',
+        'Order tracking & customer accounts',
+        '100 GB hosting storage',
+        'Priority 24/7 support with dedicated manager',
+        'Same 5-7 business days delivery',
+      ]),
+      popular: false,
+      active: true,
+    },
+  })
+
+  const storeAnnualPlan = await db.subscriptionPlan.create({
+    data: {
+      name: 'Store Package (Annual)',
+      price: 1100,
+      currency: 'USD',
+      interval: 'store_annual',
+      features: JSON.stringify([
+        'Everything in Store Semi-Annual, plus:',
+        'Save $100 vs paying monthly',
+        'Best value for Store Package',
+        'Daily automated backups',
+        'Full e-commerce / store functionality',
+        'Unlimited products & categories',
+        'Payment gateway integration (Stripe / PayPal)',
+        'Inventory management dashboard',
+        'Order tracking & customer accounts',
+        '100 GB hosting storage',
+        'Priority 24/7 support with dedicated manager',
+        'Same 5-7 business days delivery',
+      ]),
+      popular: false,
       active: true,
     },
   })
@@ -201,7 +276,7 @@ export async function seedDatabase() {
       name: 'Sarah Johnson',
       role: 'CEO',
       company: 'TechStart Inc.',
-      content: 'WebFlowSub transformed our online presence completely. The subscription model makes it affordable and the design quality is outstanding. Highly recommend!',
+      content: 'WebForge transformed our online presence completely. The subscription model makes it affordable and the design quality is outstanding. Highly recommend!',
       rating: 5,
       active: true,
     },
@@ -209,7 +284,7 @@ export async function seedDatabase() {
       name: 'Michael Chen',
       role: 'Marketing Director',
       company: 'GrowthLab',
-      content: 'We switched from a one-time design agency to WebFlowSub and couldn\'t be happier. The ongoing support and regular updates keep our site fresh and modern.',
+      content: 'We switched from a one-time design agency to WebForge and couldn\'t be happier. The ongoing support and regular updates keep our site fresh and modern.',
       rating: 5,
       active: true,
     },
@@ -217,7 +292,7 @@ export async function seedDatabase() {
       name: 'Emily Rodriguez',
       role: 'Founder',
       company: 'Bloom Studio',
-      content: 'As a small business owner, I needed a professional website without breaking the bank. WebFlowSub delivered beyond my expectations with their annual plan.',
+      content: 'As a small business owner, I needed a professional website without breaking the bank. WebForge delivered beyond my expectations with their annual plan.',
       rating: 5,
       active: true,
     },
@@ -281,11 +356,11 @@ export async function seedDatabase() {
 
   // Create social links
   const socialLinks = [
-    { platform: 'facebook', url: 'https://facebook.com/webflowsub', order: 1, active: true },
-    { platform: 'twitter', url: 'https://twitter.com/webflowsub', order: 2, active: true },
-    { platform: 'instagram', url: 'https://instagram.com/webflowsub', order: 3, active: true },
-    { platform: 'linkedin', url: 'https://linkedin.com/company/webflowsub', order: 4, active: true },
-    { platform: 'youtube', url: 'https://youtube.com/@webflowsub', order: 5, active: true },
+    { platform: 'facebook', url: 'https://facebook.com/webforge', order: 1, active: true },
+    { platform: 'twitter', url: 'https://twitter.com/webforge', order: 2, active: true },
+    { platform: 'instagram', url: 'https://instagram.com/webforge', order: 3, active: true },
+    { platform: 'linkedin', url: 'https://linkedin.com/company/webforge', order: 4, active: true },
+    { platform: 'youtube', url: 'https://youtube.com/@webforge', order: 5, active: true },
   ]
 
   for (const link of socialLinks) {
@@ -316,7 +391,7 @@ export async function seedDatabase() {
       testMode: false,
       config: JSON.stringify({
         bankName: 'First National Bank',
-        accountName: 'WebFlowSub LLC',
+        accountName: 'WebForge LLC',
         accountNumber: '****4567',
         routingNumber: '****8901',
       }),

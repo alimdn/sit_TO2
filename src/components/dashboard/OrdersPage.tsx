@@ -1,13 +1,14 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { LayoutDashboard, Clock, Check, Circle, ArrowRight, MessageSquare, Globe } from 'lucide-react'
+import { LayoutDashboard, Clock, Check, Circle, ArrowRight, MessageSquare, Globe, RefreshCw, Plus } from 'lucide-react'
 
 const ADD_ON_NAMES: Record<string, string> = {
   seo: 'Advanced SEO Package',
@@ -46,6 +47,9 @@ interface Order {
   similarSiteCriteria: string | null
   domain: string | null
   domainPrice: number | null
+  startDate?: string | null
+  deliveryDate?: string | null
+  isDemo?: boolean
   createdAt: string
   updatedAt: string
   planId: string | null
@@ -69,6 +73,44 @@ const ORDER_STEPS = [
   { key: 'delivery', label: 'Delivery', desc: 'Your website is ready — control panel access granted!' },
 ]
 
+// Default milestones shown to the customer when an order has no milestones
+// stored yet. Must match DEFAULT_MILESTONES in AdminOrders.tsx (7 stages).
+const DEFAULT_CUSTOMER_MILESTONES = [
+  { name: 'Order Confirmed',           status: 'completed' as const },
+  { name: 'Design Phase',              status: 'pending' as const },
+  { name: 'Customer Review',           status: 'pending' as const },
+  { name: 'Development & Integration', status: 'pending' as const },
+  { name: 'Testing & QA',              status: 'pending' as const },
+  { name: 'Final Preview',             status: 'pending' as const },
+  { name: 'Deployment & Delivery',     status: 'pending' as const },
+]
+
+interface CustomerMilestone {
+  name: string
+  status: 'completed' | 'in_progress' | 'pending'
+  date?: string
+}
+
+// Parse the milestones JSON stored on the order. Falls back to the
+// default 8-stage lifecycle if parsing fails or the field is empty.
+function parseCustomerMilestones(raw: string): CustomerMilestone[] {
+  if (!raw) return DEFAULT_CUSTOMER_MILESTONES
+  try {
+    const parsed = JSON.parse(raw)
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      // Handle both string[] and {name, status, date?}[] formats
+      if (typeof parsed[0] === 'string') {
+        return parsed.map((name: string, i: number) => ({
+          name,
+          status: i === 0 ? 'completed' as const : 'pending' as const,
+        }))
+      }
+      return parsed as CustomerMilestone[]
+    }
+  } catch { /* ignore */ }
+  return DEFAULT_CUSTOMER_MILESTONES
+}
+
 function getStepIndex(status: string, progress: number): number {
   if (status === 'completed') return 4
   if (status === 'review') return 2
@@ -86,24 +128,101 @@ export default function OrdersPage() {
   const [payments, setPayments] = useState<Payment[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
+  const [refreshing, setRefreshing] = useState(false)
 
-  useEffect(() => {
+  const fetchOrders = useCallback(() => {
     if (!user) return
     Promise.all([
-      fetch('/api/orders?userId=' + user.id).then(r => r.json()),
-      fetch('/api/subscriptions?userId=' + user.id).then(r => r.json()),
+      fetch('/api/orders?userId=' + user.id, { cache: 'no-store' }).then(r => r.json()),
+      fetch('/api/subscriptions?userId=' + user.id, { cache: 'no-store' }).then(r => r.json()),
     ]).then(([ords, subs]) => {
-      setOrders(ords)
+      if (Array.isArray(ords)) setOrders(ords)
       const allPayments: Payment[] = []
-      subs.forEach((sub: any) => {
-        if (sub.payments) {
-          allPayments.push(...sub.payments)
-        }
-      })
+      if (Array.isArray(subs)) {
+        subs.forEach((sub: any) => {
+          if (sub.payments) {
+            allPayments.push(...sub.payments)
+          }
+        })
+      }
       setPayments(allPayments)
       setLoading(false)
     }).catch(() => setLoading(false))
   }, [user])
+
+  useEffect(() => {
+    fetchOrders()
+  }, [fetchOrders])
+
+  // Auto-refresh every 10 seconds so the customer sees admin milestone
+  // updates without needing to manually reload the page.
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchOrders()
+    }, 10000)
+    return () => clearInterval(interval)
+  }, [fetchOrders])
+
+  const handleManualRefresh = () => {
+    setRefreshing(true)
+    fetchOrders()
+    setTimeout(() => setRefreshing(false), 600)
+  }
+
+  // Creates a demo order linked to THIS customer's userId so it appears
+  // in their dashboard immediately. Simulates what happens after Checkout.
+  const [creatingDemo, setCreatingDemo] = useState(false)
+  const handleCreateDemoOrder = async () => {
+    if (!user) return
+    setCreatingDemo(true)
+    try {
+      const now = new Date().toISOString()
+      const delivery = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: user.id,
+          templateId: '1',
+          status: 'pending',
+          progress: 17,
+          isDemo: true,  // ← marks this as a demo order (shows DEMO badge)
+          milestones: JSON.stringify([
+            { name: 'Order Confirmed',           status: 'completed', date: now },
+            { name: 'Design Phase',              status: 'pending' },
+            { name: 'Customer Review',           status: 'pending' },
+            { name: 'Development & Integration', status: 'pending' },
+            { name: 'Testing & QA',              status: 'pending' },
+            { name: 'Final Preview',             status: 'pending' },
+            { name: 'Deployment & Delivery',     status: 'pending' },
+          ]),
+          templateFeatures: JSON.stringify(['Responsive Design', 'SEO Optimized', 'Contact Forms', 'Analytics Integration', 'Multi-page Layout']),
+          addOns: JSON.stringify(['seo']),
+          billing: 'monthly',
+          additionalInfo: 'Demo order — created from dashboard for testing.',
+          domain: `${user.name?.split(' ')[0]?.toLowerCase() || 'demo'}${Date.now().toString(36).slice(-4)}.com`,
+          domainPrice: 12.99,
+          customerName: user.name,
+          customerEmail: user.email,
+          startDate: now,
+          deliveryDate: delivery,
+        }),
+      })
+      if (res.ok) {
+        toast.success('Demo order created! Watch it appear below.')
+        fetchOrders()
+      } else {
+        toast.error('Failed to create demo order')
+      }
+    } catch (e) {
+      toast.error('Network error')
+    } finally {
+      setCreatingDemo(false)
+    }
+  }
+
+  // NOTE: handleCreateDemoOrder sends isDemo: true so the order is
+  // clearly marked as a demo/test order. This is NOT a real purchase.
 
   const statusColors: Record<string, string> = {
     active: 'bg-[#10B981]/10 text-[#10B981]',
@@ -131,12 +250,51 @@ export default function OrdersPage() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-[#000f22]">My Orders</h2>
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-[#000f22]">My Orders</h2>
+          <p className="text-xs text-[#4F5B76] mt-1">
+            {orders.length} order{orders.length !== 1 ? 's' : ''} · Auto-refreshing every 10s
+          </p>
+        </div>
+        <Button
+          variant="outline"
+          onClick={handleManualRefresh}
+          disabled={refreshing}
+          className="h-9 border-[#e6ebf1] hover:bg-[#f7fafd]"
+        >
+          <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+          Refresh
+        </Button>
+      </div>
 
       {orders.length === 0 ? (
         <Card className="shadow-card">
-          <CardContent className="p-8 text-center">
-            <p className="text-[#4F5B76]">No orders yet. Subscribe to a plan to get started.</p>
+          <CardContent className="p-8 text-center space-y-4">
+            <div className="w-16 h-16 rounded-full bg-[#f1f4f7] flex items-center justify-center mx-auto">
+              <LayoutDashboard className="h-8 w-8 text-[#74777e]" />
+            </div>
+            <div>
+              <p className="text-[#4F5B76] font-medium">No orders yet</p>
+              <p className="text-xs text-[#74777e] mt-1">Subscribe to a plan to get started, or create a demo order to see how it works.</p>
+            </div>
+            <Button
+              onClick={handleCreateDemoOrder}
+              disabled={creatingDemo}
+              className="bg-[#00D1FF] hover:bg-[#00b8e6] text-[#000f22] font-semibold h-10"
+            >
+              {creatingDemo ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-[#000f22] border-t-transparent rounded-full animate-spin mr-2" />
+                  Creating...
+                </>
+              ) : (
+                <>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create Demo Order
+                </>
+              )}
+            </Button>
           </CardContent>
         </Card>
       ) : (
@@ -150,74 +308,152 @@ export default function OrdersPage() {
                 {/* Header */}
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-base">Order #{order.id.slice(-8)}</CardTitle>
+                    <div className="flex items-center gap-2">
+                      <CardTitle className="text-base">Order #{order.id.slice(-8)}</CardTitle>
+                      {order.isDemo && (
+                        <Badge className="bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/30 text-[9px] font-bold tracking-wider uppercase">
+                          Demo
+                        </Badge>
+                      )}
+                    </div>
                     <Badge className={statusColors[order.status] || 'bg-gray-100 text-gray-600'}>
                       {order.status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
                     </Badge>
                   </div>
                   <p className="text-xs text-[#4F5B76]">
                     Created {new Date(order.createdAt).toLocaleDateString()} • {order.billing === 'annual' ? 'Annual' : 'Monthly'} Plan
+                    {order.isDemo && <span className="text-[#F59E0B] font-medium"> • Demo order (not a real purchase)</span>}
                   </p>
                 </CardHeader>
 
                 <CardContent className="space-y-4">
-                  {/* Progress Steps - Visual Timeline */}
-                  <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <h4 className="text-sm font-semibold text-[#000f22]">Order Progress</h4>
-                      <span className="text-xs font-medium text-[#00D1FF]">{order.progress}%</span>
-                    </div>
+                  {/* Progress Steps — Visual Stepper (synced with admin milestones) */}
+                  {(() => {
+                    const milestones = parseCustomerMilestones(order.milestones)
+                    const completedCount = milestones.filter(m => m.status === 'completed').length
+                    const totalCount = milestones.length
+                    // Find the index of the current step (first non-completed milestone)
+                    const currentStepIdx = milestones.findIndex(m => m.status !== 'completed')
+                    // If all are completed, currentStepIdx = -1 → use last index
+                    const activeIndex = currentStepIdx === -1 ? totalCount - 1 : currentStepIdx
+                    // Percentage for the connection line fill
+                    const fillPercent = totalCount > 1
+                      ? (activeIndex / (totalCount - 1)) * 100
+                      : 100
 
-                    {/* Steps */}
-                    <div className="relative">
-                      {/* Connection line */}
-                      <div className="absolute top-4 left-4 right-4 h-0.5 bg-[#e6ebf1]">
-                        <div
-                          className="h-full bg-[#00D1FF] transition-all duration-500"
-                          style={{ width: `${(currentStep / 4) * 100}%` }}
-                        />
+                    return (
+                      <div>
+                        <div className="flex items-center justify-between mb-4">
+                          <h4 className="text-sm font-semibold text-[#000f22]">Order Progress</h4>
+                          <span className="text-xs font-medium text-[#00D1FF]" translate="no" lang="en">
+                            {order.progress}%
+                          </span>
+                        </div>
+
+                        {/* Horizontal Stepper */}
+                        <div className="relative pb-2">
+                          {/* Connection line (background) */}
+                          <div className="absolute top-5 left-5 right-5 h-0.5 bg-[#e6ebf1] rounded-full" />
+                          {/* Connection line (filled — green→cyan gradient for completed steps) */}
+                          <div
+                            className="absolute top-5 left-5 h-0.5 bg-gradient-to-r from-[#10B981] to-[#00D1FF] rounded-full transition-all duration-700"
+                            style={{ width: `calc((100% - 40px) * ${fillPercent / 100})` }}
+                          />
+
+                          {/* Step circles */}
+                          <div className="relative flex justify-between">
+                            {milestones.map((m, i) => {
+                              const isCompleted = m.status === 'completed'
+                              const isCurrent = i === activeIndex && !isCompleted && order.status !== 'completed'
+                              const isLastCompleted = order.status === 'completed' && i === totalCount - 1
+                              return (
+                                <div key={i} className="flex flex-col items-center" style={{ width: `${100 / totalCount}%` }}>
+                                  <div
+                                    className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all z-10 ${
+                                      isCompleted
+                                        ? 'bg-[#10B981] border-[#10B981] shadow-md shadow-[#10B981]/30'
+                                        : isCurrent
+                                          ? 'bg-[#00D1FF] border-[#00D1FF] ring-4 ring-[#00D1FF]/20 animate-pulse'
+                                          : isLastCompleted
+                                            ? 'bg-[#10B981] border-[#10B981] shadow-md shadow-[#10B981]/30'
+                                            : 'bg-white border-[#e6ebf1]'
+                                    }`}
+                                  >
+                                    {isCompleted ? (
+                                      <Check className="h-5 w-5 text-white" />
+                                    ) : isCurrent ? (
+                                      <Clock className="h-4 w-4 text-white" />
+                                    ) : isLastCompleted ? (
+                                      <Check className="h-5 w-5 text-white" />
+                                    ) : (
+                                      <span className="text-xs font-bold text-[#74777e]">{i + 1}</span>
+                                    )}
+                                  </div>
+                                  <p className={`text-[10px] mt-2 text-center font-medium leading-tight transition-colors ${
+                                    isCompleted ? 'text-[#10B981]' : isCurrent ? 'text-[#00D1FF]' : 'text-[#74777e]'
+                                  }`}>
+                                    {m.name}
+                                  </p>
+                                  {m.date && isCompleted && (
+                                    <p className="text-[8px] text-[#10B981] mt-0.5" translate="no" lang="en">
+                                      {new Date(m.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                    </p>
+                                  )}
+                                  {isCurrent && (
+                                    <p className="text-[8px] text-[#00D1FF] mt-0.5">In progress…</p>
+                                  )}
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Current step description */}
+                        <div className="mt-3 p-3 rounded-lg bg-gradient-to-r from-[#f7fafd] to-[#00D1FF]/5 border border-[#00D1FF]/20">
+                          <div className="flex items-center gap-2">
+                            {order.status === 'completed' ? (
+                              <>
+                                <Check className="h-4 w-4 text-[#10B981] flex-shrink-0" />
+                                <p className="text-xs text-[#10B981] font-semibold">
+                                  Your website is complete and ready! 🎉
+                                </p>
+                              </>
+                            ) : currentStepIdx >= 0 ? (
+                              <>
+                                <ArrowRight className="h-4 w-4 text-[#00D1FF] flex-shrink-0" />
+                                <p className="text-xs text-[#43474d]">
+                                  <span className="font-semibold text-[#00D1FF]">Current step:</span>{' '}
+                                  {milestones[currentStepIdx].name}
+                                </p>
+                              </>
+                            ) : (
+                              <>
+                                <Clock className="h-4 w-4 text-[#00D1FF] flex-shrink-0" />
+                                <p className="text-xs text-[#43474d]">Processing…</p>
+                              </>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Counter dots */}
+                        <div className="mt-2 flex items-center justify-center gap-2">
+                          <div className="flex gap-1">
+                            {milestones.map((m, i) => (
+                              <div
+                                key={i}
+                                className={`w-2 h-2 rounded-full transition-colors ${
+                                  m.status === 'completed' ? 'bg-[#10B981]' : 'bg-[#e6ebf1]'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                          <span className="text-[10px] text-[#74777e]" translate="no" lang="en">
+                            {completedCount} of {totalCount} steps completed
+                          </span>
+                        </div>
                       </div>
-
-                      <div className="relative flex justify-between">
-                        {ORDER_STEPS.map((step, i) => {
-                          const isCompleted = i < currentStep
-                          const isCurrent = i === currentStep
-                          return (
-                            <div key={step.key} className="flex flex-col items-center" style={{ width: '20%' }}>
-                              <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all z-10 ${
-                                isCompleted
-                                  ? 'bg-[#10B981] border-[#10B981]'
-                                  : isCurrent
-                                    ? 'bg-[#00D1FF] border-[#00D1FF] ring-4 ring-[#00D1FF]/20'
-                                    : 'bg-white border-[#e6ebf1]'
-                              }`}>
-                                {isCompleted ? (
-                                  <Check className="h-4 w-4 text-white" />
-                                ) : isCurrent ? (
-                                  <ArrowRight className="h-4 w-4 text-white" />
-                                ) : (
-                                  <Circle className="h-3 w-3 text-[#c4c6ce]" />
-                                )}
-                              </div>
-                              <p className={`text-[10px] mt-1.5 text-center font-medium leading-tight ${
-                                isCompleted ? 'text-[#10B981]' : isCurrent ? 'text-[#00D1FF]' : 'text-[#74777e]'
-                              }`}>
-                                {step.label}
-                              </p>
-                            </div>
-                          )
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Current step description */}
-                    <div className="mt-3 p-2.5 rounded-lg bg-[#f7fafd] border border-[#e6ebf1]">
-                      <p className="text-xs text-[#43474d]">
-                        <span className="font-semibold">{ORDER_STEPS[currentStep].label}:</span>{' '}
-                        {ORDER_STEPS[currentStep].desc}
-                      </p>
-                    </div>
-                  </div>
+                    )
+                  })()}
 
                   {/* Quick info row */}
                   <div className="flex flex-wrap gap-2">

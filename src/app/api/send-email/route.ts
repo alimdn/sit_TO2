@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
         // data: { to, customerName, orderId, currentStep, stepDescription, progress, milestones, siteUrl }
         if (!data.to) return NextResponse.json({ error: 'Missing recipient email' }, { status: 400 })
         to = data.to
-        subject = `Order Update — ${data.currentStep} (${data.progress}%) | WebFlowSub`
+        subject = `Order Update — ${data.currentStep} (${data.progress}%) | WebForge`
         html = progressEmailTemplate(data)
         break
       }
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
         // data: { to, customerName, orderId, websiteUrl, domain, controlPanelUrl, adminEmail, billing, monthlyPrice }
         if (!data.to) return NextResponse.json({ error: 'Missing recipient email' }, { status: 400 })
         to = data.to
-        subject = `🎉 Your Website is Live! — ${data.domain} | WebFlowSub`
+        subject = `🎉 Your Website is Live! — ${data.domain} | WebForge`
         html = deliveryEmailTemplate(data)
         break
       }
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
         // data: { to, customerName, customerEmail, orderId, invoiceNumber, date, items, total, billing, paymentMethod, siteUrl }
         if (!data.to) return NextResponse.json({ error: 'Missing recipient email' }, { status: 400 })
         to = data.to
-        subject = `Invoice #${data.invoiceNumber} — Payment Confirmation | WebFlowSub`
+        subject = `Invoice #${data.invoiceNumber} — Payment Confirmation | WebForge`
         html = invoiceEmailTemplate(data)
         break
       }

@@ -1,0 +1,2765 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أساليب تصميم المواقع الحديثة - برومبيتات جاهزة</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --c-primary: #1a1a2e;
+  --c-accent: #e94560;
+  --c-accent-light: #ff6b81;
+  --c-bg: #0f0f1a;
+  --c-card: #1a1a2e;
+  --c-card-hover: #22223a;
+  --c-text: #eaeaea;
+  --c-text-muted: #8a8a9a;
+  --c-border: #2a2a3e;
+  --c-code-bg: #12121f;
+  --c-tag-bg: #2a1a3e;
+  --c-tag-text: #c084fc;
+  --c-green: #10b981;
+  --c-blue: #3b82f6;
+  --c-amber: #f59e0b;
+  --c-rose: #f43f5e;
+  --c-purple: #8b5cf6;
+  --c-cyan: #06b6d4;
+  --c-orange: #f97316;
+  --c-emerald: #34d399;
+  --c-pink: #ec4899;
+  --c-danger: #ef4444;
+  --c-danger-hover: #dc2626;
+  --c-success: #22c55e;
+  --c-success-hover: #16a34a;
+  --c-edit: #3b82f6;
+  --c-edit-hover: #2563eb;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: 'Noto Sans Arabic', sans-serif;
+  background: var(--c-bg);
+  color: var(--c-text);
+  direction: rtl;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-size: 11pt;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+/* ===== ANIMATED BACKGROUND ===== */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(ellipse at 20% 50%, rgba(233,69,96,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(6,182,212,0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 30px;
+  background: transparent;
+  position: relative;
+  page-break-after: auto;
+  page-break-inside: auto;
+}
+
+.page:last-child {
+  page-break-after: auto;
+}
+
+/* ===== COVER PAGE ===== */
+.cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 90vh;
+  padding: 60px 40px;
+  background: linear-gradient(160deg, #0f0f1a 0%, #1a1a2e 40%, #16213e 100%);
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  margin: 20px auto;
+  max-width: 1200px;
+}
+
+.cover::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(233,69,96,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: float 8s ease-in-out infinite;
+}
+
+.cover::after {
+  content: '';
+  position: absolute;
+  bottom: -150px;
+  left: -150px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: float 10s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-30px); }
+}
+
+.cover-badge {
+  display: inline-block;
+  padding: 6px 20px;
+  border: 1px solid var(--c-border);
+  border-radius: 30px;
+  font-size: 10pt;
+  color: var(--c-text-muted);
+  letter-spacing: 1px;
+  margin-bottom: 25px;
+  position: relative;
+  z-index: 1;
+  animation: fadeInDown 0.8s ease-out;
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.03);
+}
+
+.cover h1 {
+  font-size: 38pt;
+  font-weight: 900;
+  line-height: 1.4;
+  margin-bottom: 15px;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(135deg, #ffffff 0%, #c0c0d0 50%, #e94560 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fadeInDown 0.8s ease-out 0.2s both;
+}
+
+.cover h2 {
+  font-size: 14pt;
+  font-weight: 400;
+  color: var(--c-accent-light);
+  margin-bottom: 35px;
+  position: relative;
+  z-index: 1;
+  animation: fadeInDown 0.8s ease-out 0.4s both;
+}
+
+.cover-meta {
+  font-size: 9pt;
+  color: var(--c-text-muted);
+  position: relative;
+  z-index: 1;
+  animation: fadeInDown 0.8s ease-out 0.6s both;
+}
+
+.cover-line {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--c-accent), var(--c-purple));
+  margin: 25px auto;
+  position: relative;
+  z-index: 1;
+  border-radius: 2px;
+  animation: fadeInDown 0.8s ease-out 0.3s both;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(233,69,96,0.3); }
+  50% { box-shadow: 0 0 20px rgba(233,69,96,0.5), 0 0 40px rgba(233,69,96,0.2); }
+}
+
+@keyframes borderGlow {
+  0%, 100% { border-color: var(--c-border); }
+  50% { border-color: var(--c-accent); }
+}
+
+@keyframes rotateIn {
+  from {
+    opacity: 0;
+    transform: rotate(-10deg) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--c-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--c-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--c-accent);
+}
+
+/* ===== TABLE OF CONTENTS ===== */
+.toc {
+  padding-top: 20px;
+}
+
+.toc h2 {
+  font-size: 22pt;
+  font-weight: 800;
+  margin-bottom: 25px;
+  color: #fff;
+  position: relative;
+}
+
+.toc h2::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  right: 0;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--c-accent), var(--c-purple));
+  border-radius: 2px;
+}
+
+.toc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 20px;
+}
+
+.toc-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--c-border);
+  font-size: 10pt;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.toc-item:hover {
+  background: rgba(233,69,96,0.05);
+  border-color: rgba(233,69,96,0.3);
+  transform: translateX(-5px);
+}
+
+.toc-num {
+  font-weight: 700;
+  color: var(--c-accent);
+  font-size: 10pt;
+  min-width: 18px;
+}
+
+.toc-name {
+  color: var(--c-text);
+  font-weight: 500;
+}
+
+.toc-name-en {
+  color: var(--c-text-muted);
+  font-weight: 300;
+  font-size: 9pt;
+  margin-right: 3px;
+}
+
+/* ===== SECTION HEADER ===== */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--c-border);
+  position: relative;
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+.section-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  right: 0;
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--c-accent), transparent);
+}
+
+.section-num {
+  font-size: 28pt;
+  font-weight: 900;
+  color: var(--c-accent);
+  line-height: 1;
+  opacity: 0.7;
+  text-shadow: 0 0 20px rgba(233,69,96,0.3);
+}
+
+.section-title-block {
+  flex: 1;
+}
+
+.section-title {
+  font-size: 17pt;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.section-subtitle {
+  font-size: 9pt;
+  color: var(--c-text-muted);
+  font-weight: 300;
+}
+
+/* ===== STYLE CARD ===== */
+.style-card {
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin-bottom: 16px;
+  page-break-inside: avoid;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+.style-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 0;
+  background: linear-gradient(180deg, var(--c-accent), var(--c-purple));
+  border-radius: 0 14px 14px 0;
+  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.style-card:hover {
+  background: var(--c-card-hover);
+  border-color: rgba(233,69,96,0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 30px rgba(233,69,96,0.05);
+}
+
+.style-card:hover::before {
+  height: 100%;
+}
+
+.style-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.style-card h3 {
+  font-size: 13pt;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.style-card h3 .en-name {
+  font-size: 9pt;
+  color: var(--c-text-muted);
+  font-weight: 400;
+}
+
+.tag {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 14px;
+  font-size: 8pt;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.tag:hover {
+  transform: scale(1.05);
+}
+
+.tag-trend { background: rgba(16,185,129,0.15); color: var(--c-green); border: 1px solid rgba(16,185,129,0.2); }
+.tag-popular { background: rgba(59,130,246,0.15); color: var(--c-blue); border: 1px solid rgba(59,130,246,0.2); }
+.tag-classic { background: rgba(245,158,11,0.15); color: var(--c-amber); border: 1px solid rgba(245,158,11,0.2); }
+.tag-new { background: rgba(236,72,153,0.15); color: var(--c-pink); border: 1px solid rgba(236,72,153,0.2); }
+.tag-bold { background: rgba(139,92,246,0.15); color: var(--c-purple); border: 1px solid rgba(139,92,246,0.2); }
+.tag-minimal { background: rgba(6,182,212,0.15); color: var(--c-cyan); border: 1px solid rgba(6,182,212,0.2); }
+.tag-dark { background: rgba(233,69,96,0.15); color: var(--c-rose); border: 1px solid rgba(233,69,96,0.2); }
+.tag-functional { background: rgba(249,115,22,0.15); color: var(--c-orange); border: 1px solid rgba(249,115,22,0.2); }
+.tag-visual { background: rgba(52,211,153,0.15); color: var(--c-emerald); border: 1px solid rgba(52,211,153,0.2); }
+
+.style-desc {
+  font-size: 9.5pt;
+  color: var(--c-text-muted);
+  line-height: 1.7;
+  margin-bottom: 12px;
+  transition: color 0.3s ease;
+}
+
+.style-card:hover .style-desc {
+  color: var(--c-text);
+}
+
+.prompt-box {
+  background: var(--c-code-bg);
+  border: 1px solid var(--c-border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.prompt-box:hover {
+  border-color: rgba(139,92,246,0.3);
+  box-shadow: inset 0 0 20px rgba(139,92,246,0.03);
+}
+
+.prompt-label {
+  font-size: 8pt;
+  font-weight: 700;
+  color: var(--c-accent);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.prompt-text {
+  font-size: 9.5pt;
+  color: #d4d4d8;
+  line-height: 1.9;
+  font-family: 'Noto Sans Arabic', sans-serif;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.prompt-en {
+  font-size: 9pt;
+  color: var(--c-text-muted);
+  line-height: 1.8;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--c-border);
+  font-family: 'Noto Sans Arabic', sans-serif;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.copy-hint {
+  font-size: 7pt;
+  color: var(--c-text-muted);
+  text-align: left;
+  margin-top: 6px;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.prompt-box:hover .copy-hint {
+  opacity: 1;
+  color: var(--c-accent-light);
+}
+
+/* ===== CHARACTERISTICS ===== */
+.chars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.char-item {
+  font-size: 8pt;
+  padding: 3px 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+  color: var(--c-text-muted);
+  transition: all 0.3s ease;
+}
+
+.char-item:hover {
+  background: rgba(233,69,96,0.08);
+  border-color: rgba(233,69,96,0.3);
+  color: var(--c-accent-light);
+  transform: translateY(-1px);
+}
+
+/* ===== FOOTER ===== */
+.page-footer {
+  position: relative;
+  bottom: auto;
+  left: auto;
+  right: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 8pt;
+  color: var(--c-text-muted);
+  opacity: 0.4;
+  margin-top: 30px;
+  padding-top: 15px;
+  border-top: 1px solid var(--c-border);
+}
+
+.page-num {
+  font-weight: 600;
+}
+
+/* ===== ACTION BUTTONS ===== */
+.card-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(4px);
+}
+
+.btn-action::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-edit {
+  background: rgba(59,130,246,0.1);
+  color: var(--c-blue);
+  border-color: rgba(59,130,246,0.2);
+}
+
+.btn-edit:hover {
+  background: rgba(59,130,246,0.2);
+  border-color: rgba(59,130,246,0.5);
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(59,130,246,0.3);
+}
+
+.btn-delete {
+  background: rgba(239,68,68,0.1);
+  color: var(--c-danger);
+  border-color: rgba(239,68,68,0.2);
+}
+
+.btn-delete:hover {
+  background: rgba(239,68,68,0.2);
+  border-color: rgba(239,68,68,0.5);
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(239,68,68,0.3);
+}
+
+.btn-copy {
+  background: rgba(16,185,129,0.1);
+  color: var(--c-green);
+  border-color: rgba(16,185,129,0.2);
+}
+
+.btn-copy:hover {
+  background: rgba(16,185,129,0.2);
+  border-color: rgba(16,185,129,0.5);
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(16,185,129,0.3);
+}
+
+.btn-comment {
+  background: rgba(245,158,11,0.1);
+  color: var(--c-amber);
+  border-color: rgba(245,158,11,0.2);
+}
+
+.btn-comment:hover {
+  background: rgba(245,158,11,0.2);
+  border-color: rgba(245,158,11,0.5);
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(245,158,11,0.3);
+}
+
+.btn-bookmark {
+  background: rgba(139,92,246,0.1);
+  color: var(--c-purple);
+  border-color: rgba(139,92,246,0.2);
+}
+
+.btn-bookmark:hover {
+  background: rgba(139,92,246,0.2);
+  border-color: rgba(139,92,246,0.5);
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(139,92,246,0.3);
+}
+
+.btn-bookmark.active {
+  background: rgba(139,92,246,0.3);
+  color: #fff;
+  border-color: var(--c-purple);
+  box-shadow: 0 0 12px rgba(139,92,246,0.4);
+  animation: bookmarkPop 0.4s ease-out;
+}
+
+@keyframes bookmarkPop {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.3); }
+  60% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+/* ===== BOOKMARKED CARD ===== */
+.style-card.bookmarked-card {
+  border-color: rgba(139,92,246,0.4);
+  box-shadow: 0 0 25px rgba(139,92,246,0.1);
+}
+
+.style-card.bookmarked-card::after {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c-purple);
+  box-shadow: 0 0 8px rgba(139,92,246,0.6);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ===== BOOKMARKED PROMPT ===== */
+.prompt-box.bookmarked {
+  border-color: rgba(139,92,246,0.5);
+  background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(139,92,246,0.03));
+  position: relative;
+}
+
+.prompt-box.bookmarked::before {
+  content: '★ مميز';
+  position: absolute;
+  top: -10px;
+  left: 16px;
+  background: linear-gradient(135deg, var(--c-purple), var(--c-accent));
+  color: #fff;
+  font-size: 7.5pt;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 8px;
+  letter-spacing: 0.5px;
+}
+
+/* ===== COMMENTS SECTION ===== */
+.comments-section {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--c-border);
+}
+
+.comments-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.comments-header-title {
+  font-size: 9pt;
+  font-weight: 700;
+  color: var(--c-amber);
+}
+
+.comments-count {
+  font-size: 7.5pt;
+  background: rgba(245,158,11,0.15);
+  color: var(--c-amber);
+  padding: 1px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.comment-item {
+  background: rgba(245,158,11,0.04);
+  border: 1px solid rgba(245,158,11,0.1);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  position: relative;
+  animation: fadeInUp 0.3s ease-out both;
+}
+
+.comment-item:hover {
+  background: rgba(245,158,11,0.07);
+}
+
+.comment-text {
+  font-size: 9pt;
+  color: var(--c-text);
+  line-height: 1.7;
+}
+
+.comment-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+
+.comment-date {
+  font-size: 7.5pt;
+  color: var(--c-text-muted);
+  opacity: 0.6;
+}
+
+.comment-delete {
+  background: none;
+  border: none;
+  color: var(--c-text-muted);
+  cursor: pointer;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  opacity: 0.4;
+}
+
+.comment-delete:hover {
+  background: rgba(239,68,68,0.15);
+  color: var(--c-danger);
+  opacity: 1;
+}
+
+.comment-add-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.comment-input {
+  flex: 1;
+  padding: 8px 12px;
+  background: var(--c-code-bg);
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+  color: var(--c-text);
+  font-family: 'Noto Sans Arabic', sans-serif;
+  font-size: 8.5pt;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.comment-input:focus {
+  border-color: var(--c-amber);
+  box-shadow: 0 0 0 2px rgba(245,158,11,0.15);
+}
+
+.comment-input::placeholder {
+  color: var(--c-text-muted);
+  opacity: 0.5;
+}
+
+.comment-submit {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, var(--c-amber), #d97706);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Noto Sans Arabic', sans-serif;
+  font-size: 8.5pt;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.comment-submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(245,158,11,0.4);
+}
+
+/* ===== COMMENT MODAL ===== */
+.comment-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  z-index: 2500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.comment-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.comment-modal {
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-radius: 18px;
+  padding: 30px;
+  width: 90%;
+  max-width: 550px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  transform: scale(0.9) translateY(15px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(245,158,11,0.08);
+}
+
+.comment-modal-overlay.active .comment-modal {
+  transform: scale(1) translateY(0);
+}
+
+.comment-modal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--c-amber), var(--c-orange), var(--c-accent));
+  border-radius: 18px 18px 0 0;
+}
+
+.comment-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.comment-modal-title {
+  font-size: 15pt;
+  font-weight: 800;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.comment-modal-title-icon {
+  color: var(--c-amber);
+}
+
+.comment-modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--c-border);
+  color: var(--c-text-muted);
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.comment-modal-close:hover {
+  background: rgba(239,68,68,0.2);
+  color: var(--c-danger);
+  transform: rotate(90deg);
+}
+
+.comment-list {
+  margin-bottom: 16px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.comment-list:empty::after {
+  content: 'لا توجد تعليقات بعد...';
+  display: block;
+  text-align: center;
+  color: var(--c-text-muted);
+  font-size: 9pt;
+  padding: 20px;
+  opacity: 0.5;
+}
+
+.comment-modal-form {
+  display: flex;
+  gap: 8px;
+}
+
+.comment-modal-input {
+  flex: 1;
+  padding: 10px 14px;
+  background: var(--c-code-bg);
+  border: 1px solid var(--c-border);
+  border-radius: 10px;
+  color: var(--c-text);
+  font-family: 'Noto Sans Arabic', sans-serif;
+  font-size: 9.5pt;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.comment-modal-input:focus {
+  border-color: var(--c-amber);
+  box-shadow: 0 0 0 3px rgba(245,158,11,0.12);
+}
+
+.comment-modal-submit {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, var(--c-amber), #d97706);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Noto Sans Arabic', sans-serif;
+  font-size: 9.5pt;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.comment-modal-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245,158,11,0.4);
+}
+
+/* ===== FILTER BAR ===== */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.filter-btn {
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--c-border);
+  background: rgba(255,255,255,0.03);
+  color: var(--c-text-muted);
+  cursor: pointer;
+  font-family: 'Noto Sans Arabic', sans-serif;
+  font-size: 8pt;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.filter-btn:hover {
+  background: rgba(255,255,255,0.06);
+  color: var(--c-text);
+}
+
+.filter-btn.active {
+  background: rgba(139,92,246,0.15);
+  color: var(--c-purple);
+  border-color: rgba(139,92,246,0.4);
+}
+
+/* ===== FLOATING ADD BUTTON ===== */
+.fab-add {
+  position: fixed;
+  bottom: 35px;
+  left: 35px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--c-accent), var(--c-purple));
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 28px;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 30px rgba(233,69,96,0.4), 0 0 50px rgba(233,69,96,0.15);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  animation: pulse 3s ease-in-out infinite;
+}
+
+.fab-add:hover {
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 12px 40px rgba(233,69,96,0.5), 0 0 60px rgba(233,69,96,0.2);
+}
+
+.fab-add:active {
+  transform: scale(0.95) rotate(90deg);
+}
+
+/* ===== TOOLTIP ===== */
+.btn-action[data-tooltip] {
+  position: relative;
+}
+
+.btn-action[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) scale(0.8);
+  background: rgba(15,15,26,0.95);
+  color: var(--c-text);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 9px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.2s ease;
+  border: 1px solid var(--c-border);
+  z-index: 10;
+}
+
+.btn-action[data-tooltip]:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal {
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-radius: 20px;
+  padding: 35px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  transform: scale(0.9) translateY(20px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 25px 80px rgba(0,0,0,0.5), 0 0 60px rgba(233,69,96,0.1);
+}
+
+.modal-overlay.active .modal {
+  transform: scale(1) translateY(0);
+}
+
+.modal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--c-accent), var(--c-purple), var(--c-cyan));
+  border-radius: 20px 20px 0 0;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.modal-title {
+  font-size: 18pt;
+  font-weight: 800;
+  color: #fff;
+}
+
+.modal-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--c-border);
+  color: var(--c-text-muted);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+  background: rgba(239,68,68,0.2);
+  border-color: rgba(239,68,68,0.4);
+  color: var(--c-danger);
+  transform: rotate(90deg);
+}
+
+/* ===== FORM ===== */
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-label {
+  display: block;
+  font-size: 9pt;
+  font-weight: 600;
+  color: var(--c-text-muted);
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--c-code-bg);
+  border: 1px solid var(--c-border);
+  border-radius: 10px;
+  color: var(--c-text);
+  font-family: 'Noto Sans Arabic', sans-serif;
+  font-size: 10pt;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  border-color: var(--c-accent);
+  box-shadow: 0 0 0 3px rgba(233,69,96,0.15), 0 0 20px rgba(233,69,96,0.1);
+}
+
+.form-textarea {
+  min-height: 80px;
+  resize: vertical;
+  line-height: 1.7;
+}
+
+.form-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a8a9a' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: left 14px center;
+  padding-left: 36px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+  justify-content: flex-start;
+}
+
+.btn {
+  padding: 10px 24px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Noto Sans Arabic', sans-serif;
+  font-size: 10pt;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--c-accent), #c73050);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(233,69,96,0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(233,69,96,0.4);
+}
+
+.btn-secondary {
+  background: rgba(255,255,255,0.05);
+  color: var(--c-text-muted);
+  border: 1px solid var(--c-border);
+}
+
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.1);
+  color: var(--c-text);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, var(--c-danger), var(--c-danger-hover));
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(239,68,68,0.3);
+}
+
+.btn-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(239,68,68,0.4);
+}
+
+/* ===== CONFIRM DIALOG ===== */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.confirm-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.confirm-box {
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-radius: 16px;
+  padding: 30px;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  transform: scale(0.9);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+.confirm-overlay.active .confirm-box {
+  transform: scale(1);
+}
+
+.confirm-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(239,68,68,0.1);
+  border: 2px solid rgba(239,68,68,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  font-size: 24px;
+  color: var(--c-danger);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.confirm-title {
+  font-size: 14pt;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.confirm-text {
+  font-size: 9.5pt;
+  color: var(--c-text-muted);
+  margin-bottom: 22px;
+  line-height: 1.6;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* ===== TOAST NOTIFICATION ===== */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.toast {
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 9.5pt;
+  font-weight: 600;
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  animation: toastIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.toast-success {
+  background: linear-gradient(135deg, rgba(16,185,129,0.9), rgba(5,150,105,0.9));
+}
+
+.toast-error {
+  background: linear-gradient(135deg, rgba(239,68,68,0.9), rgba(220,38,38,0.9));
+}
+
+.toast-info {
+  background: linear-gradient(135deg, rgba(59,130,246,0.9), rgba(37,99,235,0.9));
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes toastOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+/* ===== SEARCH BAR ===== */
+.search-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(15,15,26,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--c-border);
+  padding: 14px 30px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.search-input {
+  flex: 1;
+  padding: 10px 18px;
+  background: var(--c-code-bg);
+  border: 1px solid var(--c-border);
+  border-radius: 12px;
+  color: var(--c-text);
+  font-family: 'Noto Sans Arabic', sans-serif;
+  font-size: 10pt;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: var(--c-accent);
+  box-shadow: 0 0 0 3px rgba(233,69,96,0.1);
+}
+
+.search-input::placeholder {
+  color: var(--c-text-muted);
+}
+
+.search-icon {
+  color: var(--c-text-muted);
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.style-count {
+  font-size: 8pt;
+  color: var(--c-text-muted);
+  background: rgba(255,255,255,0.05);
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--c-border);
+  flex-shrink: 0;
+}
+
+/* ===== TWO CARDS PER ROW ===== */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.two-col .style-card {
+  margin-bottom: 0;
+}
+
+@media screen and (max-width: 800px) {
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  .cover h1 {
+    font-size: 26pt;
+  }
+  .toc-grid {
+    grid-template-columns: 1fr;
+  }
+  .modal {
+    padding: 24px;
+    width: 95%;
+  }
+  .fab-add {
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    font-size: 22px;
+  }
+  .search-bar {
+    padding: 10px 16px;
+  }
+}
+
+/* ===== DELETED CARD ANIMATION ===== */
+.style-card.deleting {
+  animation: cardDelete 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes cardDelete {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.95) translateX(-20px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8) translateX(60px);
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+  }
+}
+
+/* ===== NEW CARD ANIMATION ===== */
+.style-card.newly-added {
+  animation: cardAdded 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+  border-color: var(--c-green);
+  box-shadow: 0 0 30px rgba(16,185,129,0.2);
+}
+
+@keyframes cardAdded {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+  }
+  60% {
+    transform: scale(1.02) translateY(-3px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ===== BACK TO TOP ===== */
+.back-to-top {
+  position: fixed;
+  bottom: 35px;
+  right: 35px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  color: var(--c-text-muted);
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  background: var(--c-accent);
+  color: #fff;
+  border-color: var(--c-accent);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(233,69,96,0.4);
+}
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--c-text-muted);
+}
+
+.empty-state-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.3;
+}
+
+.empty-state h3 {
+  font-size: 16pt;
+  font-weight: 700;
+  color: var(--c-text);
+  margin-bottom: 8px;
+}
+
+.empty-state p {
+  font-size: 9.5pt;
+  line-height: 1.7;
+}
+
+/* ===== STATS BAR ===== */
+.stats-bar {
+  display: flex;
+  gap: 20px;
+  padding: 16px 0;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--c-border);
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 9pt;
+  color: var(--c-text-muted);
+}
+
+.stat-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.stat-dot.trend { background: var(--c-green); }
+.stat-dot.popular { background: var(--c-blue); }
+.stat-dot.classic { background: var(--c-amber); }
+.stat-dot.new { background: var(--c-pink); }
+.stat-dot.bold { background: var(--c-purple); }
+</style>
+</head>
+<body>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Comment Modal -->
+<div class="comment-modal-overlay" id="commentModalOverlay">
+  <div class="comment-modal">
+    <div class="comment-modal-header">
+      <div class="comment-modal-title">
+        <span class="comment-modal-title-icon">&#128172;</span>
+        التعليقات - <span id="commentModalStyleName"></span>
+      </div>
+      <button class="comment-modal-close" id="commentModalClose">&#10005;</button>
+    </div>
+    <div class="comment-list" id="commentList"></div>
+    <div class="comment-modal-form">
+      <input type="text" class="comment-modal-input" id="commentModalInput" placeholder="اكتب تعليقك هنا...">
+      <button class="comment-modal-submit" id="commentModalSubmit">إرسال</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Dialog -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">&#10005;</div>
+    <div class="confirm-title" id="confirmTitle">تأكيد الحذف</div>
+    <div class="confirm-text" id="confirmText">هل أنت متأكد من حذف هذا الأسلوب؟ لا يمكن التراجع عن هذا الإجراء.</div>
+    <div class="confirm-actions">
+      <button class="btn btn-danger" id="confirmYes">حذف</button>
+      <button class="btn btn-secondary" id="confirmNo">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">إضافة أسلوب جديد</div>
+      <button class="modal-close" id="modalClose">&#10005;</button>
+    </div>
+    <form id="styleForm">
+      <input type="hidden" id="editIndex" value="-1">
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">اسم الأسلوب (عربي)</label>
+          <input type="text" class="form-input" id="styleNameAr" placeholder="مثال: المورفزم الزجاجي" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">اسم الأسلوب (إنجليزي)</label>
+          <input type="text" class="form-input" id="styleNameEn" placeholder="مثال: Glassmorphism">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">الاسم الفرعي (إنجليزي)</label>
+          <input type="text" class="form-input" id="styleSubEn" placeholder="مثال: Frosted Glass UI">
+        </div>
+        <div class="form-group">
+          <label class="form-label">التصنيف</label>
+          <select class="form-select" id="styleTag">
+            <option value="tag-trend">رائج</option>
+            <option value="tag-popular">شائع</option>
+            <option value="tag-classic">كلاسيكي</option>
+            <option value="tag-new">حديث</option>
+            <option value="tag-bold">جريء</option>
+            <option value="tag-minimal">بسيط</option>
+            <option value="tag-dark">داكن</option>
+            <option value="tag-functional">وظيفي</option>
+            <option value="tag-visual">بصري</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">نص التصنيف</label>
+          <input type="text" class="form-input" id="styleTagText" placeholder="مثال: رائج 2024-2026">
+        </div>
+        <div class="form-group">
+          <label class="form-label">العنوان الفرعي</label>
+          <input type="text" class="form-input" id="styleSubtitle" placeholder="وصف مختصر للأسلوب">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">الوصف</label>
+        <textarea class="form-textarea" id="styleDesc" placeholder="وصف تفصيلي للأسلوب التصميمي..." required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">الخصائص (مفصولة بفواصل)</label>
+        <input type="text" class="form-input" id="styleChars" placeholder="مثال: backdrop-blur, شفافية, ألوان متدرجة خلفية">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">البرومبيت (إنجليزي)</label>
+        <textarea class="form-textarea" id="stylePrompt" placeholder="Design a website using..." required></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" id="formSubmitBtn">حفظ الأسلوب</button>
+        <button type="button" class="btn btn-secondary" id="formCancelBtn">إلغاء</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Back to Top -->
+<button class="back-to-top" id="backToTop" data-tooltip="العودة للأعلى">&#8593;</button>
+
+<!-- Floating Add Button -->
+<button class="fab-add" id="fabAdd" title="إضافة أسلوب جديد">+</button>
+
+<!-- ==================== PAGE 1: COVER ==================== -->
+<div class="page cover">
+  <div class="cover-badge">COLLECTION 2026</div>
+  <h1>أساليب تصميم<br>المواقع الحديثة</h1>
+  <div class="cover-line"></div>
+  <h2>مجموعة برومبيتات جاهزة للاستخدام</h2>
+  <div class="cover-meta">
+    يشمل 30 أسلوب تصميم حديث مع وصف تفصيلي وبرومبيت إنجليزي قابل للنسخ مباشرة
+  </div>
+</div>
+
+<!-- ==================== SEARCH BAR ==================== -->
+<div class="search-bar" id="searchBar">
+  <span class="search-icon">&#128269;</span>
+  <input type="text" class="search-input" id="searchInput" placeholder="ابحث عن أسلوب تصميمي...">
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">الكل</button>
+    <button class="filter-btn" data-filter="bookmarked" onclick="setFilter('bookmarked')">&#9733; المميزة</button>
+    <button class="filter-btn" data-filter="commented" onclick="setFilter('commented')">&#128172; المعلّقة</button>
+  </div>
+  <span class="style-count" id="styleCount">30 أسلوب</span>
+</div>
+
+<!-- ==================== CONTENT CONTAINER ==================== -->
+<div id="stylesContainer">
+
+<!-- ==================== PAGE 2: TABLE OF CONTENTS ==================== -->
+<div class="page toc" id="tocPage">
+  <h2>فهرس المحتويات</h2>
+  <div class="toc-grid" id="tocGrid">
+    <!-- Populated by JS -->
+  </div>
+  <div class="page-footer"><span>Modern Web Design Styles</span><span class="page-num">02</span></div>
+</div>
+
+<!-- ==================== STYLES PAGES ==================== -->
+<div id="stylesPages">
+  <!-- All style cards will be rendered by JavaScript -->
+</div>
+
+</div><!-- end stylesContainer -->
+
+<script>
+// ===== DATA =====
+const defaultStyles = [
+  {
+    num: "01",
+    nameAr: "Glassmorphism",
+    nameEn: "Glassmorphism",
+    subtitle: "تصميم يعتمد على تأثيرات الزجاج المعتم الشفاف",
+    titleAr: "أسلوب الزجاج المطفأ",
+    titleEn: "Frosted Glass UI",
+    tagClass: "tag-trend",
+    tagText: "رائج 2024-2026",
+    desc: "يعتمد هذا الأسلوب على خلفيات شبه شفافة مع تأثير الضبابية (backdrop-blur)، وحدود شفافة، وألوان متدرجة خلف البطاقات، مما يعطي إحساساً بالعمق والانفتاح والحداثة.",
+    chars: ["backdrop-blur", "شفافية", "ألوان متدرجة خلفية", "حدود خفيفة", "ظلال ناعمة"],
+    prompt: "Design a website using glassmorphism style with frosted glass effect panels, semi-transparent backgrounds with backdrop-blur, soft inner shadows, subtle light borders, and a colorful gradient background visible through the glass cards. Use light pastel colors with rounded corners, and create depth through layered translucent elements."
+  },
+  {
+    num: "02",
+    nameAr: "Neomorphism",
+    nameEn: "Neomorphism",
+    subtitle: "تصميم ثلاثي الأبعاد مسطح يدمج العناصر مع الخلفية",
+    titleAr: "التصميم المرتفع والغائر",
+    titleEn: "Soft UI",
+    tagClass: "tag-popular",
+    tagText: "شائع",
+    desc: "ينشئ عناصر تبدو وكأنها منبثقة من الخلفية أو غائرة فيها، باستخدام ظلال مزدوجة (نور وظل) بلون الخلفية ذاتها، مما يعطي ملمساً ناعماً ثلاثي الأبعاد دون استخدام حدود أو تدرجات واضحة.",
+    chars: ["box-shadow مزدوج", "ألوان موحدة", "بدون حدود", "ملمس ناعم", "مسطح ثلاثي الأبعاد"],
+    prompt: "Design a website using neomorphism (soft UI) style with elements that appear extruded from or pressed into the background. Use dual box-shadows (one light, one dark) matching the background color, no borders, rounded corners, muted color palette, and a cohesive soft tactile feel throughout the interface."
+  },
+  {
+    num: "03",
+    nameAr: "Dark Mode",
+    nameEn: "Dark Mode",
+    subtitle: "تصميم بخلفيات داكنة مع تباين عالٍ للنصوص",
+    titleAr: "الواجهة الداكنة الأنيقة",
+    titleEn: "Dark UI",
+    tagClass: "tag-classic",
+    tagText: "كلاسيكي",
+    desc: "استخدام خلفيات داكنة (أسود، رمادي داكن، أزرق ليلي) مع نصوص فاتحة وتباين عالٍ، غالباً مع لمسات من الألوان الزاهية كنقاط تركيز بصرية. يوفر تجربة مريحة للعين ويعطي إحساساً بالأناقة والتقنية.",
+    chars: ["خلفية #0a0a0a أو مشابهة", "نصوص بيضاء/رمادية فاتحة", "ألوان نيون كلونية", "تباين عالٍ", "مريح للعين"],
+    prompt: "Design a dark mode website with a deep dark background (#0a0a0a or similar), light text, high contrast ratios, subtle neon accent colors for highlights and CTAs, soft glows, muted borders, and a sophisticated tech-forward aesthetic. Ensure readability with proper contrast and use accent colors sparingly for maximum impact."
+  },
+  {
+    num: "04",
+    nameAr: "Brutalism",
+    nameEn: "Brutalism",
+    subtitle: "تصميم جريء يكسر القواعد التقليدية عمداً",
+    titleAr: "التصميم الخشن",
+    titleEn: "Raw & Bold",
+    tagClass: "tag-bold",
+    tagText: "جريء",
+    desc: "أسلوب يرفض القواعد التصميمية المتعارف عليها عمداً، باستخدام حدود سميكة، ألوان صارخة، نصوص ضخمة، محاذاة غير منتظمة، وأنماط بصرية فوضوية. يحمل طابعاً تمردياً وأصالة ويهدف إلى لفت الانتباه بقوة.",
+    chars: ["حدود سميكة", "ألوان صارخة", "نصوص ضخمة", "محاذاة عشوائية", "فوضوية عمداً"],
+    prompt: "Design a brutalist website with thick black borders, bold contrasting colors (yellow, red, blue on white), oversized typography, intentionally misaligned elements, raw unpolished aesthetic, visible grid structures, stark shadows, and a rebellious anti-design feel that demands attention through raw authenticity."
+  },
+  {
+    num: "05",
+    nameAr: "Minimalism",
+    nameEn: "Minimalism",
+    subtitle: "أقل عناصر ممكنة مع أقصى تأثير بصري",
+    titleAr: "تصميم \"الأقل هو الأكثر\"",
+    titleEn: "Less is More",
+    tagClass: "tag-minimal",
+    tagText: "بسيط",
+    desc: "يعتمد على مساحات بيضاء واسعة، عدد محدود جداً من العناصر، خطوط نظيفة، وألوان هادئة. الهدف هو توجيه انتباه المستخدم إلى المحتوى الأساسي دون تشتت، مع إعطاء كل عنصر غرضاً واضحاً ومكاناً للتنفس.",
+    chars: ["مساحات بيضاء واسعة", "عناصر قليلة", "خطوط نظيفة", "ألوان محايدة", "محتوى مركز"],
+    prompt: "Design a minimalist website with generous white space, very few UI elements, clean sans-serif typography, neutral color palette (whites, grays, one accent), no decorative elements, intentional use of negative space to guide focus, and an elegant \"less is more\" philosophy where every element serves a clear purpose."
+  },
+  {
+    num: "06",
+    nameAr: "Bento Grid",
+    nameEn: "Bento Grid",
+    subtitle: "تصميم شبكي ملهم من صناديق الغداء اليابانية",
+    titleAr: "الشبكة المعيارية",
+    titleEn: "Grid-Based Dashboard",
+    tagClass: "tag-trend",
+    tagText: "رائج 2025-2026",
+    desc: "تقسيم الصفحة إلى شبكة من المستطيلات بأحجام مختلفة (كامل، نصف، ربع)، كل يحتوي على محتوى مستقل، تشبه صناديق الغداء اليابانية (بينتو). هذا الأسلوب نظيف ومنظم ويعرض كمية كبيرة من المعلومات بشكل مرتب.",
+    chars: ["CSS Grid", "مستطيلات متعددة الأحجام", "حدود مستديرة", "محتوى منعزل", "نظيف ومنظم"],
+    prompt: "Design a bento grid website layout inspired by Japanese bento boxes. Use CSS Grid with cells of varying sizes (full-width, half, quarter), rounded corners, clean spacing between grid items, each cell containing distinct content (images, stats, text, icons). Maintain visual balance through varied cell proportions and a cohesive color scheme across all grid items."
+  },
+  {
+    num: "07",
+    nameAr: "Parallax Scrolling",
+    nameEn: "Parallax Scrolling",
+    subtitle: "طبقات تتحرك بسرعات مختلفة أثناء التمرير",
+    titleAr: "العمق أثناء التمرير",
+    titleEn: "Depth on Scroll",
+    tagClass: "tag-popular",
+    tagText: "شائع",
+    desc: "يتحرك كل طبقة (خلفية، وسطية، أمامية) بسرعة مختلفة عند تمرير الصفحة، مما يخلق وهماً بالعمق ثلاثي الأبعاد ويجعل تجربة التصفح تفاعلية وممتعة وغامرة. شائع جداً في المواقع السردية والقصصية.",
+    chars: ["طبقات متعددة", "سرعات تمرير مختلفة", "عمق بصري", "تأثير غامر", "مناسب للسرد"],
+    prompt: "Design a parallax scrolling website with multiple depth layers that move at different scroll speeds. Create a storytelling experience where background images move slower than foreground content, smooth transitions between sections, cinematic feel, layered compositions, and a sense of depth that draws the user into a narrative journey as they scroll down the page."
+  },
+  {
+    num: "08",
+    nameAr: "3D / Immersive",
+    nameEn: "3D / Immersive",
+    subtitle: "عناصر وتجارب ثلاثية الأبعاد تفاعلية",
+    titleAr: "الواقع المدمج",
+    titleEn: "Web 3D Experience",
+    tagClass: "tag-new",
+    tagText: "حديث",
+    desc: "دمج عناصر ثلاثية الأبعاد تفاعلية (WebGL, Three.js) يمكن تدويرها وتحريكها بالماوس، مع تجربة غامرة تجعل المستخدم يشعر بانه داخل المشهد. يستخدم في مواقع المنتجات الفاخرة والألعاب والعروض التقديمية.",
+    chars: ["Three.js / WebGL", "عناصر تفاعلية", "تدوير بالماوس", "تجربة غامرة", "أداء عالٍ"],
+    prompt: "Design an immersive 3D website experience using WebGL/Three.js with interactive 3D elements that users can rotate, zoom, and interact with using mouse movements. Include smooth lighting effects, realistic materials, spatial depth, floating 3D objects, and a cinematic atmosphere that makes the user feel transported into a three-dimensional digital space."
+  },
+  {
+    num: "09",
+    nameAr: "Micro-interactions",
+    nameEn: "Micro-interactions",
+    subtitle: "حركات بصرية صغيرة تستجيب لأفعال المستخدم",
+    titleAr: "الاستجابة المرئية الفورية",
+    titleEn: "Hover & Click Feedback",
+    tagClass: "tag-functional",
+    tagText: "وظيفي",
+    desc: "إضافة حركات صغيرة ومدروسة عند تفاعل المستخدم مع العناصر: تأثيرات hover، ردود أفعال عند النقر، انتقالات سلسة، وتأثيرات التحميل. هذه التفاصيل الصغيرة تعزز تجربة المستخدم وتجعل الواجهة تبدو حية ومتجاوبة.",
+    chars: ["hover effects", "click feedback", "transitions سلسة", "loading states", "CSS animations"],
+    prompt: "Design a website rich with micro-interactions including smooth hover effects on all buttons and links (scale, color shift, shadow lift), click feedback animations, elegant loading spinners, toggle switch animations, form field focus effects, tooltip reveals, scroll-triggered element animations, and spring-physics easing curves. Every interaction should feel alive, responsive, and satisfying."
+  },
+  {
+    num: "10",
+    nameAr: "Retro / Y2K",
+    nameEn: "Retro / Y2K",
+    subtitle: "نوستالجيا التسعينيات وبداية الألفية",
+    titleAr: "حنين الماضي الرقمي",
+    titleEn: "90s & 2000s Nostalgia",
+    tagClass: "tag-new",
+    tagText: "رائج",
+    desc: "يعود بنا إلى جمالية تسعينيات القرن العشرين وبدايات الألفية الثالثة: ألوان فوسفورية زاهية، خطوط بلد، عناصر مستديرة، ظلال نيون، نجوم لامعة، وحدود سميكة ملونة. مزيج من الحنين والمرح والجمالية الرقمية الكلاسيكية.",
+    chars: ["ألوان فوسفورية", "خطوط Bubble", "نجوم لامعة", "حدود سميكة ملونة", "Y2K aesthetic"],
+    prompt: "Design a retro Y2K-inspired website with 90s and early 2000s nostalgia aesthetics: phosphorescent bright colors (hot pink, electric blue, lime green), bubble/rounded typography, chrome effects, star decorations, thick colorful borders, pixel art accents, glitter/sparkle elements, and playful nostalgic energy that feels both vintage and trendy."
+  },
+  {
+    num: "11",
+    nameAr: "Gradient Design",
+    nameEn: "Gradient Design",
+    subtitle: "استخدام مكثف للتدرجات اللونية كعنصر رئيسي",
+    titleAr: "سحر الألوان المتدرجة",
+    titleEn: "Color Transitions",
+    tagClass: "tag-visual",
+    tagText: "بصري",
+    desc: "استخدام التدرجات اللونية بشكل بارز في الخلفيات والأزرار والعناوين والنصوص والأيقونات. التدرجات المنتقلة والمتوهجة والخطية والمركزية تضفي حيوية وعمقاً وتحولاً بصرياً مستمراً على كل الصفحة.",
+    chars: ["mesh gradients", "تدرجات متوهجة", "نصوص متدرجة", "أزرار متدرجة", "خلفيات متحركة"],
+    prompt: "Design a gradient-heavy website with prominent use of color gradients throughout: mesh gradient backgrounds, gradient text for headings, gradient buttons with hover effects, smooth color transitions between sections, vibrant multi-color gradients (purple-to-pink, blue-to-cyan), and animated gradient backgrounds that shift subtly to create a dynamic living feel."
+  },
+  {
+    num: "12",
+    nameAr: "Typography-First",
+    nameEn: "Typography-First",
+    subtitle: "الخطوط هي العنصر التصميمي الرئيسي",
+    titleAr: "عالم الخطوط",
+    titleEn: "Type-Centric Design",
+    tagClass: "tag-minimal",
+    tagText: "بسيط",
+    desc: "الخطوط هي البطل في هذا الأسلوب: أحجام ضخمة، أوزان متنوعة، تراكيب طباعية معقدة، نصوص متداخلة. يُستخدم في مواقع المجلات والمنشورات والوكالات الإبداعية حيث يكون النص نفسه هو التصميم.",
+    chars: ["عناوين ضخمة", "serif + sans-serif", "تراكب نصوص", "أوزان متباينة", "hierarchy طباعي"],
+    prompt: "Design a typography-first website where type IS the design. Use oversized display headings (80px+), dramatic font weight contrasts (900 vs 200), a mix of serif and sans-serif fonts, overlapping text layers, creative text arrangements, kinetic text effects, minimal imagery, and let the typography hierarchy tell the visual story. The words should be the art."
+  },
+  {
+    num: "13",
+    nameAr: "Swiss / International",
+    nameEn: "Swiss / International",
+    subtitle: "نظام شبكي صارم مع محاذاة يسارية حادة",
+    titleAr: "النظام والانضباط البصري",
+    titleEn: "Grid & Alignment",
+    tagClass: "tag-classic",
+    tagText: "كلاسيكي",
+    desc: "أسلوب مستوحى من مدرسة التصميم السويسري يعتمد على شبكة صارمة، محاذاة يسارية، خطوط Helvetica أو مشابهة، مساحات بيضاء واسعة، ونظام هرمي واضح. النتيجة تصميم نظيف ومنضبط وموثوق ومحترف.",
+    chars: ["شبكة صارمة", "محاذاة يسارية", "Helvetica", "مساحات بيضاء", "هرمي واضح"],
+    prompt: "Design a Swiss/International style website with a strict grid system, strong left-alignment, Helvetica or clean sans-serif typography, generous white space, clear visual hierarchy, mathematical precision in layout, minimal decoration, and an authoritative professional feel. Emphasize structure, alignment, and typographic hierarchy over ornamentation."
+  },
+  {
+    num: "14",
+    nameAr: "Organic / Fluid",
+    nameEn: "Organic / Fluid",
+    subtitle: "أشكال منحنية وطبيعية تلغي الزوايا الحادة",
+    titleAr: "التصميم الناعم المنحني",
+    titleEn: "Blob & Curves",
+    tagClass: "tag-trend",
+    tagText: "رائج",
+    desc: "يستخدم أشكالاً عضوية ومنحنية (blobs) بدلاً من المستطيلات الحادة، مع خطوط تدفقية وتدرجات لونية ناعمة. يعطي إحساساً بالطبيعة والرقة والحيوية، ويشيع في مواقع العلامات التجارية الإبداعية والمتعلقة بالصحة والبيئة.",
+    chars: ["blob shapes", "خطوط منحنية", "SVG animations", "ألوان طبيعية", "بدون زوايا حادة"],
+    prompt: "Design an organic fluid website with blob shapes, curved section dividers, flowing SVG wave animations, soft natural color palettes (sage green, terracotta, cream), no sharp corners, morphing shapes, and a gentle nature-inspired aesthetic. Use soft shadows and smooth transitions to create a warm, approachable, and alive feeling throughout."
+  },
+  {
+    num: "15",
+    nameAr: "Monochrome",
+    nameEn: "Monochrome",
+    subtitle: "استخدام لون واحد فقط بدرجاته المختلفة",
+    titleAr: "قوة لون واحد",
+    titleEn: "Single Hue System",
+    tagClass: "tag-minimal",
+    tagText: "بسيط",
+    desc: "تقييد اللوحة اللونية إلى لون واحد فقط مع درجاته الفاتحة والغامقة والرمادية. هذا القيد يخلق تماسكاً بصرياً قوياً وأناقة رصينة ويجبر المصمم على الاعتماد على التباين والتدرج بدلاً من الألوان المتعددة.",
+    chars: ["لون واحد", "درجات متعددة", "تباين ضوئي", "أناقة", "تماسك بصري"],
+    prompt: "Design a monochrome website using only a single hue (e.g., deep blue) with its various shades, tints, and tones. Create depth and hierarchy through lightness variations only, no secondary colors. Use the single color for backgrounds, text, borders, and accents at different saturations. Achieve visual richness through contrast, texture, and typography rather than color variety."
+  },
+  {
+    num: "16",
+    nameAr: "Split Screen",
+    nameEn: "Split Screen",
+    subtitle: "تقسيم الشاشة إلى نصفين متعارضين أو متكاملين",
+    titleAr: "التضاد البصري",
+    titleEn: "Dual-Panel Layout",
+    tagClass: "tag-popular",
+    tagText: "شائع",
+    desc: "يقسم الشاشة أفقياً أو عمودياً إلى قسمين: غالباً صورة من جهة ونص من الجهة الأخرى، أو لون فاتح مقابل داكن. يخلق تبايناً بصرياً قوياً وتوازناً مثالياً، ويستخدم بكثرة في صفحات الهبوط والتطبيقات.",
+    chars: ["نصفين متساويين", "صورة + نص", "فاتح + داكن", "تباين بصري", "صفحات هبوط"],
+    prompt: "Design a split-screen website layout with two contrasting panels side by side. One side features a striking visual (image/video) and the other contains text content with a complementary or contrasting background color. Create visual tension and balance between the two halves, with a clean divider between them. Ideal for landing pages with clear dual messaging."
+  },
+  {
+    num: "17",
+    nameAr: "Scroll Animations",
+    nameEn: "Scroll Animations",
+    subtitle: "العناصر تظهر وتتحرك عند التمرير",
+    titleAr: "الصفحة الحية",
+    titleEn: "Scroll-Triggered Motion",
+    tagClass: "tag-trend",
+    tagText: "رائج",
+    desc: "العناصر تظهر وتتحرك وتتغير عند تمرير المستخدم: fade in, slide up, scale, rotate, sticky sections. يحوّل التصفح من تصفح ساكن إلى تجربة سينمائية تفاعلية تحافظ على انتباه المستخدم طوال الصفحة.",
+    chars: ["fade in / slide up", "Intersection Observer", "sticky sections", "تسلسل حركي", "سينمائي"],
+    prompt: "Design a website with rich scroll-triggered animations: elements fade in and slide up as they enter the viewport, horizontal scroll sections, sticky elements that transform during scroll, parallax backgrounds, progress indicators, number counters that animate, text that reveals letter by letter, and a cinematic storytelling feel that keeps users engaged as they scroll."
+  },
+  {
+    num: "18",
+    nameAr: "Card-Based Layout",
+    nameEn: "Card-Based Layout",
+    subtitle: "وحدات محتوى مستقلة ضمن بطاقات",
+    titleAr: "الوحدات المنظمة",
+    titleEn: "Modular Cards",
+    tagClass: "tag-functional",
+    tagText: "وظيفي",
+    desc: "كل وحدة محتوى توضع في بطاقة مستقلة: صورة، عنوان، وصف، وزر. التخطيط يعتمد على شبكة من البطاقات المتكررة بتنسيق منتظم، مما يسهل المسح البصري والتنقل ويجعل إضافة المحتوى منظماً وقابلاً للتوسع.",
+    chars: ["بطاقات مستقلة", "صورة + عنوان + وصف", "hover effects", "شبكة منتظمة", "سهل التوسع"],
+    prompt: "Design a card-based layout website with modular content cards arranged in a clean grid. Each card contains an image, title, description, and action button. Cards should have subtle hover effects (lift, shadow increase), consistent spacing, rounded corners, and a responsive grid that adapts from 3 columns on desktop to 1 column on mobile."
+  },
+  {
+    num: "19",
+    nameAr: "Grain / Noise Texture",
+    nameEn: "Grain / Noise Texture",
+    subtitle: "إضافة نسيج ضوضاء بصري للمظهر الفيلمي",
+    titleAr: "الطابع السينمائي",
+    titleEn: "Film Grain Overlay",
+    tagClass: "tag-visual",
+    tagText: "بصري",
+    desc: "إضافة طبقة من النسيج البصري (noise/grain) فوق التصميم تعطي مظهراً سينمائياً وتقليدياً ودافئاً. يكسر الرقمية الباردة ويضيف شخصية فنية، ويُستخدم بكثرة في التصاميم الفاخرة والفنية ومواقع التصوير.",
+    chars: ["noise overlay", "SVG filter", "film look", "مظهر تقليدي", "opacity منخفض"],
+    prompt: "Design a website with a grain/noise texture overlay using CSS or SVG filter for a film-like aesthetic. Apply a subtle grain layer at low opacity (3-8%) across the entire page, combine with muted color tones, vintage typography, analog photography style imagery, and a warm nostalgic atmosphere that breaks the cold digital perfection."
+  },
+  {
+    num: "20",
+    nameAr: "Cyberpunk / Neon",
+    nameEn: "Cyberpunk / Neon",
+    subtitle: "مستقبل مضيء بألوان النيون والأجواء التكنولوجية",
+    titleAr: "عالم المستقبل المضيء",
+    titleEn: "Neon Future",
+    tagClass: "tag-bold",
+    tagText: "جريء",
+    desc: "خلفيات داكنة مع ألوان نيون متوهجة (وردي، أزرق سماوي، أخضر فوسفوري)، حدود متوهجة، ظلال ملونة، نصوص بتأثير نيون، وأجواء تكنولوجية مستقبلية. مستوحى من ثقافة السايبربانك وألعاب مثل Blade Runner.",
+    chars: ["neon glow", "خلفية سوداء", "text-shadow ملون", "box-shadow متوهج", "cyber aesthetic"],
+    prompt: "Design a cyberpunk neon website with a dark background (#000), glowing neon elements in hot pink, electric cyan, and phosphorescent green. Use text-shadow and box-shadow glow effects, glitch typography effects, metallic/chrome accents, circuit board patterns, holographic elements, and a futuristic dystopian atmosphere inspired by Blade Runner and sci-fi cinema."
+  },
+  {
+    num: "21",
+    nameAr: "Bauhaus-Inspired",
+    nameEn: "Bauhaus-Inspired",
+    subtitle: "أشكال هندسية أساسية مع الألوان الأولية الثلاثة",
+    titleAr: "المدرسة الهندسية الألمانية",
+    titleEn: "Geometric Abstraction",
+    tagClass: "tag-classic",
+    tagText: "كلاسيكي",
+    desc: "مستوحى من مدرسة باوهاوس التصميمية: أشكال هندسية أساسية (دوائر، مثلثات، مربعات)، الألوان الأولية الثلاثة (أحمر، أزرق، أصفر) مع الأسود والأبيض، تكوينات ديناميكية غير متماثلة، وطباعة وظيفية.",
+    chars: ["دوائر + مثلثات + مربعات", "أحمر + أزرق + أصفر", "تكوين غير متماثل", "sans-serif functional", "شكل + وظيفة"],
+    prompt: "Design a Bauhaus-inspired website using only primary colors (red, blue, yellow) plus black and white, basic geometric shapes (circles, triangles, squares), asymmetric dynamic compositions, functional sans-serif typography, and the principle that form follows function. Create bold, structured layouts that celebrate geometric abstraction and purposeful design."
+  },
+  {
+    num: "22",
+    nameAr: "Flat Design 2.0",
+    nameEn: "Flat Design 2.0",
+    subtitle: "مسطح ولكن مع ظلال وعمق خفيف",
+    titleAr: "مسطح + عمق",
+    titleEn: "Flat + Depth",
+    tagClass: "tag-popular",
+    tagText: "شائع",
+    desc: "تطور للتصميم المسطح الكلاسيكي: يبقى بدون تدرجات أو تأثيرات ثلاثية الأبعاد ثقيلة، لكنه يضيف ظلالاً ناعمة وطبقات دقيقة وانتقالات سلسة تعطي إحساساً بالعمق والتفاعلية دون التخلي عن بساطة التصميم المسطح.",
+    chars: ["بدون bevels", "ظلال ناعمة", "طبقات دقيقة", "أيقونات مسطحة", "ألوان صلبة"],
+    prompt: "Design a Flat Design 2.0 website with flat solid colors, no gradients or heavy 3D effects, but enhanced with subtle drop shadows, layered elements, and smooth micro-animations. Use clean flat icons, bold typography, vibrant but harmonious colors, generous spacing, and a modern feel that balances simplicity with just enough depth for usability."
+  },
+  {
+    num: "23",
+    nameAr: "Vaporwave / Aesthetic",
+    nameEn: "Vaporwave / Aesthetic",
+    subtitle: "جمالية إنترنت التسعينيات مع طابع حنيني",
+    titleAr: "جمالية الفضاء الوردي",
+    titleEn: "Internet Nostalgia",
+    tagClass: "tag-new",
+    tagText: "حديث",
+    desc: "أسلوب فني يعتمد على تماثيل كلاسيكية يونانية، ألوان وردي/بنفسجي/أزرق سماوي، تدرجات لونية حلمية، خطوط كلاسيكية مع نص إنجليزي ياباني، وموسيقى إلكترونية بطيئة. مزيج من الحنين والسريالية والجمالية الرقمية.",
+    chars: ["وردي + بنفسجي + سماوي", "تماثيل يونانية", "خطوط serif كلاسيكية", "تدرجات حلمية", "surreal aesthetic"],
+    prompt: "Design a vaporwave aesthetic website with dreamy pink/purple/cyan gradient backgrounds, classical Greek statue imagery, retro serif typography, Japanese katakana text elements, chrome text effects, palm tree motifs, Windows 95-style UI elements mixed with modern design, glitch effects, and a nostalgic surreal internet art atmosphere."
+  },
+  {
+    num: "24",
+    nameAr: "Asymmetric Layout",
+    nameEn: "Asymmetric Layout",
+    subtitle: "كسر التماثل لإثارة الاهتمام البصري",
+    titleAr: "الإيقاع البصري الديناميكي",
+    titleEn: "Off-Balance Design",
+    tagClass: "tag-bold",
+    tagText: "جريء",
+    desc: "ترتيب العناصر بشكل غير متماثل ومتوزن بصرياً: نص في الزاوية، صورة كبيرة من جهة واحدة، مساحات فارغة متفاوتة. الهدف إثارة الاهتمام وتجنب الملل الناتج عن التماثل المفرط، مع الحفاظ على توازن بصري إجمالي.",
+    chars: ["محاذاة غير متساوية", "مساحات متفاوتة", "إيقاع بصري ديناميكي", "توازن بصري عام", "لا تماثل صارم"],
+    prompt: "Design an asymmetric layout website where elements are intentionally placed off-center and unbalanced. Use uneven whitespace distribution, text aligned to corners, oversized images on one side, varied column widths, and dynamic visual rhythm. Despite the asymmetry, maintain overall visual balance and guide the eye naturally through the content flow."
+  },
+  {
+    num: "25",
+    nameAr: "Claymorphism",
+    nameEn: "Claymorphism",
+    subtitle: "عناصر تبدو كأنها مصنوعة من الصلصال",
+    titleAr: "المظهر الطيني الناعم",
+    titleEn: "Clay-Like UI",
+    tagClass: "tag-new",
+    tagText: "حديث",
+    desc: "عناصر واجهة تبدو وكأنها مصنوعة من الصلصال أو الطين اللين: ظلال داخلية وخارجية معاً، ألوان دافئة، زوايا مستديرة جداً، وإضاءة لطيفة من زاوية واحدة. يعطي إحساساً لمسياً ناعماً ومرحاً ودوداً ومبتكراً.",
+    chars: ["inner + outer shadow", "ألوان دافئة", "زوايا مستديرة جداً", "إضاءة ناعمة", "مظهر لمسي"],
+    prompt: "Design a claymorphism website with elements that look like soft clay or Play-Doh. Use combined inner and outer shadows, warm pastel colors (peach, lavender, mint), extremely rounded corners, soft directional lighting from one angle, puffy/blobby button shapes, and a tactile friendly feel that makes users want to \"touch\" the interface."
+  },
+  {
+    num: "26",
+    nameAr: "Magazine / Editorial",
+    nameEn: "Magazine / Editorial",
+    subtitle: "تصميم مستوحى من تنسيق المجلات والصحف",
+    titleAr: "تخطيط تحريري احترافي",
+    titleEn: "Publication Layout",
+    tagClass: "tag-classic",
+    tagText: "كلاسيكي",
+    desc: "مستوحى من تصميم المجلات المطبوعة: أعمدة نصية، صور كبيرة، عناوين ضخمة بخطوط Serif، اقتباسات بارزة، هوامش جانبية، وفهرسة واضحة. يجمع بين الأناقة التقليدية والتخطيط الرقمي الحديث.",
+    chars: ["أعمدة نصية", "صور كبيرة", "serif headlines", "pull quotes", "editorial layout"],
+    prompt: "Design an editorial/magazine-style website with multi-column text layouts, large full-bleed imagery, serif typography for headlines, pull quotes, drop caps, sidebar content, clear article hierarchy, elegant serif + sans-serif font pairing, and a sophisticated publication feel that translates print editorial design principles to the digital screen."
+  },
+  {
+    num: "27",
+    nameAr: "Motion-Driven",
+    nameEn: "Motion-Driven",
+    subtitle: "الحركة هي العنصر التصميمي الأول",
+    titleAr: "الواجهة الحية",
+    titleEn: "Animation-First",
+    tagClass: "tag-trend",
+    tagText: "رائج",
+    desc: "الحركة ليست مجرد إضافة بل هي أساس التصميم: انتقالات بين الصفحات، عناصر تتبع الماوس، لودينغ متحرك، أجزاء تتحرك باستمرار، وLottie animations. تجربة تشبه التطبيق أكثر من الموقع وتكون غامرة وممتعة جداً.",
+    chars: ["page transitions", "cursor followers", "Lottie animations", "GSAP / Framer Motion", "تجربة تطبيقية"],
+    prompt: "Design a motion-driven website where animation is the primary design element. Include smooth page transitions, cursor-following effects, animated loading states, continuously moving background elements, Lottie animations for icons, GSAP-powered scroll animations, hover morphing effects, and an app-like immersive experience that feels alive and responsive to every user action."
+  },
+  {
+    num: "28",
+    nameAr: "Glass / Frosted UI",
+    nameEn: "Glass / Frosted UI",
+    subtitle: "واجهة زجاجية نقية مع تأثير الصقيع",
+    titleAr: "الزجاج الصافي",
+    titleEn: "Pure Glass UI",
+    tagClass: "tag-trend",
+    tagText: "رائج 2025-2026",
+    desc: "تطور متقدم للـ Glassmorphism: واجهات بالكامل مصنوعة من زجاج شفاف نقي، بدون خلفيات صلبة، مع تأثيرات انكسار الضوء، انعكاسات، وحواف لامعة. يبدو وكأنك تنظر من خلال لوح زجاجي فاخر مع طبقات عناصر متداخلة.",
+    chars: ["glass effect كامل", "بدون خلفيات صلبة", "انعكاسات ضوئية", "حواف لامعة", "Frosted Glass UI"],
+    prompt: "Design a pure glass/frosted UI website where the entire interface is made of transparent glass-like panels. No solid backgrounds anywhere. Use strong backdrop-blur effects, light refraction simulation, reflective edge highlights, layered transparent panels at different blur levels, and a cohesive glass material language throughout. The background should be rich with content visible through all glass layers."
+  },
+  {
+    num: "29",
+    nameAr: "Retro-Futurism",
+    nameEn: "Retro-Futurism",
+    subtitle: "كيف تخيل الناس المستقبل في الماضي",
+    titleAr: "مستقبل القرن الماضي",
+    titleEn: "Vintage Future Vision",
+    tagClass: "tag-new",
+    tagText: "حديث",
+    desc: "مزج رؤية الماضي للمستقبل مع تقنيات الحاضر: خطوط مستقبلية ضخمة من السبعينيات والثمانينيات، ألوان معدنية (ذهبي، فضي، نحاسي)، أشكال هندسية فضائية، وأنماط نجمية. مزيج من الحنين والخيال العلمي.",
+    chars: ["خطوط 70s-80s", "ذهبي + فضي + نحاسي", "أشكال فضائية", "أنماط نجمية", "sci-fi vintage"],
+    prompt: "Design a retro-futuristic website inspired by how past decades imagined the future. Use 1970s-80s futuristic typography, metallic color palette (gold, silver, copper), space-age geometric shapes, starburst patterns, vintage sci-fi illustrations, chrome text effects, and a nostalgic vision of tomorrow that blends mid-century optimism with modern web technology."
+  },
+  {
+    num: "30",
+    nameAr: "Kinetic Typography",
+    nameEn: "Kinetic Typography",
+    subtitle: "نصوص متحركة تروي قصة بصرية",
+    titleAr: "النص المتحرك",
+    titleEn: "Moving Type",
+    tagClass: "tag-bold",
+    tagText: "جريء",
+    desc: "النصوص تتحرك وتتحول وتظهر وتختفي بطريقة إيقاعية: حروف تتساقط، كلمات تتبدل، نصوص تتبع حركة الماوس، عناوين بتأثيرات حركية متقدمة. كل كلمة لها حركة خاصة تجعل قراءة الصفحة تجربة بصرية مذهلة.",
+    chars: ["GSAP SplitText", "حروف متحركة", "text scramble", "كلمات تتبع الماوس", "إيقاع بصري"],
+    prompt: "Design a kinetic typography website where text itself is the main visual experience. Include letter-by-letter reveal animations, text scramble/glitch effects, words that follow cursor movement, marquee scrolling text, staggered word entrance animations, text that morphs between styles, and create a visually rhythmic storytelling experience where reading feels like watching a performance."
+  }
+];
+
+// ===== STATE =====
+let styles = JSON.parse(localStorage.getItem('webStyles') || 'null') || [...defaultStyles];
+let bookmarks = JSON.parse(localStorage.getItem('webStylesBookmarks') || '[]');
+let comments = JSON.parse(localStorage.getItem('webStylesComments') || '{}');
+let currentFilter = 'all';
+let confirmCallback = null;
+let currentCommentIndex = -1;
+
+// ===== RENDER =====
+function renderAll(filter = '') {
+  renderTOC(styles);
+  renderStyles(styles, filter);
+  updateCount(styles.length);
+}
+
+function renderTOC(data) {
+  const grid = document.getElementById('tocGrid');
+  grid.innerHTML = data.map(s => `
+    <div class="toc-item" onclick="scrollToStyle(${data.indexOf(s)})">
+      <span class="toc-num">${s.num}</span>
+      <span class="toc-name">${s.nameAr}</span>
+      <span class="toc-name-en">${s.nameEn}</span>
+    </div>
+  `).join('');
+}
+
+function renderStyles(data, filter = '') {
+  const container = document.getElementById('stylesPages');
+  let filtered = filter
+    ? data.filter(s =>
+        s.nameAr.includes(filter) ||
+        s.nameEn.toLowerCase().includes(filter.toLowerCase()) ||
+        s.titleAr.includes(filter) ||
+        s.titleEn.toLowerCase().includes(filter.toLowerCase()) ||
+        s.desc.includes(filter) ||
+        s.prompt.toLowerCase().includes(filter.toLowerCase())
+      )
+    : data;
+
+  // Apply bookmark/comment filter
+  if (currentFilter === 'bookmarked') {
+    filtered = filtered.filter(s => bookmarks.includes(data.indexOf(s)));
+  } else if (currentFilter === 'commented') {
+    filtered = filtered.filter(s => {
+      const idx = data.indexOf(s);
+      return (comments[idx] && comments[idx].length > 0);
+    });
+  }
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="page">
+        <div class="empty-state">
+          <div class="empty-state-icon">&#128270;</div>
+          <h3>لا توجد نتائج</h3>
+          <p>لم يتم العثور على أسلوب يطابق بحثك. جرب كلمات مختلفة أو أضف أسلوباً جديداً.</p>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = filtered.map((s, i) => {
+    const realIndex = data.indexOf(s);
+    const isBookmarked = bookmarks.includes(realIndex);
+    const styleComments = comments[realIndex] || [];
+    const delay = i * 0.05;
+    return `
+    <div class="page" id="style-${realIndex}">
+      <div class="section-header" style="animation-delay: ${delay}s">
+        <span class="section-num">${s.num}</span>
+        <div class="section-title-block">
+          <div class="section-title">${s.nameAr} - ${s.nameEn}</div>
+          <div class="section-subtitle">${s.subtitle}</div>
+        </div>
+      </div>
+      <div class="style-card ${isBookmarked ? 'bookmarked-card' : ''}" style="animation-delay: ${delay + 0.1}s" data-index="${realIndex}">
+        <div class="style-card-head">
+          <h3>${s.titleAr} <span class="en-name">${s.titleEn}</span></h3>
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap: wrap;">
+            <span class="tag ${s.tagClass}">${s.tagText}</span>
+            <div class="card-actions">
+              <button class="btn-action btn-bookmark ${isBookmarked ? 'active' : ''}" data-tooltip="${isBookmarked ? 'إلغاء التمييز' : 'تمييز البرومبيت'}" onclick="toggleBookmark(${realIndex})">${isBookmarked ? '&#9733;' : '&#9734;'}</button>
+              <button class="btn-action btn-comment" data-tooltip="تعليق" onclick="openCommentModal(${realIndex})">&#128172;</button>
+              <button class="btn-action btn-copy" data-tooltip="نسخ البرومبيت" onclick="copyPrompt(${realIndex})">&#128203;</button>
+              <button class="btn-action btn-edit" data-tooltip="تعديل" onclick="editStyle(${realIndex})">&#9998;</button>
+              <button class="btn-action btn-delete" data-tooltip="حذف" onclick="deleteStyle(${realIndex})">&#128465;</button>
+            </div>
+          </div>
+        </div>
+        <p class="style-desc">${s.desc}</p>
+        <div class="chars">
+          ${s.chars.map(c => `<span class="char-item">${c}</span>`).join('')}
+        </div>
+        <div class="prompt-box ${isBookmarked ? 'bookmarked' : ''}">
+          <div class="prompt-label">Prompt - English</div>
+          <div class="prompt-en">${s.prompt}</div>
+          <div class="copy-hint">copy & paste directly into your AI tool</div>
+        </div>
+        ${styleComments.length > 0 ? renderInlineComments(realIndex, styleComments) : ''}
+      </div>
+      <div class="page-footer"><span>Modern Web Design Styles</span><span class="page-num">${s.num}</span></div>
+    </div>
+    `;
+  }).join('');
+}
+
+function updateCount(count) {
+  document.getElementById('styleCount').textContent = `${count} أسلوب`;
+}
+
+// ===== SCROLL TO STYLE =====
+function scrollToStyle(index) {
+  const el = document.getElementById(`style-${index}`);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// ===== COPY PROMPT =====
+function copyPrompt(index) {
+  const prompt = styles[index].prompt;
+  navigator.clipboard.writeText(prompt).then(() => {
+    showToast('تم نسخ البرومبيت بنجاح!', 'success');
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = prompt;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('تم نسخ البرومبيت بنجاح!', 'success');
+  });
+}
+
+// ===== DELETE STYLE =====
+function deleteStyle(index) {
+  const name = styles[index].nameAr;
+  showConfirm(
+    'تأكيد الحذف',
+    `هل أنت متأكد من حذف أسلوب "${name}"؟ لا يمكن التراجع عن هذا الإجراء.`,
+    () => {
+      const card = document.querySelector(`.style-card[data-index="${index}"]`);
+      if (card) {
+        card.classList.add('deleting');
+        setTimeout(() => {
+          styles.splice(index, 1);
+          renumber();
+          saveToStorage();
+          renderAll(document.getElementById('searchInput').value);
+          showToast(`تم حذف أسلوب "${name}" بنجاح`, 'success');
+        }, 500);
+      } else {
+        styles.splice(index, 1);
+        renumber();
+        saveToStorage();
+        renderAll(document.getElementById('searchInput').value);
+        showToast(`تم حذف أسلوب "${name}" بنجاح`, 'success');
+      }
+    }
+  );
+}
+
+// ===== EDIT STYLE =====
+function editStyle(index) {
+  const s = styles[index];
+  document.getElementById('modalTitle').textContent = 'تعديل الأسلوب';
+  document.getElementById('formSubmitBtn').textContent = 'حفظ التعديلات';
+  document.getElementById('editIndex').value = index;
+
+  document.getElementById('styleNameAr').value = s.nameAr;
+  document.getElementById('styleNameEn').value = s.nameEn;
+  document.getElementById('styleSubEn').value = s.titleEn;
+  document.getElementById('styleTag').value = s.tagClass;
+  document.getElementById('styleTagText').value = s.tagText;
+  document.getElementById('styleSubtitle').value = s.subtitle;
+  document.getElementById('styleDesc').value = s.desc;
+  document.getElementById('styleChars').value = s.chars.join(', ');
+  document.getElementById('stylePrompt').value = s.prompt;
+
+  openModal();
+}
+
+// ===== ADD STYLE =====
+function addStyle() {
+  document.getElementById('modalTitle').textContent = 'إضافة أسلوب جديد';
+  document.getElementById('formSubmitBtn').textContent = 'إضافة الأسلوب';
+  document.getElementById('editIndex').value = -1;
+  document.getElementById('styleForm').reset();
+  openModal();
+}
+
+// ===== FORM SUBMIT =====
+document.getElementById('styleForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const editIndex = parseInt(document.getElementById('editIndex').value);
+  const nameAr = document.getElementById('styleNameAr').value.trim();
+  const nameEn = document.getElementById('styleNameEn').value.trim();
+  const titleEn = document.getElementById('styleSubEn').value.trim();
+  const tagClass = document.getElementById('styleTag').value;
+  const tagText = document.getElementById('styleTagText').value.trim();
+  const subtitle = document.getElementById('styleSubtitle').value.trim();
+  const desc = document.getElementById('styleDesc').value.trim();
+  const charsStr = document.getElementById('styleChars').value.trim();
+  const prompt = document.getElementById('stylePrompt').value.trim();
+
+  const chars = charsStr ? charsStr.split(',').map(c => c.trim()).filter(c => c) : [];
+
+  const styleData = {
+    num: '',
+    nameAr,
+    nameEn: nameEn || nameAr,
+    subtitle,
+    titleAr: nameAr,
+    titleEn: titleEn || nameEn,
+    tagClass,
+    tagText: tagText || tagClass.replace('tag-', ''),
+    desc,
+    chars,
+    prompt
+  };
+
+  if (editIndex >= 0) {
+    styleData.num = styles[editIndex].num;
+    styles[editIndex] = styleData;
+    showToast('تم تعديل الأسلوب بنجاح!', 'success');
+  } else {
+    styles.push(styleData);
+    renumber();
+    showToast('تم إضافة الأسلوب الجديد بنجاح!', 'success');
+  }
+
+  saveToStorage();
+  renderAll(document.getElementById('searchInput').value);
+  closeModal();
+
+  // Scroll to newly added/edited
+  if (editIndex < 0) {
+    setTimeout(() => {
+      const newIdx = styles.length - 1;
+      const el = document.getElementById(`style-${newIdx}`);
+      if (el) {
+        const card = el.querySelector('.style-card');
+        if (card) card.classList.add('newly-added');
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 200);
+  }
+});
+
+// ===== HELPERS =====
+function renumber() {
+  styles.forEach((s, i) => {
+    s.num = String(i + 1).padStart(2, '0');
+  });
+}
+
+function saveToStorage() {
+  localStorage.setItem('webStyles', JSON.stringify(styles));
+}
+
+function resetToDefault() {
+  showConfirm(
+    'إعادة التعيين',
+    'هل تريد إعادة جميع الأساليب إلى الوضع الافتراضي؟ سيتم حذف جميع التعديلات.',
+    () => {
+      styles = [...defaultStyles];
+      saveToStorage();
+      renderAll();
+      showToast('تم إعادة التعيين بنجاح', 'info');
+    }
+  );
+}
+
+// ===== MODAL =====
+function openModal() {
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('styleNameAr').focus(), 300);
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// ===== CONFIRM DIALOG =====
+function showConfirm(title, text, callback) {
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmText').textContent = text;
+  confirmCallback = callback;
+  document.getElementById('confirmOverlay').classList.add('active');
+}
+
+function hideConfirm() {
+  document.getElementById('confirmOverlay').classList.remove('active');
+  confirmCallback = null;
+}
+
+// ===== TOAST =====
+function showToast(message, type = 'info') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  
+  const icons = { success: '&#10003;', error: '&#10005;', info: '&#8505;' };
+  toast.innerHTML = `<span>${icons[type] || ''}</span> ${message}`;
+  
+  container.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.style.animation = 'toastOut 0.4s ease-out forwards';
+    setTimeout(() => toast.remove(), 400);
+  }, 3000);
+}
+
+// ===== SEARCH =====
+document.getElementById('searchInput').addEventListener('input', function() {
+  renderAll(this.value);
+});
+
+// ===== EVENT LISTENERS =====
+document.getElementById('fabAdd').addEventListener('click', addStyle);
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('formCancelBtn').addEventListener('click', closeModal);
+document.getElementById('confirmNo').addEventListener('click', hideConfirm);
+document.getElementById('confirmYes').addEventListener('click', () => {
+  if (confirmCallback) confirmCallback();
+  hideConfirm();
+});
+
+// Comment modal events
+document.getElementById('commentModalClose').addEventListener('click', closeCommentModal);
+document.getElementById('commentModalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeCommentModal();
+});
+document.getElementById('commentModalSubmit').addEventListener('click', function() {
+  const input = document.getElementById('commentModalInput');
+  if (currentCommentIndex >= 0 && input.value.trim()) {
+    addComment(currentCommentIndex, input.value);
+    renderCommentList(currentCommentIndex);
+    input.value = '';
+  }
+});
+document.getElementById('commentModalInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && currentCommentIndex >= 0 && this.value.trim()) {
+    addComment(currentCommentIndex, this.value);
+    renderCommentList(currentCommentIndex);
+    this.value = '';
+  }
+});
+
+// Close modal on overlay click
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+document.getElementById('confirmOverlay').addEventListener('click', function(e) {
+  if (e.target === this) hideConfirm();
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeModal();
+    hideConfirm();
+    closeCommentModal();
+  }
+  if (e.ctrlKey && e.key === 'n') {
+    e.preventDefault();
+    addStyle();
+  }
+});
+
+// Back to top
+const backToTop = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 500) {
+    backToTop.classList.add('visible');
+  } else {
+    backToTop.classList.remove('visible');
+  }
+});
+backToTop.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// ===== BOOKMARK =====
+function toggleBookmark(index) {
+  const idx = bookmarks.indexOf(index);
+  if (idx >= 0) {
+    bookmarks.splice(idx, 1);
+    showToast('تم إلغاء تمييز البرومبيت', 'info');
+  } else {
+    bookmarks.push(index);
+    showToast('تم تمييز البرومبيت بنجاح! ★', 'success');
+  }
+  localStorage.setItem('webStylesBookmarks', JSON.stringify(bookmarks));
+  renderAll(document.getElementById('searchInput').value);
+}
+
+// ===== COMMENTS =====
+function renderInlineComments(styleIndex, styleComments) {
+  if (!styleComments || styleComments.length === 0) return '';
+  return `
+    <div class="comments-section">
+      <div class="comments-header">
+        <span class="comments-header-title">&#128172; التعليقات</span>
+        <span class="comments-count">${styleComments.length}</span>
+      </div>
+      ${styleComments.map((c, ci) => `
+        <div class="comment-item">
+          <div class="comment-text">${escapeHtml(c.text)}</div>
+          <div class="comment-meta">
+            <span class="comment-date">${c.date}</span>
+            <button class="comment-delete" onclick="deleteComment(${styleIndex}, ${ci})">&#10005;</button>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function openCommentModal(index) {
+  currentCommentIndex = index;
+  const s = styles[index];
+  document.getElementById('commentModalStyleName').textContent = s.nameAr;
+  renderCommentList(index);
+  document.getElementById('commentModalOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('commentModalInput').focus(), 300);
+}
+
+function closeCommentModal() {
+  document.getElementById('commentModalOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+  currentCommentIndex = -1;
+}
+
+function renderCommentList(index) {
+  const list = document.getElementById('commentList');
+  const styleComments = comments[index] || [];
+  if (styleComments.length === 0) {
+    list.innerHTML = '';
+    return;
+  }
+  list.innerHTML = styleComments.map((c, ci) => `
+    <div class="comment-item">
+      <div class="comment-text">${escapeHtml(c.text)}</div>
+      <div class="comment-meta">
+        <span class="comment-date">${c.date}</span>
+        <button class="comment-delete" onclick="deleteCommentFromModal(${index}, ${ci})">&#10005; حذف</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addComment(index, text) {
+  if (!text.trim()) return;
+  if (!comments[index]) comments[index] = [];
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('ar-SA', { year: 'numeric', month: 'short', day: 'numeric' }) + ' ' + now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+  comments[index].push({ text: text.trim(), date: dateStr });
+  localStorage.setItem('webStylesComments', JSON.stringify(comments));
+  renderAll(document.getElementById('searchInput').value);
+  showToast('تم إضافة التعليق بنجاح!', 'success');
+}
+
+function deleteComment(styleIndex, commentIdx) {
+  if (comments[styleIndex]) {
+    comments[styleIndex].splice(commentIdx, 1);
+    if (comments[styleIndex].length === 0) delete comments[styleIndex];
+    localStorage.setItem('webStylesComments', JSON.stringify(comments));
+    renderAll(document.getElementById('searchInput').value);
+    showToast('تم حذف التعليق', 'info');
+  }
+}
+
+function deleteCommentFromModal(styleIndex, commentIdx) {
+  if (comments[styleIndex]) {
+    comments[styleIndex].splice(commentIdx, 1);
+    if (comments[styleIndex].length === 0) delete comments[styleIndex];
+    localStorage.setItem('webStylesComments', JSON.stringify(comments));
+    renderCommentList(styleIndex);
+    renderAll(document.getElementById('searchInput').value);
+    showToast('تم حذف التعليق', 'info');
+  }
+}
+
+// ===== FILTER =====
+function setFilter(filterType) {
+  currentFilter = filterType;
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === filterType);
+  });
+  renderAll(document.getElementById('searchInput').value);
+}
+
+// ===== INIT =====
+renderAll();
+</script>
+
+</body>
+</html>

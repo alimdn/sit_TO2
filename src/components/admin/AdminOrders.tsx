@@ -7,11 +7,12 @@ import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
-import { Copy, Check, FileText, Globe, MessageSquare, Sparkles, Plus, Trash2, Edit3, Save } from 'lucide-react'
+import { Copy, Check, FileText, Globe, MessageSquare, Sparkles, Plus, Trash2, Edit3, Save, RefreshCw } from 'lucide-react'
 
 const ADD_ON_NAMES: Record<string, string> = {
   seo: 'Advanced SEO Package',
@@ -36,6 +37,26 @@ const SIMILARITY_LABELS: Record<string, { en: string; ar: string }> = {
 
 const FREE_FEATURES_LIMIT = 5
 
+// Default work-management milestones for every new order.
+// 7 stages reflecting the real project lifecycle.
+// Each stage has a target progress percentage. Stage 6 (Final Preview)
+// does NOT increase progress — it stays at 83% until the customer
+// approves, then stage 7 jumps to 100%.
+const DEFAULT_MILESTONES: Milestone[] = [
+  { name: 'Order Confirmed',           status: 'completed', date: new Date().toISOString() },
+  { name: 'Design Phase',              status: 'pending' },
+  { name: 'Customer Review',           status: 'pending' },
+  { name: 'Development & Integration', status: 'pending' },
+  { name: 'Testing & QA',              status: 'pending' },
+  { name: 'Final Preview',             status: 'pending' },
+  { name: 'Deployment & Delivery',     status: 'pending' },
+]
+
+// Progress mapping: which percentage each milestone completion sets.
+// Stage 6 (Final Preview) keeps progress at 83% — it's a checkpoint,
+// not a progress increase. Stage 7 (Deployment) jumps to 100%.
+const MILESTONE_PROGRESS: number[] = [17, 33, 50, 67, 83, 83, 100]
+
 interface Milestone {
   name: string
   status: 'completed' | 'in_progress' | 'pending'
@@ -58,6 +79,9 @@ interface Order {
   similarSiteCriteria: string | null
   domain: string | null
   domainPrice: number | null
+  startDate?: string | null
+  deliveryDate?: string | null
+  isDemo?: boolean
   createdAt: string
   user: { name: string; email: string }
 }
@@ -67,6 +91,10 @@ export default function AdminOrders() {
   const [selected, setSelected] = useState<Order | null>(null)
   const [statusUpdate, setStatusUpdate] = useState('')
   const [copied, setCopied] = useState(false)
+  const [refreshing, setRefreshing] = useState(false)
+  const [creating, setCreating] = useState(false)
+  const [deleteId, setDeleteId] = useState<string | null>(null)
+  const [deleting, setDeleting] = useState(false)
 
   // Work management state
   const [editMilestones, setEditMilestones] = useState<Milestone[]>([])
@@ -76,13 +104,97 @@ export default function AdminOrders() {
   const [isEditing, setIsEditing] = useState(false)
 
   const fetchOrders = () => {
-    fetch('/api/orders')
+    fetch('/api/orders', { cache: 'no-store' })
       .then(r => r.json())
-      .then(setOrders)
+      .then(data => {
+        if (Array.isArray(data)) setOrders(data)
+      })
       .catch(() => {})
   }
 
   useEffect(() => { fetchOrders() }, [])
+
+  const handleRefresh = () => {
+    setRefreshing(true)
+    fetchOrders()
+    setTimeout(() => setRefreshing(false), 500)
+  }
+
+  // Creates a sample order so the admin can verify the Orders tab works
+  // end-to-end (list, view, update status, edit milestones, copy details).
+  const handleCreateTestOrder = async () => {
+    setCreating(true)
+    try {
+      const testNames = ['Ahmed Ali', 'Sara Mohamed', 'John Smith', 'Maria Garcia', 'Omar Hassan']
+      const testTemplates = ['Business Pro', 'Creative Portfolio', 'ShopFront', 'SaaS Dashboard']
+      const randomName = testNames[Math.floor(Math.random() * testNames.length)]
+      const randomTemplate = testTemplates[Math.floor(Math.random() * testTemplates.length)]
+      const randomDomain = `${randomName.split(' ')[0].toLowerCase()}${Math.floor(Math.random() * 1000)}.com`
+
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: null,
+          templateId: null,
+          status: 'pending',
+          progress: 0,
+          milestones: JSON.stringify(DEFAULT_MILESTONES),
+          notes: null,
+          templateFeatures: JSON.stringify(['Responsive Design', 'SEO Optimized', 'Contact Forms', 'Analytics Integration', 'Multi-page Layout']),
+          addOns: JSON.stringify(['seo', 'analytics']),
+          billing: 'monthly',
+          additionalInfo: 'I want a modern look with blue accents.',
+          similarSiteUrl: 'https://example.com',
+          similarSiteCriteria: JSON.stringify(['layout', 'colors']),
+          domain: randomDomain,
+          domainPrice: 12.99,
+          customerName: randomName,
+          customerEmail: `${randomName.split(' ')[0].toLowerCase()}@example.com`,
+        }),
+      })
+
+      if (res.ok) {
+        toast.success(`Test order created for ${randomName} (template: ${randomTemplate})`)
+        fetchOrders()
+      } else {
+        const err = await res.json().catch(() => ({}))
+        toast.error(err?.error || 'Failed to create test order')
+      }
+    } catch (e) {
+      console.error('Create test order error:', e)
+      toast.error('Network error while creating test order')
+    } finally {
+      setCreating(false)
+    }
+  }
+
+  // Permanently delete an order — used to clean up test/problematic orders
+  // that cannot be completed. Asks for confirmation first.
+  const handleDelete = async () => {
+    if (!deleteId) return
+    setDeleting(true)
+    try {
+      const res = await fetch(`/api/orders/${deleteId}`, { method: 'DELETE' })
+      if (res.ok) {
+        toast.success('Order deleted successfully')
+        setDeleteId(null)
+        // If the deleted order was open in the detail dialog, close it
+        if (selected?.id === deleteId) {
+          setSelected(null)
+        }
+        fetchOrders()
+      } else {
+        const err = await res.json().catch(() => ({}))
+        toast.error(err?.error || `Failed to delete (HTTP ${res.status})`)
+      }
+    } catch (e) {
+      console.error('Delete order error:', e)
+      toast.error('Network error while deleting order')
+    } finally {
+      setDeleting(false)
+    }
+  }
 
   const openOrderDetail = (order: Order) => {
     setSelected(order)
@@ -111,13 +223,7 @@ export default function AdminOrders() {
         status: i === 0 ? 'completed' as const : 'pending' as const,
       }))
     } catch {
-      return [
-        { name: 'Order Placed', status: 'completed' },
-        { name: 'Design Phase', status: 'pending' },
-        { name: 'Review', status: 'pending' },
-        { name: 'Development', status: 'pending' },
-        { name: 'Delivery', status: 'pending' },
-      ]
+      return DEFAULT_MILESTONES.map(m => ({ ...m }))
     }
   }
 
@@ -131,16 +237,137 @@ export default function AdminOrders() {
     setEditMilestones(prev => prev.filter((_, i) => i !== index))
   }
 
-  const toggleMilestoneStatus = (index: number) => {
-    setEditMilestones(prev => prev.map((m, i) => {
+  // Calculate progress based on completed milestones using the custom
+  // MILESTONE_PROGRESS mapping. This handles the special case where
+  // stage 6 (Final Preview) does NOT increase progress beyond 83%.
+  //
+  // Logic: find the LAST completed milestone, then look up its target
+  // percentage in MILESTONE_PROGRESS. If no milestones are completed,
+  // progress = 0.
+  const calcProgressFromMilestones = (milestones: Milestone[]): number => {
+    if (milestones.length === 0) return 0
+    // Find the index of the last completed milestone
+    let lastCompletedIdx = -1
+    for (let i = milestones.length - 1; i >= 0; i--) {
+      if (milestones[i].status === 'completed') {
+        lastCompletedIdx = i
+        break
+      }
+    }
+    if (lastCompletedIdx === -1) return 0
+    // Use the custom mapping if available, otherwise fall back to linear calc
+    if (lastCompletedIdx < MILESTONE_PROGRESS.length) {
+      return MILESTONE_PROGRESS[lastCompletedIdx]
+    }
+    // Fallback: linear calculation
+    const completed = milestones.filter(m => m.status === 'completed').length
+    return Math.round((completed / milestones.length) * 100)
+  }
+
+  // Toggle a milestone's status and IMMEDIATELY persist the change to the API
+  // (no need to press "Save" first). Also auto-update the order's progress
+  // percentage based on the new milestone states, and auto-set the order
+  // status to 'completed' when all milestones are done.
+  //
+  // IMPORTANT: progress reflects the CURRENT number of completed milestones.
+  // If the admin reverts a milestone (clicks it back to pending/in_progress),
+  // the progress DECREASES accordingly. This ensures progress always matches
+  // the actual state of work.
+  //
+  // On the FIRST toggle that starts work (status goes from 'pending' to
+  // 'in_progress' or 'completed' for the first time), we also stamp:
+  //   - startDate: now (ISO timestamp)
+  //   - deliveryDate: startDate + 7 days (the deadline for building the site)
+  const toggleMilestoneStatus = async (index: number) => {
+    if (!selected) return
+
+    // Compute the new milestones array locally first
+    const newMilestones = editMilestones.map((m, i) => {
       if (i !== index) return m
       const next: Record<string, Milestone['status']> = {
         completed: 'in_progress',
         in_progress: 'pending',
         pending: 'completed',
       }
-      return { ...m, status: next[m.status] }
-    }))
+      const newStatus = next[m.status]
+      // When marking as completed, stamp the date. When reverting, clear it.
+      return {
+        ...m,
+        status: newStatus,
+        date: newStatus === 'completed' ? new Date().toISOString() : undefined,
+      }
+    })
+
+    // Optimistic UI update
+    setEditMilestones(newMilestones)
+
+    // Auto-calculate progress from milestones (decreases if reverting)
+    const newProgress = calcProgressFromMilestones(newMilestones)
+    setEditProgress(newProgress)
+
+    // Auto-set status to 'completed' if all milestones are done,
+    // otherwise ensure status isn't 'completed' anymore.
+    let newStatus = statusUpdate
+    if (newProgress === 100) {
+      newStatus = 'completed'
+      setStatusUpdate('completed')
+    } else if (statusUpdate === 'completed' && newProgress < 100) {
+      newStatus = 'in_progress'
+      setStatusUpdate('in_progress')
+    } else if (newProgress > 0 && statusUpdate === 'pending') {
+      // First time work begins — escalate from pending to in_progress
+      newStatus = 'in_progress'
+      setStatusUpdate('in_progress')
+    }
+
+    // Build the update payload. Include startDate + deliveryDate on the
+    // first transition into actual work (when they weren't set before).
+    const payload: Record<string, unknown> = {
+      milestones: JSON.stringify(newMilestones),
+      progress: newProgress,
+      status: newStatus,
+    }
+
+    // If this is the first time progress > 0 and startDate isn't set yet,
+    // stamp the start date + 7-day delivery deadline.
+    const hasStartedBefore = !!(selected as any).startDate
+    if (!hasStartedBefore && newProgress > 0) {
+      const now = new Date()
+      const delivery = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000) // +7 days
+      payload.startDate = now.toISOString()
+      payload.deliveryDate = delivery.toISOString()
+    }
+
+    // Persist immediately to the API
+    try {
+      const res = await fetch(`/api/orders/${selected.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      if (res.ok) {
+        const updated = await res.json()
+        // Refresh the orders list so the table reflects the new progress
+        fetchOrders()
+        // Update the local selected order + edit state from the response
+        setSelected(updated)
+        setEditMilestones(parseMilestones(updated.milestones))
+        setEditProgress(updated.progress)
+        setEditNotes(updated.notes || '')
+        const action = newMilestones[index].status === 'completed' ? 'completed' : 'reverted'
+        toast.success(`Milestone ${action} — progress: ${newProgress}%`)
+      } else {
+        toast.error('Failed to save milestone — please try again')
+        // Revert on failure
+        setEditMilestones(parseMilestones(selected.milestones))
+        setEditProgress(selected.progress)
+      }
+    } catch (e) {
+      console.error('Toggle milestone error:', e)
+      toast.error('Network error — please try again')
+      setEditMilestones(parseMilestones(selected.milestones))
+      setEditProgress(selected.progress)
+    }
   }
 
   const getStepDescription = (status: string, progress: number): string => {
@@ -157,19 +384,47 @@ export default function AdminOrders() {
 
   const handleSaveWork = async () => {
     if (!selected) return
+
+    // Always recalculate progress from milestones when saving, so the
+    // admin's manual milestone changes (add/remove/toggle in edit mode)
+    // are reflected in the progress percentage. The manual slider value
+    // is ignored in favour of the milestone-derived value.
+    const recalculatedProgress = calcProgressFromMilestones(editMilestones)
+    let effectiveStatus = statusUpdate
+    if (recalculatedProgress === 100) {
+      effectiveStatus = 'completed'
+      setStatusUpdate('completed')
+    } else if (recalculatedProgress > 0 && statusUpdate === 'pending') {
+      effectiveStatus = 'in_progress'
+      setStatusUpdate('in_progress')
+    } else if (statusUpdate === 'completed' && recalculatedProgress < 100) {
+      effectiveStatus = 'in_progress'
+      setStatusUpdate('in_progress')
+    }
+
+    // Build payload — include startDate + deliveryDate on first work start
+    const payload: Record<string, unknown> = {
+      status: effectiveStatus,
+      progress: recalculatedProgress,
+      milestones: JSON.stringify(editMilestones),
+      notes: editNotes || null,
+    }
+    const hasStartedBefore = !!(selected as any).startDate
+    if (!hasStartedBefore && recalculatedProgress > 0) {
+      const now = new Date()
+      const delivery = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
+      payload.startDate = now.toISOString()
+      payload.deliveryDate = delivery.toISOString()
+    }
+
     try {
       const res = await fetch(`/api/orders/${selected.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          status: statusUpdate,
-          progress: editProgress,
-          milestones: JSON.stringify(editMilestones),
-          notes: editNotes || null,
-        }),
+        body: JSON.stringify(payload),
       })
       if (res.ok) {
-        toast.success('Order updated successfully')
+        toast.success(`Order updated — progress: ${recalculatedProgress}%`)
         setIsEditing(false)
         fetchOrders()
         // Refresh selected order data
@@ -191,9 +446,9 @@ export default function AdminOrders() {
                 to: selected.user?.email,
                 customerName: selected.user?.name || 'Customer',
                 orderId: selected.id.slice(-8),
-                currentStep: currentMilestone?.name || statusUpdate.replace('_', ' '),
-                stepDescription: getStepDescription(statusUpdate, editProgress),
-                progress: editProgress,
+                currentStep: currentMilestone?.name || effectiveStatus.replace('_', ' '),
+                stepDescription: getStepDescription(effectiveStatus, recalculatedProgress),
+                progress: recalculatedProgress,
                 milestones: editMilestones.map(m => ({ name: m.name, status: m.status })),
                 siteUrl: `${window.location.origin}`,
               },
@@ -202,7 +457,7 @@ export default function AdminOrders() {
         } catch { /* email failure shouldn't block admin */ }
 
         // Send delivery email if status is completed
-        if (statusUpdate === 'completed' && selected.user?.email) {
+        if (effectiveStatus === 'completed' && selected.user?.email) {
           try {
             const domain = selected.domain || 'yourwebsite.com'
             await fetch('/api/send-email', {
@@ -217,7 +472,7 @@ export default function AdminOrders() {
                   websiteUrl: `https://${domain}`,
                   domain,
                   controlPanelUrl: `${window.location.origin}`,
-                  adminEmail: 'support@webflowsub.com',
+                  adminEmail: 'support@webforge.com',
                   billing: selected.billing || 'monthly',
                   monthlyPrice: selected.billing === 'annual' ? 300 : 30,
                 },
@@ -260,7 +515,7 @@ export default function AdminOrders() {
                   websiteUrl: `https://${domain}`,
                   domain,
                   controlPanelUrl: `${window.location.origin}`,
-                  adminEmail: 'support@webflowsub.com',
+                  adminEmail: 'support@webforge.com',
                   billing: selected.billing || 'monthly',
                   monthlyPrice: selected.billing === 'annual' ? 300 : 30,
                 },
@@ -387,7 +642,49 @@ export default function AdminOrders() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-[#000f22]">Orders Management</h2>
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-[#000f22]">Orders Management</h2>
+          <p className="text-xs text-[#4F5B76] mt-1 flex items-center gap-3 flex-wrap">
+            <span>
+              <span className="font-semibold text-[#10B981]">{orders.filter(o => o.status === 'completed').length}</span> completed
+              <span className="mx-1">·</span>
+              <span className="font-semibold text-[#00D1FF]">{orders.filter(o => o.status === 'in_progress').length}</span> in progress
+              <span className="mx-1">·</span>
+              <span className="font-semibold text-[#FFB800]">{orders.filter(o => o.status === 'pending').length}</span> pending
+              <span className="mx-1">·</span>
+              <span>{orders.length} total</span>
+            </span>
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            onClick={handleRefresh}
+            disabled={refreshing}
+            className="h-9 border-[#e6ebf1] hover:bg-[#f7fafd]"
+          >
+            <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+          <Button
+            onClick={handleCreateTestOrder}
+            disabled={creating}
+            className="bg-[#000f22] hover:bg-[#0A2540] text-white h-9"
+          >
+            {creating ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                Creating...
+              </>
+            ) : (
+              <>
+                <Plus className="h-4 w-4 mr-2" /> Add Test Order
+              </>
+            )}
+          </Button>
+        </div>
+      </div>
 
       <Card className="shadow-card">
         <CardContent className="p-0">
@@ -409,7 +706,16 @@ export default function AdminOrders() {
                 const addOns = parseJSON(order.addOns)
                 return (
                   <TableRow key={order.id}>
-                    <TableCell className="font-mono text-xs">#{order.id.slice(-8)}</TableCell>
+                    <TableCell className="font-mono text-xs">
+                      <div className="flex items-center gap-1.5">
+                        <span>#{order.id.slice(-8)}</span>
+                        {order.isDemo && (
+                          <Badge className="bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/30 text-[8px] font-bold tracking-wider uppercase px-1 py-0">
+                            Demo
+                          </Badge>
+                        )}
+                      </div>
+                    </TableCell>
                     <TableCell>
                       <div>
                         <div className="text-sm font-medium">{order.user?.name || 'Unknown'}</div>
@@ -436,9 +742,20 @@ export default function AdminOrders() {
                     </TableCell>
                     <TableCell className="text-[#4F5B76]">{new Date(order.createdAt).toLocaleDateString()}</TableCell>
                     <TableCell>
-                      <Button variant="ghost" size="sm" onClick={() => openOrderDetail(order)}>
-                        Manage
-                      </Button>
+                      <div className="flex items-center gap-1">
+                        <Button variant="ghost" size="sm" onClick={() => openOrderDetail(order)}>
+                          Manage
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setDeleteId(order.id)}
+                          className="h-8 w-8 p-0 text-[#ba1a1a] hover:bg-[#ba1a1a]/10"
+                          title="Delete order"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 )
@@ -572,28 +889,50 @@ export default function AdminOrders() {
                       </div>
                     </div>
 
-                    {/* Milestones */}
+                    {/* Milestones — clickable at all times (auto-saves on click) */}
                     <div>
-                      <Label className="text-xs">Milestones</Label>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <Label className="text-xs">Milestones (click to toggle status — auto-saves)</Label>
+                        <span className="text-[10px] font-medium text-[#00D1FF]">
+                          {editMilestones.filter(m => m.status === 'completed').length}/{editMilestones.length} done
+                        </span>
+                      </div>
                       <div className="mt-1.5 space-y-1.5">
                         {editMilestones.map((ms, i) => (
-                          <div key={i} className="flex items-center gap-2 p-2 rounded-lg bg-[#f7fafd] border border-[#e6ebf1]">
+                          <div
+                            key={i}
+                            className={`flex items-center gap-2 p-2 rounded-lg border transition-all ${
+                              ms.status === 'completed'
+                                ? 'bg-[#10B981]/5 border-[#10B981]/30'
+                                : ms.status === 'in_progress'
+                                  ? 'bg-[#00D1FF]/5 border-[#00D1FF]/30'
+                                  : 'bg-[#f7fafd] border-[#e6ebf1]'
+                            }`}
+                          >
                             <button
-                              onClick={() => isEditing && toggleMilestoneStatus(i)}
-                              className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
+                              onClick={() => toggleMilestoneStatus(i)}
+                              title={`Click to change status (current: ${ms.status})`}
+                              className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 transition-all cursor-pointer hover:scale-110 ${
                                 ms.status === 'completed'
                                   ? 'bg-[#10B981] text-white'
                                   : ms.status === 'in_progress'
                                     ? 'bg-[#00D1FF] text-white'
-                                    : 'bg-[#e6ebf1] text-[#74777e]'
-                              } ${isEditing ? 'cursor-pointer' : 'cursor-default'}`}
+                                    : 'bg-white border-2 border-[#c4c6ce] text-transparent hover:border-[#10B981]'
+                              }`}
                             >
-                              {ms.status === 'completed' && <Check className="h-3 w-3" />}
-                              {ms.status === 'in_progress' && <span className="text-[8px] font-bold">→</span>}
+                              {ms.status === 'completed' && <Check className="h-3.5 w-3.5" />}
+                              {ms.status === 'in_progress' && <span className="text-[9px] font-bold">→</span>}
                             </button>
-                            <span className={`text-xs flex-1 ${ms.status === 'pending' ? 'text-[#74777e]' : 'text-[#000f22] font-medium'}`}>
-                              {ms.name}
-                            </span>
+                            <div className="flex-1 min-w-0">
+                              <span className={`text-xs block ${ms.status === 'pending' ? 'text-[#74777e]' : 'text-[#000f22] font-medium'}`}>
+                                {ms.name}
+                              </span>
+                              {ms.date && ms.status === 'completed' && (
+                                <span className="text-[9px] text-[#10B981]">
+                                  ✓ {new Date(ms.date).toLocaleDateString()} {new Date(ms.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </span>
+                              )}
+                            </div>
                             <Badge className={`text-[9px] px-1.5 py-0 ${
                               ms.status === 'completed' ? 'bg-[#10B981]/10 text-[#10B981]' :
                               ms.status === 'in_progress' ? 'bg-[#00D1FF]/10 text-[#00D1FF]' :
@@ -801,6 +1140,38 @@ export default function AdminOrders() {
           })()}
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={!!deleteId} onOpenChange={(open) => !deleting && !open && setDeleteId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Order</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to permanently delete this order? This action cannot be undone.
+              The order will be removed from both the admin panel and the customer&apos;s dashboard immediately.
+              Use this only for test orders or orders that cannot be completed.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={(e) => {
+                e.preventDefault()
+                handleDelete()
+              }}
+              disabled={deleting}
+              className="bg-[#ba1a1a] hover:bg-[#991515]"
+            >
+              {deleting ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                  Deleting...
+                </>
+              ) : 'Delete Order'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

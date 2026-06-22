@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 const fallbackGateways = [
   { id: 'gw-1', name: 'Stripe', provider: 'stripe', active: true, testMode: true, apiKey: 'pk_test_xxxxxxxxxxxxx', secretKey: 'sk_test_xxxxxxxxxxxxx' },
   { id: 'gw-2', name: 'PayPal', provider: 'paypal', active: false, testMode: true, apiKey: 'sb_xxxxxxxxxxxxx' },
-  { id: 'gw-3', name: 'Bank Transfer', provider: 'bank', active: true, testMode: false, config: JSON.stringify({ bankName: 'First National Bank', accountName: 'WebFlowSub LLC', accountNumber: '****4567', routingNumber: '****8901' }) },
+  { id: 'gw-3', name: 'Bank Transfer', provider: 'bank', active: true, testMode: false, config: JSON.stringify({ bankName: 'First National Bank', accountName: 'WebForge LLC', accountNumber: '****4567', routingNumber: '****8901' }) },
 ]
 
 export async function GET() {

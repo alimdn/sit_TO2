@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bento Grid — Modular Layout</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Inter',system-ui,sans-serif}
+body{background:#f4f4f5;color:#18181b}
+@keyframes fadeIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+.animate-fade-in{animation:fadeIn .5s ease-out}
+.bento-card{background:#fff;border-radius:24px;padding:24px;transition:all .3s;border:1px solid #e4e4e7}
+.bento-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,0.06)}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:16px 24px;border-radius:12px;background:#18181b;color:#fff;font-weight:500;animation:fadeIn .3s}
+</style>
+</head>
+<body class="min-h-screen">
+<div id="toast-container"></div>
+
+<!-- Nav -->
+<nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+    <div class="flex items-center gap-2"><div class="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center"><div class="grid grid-cols-2 gap-0.5"><div class="w-1.5 h-1.5 bg-white rounded-sm"></div><div class="w-1.5 h-1.5 bg-white/40 rounded-sm"></div><div class="w-1.5 h-1.5 bg-white/40 rounded-sm"></div><div class="w-1.5 h-1.5 bg-white rounded-sm"></div></div></div><span class="text-lg font-bold">Bento</span></div>
+    <div class="hidden md:flex items-center gap-8 text-sm text-gray-500"><a href="#grid" class="hover:text-gray-900">Grid</a><a href="#pricing" class="hover:text-gray-900">Pricing</a><a href="#reviews" class="hover:text-gray-900">Reviews</a></div>
+    <button onclick="showToast('Welcome to Bento!')" class="bg-gray-900 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-800 transition-all">Get Started</button>
+  </div>
+</nav>
+
+<!-- Hero Bento Grid -->
+<section id="grid" class="py-12 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[200px]">
+      <!-- Large hero card -->
+      <div class="bento-card md:col-span-2 lg:col-span-2 lg:row-span-2 flex flex-col justify-between" style="background:linear-gradient(135deg,#18181b,#3f3f46)">
+        <div><span class="text-white/60 text-xs font-medium uppercase tracking-wider">Bento Grid System</span><h1 class="text-3xl lg:text-4xl font-bold text-white mt-3 leading-tight">Modular layouts<br/>inspired by<br/>Japanese design.</h1></div>
+        <div class="flex gap-2"><button onclick="showToast('Starting demo...')" class="bg-white text-gray-900 px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-100">Try Demo</button><button class="bg-white/10 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-white/20">Learn More</button></div>
+      </div>
+      <!-- Stats card -->
+      <div class="bento-card flex flex-col justify-center items-center"><div class="text-4xl font-bold text-gray-900">15K+</div><div class="text-sm text-gray-400 mt-1">Active Users</div><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=200&h=100&fit=crop&q=80" alt="" class="w-full h-16 object-cover rounded-lg mt-3"/></div>
+      <!-- Image card -->
+      <div class="bento-card p-0 overflow-hidden"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=300&h=200&fit=crop&q=80" alt="" class="w-full h-full object-cover"/></div>
+      <!-- Feature card -->
+      <div class="bento-card bg-blue-50 border-blue-100"><div class="text-2xl mb-2">⚡</div><h3 class="font-bold text-sm">Fast Setup</h3><p class="text-xs text-gray-500 mt-1">Drag and drop grid cells in minutes.</p></div>
+      <!-- Rating card -->
+      <div class="bento-card flex flex-col justify-center"><div class="text-yellow-400 text-lg mb-1">★★★★★</div><div class="text-3xl font-bold">4.9</div><div class="text-xs text-gray-400">2,500+ reviews</div></div>
+      <!-- Feature card -->
+      <div class="bento-card bg-purple-50 border-purple-100"><div class="text-2xl mb-2">🎨</div><h3 class="font-bold text-sm">Customizable</h3><p class="text-xs text-gray-500 mt-1">Vary cell sizes and content freely.</p></div>
+      <!-- CTA card -->
+      <div class="bento-card bg-green-50 border-green-100 flex flex-col justify-center items-center text-center"><div class="text-2xl mb-2">🚀</div><h3 class="font-bold text-sm">Ship Faster</h3><p class="text-xs text-gray-500 mt-1">Launch in record time.</p></div>
+      <!-- Wide feature card -->
+      <div class="bento-card md:col-span-2 flex items-center gap-4"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=200&h=120&fit=crop&q=80" alt="" class="w-24 h-20 object-cover rounded-lg"/><div><h3 class="font-bold text-sm mb-1">Responsive Grid</h3><p class="text-xs text-gray-500">Adapts from 4 columns on desktop to 1 on mobile. Every cell reflows naturally.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing Bento -->
+<section id="pricing" class="py-12 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-8"><h2 class="text-3xl font-bold" style="letter-spacing:-0.02em">Pricing in a Grid</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bento-card"><h3 class="font-bold mb-1">Starter</h3><div class="text-3xl font-bold mb-4">$29<span class="text-sm text-gray-400 font-normal">/mo</span></div><ul class="space-y-2 text-sm text-gray-500 mb-6"><li>✓ 10 grid cells</li><li>✓ Basic templates</li><li>✓ Community support</li></ul><button onclick="showToast('Starter!')" class="w-full py-2.5 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-semibold transition-all">Choose</button></div>
+      <div class="bento-card border-2 border-gray-900 relative"><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-0.5 rounded-full">Popular</div><h3 class="font-bold mb-1">Pro</h3><div class="text-3xl font-bold mb-4">$79<span class="text-sm text-gray-400 font-normal">/mo</span></div><ul class="space-y-2 text-sm text-gray-500 mb-6"><li>✓ Unlimited cells</li><li>✓ All templates</li><li>✓ Priority support</li><li>✓ Custom animations</li></ul><button onclick="showToast('Pro!')" class="w-full py-2.5 bg-gray-900 text-white hover:bg-gray-800 rounded-xl text-sm font-semibold transition-all">Choose</button></div>
+      <div class="bento-card"><h3 class="font-bold mb-1">Team</h3><div class="text-3xl font-bold mb-4">$199<span class="text-sm text-gray-400 font-normal">/mo</span></div><ul class="space-y-2 text-sm text-gray-500 mb-6"><li>✓ Everything in Pro</li><li>✓ Team collaboration</li><li>✓ Source code export</li></ul><button onclick="showToast('Team!')" class="w-full py-2.5 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-semibold transition-all">Choose</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section id="reviews" class="py-12 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bento-card"><div class="flex items-center gap-3 mb-3"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full"/><div><div class="font-semibold text-sm">Sarah J.</div><div class="text-xs text-gray-400">Designer</div></div></div><div class="text-yellow-400 text-sm mb-2">★★★★★</div><p class="text-sm text-gray-500">"The bento grid system saved me hours of layout work. Incredible!"</p></div>
+      <div class="bento-card"><div class="flex items-center gap-3 mb-3"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full"/><div><div class="font-semibold text-sm">Mike R.</div><div class="text-xs text-gray-400">Developer</div></div></div><div class="text-yellow-400 text-sm mb-2">★★★★★</div><p class="text-sm text-gray-500">"Clean, modular, and ridiculously easy to customize. Love it."</p></div>
+      <div class="bento-card"><div class="flex items-center gap-3 mb-3"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&q=80" alt="" class="w-10 h-10 rounded-full"/><div><div class="font-semibold text-sm">Emily D.</div><div class="text-xs text-gray-400">PM</div></div></div><div class="text-yellow-400 text-sm mb-2">★★★★☆</div><p class="text-sm text-gray-500">"Our dashboards look so much better with the bento layout."</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-12 px-6"><div class="max-w-3xl mx-auto"><div class="bento-card text-center" style="background:linear-gradient(135deg,#18181b,#3f3f46)"><h2 class="text-3xl font-bold text-white mb-4">Build Your Grid</h2><p class="text-white/60 mb-6">Start creating modular layouts today.</p><button onclick="showToast('Welcome to Bento! 🎉')" class="bg-white text-gray-900 px-8 py-3.5 rounded-xl font-semibold hover:bg-gray-100 transition-all">Get Started Free</button></div></div></section>
+
+<footer class="py-8 px-6 text-center text-sm text-gray-300">© 2026 Bento Grid Template</footer>
+
+<script>
+function showToast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.getElementById('toast-container').appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000)}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}))
+</script>
+</body>
+</html>

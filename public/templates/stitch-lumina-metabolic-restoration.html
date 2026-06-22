@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lumina Wellness | Metabolic Restoration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Montserrat:wght@600;700;800&amp;family=Source+Serif+4:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#848480",
+                        "secondary-fixed-dim": "#c5cd70",
+                        "on-secondary-container": "#606715",
+                        "on-tertiary-fixed": "#1b1c19",
+                        "parchment": "#F2EFE9",
+                        "inverse-surface": "#313030",
+                        "surface-variant": "#e5e2e1",
+                        "background": "#fcf8f8",
+                        "inverse-on-surface": "#f4f0ef",
+                        "tertiary-container": "#1b1c19",
+                        "on-background": "#1c1b1b",
+                        "on-tertiary-fixed-variant": "#474744",
+                        "tertiary-fixed-dim": "#c8c6c2",
+                        "surface": "#fcf8f8",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#454b00",
+                        "muted-gold": "#C5A368",
+                        "on-secondary-fixed": "#1a1d00",
+                        "vibrant-olive": "#8C943E",
+                        "on-surface-variant": "#434747",
+                        "on-primary-fixed": "#1a1c1c",
+                        "surface-container-low": "#f6f3f2",
+                        "surface-container-high": "#ebe7e7",
+                        "surface-container-highest": "#e5e2e1",
+                        "surface-container": "#f1edec",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "soft-cream": "#F9F7F2",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#c6c6c6",
+                        "surface-tint": "#5d5f5e",
+                        "on-primary-fixed-variant": "#454747",
+                        "success-green": "#2D5A27",
+                        "inverse-primary": "#c6c6c6",
+                        "surface-bright": "#fcf8f8",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#e1e989",
+                        "tertiary": "#000000",
+                        "on-surface": "#1c1b1b",
+                        "on-primary": "#ffffff",
+                        "deep-charcoal": "#121414",
+                        "outline": "#747878",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#000000",
+                        "primary-container": "#1a1c1c",
+                        "secondary-container": "#dee786",
+                        "primary-fixed": "#e2e2e2",
+                        "surface-dim": "#ddd9d8",
+                        "tertiary-fixed": "#e4e2dd",
+                        "on-primary-container": "#838484",
+                        "outline-variant": "#c4c7c7",
+                        "secondary": "#5c6310"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "section-gap-lg": "120px",
+                        "container-max": "1280px",
+                        "margin-mobile": "20px",
+                        "unit": "8px",
+                        "section-gap-md": "80px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Montserrat"],
+                        "body-lg": ["\"Source Serif 4\""],
+                        "headline-md": ["Montserrat"],
+                        "headline-lg": ["Montserrat"],
+                        "headline-xl-mobile": ["Montserrat"],
+                        "button-text": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "body-md": ["\"Source Serif 4\""]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["60px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["20px", {"lineHeight": "32px", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "headline-lg": ["48px", {"lineHeight": "56px", "fontWeight": "700"}],
+                        "headline-xl-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "button-text": ["16px", {"lineHeight": "24px", "fontWeight": "700"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "26px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        .backdrop-blur-md { backdrop-filter: blur(12px); }
+        .glass-card { background: rgba(249, 247, 242, 0.8); backdrop-filter: blur(12px); }
+        .transition-soft { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    </style>
+</head>
+<body class="bg-soft-cream text-deep-charcoal font-body-md selection:bg-vibrant-olive/30 overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 backdrop-blur-md border-b border-outline/10 bg-soft-cream/90 transition-soft">
+<nav class="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto">
+<a class="text-headline-md font-headline-md font-bold text-deep-charcoal" href="#">
+                Lumina Wellness
+            </a>
+<div class="hidden md:flex gap-8 items-center">
+<a class="font-label-lg text-label-lg text-vibrant-olive border-b-2 border-vibrant-olive pb-1 transition-colors duration-200" href="#programs">Programs</a>
+<a class="font-label-lg text-label-lg text-deep-charcoal hover:text-vibrant-olive transition-colors duration-200" href="#about">About</a>
+<a class="font-label-lg text-label-lg text-deep-charcoal hover:text-vibrant-olive transition-colors duration-200" href="#blog">Blog</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden md:block px-6 py-2 border border-deep-charcoal font-button-text text-button-text uppercase tracking-widest hover:bg-deep-charcoal hover:text-soft-cream transition-all active:scale-95">
+                    Book Consultation
+                </button>
+<span class="material-symbols-outlined text-2xl cursor-pointer">shopping_cart</span>
+</div>
+</nav>
+</header>
+<main class="mt-[72px]">
+<!-- Hero Section -->
+<section class="relative min-h-[921px] flex items-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-gradient-to-r from-deep-charcoal/80 to-transparent z-10"></div>
+<img class="w-full h-full object-cover" data-alt="A cinematic, high-contrast photograph of a professional fitness facility at dawn. Soft, ethereal sunlight streams through large windows, illuminating a strength training rack and premium weight plates. The aesthetic is high-end, clean, and modern with a focus on deep shadows and warm highlights, suggesting a quiet space for metabolic transformation and restoration." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATeWs3vE3fz0rQNCrZTAdAjmVsLLZ3Qweg34-yII5glsz0rhN3l_weJAJJV89nhGudDWEcI_us7v6DF0p65hZiZ3PZfD2lZx2aN4xTx-FEb1KlyE2I6bvTBf169HfrLYvVj6GsSjZZSg8VlhQLk84D_sgnzAL8RvoipFDZ2YA4-TS2V9b2i_-27gUXB3X7LISJrRAAS49iGFlhdA1gJCu0NNXCZCwaT4nyY5XRfaQlLKYMUnHJOqSuj8qPZpWIjs8Jxi-e4_aD5Tk"/>
+</div>
+<div class="relative z-20 px-gutter max-w-container-max mx-auto w-full text-soft-cream">
+<div class="max-w-2xl">
+<h1 class="font-headline-xl text-headline-xl mb-6 leading-tight">The Last Program You'll Ever Need.</h1>
+<p class="font-body-lg text-body-lg mb-10 opacity-90">If every attempt to fix your body has failed—this is where we rehabilitate your metabolism. No restriction. Just science-backed restoration.</p>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="bg-vibrant-olive text-soft-cream px-8 py-4 font-button-text text-button-text hover:bg-success-green transition-soft active:scale-95">
+                            RECOVER PROGRAM
+                        </button>
+<button class="bg-transparent border border-soft-cream text-soft-cream px-8 py-4 font-button-text text-button-text hover:bg-soft-cream hover:text-deep-charcoal transition-soft active:scale-95">
+                            BOOK 60-MIN CONSULT
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Problems Section -->
+<section class="py-section-gap-lg px-gutter bg-deep-charcoal text-soft-cream">
+<div class="max-w-container-max mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+<div>
+<h2 class="font-headline-lg text-headline-lg mb-8">Sometimes the problem isn't your willpower... <span class="text-vibrant-olive">it's your physiology.</span></h2>
+<p class="font-body-md text-body-md opacity-80 mb-8 leading-relaxed">
+                            You've tried every diet, slashed calories to the extreme, and still your weight remains static. Despite the support of doctors and family, you're living in fear of food and obsession with the scale. You're on the verge of burnout because your metabolic engine has stalled.
+                        </p>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-8 border border-soft-cream/10 bg-white/5 group hover:bg-vibrant-olive/10 transition-soft">
+<span class="material-symbols-outlined text-vibrant-olive text-4xl mb-4">restaurant</span>
+<h4 class="font-headline-md text-headline-md mb-2">Reconcile</h4>
+<p class="font-body-md opacity-70">Make peace with food once and for all.</p>
+</div>
+<div class="p-8 border border-soft-cream/10 bg-white/5 group hover:bg-vibrant-olive/10 transition-soft">
+<span class="material-symbols-outlined text-vibrant-olive text-4xl mb-4">favorite</span>
+<h4 class="font-headline-md text-headline-md mb-2">Stability</h4>
+<p class="font-body-md opacity-70">Live in a body that feels safe and steady.</p>
+</div>
+<div class="p-8 border border-soft-cream/10 bg-white/5 group hover:bg-vibrant-olive/10 transition-soft">
+<span class="material-symbols-outlined text-vibrant-olive text-4xl mb-4">bolt</span>
+<h4 class="font-headline-md text-headline-md mb-2">Ignite</h4>
+<p class="font-body-md opacity-70">Reactive your natural fat-burning engine.</p>
+</div>
+<div class="p-8 border border-soft-cream/10 bg-white/5 group hover:bg-vibrant-olive/10 transition-soft">
+<span class="material-symbols-outlined text-vibrant-olive text-4xl mb-4">shield</span>
+<h4 class="font-headline-md text-headline-md mb-2">Hormones</h4>
+<p class="font-body-md opacity-70">Balance your system from the inside out.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Stats Section -->
+<section class="bg-parchment py-16">
+<div class="max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+<div class="flex flex-col items-center">
+<span class="font-headline-xl text-headline-xl text-deep-charcoal">100+</span>
+<span class="font-label-lg text-label-lg uppercase tracking-widest text-muted-gold">Success Stories</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="font-headline-xl text-headline-xl text-deep-charcoal">150+</span>
+<span class="font-label-lg text-label-lg uppercase tracking-widest text-muted-gold">Custom Recipes</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="font-headline-xl text-headline-xl text-deep-charcoal">99%</span>
+<span class="font-label-lg text-label-lg uppercase tracking-widest text-muted-gold">Client Renewal Rate</span>
+</div>
+</div>
+</section>
+<!-- Program Overview Bento Grid -->
+<section class="py-section-gap-lg px-gutter max-w-container-max mx-auto" id="programs">
+<div class="text-center mb-16">
+<span class="font-label-lg text-label-lg text-vibrant-olive uppercase tracking-widest mb-4 block">Our Signature Experience</span>
+<h2 class="font-headline-lg text-headline-lg">The Metabolic Roadmap</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Main Program Card -->
+<div class="md:col-span-7 bg-white p-12 border border-outline/10 flex flex-col justify-between">
+<div>
+<h3 class="font-headline-md text-headline-md mb-6">Metabolic Restoration (12-16 Weeks)</h3>
+<p class="font-body-md text-body-md mb-8 leading-relaxed">
+                            Specifically designed for women emerging from chronic dieting, Ozempic plateaus, or metabolic damage. We don't just give you a plan; we teach you how to manage your own body for life.
+                        </p>
+<ul class="space-y-4 mb-10">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-vibrant-olive">check_circle</span>
+<span class="font-body-md">Personalized Bio-Individual Nutrition Mapping</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-vibrant-olive">check_circle</span>
+<span class="font-body-md">Progressive Strength Training for Body Recomposition</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-vibrant-olive">check_circle</span>
+<span class="font-body-md">Weekly 1:1 Coaching &amp; Hormone Tracking</span>
+</li>
+</ul>
+</div>
+<button class="w-fit bg-deep-charcoal text-soft-cream px-8 py-4 font-button-text text-button-text hover:bg-vibrant-olive transition-soft">
+                        APPLY FOR COHORT
+                    </button>
+</div>
+<!-- Testimonial Glass Card -->
+<div class="md:col-span-5 relative min-h-[400px] overflow-hidden group">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A soft-focus lifestyle image of a healthy woman enjoying a wholesome, vibrant meal in a sunlit kitchen. The atmosphere is warm and peaceful, representing a positive relationship with food. The lighting is editorial and airy, consistent with a minimalist and sophisticated wellness brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzXmeIftMPqAx9ri3tIG48DmvFxqFUyTJCcSpxGz775gsk-06ks0rskeQ4uYyBoiVrUsE0-YpmjrqAGkNEr-ajxECprSURiz1iu8NGSWJHysmy9J4egs_ecD3tA72qm0mOhtfjg8XUKHq0U9Dsiw-q0-QLSMu-6tJ3QgbTiBleHWkMj-ZXbYh2WJkM-CCEe2-6NGShlWzSlXq_9yQKfPvgFgMYI7BKwE_Ofk78IQFnmFp11UEGljjaWbTdjUMdhzkL0jFXGWP63OI"/>
+<div class="absolute inset-x-4 bottom-4 glass-card p-8 border border-white/20">
+<div class="flex gap-1 mb-4 text-muted-gold">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-md italic text-deep-charcoal">"After 3 months, I'm eating more than ever and my clothes fit better than they did in my 20s. My energy is back."</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Philosophy Section -->
+<section class="bg-soft-cream py-section-gap-lg overflow-hidden" id="about">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="flex flex-col md:flex-row items-center gap-16">
+<div class="w-full md:w-1/2 relative">
+<div class="absolute -top-12 -left-12 w-64 h-64 bg-vibrant-olive/10 rounded-full blur-3xl"></div>
+<div class="relative z-10 p-4 bg-white shadow-xl">
+<img class="w-full aspect-square object-cover" data-alt="A set of premium yoga mats in calming sage and cream tones, rolled and arranged in an artistic, minimalist pattern. The focus is on texture and soft color gradients, evoking a sense of tranquility and professional wellness care. The style is clean, corporate-modern, and high-end." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQTp0dGgrbVXBp89e7JRfYpt1ZOmD4OrWxRU48EDkpuv7n-RK3o32W7PGa1Od9YbVcHytGyx-gRh47qxMfBfAzcAk_-Cd69KAPgsJy616_dLwTixLD7qQ0W581xuRgtGBSAsI2OrWKqMw76YNpti3p1t4mRuFw8azBPHX1FvHV_imjFhazpB2oxo01uovJW0hyW36ZpDQAKFPWM5y1wTqaqyryrnFxgsiqJxOM-3pMrFZd0PoXe4Df0HHgtR_YDgThYyh8W1MJXU8"/>
+</div>
+</div>
+<div class="w-full md:w-1/2">
+<span class="font-label-lg text-label-lg text-muted-gold uppercase tracking-widest mb-4 block">The Founder's Intent</span>
+<h2 class="font-headline-lg text-headline-lg mb-8 leading-tight">Safety is the catalyst for transformation.</h2>
+<div class="border-l-4 border-deep-charcoal pl-8 py-2">
+<p class="font-body-lg italic text-deep-charcoal mb-8 leading-relaxed">
+                                "I believe that a strong, beautiful body is the natural byproduct of a body that feels safe, sleeps well, and is nourished—not the result of a daily war with calories."
+                            </p>
+</div>
+<p class="font-body-md text-body-md opacity-80 mb-10 leading-relaxed">
+                            We have helped hundreds of women transition from the restrict-binge-guilt cycle into a sustainable lifestyle that honors their physiology and mental health.
+                        </p>
+<button class="bg-deep-charcoal text-soft-cream px-10 py-5 font-button-text text-button-text active:scale-95 transition-soft">
+                            START YOUR JOURNEY
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Blog/Articles Section -->
+<section class="py-section-gap-lg px-gutter max-w-container-max mx-auto" id="blog">
+<div class="flex justify-between items-end mb-16">
+<div>
+<h2 class="font-headline-lg text-headline-lg">Expert Insights</h2>
+<p class="font-body-md opacity-70">Answering the questions others won't.</p>
+</div>
+<a class="hidden md:block font-label-lg text-label-lg text-vibrant-olive border-b border-vibrant-olive pb-1 hover:text-deep-charcoal hover:border-deep-charcoal transition-soft" href="#">VIEW ALL ARTICLES</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Article 1 -->
+<div class="group cursor-pointer">
+<div class="aspect-video overflow-hidden mb-6">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A minimalist photograph of a plate with a subtle, sad face drawn in cutlery, representing the psychological struggle of dieting. The lighting is soft and neutral, maintaining a professional health-expert aesthetic. High-quality editorial style with significant white space." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPzkd9Mh-s6JJYEwsCHFfaQ-FJG2d9uvyE4oFoLIEZs9b2GbA8cONdQE5t1kbt_7NnO9wm93Xn-IksBRRxCVVHkG_suwQmLEHkmcyxXE28NbTSn1LkYUDJYAZt0gGP4bJzI4vXzqPWdRph2kBhjbxEOLsozn5RxlRfk88y8yu0gYrgQTjHu7IjmIRM6H3H2NCQtEbQbgTAZ_rmrI02zfXeedg5NBF21B_Hd2bZvjG7wZf2q4Oxql979lePn_D1ErdQHzh_VuzSjnQ"/>
+</div>
+<span class="font-label-lg text-[12px] text-muted-gold uppercase mb-2 block">May 15, 2026</span>
+<h3 class="font-headline-md text-[24px] leading-tight mb-4 group-hover:text-vibrant-olive transition-colors">Metabolic Rehabilitation: Why a new diet isn't the solution</h3>
+<p class="font-body-md text-deep-charcoal/70 mb-6 line-clamp-3">Understanding the difference between calorie restriction and cellular restoration is the first step toward freedom from the scale.</p>
+<span class="font-label-lg text-label-lg border-b border-deep-charcoal/20 pb-1">READ ARTICLE</span>
+</div>
+<!-- Article 2 -->
+<div class="group cursor-pointer">
+<div class="aspect-video overflow-hidden mb-6">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A macro shot of a metallic yo-yo, subtly referencing the 'yo-yo dieting' cycle through a sophisticated and abstract visual metaphor. The lighting is moody and focused, using the brand's deep charcoal and muted gold accents. Minimalist and authoritative." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5fv1JMCGoQ-wa55o72FDpejoLho4_yyt9r82TLJpJJuj0IBaRL9yt8yyTo8336gfpiFGiLA9GqLEedn3eNu-k-YZ1WhCvr-Y0QKz5qziHouQti22FYiy9k1BFcMOTj5Gl0mljjSaWkqSiyaoph8nVg0wedaqIuJR6DmPEMrkhBWnxfjAwNXsOZTGydoQEBQeJjERnMpyZDgpSJuJNWzwZmBMgARR2179FcTBUHFs_ntwTtNuEnTb0dkJDymglt_vLp28UmTArtvY"/>
+</div>
+<span class="font-label-lg text-[12px] text-muted-gold uppercase mb-2 block">April 26, 2026</span>
+<h3 class="font-headline-md text-[24px] leading-tight mb-4 group-hover:text-vibrant-olive transition-colors">The Yo-Yo Trap: Lost 2kg, Gained back 4</h3>
+<p class="font-body-md text-deep-charcoal/70 mb-6 line-clamp-3">Why your body fights back after rapid weight loss and how to signal safety to your nervous system to keep results.</p>
+<span class="font-label-lg text-label-lg border-b border-deep-charcoal/20 pb-1">READ ARTICLE</span>
+</div>
+<!-- Article 3 -->
+<div class="group cursor-pointer">
+<div class="aspect-video overflow-hidden mb-6">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A group of athletic women in a high-intensity but controlled training environment, focusing on strength and concentration. The mood is empowering and expert-led. Soft grain and warm tonal layers create a high-end, grounded vitality feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5gg7s1vzBEorCf1H5qWLT289bK-8rzXiGe3cnHKnf6ro40fAJhUwKdkjqswn0zcs_FVqYEn9QkaSIobESYCDwuB9kAosvl1HCNbkd8wjZOeuMDShOENSDp5kIaY4dHVqK6iIVVlwm9hNoR_xnJKx4ORNXvF_wqpTQQCduHFQMFeALtRUc34TitepbWHfKKBtXT0gHeQh_qS7mRHRGnEwvZ6ogRgaXufuss0MQqRXKxoktEQ8_ZIMIMwqJW7DNodBix1__F1TzRdw"/>
+</div>
+<span class="font-label-lg text-[12px] text-muted-gold uppercase mb-2 block">March 22, 2026</span>
+<h3 class="font-headline-md text-[24px] leading-tight mb-4 group-hover:text-vibrant-olive transition-colors">Lifting Heavy vs. Cardio for Metabolic Repair</h3>
+<p class="font-body-md text-deep-charcoal/70 mb-6 line-clamp-3">The science of body recomposition and why muscle is your greatest metabolic asset as you age.</p>
+<span class="font-label-lg text-label-lg border-b border-deep-charcoal/20 pb-1">READ ARTICLE</span>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="bg-deep-charcoal py-section-gap-md relative overflow-hidden">
+<div class="absolute top-0 right-0 w-1/3 h-full bg-vibrant-olive/5 skew-x-12 transform origin-top"></div>
+<div class="max-w-container-max mx-auto px-gutter text-center relative z-10">
+<h2 class="font-headline-lg text-headline-xl text-soft-cream mb-8">Stop fighting your body.<br/>Start healing it.</h2>
+<div class="flex flex-col items-center gap-6">
+<button class="bg-vibrant-olive text-soft-cream px-12 py-6 font-button-text text-lg hover:bg-success-green transition-soft shadow-xl">
+                        APPLY NOW FOR THE NEXT COHORT
+                    </button>
+<div class="flex gap-8 text-soft-cream/60">
+<span class="flex items-center gap-2 font-label-lg"><span class="material-symbols-outlined text-sm">verified</span> 100% Results Oriented</span>
+<span class="flex items-center gap-2 font-label-lg"><span class="material-symbols-outlined text-sm">support_agent</span> Dedicated Expert Support</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-deep-charcoal pt-section-gap-md pb-8 border-t border-white/5">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-section-gap-md px-gutter max-w-container-max mx-auto mb-16">
+<div class="col-span-1 md:col-span-1">
+<h3 class="text-headline-md font-headline-md font-bold text-soft-cream mb-6">Lumina Wellness</h3>
+<p class="font-body-md text-soft-cream/60 mb-8">A premium partner in metabolic health and physical transformation. Empowering women through restoration.</p>
+<div class="flex gap-4">
+<a class="text-soft-cream/80 hover:text-vibrant-olive transition-colors" href="#"><span class="material-symbols-outlined">public</span></a>
+<a class="text-soft-cream/80 hover:text-vibrant-olive transition-colors" href="#"><span class="material-symbols-outlined">mail</span></a>
+<a class="text-soft-cream/80 hover:text-vibrant-olive transition-colors" href="#"><span class="material-symbols-outlined">call</span></a>
+</div>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg text-soft-cream uppercase mb-6 tracking-widest">Start Here</h4>
+<ul class="space-y-4">
+<li><a class="font-label-lg text-label-lg text-soft-cream/80 hover:text-vibrant-olive transition-colors" href="#">Metabolic Audit</a></li>
+<li><a class="font-label-lg text-label-lg text-soft-cream/80 hover:text-vibrant-olive transition-colors" href="#">Programs</a></li>
+<li><a class="font-label-lg text-label-lg text-soft-cream/80 hover:text-vibrant-olive transition-colors" href="#">Book Consultation</a></li>
+<li><a class="font-label-lg text-label-lg text-soft-cream/80 hover:text-vibrant-olive transition-colors" href="#">Success Stories</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg text-soft-cream uppercase mb-6 tracking-widest">Company</h4>
+<ul class="space-y-4">
+<li><a class="font-label-lg text-label-lg text-soft-cream/80 hover:text-vibrant-olive transition-colors" href="#">About</a></li>
+<li><a class="font-label-lg text-label-lg text-soft-cream/80 hover:text-vibrant-olive transition-colors" href="#">Blog</a></li>
+<li><a class="font-label-lg text-label-lg text-soft-cream/80 hover:text-vibrant-olive transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="font-label-lg text-label-lg text-soft-cream/80 hover:text-vibrant-olive transition-colors" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg text-soft-cream uppercase mb-6 tracking-widest">Join the Journey</h4>
+<p class="font-body-md text-soft-cream/60 mb-4">Science-backed insights delivered to your inbox.</p>
+<form class="flex border-b border-soft-cream/30 pb-2">
+<input class="bg-transparent border-none focus:ring-0 text-soft-cream placeholder:text-soft-cream/30 w-full font-label-lg" placeholder="Email address" type="email"/>
+<button class="text-soft-cream hover:text-vibrant-olive transition-colors" type="submit"><span class="material-symbols-outlined">arrow_forward</span></button>
+</form>
+</div>
+</div>
+<div class="px-gutter max-w-container-max mx-auto pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-label-lg text-label-lg text-soft-cream/40">© 2024 Lumina Wellness. All rights reserved.</p>
+<p class="font-label-lg text-label-lg text-soft-cream/40 italic">Empowering restoration through metabolic science.</p>
+</div>
+</footer>
+<script>
+        // Simple scroll interaction for header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('py-2');
+                header.classList.add('bg-soft-cream');
+            } else {
+                header.classList.remove('py-2');
+            }
+        });
+    </script>
+</body></html>

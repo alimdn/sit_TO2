@@ -261,6 +261,11 @@ export default function TemplatePreview() {
   const storePriceSemiAnnual = planPrices.store_semi_annual ?? 550
   const storePriceAnnual = planPrices.store_annual ?? 1100
 
+  // Dynamic free-feature limit based on plan type:
+  //   Regular = 5 free, Store = 10 free
+  // MUST be declared before extraFeaturesCount (which uses it).
+  const currentFreeLimit = planType === 'store' ? 10 : FREE_FEATURES_LIMIT
+
   const extraFeaturesCount = Math.max(0, selectedFeatures.length - currentFreeLimit)
   const extraFeatureCost = extraFeaturesCount * 3
 
@@ -296,10 +301,6 @@ export default function TemplatePreview() {
   const effectiveBilling = planType === 'store'
     ? (billing === 'monthly' ? 'store' : billing === 'semi_annual' ? 'store_semi_annual' : 'store_annual')
     : billing
-
-  // Dynamic free-feature limit based on plan type:
-  //   Regular = 5 free, Store = 10 free
-  const currentFreeLimit = planType === 'store' ? 10 : FREE_FEATURES_LIMIT
 
   const toggleAddOn = (id: string) => {
     setSelectedAddOns(prev => prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id])

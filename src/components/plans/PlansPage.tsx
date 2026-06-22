@@ -315,20 +315,20 @@ export default function PlansPage() {
 
       {/* Single Pricing Card */}
       <div className="max-w-lg mx-auto mb-16">
-        <div className={`relative rounded-2xl p-8 text-white shadow-2xl overflow-hidden transition-all duration-300 ${
+        <div className={`relative rounded-2xl p-8 text-white shadow-2xl transition-all duration-300 ${
           planType === 'store'
             ? 'bg-gradient-to-br from-[#1a1a2e] via-[#3a2a0a] to-[#1a1a2e] ring-2 ring-[#F59E0B]/50'
             : 'bg-gradient-to-br from-[#000f22] via-[#0A2540] to-[#0A2540] ring-1 ring-[#00D1FF]/30'
         }`}>
           {/* Best Value badge (only when regular annual is selected) */}
           {billing === 'annual' && (
-            <div className="absolute -top-2 -right-2 bg-[#10B981] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-bl-xl rounded-tr-2xl shadow-lg z-10">
+            <div className="absolute top-4 right-4 bg-[#10B981] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full shadow-lg z-10">
               ★ Best Value
             </div>
           )}
           {/* Premium badge (any store plan selected) */}
           {planType === 'store' && (
-            <div className="absolute -top-2 -right-2 bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-bl-xl rounded-tr-2xl shadow-lg z-10 flex items-center gap-1">
+            <div className="absolute top-4 right-4 bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full shadow-lg z-10 flex items-center gap-1 whitespace-nowrap">
               <span>🛍️</span> Premium Store
             </div>
           )}

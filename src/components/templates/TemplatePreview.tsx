@@ -771,16 +771,6 @@ export default function TemplatePreview() {
                     </div>
                   )}
 
-                  {selectedAddOns.map((addOnId) => {
-                    const addOn = ADD_ONS.find(a => a.id === addOnId)
-                    return addOn ? (
-                      <div key={addOnId} className="flex justify-between text-sm" translate="no" lang="en">
-                        <span className="text-[#768dad] truncate mr-2">{addOn.name}</span>
-                        <span className="text-[#00D1FF] flex-shrink-0">+{billing === 'monthly' ? '$3/mo' : billing === 'semi_annual' ? '$18/6mo' : '$36/yr'}</span>
-                      </div>
-                    ) : null
-                  })}
-
                   {selectedDomain && domainMonthlyInstallment > 0 && (
                     <div className="flex justify-between text-sm" translate="no" lang="en">
                       <span className="text-[#768dad]">Domain installment ({domainInstallmentMonths} × $3)</span>
@@ -857,7 +847,6 @@ export default function TemplatePreview() {
                 </div>
               </div>
 
-              {/* Add-ons list — hidden from sidebar, features section under image is sufficient */}
             </div>
           </div>
         ) : (

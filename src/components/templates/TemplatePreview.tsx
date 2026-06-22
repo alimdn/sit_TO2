@@ -1160,8 +1160,6 @@ export default function TemplatePreview() {
                   )}
                 </div>
               </div>
-
-              </div>
             </div>
           </div>
         ) : templateError ? (

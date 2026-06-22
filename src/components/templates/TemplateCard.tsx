@@ -3,7 +3,8 @@
 import { useAppStore } from '@/lib/store'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Eye, Sparkles } from 'lucide-react'
+import { Eye, Sparkles, Palette } from 'lucide-react'
+import { getStyleForTemplate } from '@/lib/template-styles'
 
 interface TemplateCardProps {
   template: {
@@ -20,6 +21,9 @@ interface TemplateCardProps {
 
 export default function TemplateCard({ template }: TemplateCardProps) {
   const { setPreviewTemplate } = useAppStore()
+
+  // Get style info (name + colors) for this template
+  const style = getStyleForTemplate(template)
 
   // Category-based subtle gradient overlay (gives each card a unique feel)
   const categoryGradients: Record<string, string> = {
@@ -93,6 +97,26 @@ export default function TemplateCard({ template }: TemplateCardProps) {
         <h3 className="font-semibold text-[#000f22] mb-2 group-hover:text-[#0A2540] transition-colors">
           {template.title}
         </h3>
+
+        {/* Style summary: style name + color circles */}
+        <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center gap-1.5">
+            <Palette className="h-3.5 w-3.5 text-[#74777e] flex-shrink-0" />
+            <span className="text-xs font-medium text-[#43474d]">{style.styleName}</span>
+          </div>
+          {/* Color circles */}
+          <div className="flex items-center gap-1 ml-auto">
+            {style.styleColors.slice(0, 5).map((color, i) => (
+              <div
+                key={i}
+                className="w-4 h-4 rounded-full border border-[#e6ebf1] shadow-sm"
+                style={{ backgroundColor: color }}
+                title={color}
+              />
+            ))}
+          </div>
+        </div>
+
         <p className="text-sm text-[#4F5B76] line-clamp-2 leading-relaxed flex-1">{template.description}</p>
 
         {/* Preview button */}

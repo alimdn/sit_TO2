@@ -126,7 +126,7 @@ const SIMILARITY_OPTIONS = [
 ]
 
 export default function TemplatePreview() {
-  const { previewTemplate, setPreviewTemplate, setCurrentPage, user, setCheckoutData } = useAppStore()
+  const { previewTemplate, setPreviewTemplate, setCurrentPage, user, addCheckoutItem } = useAppStore()
   const [template, setTemplate] = useState<Template | null>(null)
   const [templateError, setTemplateError] = useState<string | null>(null)
   const [iframeLoaded, setIframeLoaded] = useState(false)
@@ -395,13 +395,14 @@ export default function TemplatePreview() {
       setCurrentPage('login')
       return
     }
-    setCheckoutData({
+    addCheckoutItem({
       templateId: template.id,
       templateTitle: template.title,
       templateImage: template.image,
       templateCategory: template.category,
       templateFeatures: selectedFeatures,
       billing: effectiveBilling,
+      planType,
       selectedAddOns,
       additionalInfo,
       similarSiteUrl,

@@ -28,6 +28,7 @@ import AdminSocial from '@/components/admin/AdminSocial'
 import AdminPayments from '@/components/admin/AdminPayments'
 import AdminSettings from '@/components/admin/AdminSettings'
 import CheckoutPage from '@/components/checkout/CheckoutPage'
+import LegalPage from '@/components/legal/LegalPage'
 import { Button } from '@/components/ui/button'
 
 // Lazy-load TemplatePreview — it's 948 lines and only needed when a user
@@ -282,6 +283,10 @@ export default function Home() {
       case 'dashboard': return <DashboardPage />
       case 'admin': return <AdminPage />
       case 'checkout': return <CheckoutPageRoute />
+      case 'about': return <LegalPage pageType="about" />
+      case 'privacy': return <LegalPage pageType="privacy" />
+      case 'terms': return <LegalPage pageType="terms" />
+      case 'support': return <LegalPage pageType="support" />
       default: return <HomePage />
     }
   }

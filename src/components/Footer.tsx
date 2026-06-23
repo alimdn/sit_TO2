@@ -64,7 +64,7 @@ export default function Footer() {
     return siteName
   }
 
-  const handleNav = (page: 'home' | 'templates' | 'plans' | 'contact') => {
+  const handleNav = (page: 'home' | 'templates' | 'plans' | 'contact' | 'about' | 'privacy' | 'terms' | 'support') => {
     setCurrentPage(page)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -110,13 +110,16 @@ export default function Footer() {
             <h4 className="font-semibold text-sm label-style text-[#768dad] mb-4">Company</h4>
             <ul className="space-y-2 text-sm text-[#768dad]">
               <li>
-                <button onClick={() => handleNav('contact')} className="hover:text-white transition-colors">About Us</button>
+                <button onClick={() => handleNav('about')} className="hover:text-white transition-colors">About Us</button>
               </li>
               <li>
-                <button className="hover:text-white transition-colors">Privacy Policy</button>
+                <button onClick={() => handleNav('privacy')} className="hover:text-white transition-colors">Privacy Policy</button>
               </li>
               <li>
-                <button className="hover:text-white transition-colors">Terms of Service</button>
+                <button onClick={() => handleNav('terms')} className="hover:text-white transition-colors">Terms of Service</button>
+              </li>
+              <li>
+                <button onClick={() => handleNav('support')} className="hover:text-white transition-colors">Support Center</button>
               </li>
               <li>
                 <a href={`mailto:${contactEmail}`} className="hover:text-white transition-colors">
@@ -156,8 +159,8 @@ export default function Footer() {
             © {new Date().getFullYear()} {siteName}. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-[#768dad]">
-            <button className="hover:text-white transition-colors">Privacy Policy</button>
-            <button className="hover:text-white transition-colors">Terms of Service</button>
+            <button onClick={() => handleNav('privacy')} className="hover:text-white transition-colors">Privacy Policy</button>
+            <button onClick={() => handleNav('terms')} className="hover:text-white transition-colors">Terms of Service</button>
           </div>
         </div>
       </div>

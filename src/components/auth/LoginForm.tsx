@@ -37,7 +37,21 @@ export default function LoginForm() {
           localStorage.setItem('user', JSON.stringify(data.user))
         }
         toast.success('Welcome back!')
-        setCurrentPage(data.user.role === 'admin' ? 'admin' : 'dashboard')
+
+        // Check if there's a pending checkout — if so, redirect back to checkout
+        // instead of dashboard. This fixes the "No checkout data found" error
+        // that occurred when a user clicked "Get This Template" without being
+        // logged in, got redirected to login, then lost their checkout data.
+        const pendingCheckout = typeof window !== 'undefined'
+          ? sessionStorage.getItem('pendingCheckout')
+          : null
+
+        if (pendingCheckout === 'true') {
+          sessionStorage.removeItem('pendingCheckout')
+          setCurrentPage('checkout')
+        } else {
+          setCurrentPage(data.user.role === 'admin' ? 'admin' : 'dashboard')
+        }
         window.scrollTo({ top: 0, behavior: 'smooth' })
       } else {
         toast.error(data.error || 'Invalid credentials')

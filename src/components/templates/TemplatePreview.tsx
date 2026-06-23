@@ -4,7 +4,9 @@ import { useEffect, useState, useRef } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, PenLine, LayoutDashboard, Clock, Search, AlertTriangle, ExternalLink, RotateCw } from 'lucide-react'
+import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, PenLine, LayoutDashboard, Clock, Search, AlertTriangle, ExternalLink, RotateCw, Heart } from 'lucide-react'
+import { toast } from 'sonner'
+import FavoriteButton from './FavoriteButton'
 
 interface Template {
   id: string
@@ -392,6 +394,11 @@ export default function TemplatePreview() {
   const handleProceedToCheckout = () => {
     if (!template) return
     if (!user) {
+      // Save checkout data to sessionStorage so it survives the login redirect
+      // Set a flag so LoginForm knows to redirect back to checkout after login
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('pendingCheckout', 'true')
+      }
       setCurrentPage('login')
       return
     }
@@ -449,9 +456,13 @@ export default function TemplatePreview() {
             <div className="lg:col-span-2 space-y-6">
               {/* Preview image */}
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-[#000f22] mb-4" style={{ letterSpacing: '-0.02em' }}>
-                  {template.title}
-                </h1>
+                <div className="flex items-start justify-between gap-4 mb-4">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-[#000f22]" style={{ letterSpacing: '-0.02em' }}>
+                    {template.title}
+                  </h1>
+                  {/* Wishlist button */}
+                  <FavoriteButton templateId={template.id} />
+                </div>
                 <p className="text-[#4F5B76] mb-6 leading-relaxed">{template.description}</p>
                 <div className="rounded-2xl overflow-hidden border border-[#e6ebf1] shadow-card">
                   <img src={template.image} alt={template.title} className="w-full object-cover" />

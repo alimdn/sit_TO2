@@ -120,20 +120,20 @@ export default function CheckoutPage() {
     )
   }
 
-  const { templateTitle, templateImage, templateCategory, templateFeatures, billing, selectedAddOns, domain, domainPrice } = checkoutData
+  const { templateTitle, templateImage, templateCategory, templateFeatures, billing: rawBilling, selectedAddOns, domain, domainPrice } = checkoutData
 
-  // Compute the effective billing interval based on planType toggle.
-  // If the user selects 'store', we map the regular billing cycle to its
-  // store equivalent (monthly→store, semi_annual→store_semi_annual, annual→store_annual).
-  // This ensures the customer pays the Store price when they select Store Package.
-  const effectiveBilling =
-    planType === 'store'
-      ? billing === 'monthly'
-        ? 'store'
-        : billing === 'semi_annual'
-          ? 'store_semi_annual'
-          : 'store_annual'
-      : billing
+  // Normalize billing to its base cycle (store → monthly, store_semi_annual → semi_annual, etc.)
+  // This is needed because TemplatePreview sends effectiveBilling (e.g. 'store', 'store_annual')
+  // but CheckoutPage needs the cycle to compute months and periods.
+  const billing = rawBilling === 'store' ? 'monthly'
+    : rawBilling === 'store_semi_annual' ? 'semi_annual'
+    : rawBilling === 'store_annual' ? 'annual'
+    : rawBilling
+
+  // The effective billing interval for price lookup (store_* when Store Package)
+  const effectiveBilling = planType === 'store'
+    ? (billing === 'monthly' ? 'store' : billing === 'semi_annual' ? 'store_semi_annual' : 'store_annual')
+    : billing
 
   // Use API price when available, else fallback
   const basePrice = planPrices[effectiveBilling] ?? FALLBACK_PRICES[effectiveBilling] ?? (planType === 'store' ? 100 : 30)

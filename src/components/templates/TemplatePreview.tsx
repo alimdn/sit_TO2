@@ -409,6 +409,7 @@ export default function TemplatePreview() {
       templateCategory: template.category,
       templateFeatures: selectedFeatures,
       billing: effectiveBilling,
+      planType,
       selectedAddOns,
       additionalInfo,
       similarSiteUrl,

@@ -76,15 +76,9 @@ export default function CheckoutPage() {
   const [processing, setProcessing] = useState(false)
   const [planPrices, setPlanPrices] = useState<Record<string, number>>(FALLBACK_PRICES)
   const [gateways, setGateways] = useState<PaymentGateway[]>([])
-  // Plan type toggle: 'regular' (default) or 'store' (premium with e-commerce + daily backups)
-  // The user can upgrade to Store Package at checkout — this changes the pricing
-  // and adds Store-specific features. They cannot pay less than the Store price
-  // because selecting 'store' switches the billing to store_* intervals.
-  const [planType, setPlanType] = useState<PlanType>(() => {
-    // Initialize from checkoutData.billing if it's already a store plan
-    const b = checkoutData?.billing
-    return b === 'store' || b === 'store_semi_annual' || b === 'store_annual' ? 'store' : 'regular'
-  })
+  // Plan type is LOCKED from the TemplatePreview page — user cannot change it here.
+  // This prevents customers from selecting Store Package but paying Regular price.
+  const planType: PlanType = checkoutData?.planType === 'store' ? 'store' : 'regular'
 
   // Fetch plan prices and active payment gateways from API so admin changes reflect here.
   useEffect(() => {
@@ -326,115 +320,46 @@ export default function CheckoutPage() {
         </Button>
       </div>
 
-      {/* Plan Type Toggle — Regular vs Store Package
-          This is at the TOP of checkout so the customer explicitly chooses
-          which plan type they want. Selecting 'Store Package' switches pricing
-          to store_* intervals and adds Store-specific features. */}
-      <div className="bg-white rounded-2xl p-6 border border-[#e6ebf1] shadow-card mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="font-bold text-[#000f22] flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-[#000f22] flex items-center justify-center">
-              <FileText className="h-4 w-4 text-white" />
-            </div>
-            Choose Your Plan Type
-          </h2>
-          <Badge className={`text-xs ${planType === 'store' ? 'bg-[#F59E0B]/15 text-[#F59E0B] border border-[#F59E0B]/30' : 'bg-[#00D1FF]/10 text-[#00D1FF]'}`}>
-            {planType === 'store' ? '🛍️ Premium' : 'Standard'}
-          </Badge>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Regular Plan Option */}
-          <button
-            onClick={() => setPlanType('regular')}
-            className={`text-left p-5 rounded-xl border-2 transition-all duration-200 ${
-              planType === 'regular'
-                ? 'border-[#00D1FF] bg-[#00D1FF]/5 ring-1 ring-[#00D1FF]/30'
-                : 'border-[#e6ebf1] hover:border-[#c4c6ce] bg-white'
-            }`}
-          >
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                  planType === 'regular' ? 'border-[#00D1FF] bg-[#00D1FF]' : 'border-[#c4c6ce]'
-                }`}>
-                  {planType === 'regular' && <Check className="h-3 w-3 text-white" />}
-                </div>
-                <span className="font-bold text-[#000f22]">Regular Website</span>
+      {/* Plan Type Summary — read-only, locked from TemplatePreview selection.
+          User CANNOT change plan type here. Shows which plan they selected. */}
+      <div className={`rounded-2xl p-5 border mb-6 ${
+        planType === 'store'
+          ? 'bg-gradient-to-r from-[#FFF8E1] to-[#FFFBF0] border-[#F59E0B]/30'
+          : 'bg-[#00D1FF]/5 border-[#00D1FF]/20'
+      }`}>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {planType === 'store' ? (
+              <div className="w-10 h-10 rounded-lg bg-[#F59E0B] flex items-center justify-center">
+                <Store className="h-5 w-5 text-white" />
               </div>
-              <span className="text-sm font-bold text-[#000f22]">
-                ${planPrices[billing] ?? FALLBACK_PRICES[billing] ?? 30}/{period}
-              </span>
-            </div>
-            <p className="text-xs text-[#4F5B76] leading-relaxed mb-2">
-              Professional website design + hosting + maintenance. Perfect for business sites, portfolios, and landing pages.
-            </p>
-            <div className="flex flex-wrap gap-1">
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#f1f4f7] text-[#4F5B76]">Hosting</span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#f1f4f7] text-[#4F5B76]">SSL</span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#f1f4f7] text-[#4F5B76]">Support</span>
-            </div>
-          </button>
-
-          {/* Store Package Option */}
-          <button
-            onClick={() => setPlanType('store')}
-            className={`text-left p-5 rounded-xl border-2 transition-all duration-200 relative overflow-hidden ${
-              planType === 'store'
-                ? 'border-[#F59E0B] bg-gradient-to-br from-[#FFF8E1] to-[#FFFBF0] ring-1 ring-[#F59E0B]/30'
-                : 'border-[#e6ebf1] hover:border-[#F59E0B]/50 bg-white'
-            }`}
-          >
-            {planType === 'store' && (
-              <div className="absolute top-0 right-0 bg-[#F59E0B] text-white text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-bl-lg">
-                Selected
+            ) : (
+              <div className="w-10 h-10 rounded-lg bg-[#00D1FF] flex items-center justify-center">
+                <FileText className="h-5 w-5 text-[#000f22]" />
               </div>
             )}
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                  planType === 'store' ? 'border-[#F59E0B] bg-[#F59E0B]' : 'border-[#c4c6ce]'
-                }`}>
-                  {planType === 'store' && <Check className="h-3 w-3 text-white" />}
-                </div>
-                <span className="font-bold text-[#000f22] flex items-center gap-1.5">
-                  <Store className="h-4 w-4 text-[#F59E0B]" />
-                  Store Package
-                </span>
-              </div>
-              <span className="text-sm font-bold text-[#F59E0B]">
-                ${planPrices[effectiveBilling === 'store' ? 'store' : effectiveBilling === 'store_semi_annual' ? 'store_semi_annual' : effectiveBilling === 'store_annual' ? 'store_annual' : 'store'] ?? FALLBACK_PRICES['store'] ?? 100}/{period}
-              </span>
-            </div>
-            <p className="text-xs text-[#4F5B76] leading-relaxed mb-2">
-              Everything in Regular + full e-commerce, daily backups, unlimited products, payment integration, and priority support.
-            </p>
-            <div className="flex flex-wrap gap-1">
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#F59E0B]/10 text-[#92400E]">E-Commerce</span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#F59E0B]/10 text-[#92400E]">Daily Backups</span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#F59E0B]/10 text-[#92400E]">100GB</span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#F59E0B]/10 text-[#92400E]">24/7 Priority</span>
-            </div>
-          </button>
-        </div>
-
-        {/* Store Package extra features summary (only shown when Store is selected) */}
-        {planType === 'store' && (
-          <div className="mt-4 p-4 rounded-xl bg-gradient-to-r from-[#FFF8E1] to-[#FFFBF0] border border-[#F59E0B]/20">
-            <p className="text-xs font-semibold text-[#92400E] mb-2 flex items-center gap-1.5">
-              <Store className="h-3.5 w-3.5" />
-              Store Package includes these additional features:
-            </p>
-            <div className="grid grid-cols-2 gap-1.5">
-              {STORE_PACKAGE_FEATURES.map((feature, i) => (
-                <div key={i} className="flex items-center gap-1.5 text-xs text-[#4F5B76]">
-                  <Check className="h-3 w-3 text-[#F59E0B] flex-shrink-0" />
-                  <span>{feature}</span>
-                </div>
-              ))}
+            <div>
+              <p className="font-bold text-sm text-[#000f22]">
+                {planType === 'store' ? 'Store Package' : 'Regular Website'}
+              </p>
+              <p className="text-xs text-[#4F5B76]">
+                {planType === 'store'
+                  ? 'Includes e-commerce + daily backups + priority support'
+                  : 'Professional design + hosting + maintenance'
+                }
+              </p>
             </div>
           </div>
-        )}
+          <div className="text-right">
+            <p className={`text-lg font-bold ${planType === 'store' ? 'text-[#F59E0B]' : 'text-[#00D1FF]'}`}>
+              ${planPrices[effectiveBilling] ?? FALLBACK_PRICES[effectiveBilling] ?? (planType === 'store' ? 100 : 30)}
+              <span className="text-xs text-[#4F5B76] font-normal">/{period}</span>
+            </p>
+            <p className="text-[10px] text-[#74777e] uppercase tracking-wide">
+              {billing === 'monthly' ? 'Monthly' : billing === 'semi_annual' ? 'Semi-Annual' : 'Annual'}
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">

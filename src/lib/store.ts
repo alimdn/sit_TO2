@@ -21,6 +21,7 @@ export interface CheckoutData {
   templateCategory: string
   templateFeatures: string[]
   billing: 'monthly' | 'semi_annual' | 'annual' | 'store' | 'store_semi_annual' | 'store_annual'
+  planType: 'regular' | 'store'
   selectedAddOns: string[]
   additionalInfo?: string
   similarSiteUrl?: string

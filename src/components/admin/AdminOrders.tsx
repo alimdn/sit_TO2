@@ -36,6 +36,11 @@ const SIMILARITY_LABELS: Record<string, { en: string; ar: string }> = {
 }
 
 const FREE_FEATURES_LIMIT = 5
+const STORE_FREE_FEATURES_LIMIT = 10
+
+function isStorePlan(billing: string | null): boolean {
+  return billing === 'store' || billing === 'store_semi_annual' || billing === 'store_annual'
+}
 
 // Default work-management milestones for every new order.
 // 7 stages reflecting the real project lifecycle.
@@ -784,6 +789,8 @@ export default function AdminOrders() {
             const features = parseJSON(selected.templateFeatures)
             const addOns = parseJSON(selected.addOns)
             const criteria = parseJSON(selected.similarSiteCriteria)
+            const isStore = isStorePlan(selected.billing)
+            const orderFreeLimit = isStore ? STORE_FREE_FEATURES_LIMIT : FREE_FEATURES_LIMIT
             return (
               <div className="space-y-5 mt-4">
                 {/* Customer & Order Info */}
@@ -1029,11 +1036,11 @@ export default function AdminOrders() {
                     <div className="flex flex-wrap gap-1.5">
                       {features.map((f, i) => (
                         <span key={i} className={`text-[10px] px-2 py-0.5 rounded-full border ${
-                          i < FREE_FEATURES_LIMIT
+                          i < orderFreeLimit
                             ? 'bg-[#f7fafd] text-[#43474d] border-[#e6ebf1]'
                             : 'bg-[#FFF8E1] text-[#92400E] border-[#FFE082]'
                         }`}>
-                          {f}{i >= FREE_FEATURES_LIMIT && ' (+$3)'}
+                          {f}{i >= orderFreeLimit && ' (+$3)'}
                         </span>
                       ))}
                     </div>

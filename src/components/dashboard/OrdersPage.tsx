@@ -24,6 +24,12 @@ const ADD_ON_NAMES: Record<string, string> = {
 }
 
 const FREE_FEATURES_LIMIT = 5
+const STORE_FREE_FEATURES_LIMIT = 10
+
+// Check if an order is a Store plan (based on billing field)
+function isStorePlan(billing: string | null): boolean {
+  return billing === 'store' || billing === 'store_semi_annual' || billing === 'store_annual'
+}
 
 const SIMILARITY_LABELS: Record<string, { en: string; ar: string }> = {
   layout: { en: 'Layout', ar: 'الشكل' },
@@ -321,7 +327,8 @@ export default function OrdersPage() {
                     </Badge>
                   </div>
                   <p className="text-xs text-[#4F5B76]">
-                    Created {new Date(order.createdAt).toLocaleDateString()} • {order.billing === 'annual' ? 'Annual' : 'Monthly'} Plan
+                    Created {new Date(order.createdAt).toLocaleDateString()} • {order.billing === 'annual' || order.billing === 'store_annual' ? 'Annual' : order.billing === 'semi_annual' || order.billing === 'store_semi_annual' ? 'Semi-Annual' : 'Monthly'} Plan
+                    {isStorePlan(order.billing) && <span className="text-[#F59E0B] font-medium"> • 🛍️ Store Package</span>}
                     {order.isDemo && <span className="text-[#F59E0B] font-medium"> • Demo order (not a real purchase)</span>}
                   </p>
                 </CardHeader>
@@ -522,6 +529,8 @@ export default function OrdersPage() {
             const features = parseJSON(selectedOrder.templateFeatures)
             const addOns = parseJSON(selectedOrder.addOns)
             const criteria = parseJSON(selectedOrder.similarSiteCriteria)
+            const isStore = isStorePlan(selectedOrder.billing)
+            const orderFreeLimit = isStore ? STORE_FREE_FEATURES_LIMIT : FREE_FEATURES_LIMIT
             return (
               <div className="space-y-4 mt-4">
                 {/* Features */}
@@ -531,11 +540,11 @@ export default function OrdersPage() {
                     <div className="flex flex-wrap gap-1.5">
                       {features.map((f, i) => (
                         <span key={i} className={`text-[10px] px-2 py-0.5 rounded-full border ${
-                          i < FREE_FEATURES_LIMIT
+                          i < orderFreeLimit
                             ? 'bg-[#f7fafd] text-[#43474d] border-[#e6ebf1]'
                             : 'bg-[#FFF8E1] text-[#92400E] border-[#FFE082]'
                         }`}>
-                          {f}{i >= FREE_FEATURES_LIMIT && ' (+$3)'}
+                          {f}{i >= orderFreeLimit && ' (+$3)'}
                         </span>
                       ))}
                     </div>

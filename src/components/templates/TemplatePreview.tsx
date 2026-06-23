@@ -392,6 +392,11 @@ export default function TemplatePreview() {
   const handleProceedToCheckout = () => {
     if (!template) return
     if (!user) {
+      // Save checkout data to sessionStorage so it survives the login redirect
+      // Set a flag so LoginForm knows to redirect back to checkout after login
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('pendingCheckout', 'true')
+      }
       setCurrentPage('login')
       return
     }

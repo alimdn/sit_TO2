@@ -4,7 +4,8 @@ import { useEffect, useState, useRef } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, PenLine, LayoutDashboard, Clock, Search, AlertTriangle, ExternalLink, RotateCw } from 'lucide-react'
+import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, PenLine, LayoutDashboard, Clock, Search, AlertTriangle, ExternalLink, RotateCw, Heart } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface Template {
   id: string
@@ -453,9 +454,33 @@ export default function TemplatePreview() {
             <div className="lg:col-span-2 space-y-6">
               {/* Preview image */}
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-[#000f22] mb-4" style={{ letterSpacing: '-0.02em' }}>
-                  {template.title}
-                </h1>
+                <div className="flex items-start justify-between gap-4 mb-4">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-[#000f22]" style={{ letterSpacing: '-0.02em' }}>
+                    {template.title}
+                  </h1>
+                  {/* Wishlist button */}
+                  <button
+                    onClick={() => {
+                      try {
+                        const favorites = JSON.parse(localStorage.getItem('templateFavorites') || '[]')
+                        if (favorites.includes(template.id)) {
+                          localStorage.setItem('templateFavorites', JSON.stringify(favorites.filter((id: string) => id !== template.id)))
+                          toast.success('Removed from favorites')
+                        } else {
+                          localStorage.setItem('templateFavorites', JSON.stringify([...favorites, template.id]))
+                          toast.success('Added to favorites! You can return to it later.')
+                        }
+                        // Force re-render to update button state
+                        window.dispatchEvent(new Event('storage'))
+                      } catch {}
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl border-2 transition-all duration-200 flex-shrink-0 mt-1 border-[#e6ebf1] hover:border-[#ef4444] text-[#43474d] hover:text-[#ef4444]"
+                    title="Add to favorites"
+                  >
+                    <Heart className="h-4 w-4" />
+                    <span className="text-xs font-semibold hidden sm:inline">Favorite</span>
+                  </button>
+                </div>
                 <p className="text-[#4F5B76] mb-6 leading-relaxed">{template.description}</p>
                 <div className="rounded-2xl overflow-hidden border border-[#e6ebf1] shadow-card">
                   <img src={template.image} alt={template.title} className="w-full object-cover" />

@@ -3,8 +3,9 @@
 import { useAppStore } from '@/lib/store'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Eye, Sparkles, Palette } from 'lucide-react'
+import { Eye, Sparkles, Palette, Heart } from 'lucide-react'
 import { getStyleForTemplate } from '@/lib/template-styles'
+import { useState, useEffect } from 'react'
 
 interface TemplateCardProps {
   template: {
@@ -21,6 +22,36 @@ interface TemplateCardProps {
 
 export default function TemplateCard({ template }: TemplateCardProps) {
   const { setPreviewTemplate } = useAppStore()
+
+  // Wishlist (favorites) — saved in localStorage so user can return later
+  const [isFavorited, setIsFavorited] = useState(false)
+
+  useEffect(() => {
+    try {
+      const favorites = JSON.parse(localStorage.getItem('templateFavorites') || '[]')
+      setIsFavorited(favorites.includes(template.id))
+    } catch {
+      setIsFavorited(false)
+    }
+  }, [template.id])
+
+  const toggleFavorite = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    try {
+      const favorites = JSON.parse(localStorage.getItem('templateFavorites') || '[]')
+      let newFavorites
+      if (favorites.includes(template.id)) {
+        newFavorites = favorites.filter((id: string) => id !== template.id)
+        setIsFavorited(false)
+      } else {
+        newFavorites = [...favorites, template.id]
+        setIsFavorited(true)
+      }
+      localStorage.setItem('templateFavorites', JSON.stringify(newFavorites))
+    } catch {
+      // localStorage might not be available
+    }
+  }
 
   // Get style info (name + colors) for this template
   const style = getStyleForTemplate(template)
@@ -77,6 +108,19 @@ export default function TemplateCard({ template }: TemplateCardProps) {
             Live Preview
           </Badge>
         )}
+
+        {/* Wishlist / Favorite button — heart icon on the image */}
+        <button
+          onClick={toggleFavorite}
+          className={`absolute bottom-3 right-3 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 shadow-md z-10 ${
+            isFavorited
+              ? 'bg-[#ef4444] text-white scale-110'
+              : 'bg-white/90 text-[#43474d] hover:bg-white hover:scale-110'
+          }`}
+          title={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
+        >
+          <Heart className={`h-4 w-4 ${isFavorited ? 'fill-white' : ''}`} />
+        </button>
 
         {/* Hover overlay with action hint */}
         <div className="absolute inset-0 bg-[#000f22]/0 group-hover:bg-[#000f22]/15 transition-colors duration-500 pointer-events-none" />

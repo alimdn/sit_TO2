@@ -27,27 +27,38 @@ export default function TemplateCard({ template }: TemplateCardProps) {
   const [isFavorited, setIsFavorited] = useState(false)
 
   useEffect(() => {
-    try {
-      const favorites = JSON.parse(localStorage.getItem('templateFavorites') || '[]')
-      setIsFavorited(favorites.includes(template.id))
-    } catch {
-      setIsFavorited(false)
+    const checkFavorite = () => {
+      try {
+        const favorites = JSON.parse(localStorage.getItem('templateFavorites') || '[]')
+        setIsFavorited(favorites.includes(template.id))
+      } catch {
+        setIsFavorited(false)
+      }
+    }
+    checkFavorite()
+    // Listen for updates from other components (e.g., FavoriteButton in preview)
+    window.addEventListener('favoritesUpdated', checkFavorite)
+    window.addEventListener('storage', checkFavorite)
+    return () => {
+      window.removeEventListener('favoritesUpdated', checkFavorite)
+      window.removeEventListener('storage', checkFavorite)
     }
   }, [template.id])
 
   const toggleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation()
+    e.preventDefault()
     try {
       const favorites = JSON.parse(localStorage.getItem('templateFavorites') || '[]')
-      let newFavorites
       if (favorites.includes(template.id)) {
-        newFavorites = favorites.filter((id: string) => id !== template.id)
+        localStorage.setItem('templateFavorites', JSON.stringify(favorites.filter((id: string) => id !== template.id)))
         setIsFavorited(false)
       } else {
-        newFavorites = [...favorites, template.id]
+        localStorage.setItem('templateFavorites', JSON.stringify([...favorites, template.id]))
         setIsFavorited(true)
       }
-      localStorage.setItem('templateFavorites', JSON.stringify(newFavorites))
+      // Notify other components
+      window.dispatchEvent(new Event('favoritesUpdated'))
     } catch {
       // localStorage might not be available
     }

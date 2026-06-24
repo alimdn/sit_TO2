@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Flora Editorial | Hand-tied with Love</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-primary": "#dac0c5",
+                    "on-primary": "#ffffff",
+                    "surface-container": "#eeeeee",
+                    "secondary-fixed": "#ccead6",
+                    "on-tertiary-container": "#815b34",
+                    "on-secondary-container": "#4f6a5b",
+                    "background": "#f9f9f9",
+                    "secondary": "#496455",
+                    "on-background": "#1a1c1c",
+                    "secondary-fixed-dim": "#b0cdbb",
+                    "surface-tint": "#6d595e",
+                    "tertiary-fixed": "#ffdcbd",
+                    "on-secondary": "#ffffff",
+                    "primary": "#6d595e",
+                    "primary-container": "#f5dadf",
+                    "surface-container-highest": "#e2e2e2",
+                    "secondary-container": "#ccead6",
+                    "stem-earth": "#A67C52",
+                    "on-tertiary-fixed-variant": "#61401b",
+                    "inverse-surface": "#2f3131",
+                    "on-primary-fixed-variant": "#544246",
+                    "on-secondary-fixed": "#062014",
+                    "blush-soft": "#F5DADF",
+                    "leaf-deep": "#2D4739",
+                    "tertiary-fixed-dim": "#eebd8e",
+                    "inverse-on-surface": "#f1f1f1",
+                    "on-error": "#ffffff",
+                    "on-surface-variant": "#4e4446",
+                    "on-primary-fixed": "#26171b",
+                    "surface-variant": "#e2e2e2",
+                    "surface-bright": "#f9f9f9",
+                    "error-container": "#ffdad6",
+                    "primary-fixed-dim": "#dac0c5",
+                    "ink-black": "#1A1A1A",
+                    "tertiary-container": "#ffdab9",
+                    "on-secondary-fixed-variant": "#324c3e",
+                    "on-primary-container": "#725e62",
+                    "tertiary": "#7c5730",
+                    "outline": "#807476",
+                    "surface-container-low": "#f3f3f3",
+                    "on-error-container": "#93000a",
+                    "surface-container-high": "#e8e8e8",
+                    "paper-white": "#FFFFFF",
+                    "surface-dim": "#dadada",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed": "#f7dce1",
+                    "on-surface": "#1a1c1c",
+                    "on-tertiary-fixed": "#2c1600",
+                    "surface": "#f9f9f9",
+                    "error": "#ba1a1a",
+                    "outline-variant": "#d1c3c5",
+                    "surface-container-lowest": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "gutter": "1.5rem",
+                    "xs": "0.5rem",
+                    "md": "1.5rem",
+                    "max-width": "1440px",
+                    "xl": "4rem",
+                    "lg": "2.5rem",
+                    "margin-desktop": "5rem",
+                    "sm": "1rem",
+                    "margin-mobile": "1rem"
+            },
+            "fontFamily": {
+                    "label-md": ["Hanken Grotesk"],
+                    "display-lg": ["EB Garamond"],
+                    "headline-md": ["EB Garamond"],
+                    "body-md": ["Hanken Grotesk"],
+                    "headline-sm": ["EB Garamond"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "display-lg-mobile": ["EB Garamond"],
+                    "label-sm": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg-mobile": ["36px", {"lineHeight": "42px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-nav {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .hero-gradient {
+            background: linear-gradient(to bottom, rgba(249, 249, 249, 0) 0%, rgba(249, 249, 249, 0.4) 100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-blush-soft selection:text-leaf-deep">
+<!-- TopNavBar -->
+<header class="sticky top-0 w-full z-50 bg-surface/90 backdrop-blur-md border-b border-stem-earth/10">
+<nav class="flex justify-between items-center w-full px-4 md:px-margin-desktop py-4 max-w-max-width mx-auto">
+<div class="font-display-lg text-headline-sm text-leaf-deep tracking-tight">Flora Editorial</div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="font-label-md text-label-md text-leaf-deep font-bold border-b-2 border-leaf-deep pb-1" href="#">All Flowers</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-leaf-deep transition-colors" href="#">Seasonal</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-leaf-deep transition-colors" href="#">Wedding</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-leaf-deep transition-colors" href="#">Subscription</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-leaf-deep transition-colors" href="#">About</a>
+</div>
+<div class="flex items-center space-x-4">
+<button class="p-2 text-leaf-deep hover:opacity-70 transition-opacity">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+</button>
+<button class="md:hidden p-2 text-leaf-deep">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</div>
+</nav>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative w-full h-[870px] overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-[10s] hover:scale-105" data-alt="A large-scale, atmospheric high-resolution photograph of a minimalist floral arrangement. The scene features a single, structural white lily and delicate wild grasses in a handcrafted ceramic vase. The background is a soft, warm paper-white studio setting with natural sunlight casting long, gentle shadows. The aesthetic is clean, premium, and serene, utilizing a palette of cream, muted green, and soft ivory to convey luxury and hand-tied care." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBcAXWkmsgKCARCeKL1OCWwye2u210_PJ7T4GkYyb3wyjr8NbjL9CM7Oa13MQ4FUb6c1n15n218KwcA0J0YC6IBSXgHdBOcC1Tt5iGUjkJQmDpKxseaGYKYDHb6kpKzPyLYxbdxtYgswbn9W9kbevyRntjTK_36bO4rqC4H-2XciiSItU_Dw-o0PbmV-h_LGJwn8yhaj5dpSrUNSYeX40Fz16PRGmmUY0acd1r0N-JuyJBss7-AyevdxMl_9TGfejt93AonHZBvFY8')">
+</div>
+<div class="absolute inset-0 hero-gradient"></div>
+</div>
+<div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-6 max-w-4xl mx-auto">
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-leaf-deep mb-6">Hand-tied with love.<br/>Delivered to your door.</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-lg">Curated botanical sculptures designed to bring the quiet luxury of nature into your home, one stem at a time.</p>
+<button class="px-10 py-4 bg-leaf-deep text-paper-white font-label-md text-label-md rounded-lg shadow-sm hover:opacity-90 transition-all active:scale-95">
+                    Shop the Collection
+                </button>
+</div>
+</section>
+<!-- Featured Collection -->
+<section class="py-xl px-4 md:px-margin-desktop max-w-max-width mx-auto">
+<div class="flex justify-between items-end mb-12">
+<div>
+<h2 class="font-headline-md text-headline-md text-leaf-deep">The Editorial Pick</h2>
+<p class="text-on-surface-variant font-body-md mt-2">Seasonally inspired, locally sourced.</p>
+</div>
+<a class="hidden md:block font-label-md text-label-md text-leaf-deep underline underline-offset-4" href="#">View All Collections</a>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Product Card 1 -->
+<div class="group flex flex-col">
+<div class="relative aspect-[3/4] overflow-hidden rounded-lg mb-4 bg-surface-container-low border border-stem-earth/10 transition-all duration-500 group-hover:border-leaf-deep/20">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A professional product shot of 'Wild Peonies' in a minimalist clear glass vase. The peonies are a soft, dusty rose color with lush green foliage. Set against a clean, light-mode background with soft ambient lighting. High-end editorial photography style, focusing on the delicate texture of the petals." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCki3WYw3Jg9PZwXuL56HXCEzqlMaKcGMj9wtR5pUIEvZiEXGqnNNli2bkZJDq0UYA-n557lehtbu0D6TEAxF_Pk7wHIXc9gODWPdx-GjXxGshWsExFEtRY8_DQ8ewHiLti_gchw2tuUW31aAr3mdDAFJTakcBxVE3TYAFCJSd5DFItONFag1Ra60JhOe5zNdmQgTG4DpEnmETxYHbDM0ssAVkWuShsCkAGPTBkFnc_7dHFtjSb1qqjVKl82BoL4mHi1sNNgQg4Eak"/>
+<div class="absolute inset-0 bg-leaf-deep/0 group-hover:bg-leaf-deep/5 transition-colors duration-500"></div>
+<button class="absolute bottom-4 left-4 right-4 translate-y-10 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 bg-paper-white text-leaf-deep py-3 rounded-lg font-label-md text-label-md shadow-lg flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="add_shopping_cart">add_shopping_cart</span>
+                            Add to Cart
+                        </button>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-sm text-[18px] text-leaf-deep">Wild Peonies</h3>
+<p class="text-on-surface-variant text-label-sm font-label-sm">Pink Sorbet Edition</p>
+</div>
+<span class="font-body-md text-leaf-deep">$64.00</span>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="group flex flex-col">
+<div class="relative aspect-[3/4] overflow-hidden rounded-lg mb-4 bg-surface-container-low border border-stem-earth/10 transition-all duration-500 group-hover:border-leaf-deep/20">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A sculptural arrangement of 'Desert Lilies' featuring tall white lilies and architectural dried palm fronds. The composition is asymmetrical and modern. Soft natural lighting emphasizes the crisp white against a warm, sandy-toned background. Minimalist editorial style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2RfhLxXcr1yf3db2BwMlWGTFgDZo9VKucheXwbq1fq9MtbnE1Lh4gnzuB3qFScs051f6iDEgBZI8_L4gpdQb4G4gu_Ijs7McPmAa4lSRI0YueB9yLtiJhshDKbvF9a3qznWqRxElkF7DKMIxrhXnnHZmmQAFNTIYZKR1v4S8-aKi6oi2U8j4cI_ZZRhXpyzK_28iap06fyGmEbe-X6EiumugX05HW6cEoQz_G2ZJHK7AfolrgwgE_1aK3xX1RAHcQGh3Rr8ks7mc"/>
+<div class="absolute inset-0 bg-leaf-deep/0 group-hover:bg-leaf-deep/5 transition-colors duration-500"></div>
+<button class="absolute bottom-4 left-4 right-4 translate-y-10 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 bg-paper-white text-leaf-deep py-3 rounded-lg font-label-md text-label-md shadow-lg flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="add_shopping_cart">add_shopping_cart</span>
+                            Add to Cart
+                        </button>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-sm text-[18px] text-leaf-deep">Desert Lilies</h3>
+<p class="text-on-surface-variant text-label-sm font-label-sm">Structural White</p>
+</div>
+<span class="font-body-md text-leaf-deep">$72.00</span>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="group flex flex-col">
+<div class="relative aspect-[3/4] overflow-hidden rounded-lg mb-4 bg-surface-container-low border border-stem-earth/10 transition-all duration-500 group-hover:border-leaf-deep/20">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="An arrangement titled 'Winter Blooms' featuring deep burgundy ranunculus, eucalyptus, and blue thistle. Moody yet clean lighting with a soft paper-white background. The bouquet is lush and textural, styled for a high-end winter lifestyle aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwSAkOBkobkT8Y6UieJAe8h56F3iQjRhO97BlnBC4le_57n0-oTWWAy-y0rVkrxc5yJGaY_O9VzK3QR8x3grbSrAya90ExSEPKszYi_Xb8ensGOJoCXcAOy6qiStERwytlMjRXfDnmCbWYnlqrEuCin28t3460e3e2zjvyLQ7qg6lWamqUhNTRqmgdD1SAWianl5xD7ZpMQgo6nvd2HZmbYbMd2-JrGfwHWxz1yz1jyGY31Nv6320LY46FVjAUoY_nOo4-bgTMAu8"/>
+<div class="absolute inset-0 bg-leaf-deep/0 group-hover:bg-leaf-deep/5 transition-colors duration-500"></div>
+<button class="absolute bottom-4 left-4 right-4 translate-y-10 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 bg-paper-white text-leaf-deep py-3 rounded-lg font-label-md text-label-md shadow-lg flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="add_shopping_cart">add_shopping_cart</span>
+                            Add to Cart
+                        </button>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-sm text-[18px] text-leaf-deep">Winter Blooms</h3>
+<p class="text-on-surface-variant text-label-sm font-label-sm">Deep Crimson Mix</p>
+</div>
+<span class="font-body-md text-leaf-deep">$58.00</span>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="group flex flex-col">
+<div class="relative aspect-[3/4] overflow-hidden rounded-lg mb-4 bg-surface-container-low border border-stem-earth/10 transition-all duration-500 group-hover:border-leaf-deep/20">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A delicate arrangement of 'Ethereal Eucalyptus' and baby's breath. The focus is on the silvery-green leaves and tiny white flowers. The lighting is high-key and airy, creating a feeling of lightness and serenity. Minimalist boutique flower shop aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHTVhVlML9RoRXhFyGR_-3wlXgEXlIfgn5X3gX2xUyTyBTc7pd4NrNNnAyJvReGr6A3dzAPTuu5F5nj2V1GoAkLtAJWAzlX1zk03gzipB5U7kYg9D5VyViwCs3FbaMbYoP-wNCFXaZ3G06iB9QaovxZviu1TMlEJYLbiC7LAiKhpZgrnNHHQkM47U05MFgbTt5oVQuf5AeDiaLFZW4-h-8X1s-dLlOrL9IFXekCtR2w61_XV154ykXz3TWKx4CcBTcNPUCyKpfttY"/>
+<div class="absolute inset-0 bg-leaf-deep/0 group-hover:bg-leaf-deep/5 transition-colors duration-500"></div>
+<button class="absolute bottom-4 left-4 right-4 translate-y-10 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 bg-paper-white text-leaf-deep py-3 rounded-lg font-label-md text-label-md shadow-lg flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="add_shopping_cart">add_shopping_cart</span>
+                            Add to Cart
+                        </button>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-sm text-[18px] text-leaf-deep">Ethereal Stems</h3>
+<p class="text-on-surface-variant text-label-sm font-label-sm">Silvery Foliage</p>
+</div>
+<span class="font-body-md text-leaf-deep">$45.00</span>
+</div>
+</div>
+</div>
+</section>
+<!-- About Section -->
+<section class="py-xl bg-surface-container-low">
+<div class="max-w-max-width mx-auto px-4 md:px-margin-desktop">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-xl items-center">
+<div class="order-2 md:order-1">
+<h2 class="font-headline-md text-headline-md text-leaf-deep mb-6">Crafting Still Moments</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8 leading-relaxed">
+                            At Flora Editorial, we believe flowers are more than decoration—they are a medium for expression. Our studio approaches every arrangement as a tactile piece of art, balancing negative space with vibrant life to create arrangements that breathe.
+                        </p>
+<p class="font-body-md text-body-md text-on-surface-variant mb-10 italic border-l-2 border-blush-soft pl-6">
+                            "The beauty of a flower is in its silence. We simply give that silence a voice."
+                        </p>
+<a class="inline-flex items-center text-leaf-deep font-label-md text-label-md hover:translate-x-2 transition-transform" href="#">
+                            Read Our Story
+                            <span class="material-symbols-outlined ml-2" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<div class="order-1 md:order-2">
+<div class="aspect-square rounded-full overflow-hidden border-[16px] border-paper-white shadow-xl">
+<img class="w-full h-full object-cover" data-alt="An extreme macro close-up of a delicate ranunculus flower petal. The image captures the incredible detail, translucent texture, and soft gradient of colors from peach to cream. The lighting is ethereal and soft, highlighting the botanical intricacies. Sophisticated and calm botanical photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLo2gLawUi3XO5ZGm7XjRDiFqG2WCyw2nvRQRDN7e4_suxhcaYP6p8Z583IZ_BaQ9ZX9u0OoPGQr7Y_0NXbfZnzkf7HxQf2uer79woU-K1pxdaHJxsdt89d14GCTeVe1c_dC0piOrW1TNK8pWzg9pYg8qPfs_uQkzROOYygnBuMWjrcZRgNaHwfgQgEny2Stt0ilS_mbIB16wIN248fDgws1gwmG7MOwIcIzMpt5tDwpRDvgMZX4B7kV3DV-n1YZscvOCyPZSFMJ0"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Subscription Teaser -->
+<section class="py-xl px-4 md:px-margin-desktop max-w-max-width mx-auto text-center">
+<div class="mb-16">
+<span class="font-label-md text-label-sm text-stem-earth uppercase tracking-widest">Our Service</span>
+<h2 class="font-headline-md text-headline-md text-leaf-deep mt-2">Flowers on Repeat</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<div class="flex flex-col items-center">
+<div class="w-16 h-16 rounded-full bg-blush-soft flex items-center justify-center text-leaf-deep mb-6">
+<span class="material-symbols-outlined text-[32px]" data-icon="calendar_today">calendar_today</span>
+</div>
+<h3 class="font-headline-sm text-[20px] text-leaf-deep mb-4">Choose Frequency</h3>
+<p class="text-on-surface-variant font-body-md">Weekly, bi-weekly, or monthly deliveries tailored to your space.</p>
+</div>
+<div class="flex flex-col items-center">
+<div class="w-16 h-16 rounded-full bg-blush-soft flex items-center justify-center text-leaf-deep mb-6">
+<span class="material-symbols-outlined text-[32px]" data-icon="local_florist">local_florist</span>
+</div>
+<h3 class="font-headline-sm text-[20px] text-leaf-deep mb-4">Seasonal Curation</h3>
+<p class="text-on-surface-variant font-body-md">Receive only the freshest, most vibrant stems currently in bloom.</p>
+</div>
+<div class="flex flex-col items-center">
+<div class="w-16 h-16 rounded-full bg-blush-soft flex items-center justify-center text-leaf-deep mb-6">
+<span class="material-symbols-outlined text-[32px]" data-icon="redeem">redeem</span>
+</div>
+<h3 class="font-headline-sm text-[20px] text-leaf-deep mb-4">Member Benefits</h3>
+<p class="text-on-surface-variant font-body-md">Enjoy 15% off every order and free hand-delivery on all subscriptions.</p>
+</div>
+</div>
+<button class="mt-16 px-10 py-4 bg-blush-soft text-leaf-deep font-label-md text-label-md rounded-lg hover:opacity-90 transition-all border border-leaf-deep/10">
+                Explore Subscriptions
+            </button>
+</section>
+<!-- Newsletter -->
+<section class="mx-4 md:mx-margin-desktop mb-xl">
+<div class="max-w-max-width mx-auto bg-primary-container rounded-2xl p-12 text-center flex flex-col items-center">
+<h2 class="font-headline-md text-headline-md text-leaf-deep mb-4">Join Our Botanical Circle</h2>
+<p class="text-on-primary-container font-body-md mb-8 max-w-md mx-auto">Subscribe for floral care tips, exclusive early access to seasonal drops, and a weekly dose of natural beauty.</p>
+<form class="w-full max-w-lg flex flex-col md:flex-row gap-4" onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
+<input class="flex-1 bg-paper-white border-none rounded-lg px-6 py-4 font-body-md focus:ring-2 focus:ring-leaf-deep transition-shadow outline-none text-on-surface" placeholder="Your email address" required="" type="email"/>
+<button class="bg-leaf-deep text-paper-white px-8 py-4 rounded-lg font-label-md text-label-md hover:opacity-90 transition-all active:scale-95" type="submit">
+                        Subscribe
+                    </button>
+</form>
+<p class="mt-4 text-on-primary-container/60 text-label-sm font-label-sm">By subscribing, you agree to our Privacy Policy.</p>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-xl bg-surface-container-low border-t border-stem-earth/5">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center px-4 md:px-margin-desktop w-full max-w-max-width mx-auto">
+<div class="mb-10 md:mb-0">
+<div class="font-display-lg text-headline-sm text-leaf-deep mb-4">Flora Editorial</div>
+<p class="text-on-surface-variant font-label-sm text-label-sm max-w-xs">
+                    Curating high-end botanical experiences for the modern home. Hand-tied and delivered with intention.
+                </p>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-x-12 gap-y-6 md:flex md:space-x-12">
+<div class="flex flex-col space-y-3">
+<span class="font-label-md text-leaf-deep uppercase text-[10px] tracking-widest mb-2">Shop</span>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-leaf-deep transition-colors" href="#">All Flowers</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-leaf-deep transition-colors" href="#">Subscriptions</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-leaf-deep transition-colors" href="#">Care Guide</a>
+</div>
+<div class="flex flex-col space-y-3">
+<span class="font-label-md text-leaf-deep uppercase text-[10px] tracking-widest mb-2">Support</span>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-leaf-deep transition-colors" href="#">Shipping Info</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-leaf-deep transition-colors" href="#">Contact</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-leaf-deep transition-colors" href="#">Privacy Policy</a>
+</div>
+<div class="flex flex-col space-y-3">
+<span class="font-label-md text-leaf-deep uppercase text-[10px] tracking-widest mb-2">Connect</span>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-leaf-deep transition-colors" href="#">Instagram</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-leaf-deep transition-colors" href="#">Pinterest</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-leaf-deep transition-colors" href="#">Sustainability</a>
+</div>
+</div>
+</div>
+<div class="max-w-max-width mx-auto px-4 md:px-margin-desktop mt-16 pt-8 border-t border-stem-earth/5 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-label-sm font-label-sm text-on-surface-variant/70">
+                © 2024 Flora Editorial. Hand-tied with love.
+            </p>
+<div class="flex items-center space-x-4">
+<span class="material-symbols-outlined text-on-surface-variant/40" data-icon="eco">eco</span>
+<span class="material-symbols-outlined text-on-surface-variant/40" data-icon="local_shipping">local_shipping</span>
+<span class="material-symbols-outlined text-on-surface-variant/40" data-icon="card_membership">card_membership</span>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for hover effects on cards
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px)';
+                card.style.transition = 'transform 0.3s ease';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Sticky header transition
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('shadow-sm');
+                header.classList.remove('border-transparent');
+            } else {
+                header.classList.remove('shadow-sm');
+            }
+        });
+    </script>
+</body></html>

@@ -38,7 +38,7 @@ export default function AdminPayments() {
     fetch('/api/payment-gateways')
       .then(r => r.json())
       .then(setGateways)
-      .catch(() => {})
+      .catch((e) => console.error('[AdminPayments] fetch error:', e))
   }
 
   useEffect(() => { fetchGateways() }, [])

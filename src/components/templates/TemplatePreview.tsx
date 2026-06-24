@@ -255,7 +255,7 @@ export default function TemplatePreview() {
         })
         if (Object.keys(map).length > 0) setPlanPrices(prev => ({ ...prev, ...map }))
       })
-      .catch(() => {})
+      .catch((e) => console.error('[TemplatePreview] fetch error:', e))
     return () => { cancelled = true }
   }, [])
 

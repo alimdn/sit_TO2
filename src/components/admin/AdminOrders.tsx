@@ -114,7 +114,7 @@ export default function AdminOrders() {
       .then(data => {
         if (Array.isArray(data)) setOrders(data)
       })
-      .catch(() => {})
+      .catch((e) => console.error('[AdminOrders] fetch error:', e))
   }
 
   useEffect(() => { fetchOrders() }, [])

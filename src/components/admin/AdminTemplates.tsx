@@ -68,7 +68,7 @@ export default function AdminTemplates() {
       .then(data => {
         if (Array.isArray(data)) setTemplates(data)
       })
-      .catch(() => {})
+      .catch((e) => console.error('[AdminTemplates] fetch error:', e))
   }
 
   useEffect(() => { fetchTemplates() }, [])

@@ -37,7 +37,7 @@ export default function AdminSocial() {
     fetch('/api/social')
       .then(r => r.json())
       .then(setLinks)
-      .catch(() => {})
+      .catch((e) => console.error('[AdminSocial] fetch error:', e))
   }
 
   useEffect(() => { fetchLinks() }, [])

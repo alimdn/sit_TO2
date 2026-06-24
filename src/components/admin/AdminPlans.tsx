@@ -63,7 +63,7 @@ export default function AdminPlans() {
       .then(data => {
         if (Array.isArray(data)) setPlans(data)
       })
-      .catch(() => {})
+      .catch((e) => console.error('[AdminPlans] fetch error:', e))
   }
 
   useEffect(() => { fetchPlans() }, [])

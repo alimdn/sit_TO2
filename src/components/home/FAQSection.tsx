@@ -21,7 +21,7 @@ export default function FAQSection() {
     fetch('/api/faqs')
       .then(res => res.json())
       .then(data => setFaqs(data))
-      .catch(() => {})
+      .catch((e) => console.error('[FAQSection] fetch error:', e))
   }, [])
 
   return (

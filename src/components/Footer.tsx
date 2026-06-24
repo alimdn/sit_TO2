@@ -3,6 +3,7 @@
 import { useAppStore } from '@/lib/store'
 import { Facebook, Twitter, Instagram, Linkedin, Youtube } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import Brand from './Brand'
 
 interface SocialLink {
   id: string
@@ -36,7 +37,7 @@ export default function Footer() {
     fetch('/api/social')
       .then(res => res.json())
       .then(data => setSocialLinks(data))
-      .catch(() => {})
+      .catch((e) => console.error('[Footer] fetch error:', e))
 
     fetch('/api/settings')
       .then(res => res.json())
@@ -45,7 +46,7 @@ export default function Footer() {
         data.forEach((s) => { map[s.key] = s.value })
         setSettings(map)
       })
-      .catch(() => {})
+      .catch((e) => console.error('[Footer] fetch error:', e))
   }, [])
 
   const siteName = settings.site_name || DEFAULTS.site_name
@@ -53,16 +54,8 @@ export default function Footer() {
   const contactEmail = settings.contact_email || DEFAULTS.contact_email
   const contactAddressRaw = settings.contact_address || DEFAULTS.contact_address
 
-  // Split brand name to highlight suffix (e.g. "WebForge" → "Web" + "Forge")
-  // If the name contains "Forge", highlight it; otherwise highlight last 5 chars.
-  const renderBrand = () => {
-    if (siteName.toLowerCase().endsWith('forge')) {
-      const prefix = siteName.slice(0, -5)
-      const suffix = siteName.slice(-5)
-      return <>{prefix}<span className="text-[#00D1FF]">{suffix}</span></>
-    }
-    return siteName
-  }
+  // Use shared Brand component for consistent rendering
+  const renderBrand = () => <Brand siteName={siteName} />
 
   const handleNav = (page: 'home' | 'templates' | 'plans' | 'contact' | 'about' | 'privacy' | 'terms' | 'support') => {
     setCurrentPage(page)

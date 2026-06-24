@@ -35,7 +35,7 @@ export default function TestimonialsSection() {
     fetch('/api/testimonials')
       .then(res => res.json())
       .then(data => setTestimonials(data))
-      .catch(() => {})
+      .catch((e) => console.error('[TestimonialsSection] fetch error:', e))
   }, [])
 
   const colors = ['#00D1FF', '#10B981', '#0A2540', '#768dad']

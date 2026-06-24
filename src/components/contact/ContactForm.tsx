@@ -35,7 +35,7 @@ export default function ContactForm() {
         data.forEach((s) => { map[s.key] = s.value })
         setSettings(map)
       })
-      .catch(() => {})
+      .catch((e) => console.error('[ContactForm] fetch error:', e))
   }, [])
 
   const contactEmail = settings.contact_email || DEFAULTS.contact_email

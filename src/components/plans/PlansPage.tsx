@@ -154,7 +154,7 @@ export default function PlansPage() {
         const list = Array.isArray(data) ? data.filter((p: Plan) => p.active) : []
         if (list.length > 0) setPlans(list)
       })
-      .catch(() => {})
+      .catch((e) => console.error('[PlansPage] fetch error:', e))
 
     // Fetch real testimonials for the social proof section
     fetch('/api/testimonials')
@@ -164,7 +164,7 @@ export default function PlansPage() {
           setTestimonials(data.slice(0, 3))
         }
       })
-      .catch(() => {})
+      .catch((e) => console.error('[PlansPage] fetch error:', e))
   }, [])
 
   // Compute current plan display: prefer API plan, fallback to hardcoded

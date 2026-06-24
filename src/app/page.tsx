@@ -65,7 +65,7 @@ function TemplatesPage() {
       .then(data => {
         if (Array.isArray(data)) setTemplateCount(data.length)
       })
-      .catch(() => {})
+      .catch((e) => console.error('[page] fetch error:', e))
   }, [])
 
   return (

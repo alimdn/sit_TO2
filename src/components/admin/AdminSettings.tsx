@@ -25,7 +25,7 @@ export default function AdminSettings() {
     fetch('/api/admin/stats')
       .then(r => r.json())
       .then(setStats)
-      .catch(() => {})
+      .catch((e) => console.error('[AdminSettings] fetch error:', e))
 
     fetch('/api/settings')
       .then(r => r.json())
@@ -34,7 +34,7 @@ export default function AdminSettings() {
         data.forEach((s) => { map[s.key] = s.value })
         setSettings(map)
       })
-      .catch(() => {})
+      .catch((e) => console.error('[AdminSettings] fetch error:', e))
   }, [])
 
   const handleSaveSetting = async (key: string) => {

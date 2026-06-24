@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Menu, X, LayoutDashboard, Shield, LogOut, ShoppingCart } from 'lucide-react'
+import Brand from './Brand'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,18 +28,11 @@ export default function Header() {
         const found = data.find(s => s.key === 'site_name')
         if (found?.value) setSiteName(found.value)
       })
-      .catch(() => {})
+      .catch((e) => console.error('[Header] fetch error:', e))
   }, [])
 
-  // Split brand name to highlight suffix (e.g. "WebForge" → "Web" + "Forge")
-  const renderBrand = () => {
-    if (siteName.toLowerCase().endsWith('forge')) {
-      const prefix = siteName.slice(0, -5)
-      const suffix = siteName.slice(-5)
-      return <>{prefix}<span className="text-[#00D1FF]">{suffix}</span></>
-    }
-    return siteName
-  }
+  // Use shared Brand component for consistent rendering
+  const renderBrand = () => <Brand siteName={siteName} />
 
   const navItems = [
     { label: 'Home', page: 'home' as const },

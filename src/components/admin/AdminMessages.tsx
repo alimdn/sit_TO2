@@ -47,7 +47,7 @@ export default function AdminMessages() {
       .then(data => {
         if (Array.isArray(data)) setContacts(data)
       })
-      .catch(() => {})
+      .catch((e) => console.error('[AdminMessages] fetch error:', e))
   }, [])
 
   const fetchTickets = useCallback(() => {
@@ -56,7 +56,7 @@ export default function AdminMessages() {
       .then(data => {
         if (Array.isArray(data)) setTickets(data)
       })
-      .catch(() => {})
+      .catch((e) => console.error('[AdminMessages] fetch error:', e))
   }, [])
 
   useEffect(() => {

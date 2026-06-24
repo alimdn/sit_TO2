@@ -38,7 +38,7 @@ export default function HeroSection() {
         data.forEach((s) => { map[s.key] = s.value })
         setSettings(map)
       })
-      .catch(() => {})
+      .catch((e) => console.error('[HeroSection] fetch error:', e))
   }, [])
 
   const badge = settings.hero_badge || DEFAULTS.hero_badge

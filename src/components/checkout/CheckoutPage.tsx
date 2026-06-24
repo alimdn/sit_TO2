@@ -151,11 +151,11 @@ export default function CheckoutPage() {
         })
         if (Object.keys(map).length > 0) setPlanPrices(map)
       }
-    }).catch(() => {})
+    }).catch((e) => console.error('[CheckoutPage] fetch error:', e))
 
     fetch('/api/payment-gateways').then(r => r.json()).then(data => {
       if (Array.isArray(data)) setGateways(data.filter((g: PaymentGateway) => g.active))
-    }).catch(() => {})
+    }).catch((e) => console.error('[CheckoutPage] fetch error:', e))
   }, [])
 
   if (!checkoutItems || checkoutItems.length === 0) {

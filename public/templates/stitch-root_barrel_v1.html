@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Root &amp; Barrel | Farm-to-Table Organic Groceries</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container": "#f2ede5",
+                        "error-container": "#ffdad6",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#653d1e",
+                        "inverse-surface": "#32302b",
+                        "on-background": "#1d1c17",
+                        "outline-variant": "#c1c9bf",
+                        "primary-fixed": "#b9efc5",
+                        "tertiary-fixed-dim": "#f4bb92",
+                        "secondary-container": "#b9f0ba",
+                        "tertiary-container": "#966744",
+                        "on-secondary-fixed": "#002108",
+                        "outline": "#717971",
+                        "inverse-primary": "#9dd3aa",
+                        "tertiary": "#7a4f2f",
+                        "primary": "#316342",
+                        "secondary": "#38693f",
+                        "surface-variant": "#e7e2da",
+                        "surface-container-high": "#ece8e0",
+                        "on-secondary-container": "#3e6f44",
+                        "tertiary-fixed": "#ffdcc5",
+                        "on-tertiary-container": "#fff5f1",
+                        "on-surface": "#1d1c17",
+                        "surface-tint": "#376847",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#301400",
+                        "surface": "#fef9f1",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#f8f3eb",
+                        "primary-fixed-dim": "#9dd3aa",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#ded9d2",
+                        "surface-container-highest": "#e7e2da",
+                        "surface-bright": "#fef9f1",
+                        "on-primary-fixed-variant": "#1e5031",
+                        "secondary-fixed-dim": "#9ed4a0",
+                        "inverse-on-surface": "#f5f0e8",
+                        "on-primary-container": "#e1ffe5",
+                        "primary-container": "#4a7c59",
+                        "background": "#fef9f1",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#b9f0ba",
+                        "on-surface-variant": "#414942",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed": "#00210e",
+                        "on-secondary-fixed-variant": "#1f5029",
+                        "on-error": "#ffffff"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "xs": "4px",
+                        "xl": "80px",
+                        "sm": "12px",
+                        "lg": "48px",
+                        "gutter": "24px",
+                        "container-max": "1200px",
+                        "base": "8px",
+                        "md": "24px"
+                    },
+                    fontFamily: {
+                        "display-lg": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "headline-sm": ["Playfair Display"],
+                        "label-md": ["Montserrat"],
+                        "body-lg": ["Montserrat"],
+                        "body-md": ["Montserrat"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #fef9f1;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 150px;
+            background-attachment: fixed;
+            opacity: 0.98;
+        }
+
+        .wooden-btn {
+            background: linear-gradient(rgba(122, 79, 47, 0.9), rgba(90, 58, 35, 0.9)), 
+                        url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23grain)'/%3E%3C/svg%3E");
+            box-shadow: 2px 2px 0px #3d2b1f;
+            clip-path: polygon(2% 0%, 98% 1%, 100% 98%, 1% 99%);
+            transition: all 0.2s ease;
+        }
+        .wooden-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 4px 4px 0px #3d2b1f;
+        }
+
+        .paper-badge {
+            clip-path: polygon(100% 0, 95% 50%, 100% 100%, 0 100%, 5% 50%, 0 0);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .accordion-item.active .accordion-content {
+            max-height: 500px;
+        }
+        .accordion-item.active .toggle-icon {
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface selection:bg-secondary/30">
+<!-- Top Navigation Shell -->
+<header class="bg-surface border-b border-outline-variant sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-20">
+<div class="flex items-center gap-4">
+<img alt="Root &amp; Barrel" class="h-14 w-14 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBY9a2j7eLxbxQbLrwyWzyMqYsT_bsNQqCOF1jwvyW0L9OKEE1Sng7ITFaxoiqPyV2RsR2x3YCl0Fj3UsUoxSarR_afCrA9EtjhY1pii7X5pzn5dC4ssg3cwAESETCyw--VQFoF_uPI3M_qysr_jYvw3DEUg3lufFY38ky8TAAbbFR3PysambjHUGa1zmTlkoJZuUO0PvTZrUEAoQsO7sjxq5iHBkTZgi5QPgbBYD2ArBYQUtqVxwoLAq6hiGUoCvTHUyF1K6MmiHmI"/>
+<span class="font-display-lg text-[28px] text-tertiary tracking-tight">Root &amp; Barrel</span>
+</div>
+<nav class="hidden md:flex gap-8">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-md text-label-md" href="#">Shop</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="#">Our Story</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="#">Farms</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="#">Recipes</a>
+</nav>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center bg-surface-container rounded-full px-4 py-2 border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-32 font-body-md" placeholder="Search harvests..." type="text"/>
+</div>
+<div class="flex gap-4">
+<button class="material-symbols-outlined text-primary hover:scale-110 transition-transform">shopping_basket</button>
+<button class="material-symbols-outlined text-primary hover:scale-110 transition-transform">person</button>
+</div>
+</div>
+</div>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative h-[85vh] min-h-[600px] flex items-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover" data-alt="A lush, cinematic aerial view of a vibrant organic vegetable farm at sunrise. Golden morning light illuminates neatly organized rows of leafy greens, vibrant tomatoes, and flowering herbs. The atmosphere is misty and fresh, with soft bokeh highlighting dewdrops on the leaves. The color palette is dominated by deep olive greens, rich soil browns, and golden sunlight, creating a warm, earthy, and inviting rustic-natural aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQJHaiJzV0x1FqoEdXiKWpNtSNogVcu9AnrOmM1MACroll26FfvU2o8rmo2xBP80pfZkwGgLt1zOr5rckfnGNl0Li3dfMQm5bjPZcNueIUg2_vH3earQJzjTsLmuLBcN33D9Nkc3QznFfnpehLhgnY81Lo_9fxwBAHvkntc7bRBms8m4JS0qgPaWHBCRm-TgJFdZru3g4hTsmSvEuhnSukw4H6Z4faIToyEeXmyVcpNUR4D_w_da3q1-NUYqwyIj3g_lzjCEu4SUXm"/>
+<div class="absolute inset-0 bg-black/10"></div>
+</div>
+<div class="relative z-10 w-full max-w-container-max mx-auto px-gutter">
+<div class="bg-surface/90 backdrop-blur-sm p-lg md:p-xl max-w-2xl border-l-4 border-tertiary shadow-xl">
+<span class="font-label-md text-label-md text-tertiary uppercase tracking-widest mb-4 block">Hand-harvested with care</span>
+<h1 class="font-display-lg text-display-lg md:text-[64px] leading-tight text-on-background mb-6">Farm to Table — Delivered</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8 max-w-md">Connect with local soil. Discover seasonal, nutrient-dense groceries delivered straight from our collective of independent farms to your kitchen.</p>
+<div class="flex flex-wrap gap-4">
+<button class="wooden-btn px-10 py-4 text-on-tertiary font-bold font-label-md uppercase tracking-wider text-label-md active:scale-95">Explore Shop</button>
+<button class="border-2 border-secondary px-10 py-4 text-secondary font-bold font-label-md uppercase tracking-wider text-label-md hover:bg-secondary/5 transition-colors">Learn More</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Categories Section -->
+<section class="py-xl bg-surface-container-low">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="text-center mb-12">
+<h2 class="font-headline-md text-headline-md text-tertiary">Our Seasonal Bounty</h2>
+<div class="w-24 h-1 bg-tertiary/20 mx-auto mt-4 rounded-full"></div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-6">
+<!-- Category: Fruits -->
+<button class="wooden-btn flex flex-col items-center justify-center p-8 text-on-tertiary group">
+<span class="material-symbols-outlined text-[48px] mb-4 group-hover:scale-110 transition-transform">nutrition</span>
+<span class="font-label-md text-label-md">Fruits</span>
+</button>
+<!-- Category: Vegetables -->
+<button class="wooden-btn flex flex-col items-center justify-center p-8 text-on-tertiary group">
+<span class="material-symbols-outlined text-[48px] mb-4 group-hover:scale-110 transition-transform">eco</span>
+<span class="font-label-md text-label-md">Vegetables</span>
+</button>
+<!-- Category: Grains -->
+<button class="wooden-btn flex flex-col items-center justify-center p-8 text-on-tertiary group">
+<span class="material-symbols-outlined text-[48px] mb-4 group-hover:scale-110 transition-transform">bakery_dining</span>
+<span class="font-label-md text-label-md">Grains</span>
+</button>
+<!-- Category: Dairy -->
+<button class="wooden-btn flex flex-col items-center justify-center p-8 text-on-tertiary group">
+<span class="material-symbols-outlined text-[48px] mb-4 group-hover:scale-110 transition-transform">egg_alt</span>
+<span class="font-label-md text-label-md">Dairy</span>
+</button>
+<!-- Category: Meat -->
+<button class="wooden-btn flex flex-col items-center justify-center p-8 text-on-tertiary group">
+<span class="material-symbols-outlined text-[48px] mb-4 group-hover:scale-110 transition-transform">set_meal</span>
+<span class="font-label-md text-label-md">Meat</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Featured Product Section -->
+<section class="py-xl">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="bg-surface border border-outline-variant overflow-hidden flex flex-col md:flex-row shadow-sm hover:shadow-md transition-shadow">
+<div class="md:w-1/2 relative">
+<img class="w-full h-full object-cover" data-alt="A rustic wooden crate overflowing with a variety of freshly harvested seasonal organic produce. The crate contains deep purple carrots with green tops, bright heirloom tomatoes, vibrant curly kale, crisp radishes, and a loaf of crusty sourdough bread. The arrangement is artful and bountiful, photographed on a weathered gray wooden table. Lighting is soft and natural, emphasizing the textures of the soil-kissed vegetables and the wood grain of the crate. High-end editorial food photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdSc2D4u2vjGiAm3FzZ7L6XarPLOvn5uJEEL-XklLsbG026pbV0OpJXV7-o0WiBNvO-HSv5DJ1fQ4lHQ75CzELVlryRFB1E0I4GSkU0ISvW1uLlcH-LXU7JDxPN-OocQj3TekOFhaWx86el_ixuZeTXDjfo93e4eJySZhSwDLY7ao_6blHVObSq_Ua08PDrgOLoSLkMn8VtJYnCAYN7qHnH3lZYq9OSeR-nqkSjxKmEwhGWbDjVv2pJ5RCGOzaDNdbP5jFnb1VWM6y"/>
+<div class="absolute top-6 left-6">
+<div class="bg-secondary text-on-secondary px-6 py-2 paper-badge font-label-md text-label-md uppercase tracking-tighter">Limited Harvest</div>
+</div>
+</div>
+<div class="md:w-1/2 p-lg md:p-xl flex flex-col justify-center bg-white/40">
+<span class="font-label-md text-label-md text-secondary font-bold mb-2">Editor's Choice</span>
+<h3 class="font-headline-md text-headline-md text-on-background mb-4">Weekly Harvest Box</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Our most popular selection. This week's curated collection features late-summer heirlooms, early autumn squash, and wild-harvested herbs. Each box supports 4 local family farms.</p>
+<div class="flex items-end gap-2 mb-8">
+<span class="font-display-lg text-[40px] text-tertiary leading-none">$48.00</span>
+<span class="font-body-md text-on-surface-variant mb-1">/ weekly subscription</span>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="bg-primary hover:bg-primary-container text-on-primary font-bold py-4 px-8 rounded-md flex items-center justify-center gap-2 transition-all active:scale-95">
+<span class="material-symbols-outlined">shopping_cart</span>
+                                Add to Cart
+                            </button>
+<button class="border border-outline py-4 px-8 rounded-md font-bold text-on-surface-variant hover:bg-surface-variant transition-colors">View Box Contents</button>
+</div>
+<div class="mt-8 pt-8 border-t border-dashed border-outline-variant">
+<div class="flex items-center gap-4 text-sm text-on-surface-variant">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px] text-secondary">verified</span>
+<span>Pesticide-Free</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px] text-secondary">local_shipping</span>
+<span>Free Local Delivery</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Why Organic Section -->
+<section class="py-xl bg-surface-container">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="text-center mb-16">
+<h2 class="font-headline-md text-headline-md text-on-background">Why Choose Root &amp; Barrel?</h2>
+<p class="font-body-md text-on-surface-variant mt-4 max-w-2xl mx-auto">We believe in food that feeds the soul as much as the body. Our standards are rigorous because your health and our planet matter.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-12">
+<div class="text-center group">
+<div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-[40px] text-primary" data-weight="fill">potted_plant</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-background mb-3">Pesticide-Free</h4>
+<p class="font-body-md text-on-surface-variant">Everything we offer is grown without synthetic chemicals, ensuring your food is as pure as nature intended.</p>
+</div>
+<div class="text-center group">
+<div class="w-20 h-20 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-secondary/20 transition-colors">
+<span class="material-symbols-outlined text-[40px] text-secondary" data-weight="fill">spa</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-background mb-3">Nutrient-Dense</h4>
+<p class="font-body-md text-on-surface-variant">Harvested at peak ripeness and delivered quickly to preserve the vitamins and minerals that keep you thriving.</p>
+</div>
+<div class="text-center group">
+<div class="w-20 h-20 bg-tertiary/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-tertiary/20 transition-colors">
+<span class="material-symbols-outlined text-[40px] text-tertiary" data-weight="fill">group</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-background mb-3">Supporting Local</h4>
+<p class="font-body-md text-on-surface-variant">We partner exclusively with small-scale farmers in our region, keeping the local economy flourishing.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Farm Story Section (Accordion) -->
+<section class="py-xl">
+<div class="max-w-3xl mx-auto px-gutter">
+<h2 class="font-headline-md text-headline-md text-on-background text-center mb-12">Dig Deeper Into Our Roots</h2>
+<div class="space-y-4">
+<!-- Accordion Item 1 -->
+<div class="accordion-item bg-surface-container-low border-b border-outline-variant overflow-hidden">
+<button class="w-full flex justify-between items-center p-6 text-left hover:bg-surface-variant transition-colors group" onclick="toggleAccordion(this)">
+<span class="font-headline-sm text-headline-sm text-tertiary">Our Roots</span>
+<span class="material-symbols-outlined transition-transform duration-300 toggle-icon">add</span>
+</button>
+<div class="accordion-content px-6">
+<p class="pb-6 font-body-md text-on-surface-variant leading-relaxed">
+                                Root &amp; Barrel began in a small community garden in 2012. Tired of the disconnect between supermarket shelves and the rich soil of our valley, we set out to build a bridge. What started as a three-person team has grown into a collective of over 40 independent growers dedicated to heritage seeds and sustainable cultivation.
+                            </p>
+</div>
+</div>
+<!-- Accordion Item 2 -->
+<div class="accordion-item bg-surface-container-low border-b border-outline-variant overflow-hidden">
+<button class="w-full flex justify-between items-center p-6 text-left hover:bg-surface-variant transition-colors group" onclick="toggleAccordion(this)">
+<span class="font-headline-sm text-headline-sm text-tertiary">Meet the Farmers</span>
+<span class="material-symbols-outlined transition-transform duration-300 toggle-icon">add</span>
+</button>
+<div class="accordion-content px-6">
+<p class="pb-6 font-body-md text-on-surface-variant leading-relaxed">
+                                People like Silas Thorne, who has been tending his family's apple orchard for three generations, and Maya Chen, whose regenerative greens have set new standards for local biodiversity. Every product in your basket has a face and a story behind it. We facilitate direct relationships so you know exactly who is growing your family's meals.
+                            </p>
+</div>
+</div>
+<!-- Accordion Item 3 -->
+<div class="accordion-item bg-surface-container-low border-b border-outline-variant overflow-hidden">
+<button class="w-full flex justify-between items-center p-6 text-left hover:bg-surface-variant transition-colors group" onclick="toggleAccordion(this)">
+<span class="font-headline-sm text-headline-sm text-tertiary">Sustainability Practices</span>
+<span class="material-symbols-outlined transition-transform duration-300 toggle-icon">add</span>
+</button>
+<div class="accordion-content px-6">
+<p class="pb-6 font-body-md text-on-surface-variant leading-relaxed">
+                                Sustainability isn't a buzzword for us; it's our operating manual. From compostable packaging and zero-emission delivery routes to supporting no-till farming methods that sequester carbon, we are committed to leaving the land healthier than we found it.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-primary py-xl">
+<div class="flex flex-col md:flex-row justify-between items-start w-full px-gutter max-w-container-max mx-auto gap-12 md:gap-gutter">
+<div class="max-w-xs">
+<div class="flex items-center gap-3 mb-6">
+<img alt="Root &amp; Barrel" class="h-10 w-10 brightness-0 invert" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBY9a2j7eLxbxQbLrwyWzyMqYsT_bsNQqCOF1jwvyW0L9OKEE1Sng7ITFaxoiqPyV2RsR2x3YCl0Fj3UsUoxSarR_afCrA9EtjhY1pii7X5pzn5dC4ssg3cwAESETCyw--VQFoF_uPI3M_qysr_jYvw3DEUg3lufFY38ky8TAAbbFR3PysambjHUGa1zmTlkoJZuUO0PvTZrUEAoQsO7sjxq5iHBkTZgi5QPgbBYD2ArBYQUtqVxwoLAq6hiGUoCvTHUyF1K6MmiHmI"/>
+<span class="font-headline-md text-headline-md text-on-secondary">Root &amp; Barrel</span>
+</div>
+<p class="text-on-secondary opacity-80 font-body-md mb-6">Connecting you to the rhythm of the seasons and the honesty of the soil.</p>
+<div class="flex gap-4">
+<a class="text-on-secondary hover:opacity-100 transition-opacity" href="#"><span class="material-symbols-outlined">face_nod</span></a>
+<a class="text-on-secondary hover:opacity-100 transition-opacity" href="#"><span class="material-symbols-outlined">photo_camera</span></a>
+<a class="text-on-secondary hover:opacity-100 transition-opacity" href="#"><span class="material-symbols-outlined">alternate_email</span></a>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-12 sm:gap-24">
+<div class="flex flex-col gap-3">
+<h5 class="text-on-secondary font-bold uppercase tracking-wider text-sm mb-2">Store</h5>
+<a class="text-on-secondary opacity-80 hover:opacity-100 transition-opacity font-body-md" href="#">Shop All</a>
+<a class="text-on-secondary opacity-80 hover:opacity-100 transition-opacity font-body-md" href="#">Weekly Box</a>
+<a class="text-on-secondary opacity-80 hover:opacity-100 transition-opacity font-body-md" href="#">Gift Cards</a>
+<a class="text-on-secondary opacity-80 hover:opacity-100 transition-opacity font-body-md" href="#">Shipping Info</a>
+</div>
+<div class="flex flex-col gap-3">
+<h5 class="text-on-secondary font-bold uppercase tracking-wider text-sm mb-2">Support</h5>
+<a class="text-on-secondary opacity-80 hover:opacity-100 transition-opacity font-body-md" href="#">Contact Us</a>
+<a class="text-on-secondary opacity-80 hover:opacity-100 transition-opacity font-body-md" href="#">Privacy Policy</a>
+<a class="text-on-secondary opacity-80 hover:opacity-100 transition-opacity font-body-md" href="#">Terms of Service</a>
+<a class="text-on-secondary opacity-80 hover:opacity-100 transition-opacity font-body-md" href="#">FAQs</a>
+</div>
+</div>
+<div class="w-full md:w-72">
+<h5 class="text-on-secondary font-bold uppercase tracking-wider text-sm mb-4">Join our Harvest List</h5>
+<p class="text-on-secondary opacity-80 text-sm mb-4">Get seasonal recipes and first access to new harvests.</p>
+<div class="flex">
+<input class="bg-primary-container/30 border-secondary-container/50 text-on-secondary placeholder:text-on-secondary/50 rounded-l-md w-full focus:ring-on-secondary focus:border-on-secondary" placeholder="Email address" type="email"/>
+<button class="bg-surface-bright text-primary font-bold px-4 rounded-r-md hover:bg-white transition-colors">Join</button>
+</div>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-gutter mt-16 pt-8 border-t border-on-secondary/10 flex flex-col sm:flex-row justify-between items-center text-sm text-on-secondary/60 gap-4">
+<span>© 2024 Root &amp; Barrel. Harvested with care.</span>
+<div class="flex gap-6">
+<span>Hand-grown digitally</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span>
+<span>Hudson Valley, NY</span>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        function toggleAccordion(button) {
+            const item = button.parentElement;
+            const isActive = item.classList.contains('active');
+            
+            // Close all items
+            document.querySelectorAll('.accordion-item').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Toggle clicked item
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        }
+
+        // Initialize first accordion item as open
+        document.addEventListener('DOMContentLoaded', () => {
+            const firstItem = document.querySelector('.accordion-item');
+            if (firstItem) firstItem.classList.add('active');
+        });
+    </script>
+</body></html>

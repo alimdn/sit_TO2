@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ROGUE | UNDRGRND STREETWEAR</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;700&family=Archivo+Narrow:wght@400;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Anton:wght@100..900&family=Archivo+Narrow:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#e2e2e2",
+                    "on-tertiary-fixed": "#1b1b1b",
+                    "on-primary": "#680011",
+                    "on-secondary-container": "#b4b5b5",
+                    "on-tertiary-container": "#2a2a2a",
+                    "surface-bright": "#393939",
+                    "outline-variant": "#5b403f",
+                    "on-secondary-fixed-variant": "#454747",
+                    "secondary-container": "#454747",
+                    "on-error-container": "#ffdad6",
+                    "primary-fixed-dim": "#ffb3b1",
+                    "surface-variant": "#353535",
+                    "on-tertiary-fixed-variant": "#474747",
+                    "surface-container": "#20201f",
+                    "surface-container-high": "#2a2a2a",
+                    "on-background": "#e5e2e1",
+                    "outline": "#ab8987",
+                    "secondary": "#c6c6c7",
+                    "surface-container-highest": "#353535",
+                    "on-error": "#690005",
+                    "inverse-on-surface": "#313030",
+                    "surface-tint": "#ffb3b1",
+                    "on-secondary": "#2f3131",
+                    "tertiary": "#c6c6c6",
+                    "surface": "#131313",
+                    "on-primary-fixed": "#410007",
+                    "surface-dim": "#131313",
+                    "on-surface-variant": "#e4bebc",
+                    "error": "#ffb4ab",
+                    "inverse-primary": "#bb152c",
+                    "on-primary-container": "#5b000e",
+                    "primary-container": "#ff535b",
+                    "primary": "#ffb3b1",
+                    "primary-fixed": "#ffdad8",
+                    "on-surface": "#e5e2e1",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "tertiary-container": "#919191",
+                    "on-primary-fixed-variant": "#92001c",
+                    "background": "#131313",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "surface-container-low": "#1c1b1b",
+                    "inverse-surface": "#e5e2e1",
+                    "surface-container-lowest": "#0e0e0e",
+                    "secondary-fixed": "#e2e2e2",
+                    "on-tertiary": "#303030",
+                    "error-container": "#93000a",
+                    "tertiary-fixed-dim": "#c6c6c6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-tight": "8px",
+                    "margin-mobile": "16px",
+                    "gutter": "16px",
+                    "unit": "4px",
+                    "margin-desktop": "40px",
+                    "stack-loose": "64px"
+            },
+            "fontFamily": {
+                    "body-md": ["JetBrains Mono"],
+                    "headline-lg": ["Anton"],
+                    "display-xl-mobile": ["Anton"],
+                    "headline-lg-mobile": ["Anton"],
+                    "display-xl": ["Anton"],
+                    "label-sm": ["Archivo Narrow"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["48px", {"lineHeight": "48px", "fontWeight": "400"}],
+                    "display-xl-mobile": ["56px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["32px", {"lineHeight": "32px", "fontWeight": "400"}],
+                    "display-xl": ["96px", {"lineHeight": "90px", "letterSpacing": "-0.04em", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>.grain-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.12;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuDd3oJiUe3SPKd9j3TCeguM808CfW07dMPTv6VqDVuqj3sud0M_Wfz9SoZgX65kcwJgxxm7BPmZ18GM9ieAYYPWZ8psV039XChrezGatS-mkjVltLj5A3VyfKr_LV5DVDSo1iKP9mQPH0YF6wpOTmzJJcGvAHtxNi-Q03ldk-5OSav9C2nftvtlZ3-KWByG9iv1sKFdQzaz5_G_SzMjxAK4sSDiwHT608c76C_1w8qtI877JUWDze3iieAVoyHvIkzRFtJYGFCAVH0)
+    }
+.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.hard-shadow-red {
+    box-shadow: 6px 6px 0 0 #ff535b
+    }
+.hard-shadow-black {
+    box-shadow: 4px 4px 0 0 #000
+    }
+.caution-tape {
+    background: repeating-linear-gradient(45deg, #ff535b, #ff535b 20px, #000 20px, #000 40px)
+    }
+.handwritten {
+    font-family: "JetBrains Mono", monospace;
+    letter-spacing: -0.05em;
+    transform: rotate(-2deg)
+    }
+.polaroid-tilt-1 {
+    transform: rotate(-1.5deg)
+    }
+.polaroid-tilt-2 {
+    transform: rotate(2deg)
+    }
+.polaroid-tilt-3 {
+    transform: rotate(-1deg)
+    }</style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<div class="grain-overlay"></div>
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-background border-b-4 border-primary-container flex justify-between items-center px-margin-desktop py-4 w-full">
+<div class="font-headline-lg text-headline-lg text-on-background tracking-tighter uppercase">ROGUE</div>
+<div class="hidden md:flex gap-8 font-body-md text-body-md uppercase">
+<a class="text-on-background hover:text-primary-container transition-none active:translate-y-0.5" href="#">SHOP</a>
+<a class="text-on-background bg-primary-container px-2 transition-none active:translate-y-0.5" href="#">DROPS</a>
+<a class="text-on-background hover:text-primary-container transition-none active:translate-y-0.5" href="#">COLLECTIONS</a>
+<a class="text-on-background hover:text-primary-container transition-none active:translate-y-0.5" href="#">ARCHIVE</a>
+</div>
+<div class="flex gap-6">
+<button class="hover:invert transition-none active:translate-y-0.5">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+</button>
+<button class="hover:invert transition-none active:translate-y-0.5">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</button>
+</div>
+</nav>
+<main class="pt-[80px]">
+<!-- Hero Section -->
+<section class="min-h-[calc(100vh-80px)] flex flex-col md:flex-row border-b-8 border-primary-container overflow-hidden">
+<!-- Left Side: Typography -->
+<div class="flex-1 flex flex-col justify-center px-margin-desktop bg-surface py-stack-loose relative">
+<div class="absolute top-0 left-0 w-full h-8 caution-tape"></div>
+<h1 class="font-display-xl text-display-xl md:text-[140px] leading-none uppercase z-10">
+                    ROGUE<br/>COLLECTION<br/>'26
+                </h1>
+<div class="w-3/4 h-8 bg-primary-container mt-4 z-0"></div>
+<p class="mt-8 font-body-md max-w-md text-on-surface-variant uppercase tracking-widest">
+                    Defying the standard. Underground aesthetics for the digital age. Edition 004 available now.
+                </p>
+<div class="mt-stack-loose">
+<button class="bg-primary-container text-on-primary-fixed px-12 py-6 font-headline-lg text-headline-lg-mobile md:text-headline-lg uppercase hover:invert transition-none active:translate-y-1 hard-shadow-black">
+                        EXPLORE NOW
+                    </button>
+</div>
+</div>
+<!-- Right Side: Model Shot -->
+<div class="flex-1 min-h-[500px] relative overflow-hidden group">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110 grayscale contrast-125" data-alt="A gritty high-contrast studio portrait of a male model wearing an oversized black streetwear hoodie and distressed heavy denim. The lighting is dramatic and moody with deep shadows and sharp highlights, reflecting a modern brutalist fashion aesthetic. The background is a textured grey concrete wall with subtle grain and film artifacts. The overall mood is aggressive and authentic to underground youth culture." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCp0UucFbVn7IMAAQ65rTdZR3jwBHHhfIYsAZNyAeeEBi7VPGduMz45qR6eT-T8eH7mSrV2v5mrMZ9yayvoQatIoo_0UjBL_PwjlFsTB5brFNlwaiNAPKE02V5xadbQWbS-b3J_-At09xX0aqNyKJO445vWBurXUgQoBFAFuhenVxczDIYHHreJEfI5UBQ9pkU5UycAfK7Vkj7_rlsIiii8syKhSWbWbxVw3sdEyyEM4gv-rU5iM1frLtZCnE8_7Ba6MACBMzjYpZQ')"></div>
+<div class="absolute inset-0 bg-primary-container/10 mix-blend-multiply"></div>
+</div>
+</section>
+<!-- Shop the Drop Section -->
+<section class="py-stack-loose bg-background border-b-8 border-primary-container px-margin-desktop">
+<div class="flex flex-col md:flex-row justify-between items-end gap-gutter">
+<div class="flex-1">
+<h2 class="font-display-xl-mobile md:font-display-xl text-display-xl-mobile md:text-display-xl uppercase leading-none">SHOP THE<br/><span class="text-primary-container">NEXT DROP</span></h2>
+</div>
+<div class="flex-1 w-full max-w-2xl bg-surface border-4 border-on-background p-8 hard-shadow-red">
+<div class="text-label-sm uppercase mb-4 text-primary-container font-bold">Time remaining until sold out</div>
+<div class="font-display-xl-mobile text-display-xl-mobile md:text-headline-lg text-on-background flex gap-4" id="countdown">
+<div class="flex flex-col items-center">
+<span class="days">02</span>
+<span class="text-label-sm">DAYS</span>
+</div>
+<span>:</span>
+<div class="flex flex-col items-center">
+<span class="hours">14</span>
+<span class="text-label-sm">HRS</span>
+</div>
+<span>:</span>
+<div class="flex flex-col items-center">
+<span class="minutes">45</span>
+<span class="text-label-sm">MIN</span>
+</div>
+<span>:</span>
+<div class="flex flex-col items-center text-primary-container">
+<span class="seconds">12</span>
+<span class="text-label-sm">SEC</span>
+</div>
+</div>
+<button class="w-full mt-8 bg-on-background text-background font-headline-lg py-4 hover:bg-primary-container hover:text-on-primary transition-none active:scale-95 uppercase">
+                        SHOP NOW
+                    </button>
+</div>
+</div>
+</section>
+<!-- Product Grid -->
+<section class="py-stack-loose px-margin-desktop bg-surface-container">
+<div class="mb-stack-loose flex justify-between items-center border-b-4 border-on-background pb-4">
+<h3 class="font-headline-lg text-headline-lg uppercase">CURATED GEAR</h3>
+<span class="text-label-sm uppercase tracking-tighter">[ VIEW ALL 042 ]</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<!-- Product 1 -->
+<div class="bg-white p-6 pb-12 polaroid-tilt-1 border-4 border-primary-container hard-shadow-black transition-transform hover:-translate-y-4">
+<div class="aspect-[4/5] bg-black overflow-hidden mb-6">
+<img class="w-full h-full object-cover grayscale brightness-90" data-alt="A studio shot of an oversized white t-shirt with a bold black graphic print on the front featuring abstract neo-grunge lettering. The shirt is displayed on a minimal industrial rack against a stark black background. High contrast, sharp lighting, grainy film texture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB96jMIhH2hH8MBGjKIl4GzWGM3HtVYCbatwCav4FzWWa_P-ByilKB6XmoR5j-kNHlQmB_EHHxjjLNmRYH3Wd4yydAz1OmtKMpMg5R_qxTM1bUV_lLsFst80g6zIA0QAojZ9FPBsVs9oRi-XmNSPeF07vsGBWfB0j0F4Mk5RP3jgRHLipdVbo53_FeT_V8e1GvceozjhvMSP3nwAxD-fhqMpNhx3lJh0anbKpJDYRGTyzQfjh99lia81C4XT5IbXzVTMuL199k1vC4"/>
+</div>
+<div class="handwritten text-background text-xl font-bold flex justify-between items-center px-2">
+<span>"VOID" OVERSIZED TEE</span>
+<span class="bg-primary-container text-on-primary-fixed px-2">$55.00</span>
+</div>
+</div>
+<!-- Product 2 -->
+<div class="bg-white p-6 pb-12 polaroid-tilt-2 border-4 border-primary-container hard-shadow-black transition-transform hover:-translate-y-4">
+<div class="aspect-[4/5] bg-black overflow-hidden mb-6">
+<img class="w-full h-full object-cover grayscale brightness-90" data-alt="Close-up of heavy-weight black canvas utility trousers with multiple oversized cargo pockets and red contrast stitching. The lighting emphasizes the rough texture of the fabric and the industrial metal hardware. Modern brutalist style, high contrast, studio setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBKY19gALWeTlR6ex0YDzXaiOJSCpJKPMoUJ4tItbnnLVPtzF4eyDO5U6Eb8_rP2jsU9iTIwUJUK4AEFB2JOStcjDYqMmoA5_vTRHg1J5XiJDqsW57wkxug_z9vsAQuA7HZuOHrD-j-qEOO5lF_HUvJHDgRAPkhRhGv6kXED-wUsCWAy8kgu5NQRfjIwmnrG8yzmvnkw3F0cPAqxNRU56-6lbK24DyCgVGtV7tJrXoEcIi6Op5kfPRcsrkHR2B7bFLNAZ91rkyJrk"/>
+</div>
+<div class="handwritten text-background text-xl font-bold flex justify-between items-center px-2">
+<span>"RADAR" CARGO PANTS</span>
+<span class="bg-primary-container text-on-primary-fixed px-2">$120.00</span>
+</div>
+</div>
+<!-- Product 3 -->
+<div class="bg-white p-6 pb-12 polaroid-tilt-3 border-4 border-primary-container hard-shadow-black transition-transform hover:-translate-y-4">
+<div class="aspect-[4/5] bg-black overflow-hidden mb-6">
+<img class="w-full h-full object-cover grayscale brightness-90" data-alt="A tech-wear inspired nylon bomber jacket in a dark slate grey, featuring removable velcro patches and heavy-duty zippers. The jacket is shot from a low angle to create a powerful silhouette against a high-contrast white background. Edgy, grainy, urban streetwear vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKpjxiif-v8mt2lv0gfax8J-y_907313aPMUQBwwk141PkOJpbNOXfvgiLCHBV88Clc2botmrqzNrIfzC7kz_IsnJsl6Ww0NrDfqLAvqfL8yHgj7U1gvIS6Exsr1lz-D86fKQv_bxfh6kvn_Ps1J-7qvulPFcgUtYj-3X4oaeDKCwJLX3y0GMI6hkAEarogOQmR_qv7iWEBNi1Y7_FvHypxzFeTlWbcPc2cSq6URBBs8-kgWYK4vgXjQ1vv01yOXn3orvqtp5EJlM"/>
+</div>
+<div class="handwritten text-background text-xl font-bold flex justify-between items-center px-2">
+<span>"ROGUE" NYLON BOMBER</span>
+<span class="bg-primary-container text-on-primary-fixed px-2">$185.00</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Instagram Strip -->
+<section class="py-stack-tight bg-background">
+<div class="flex overflow-x-auto gap-1 no-scrollbar grayscale hover:grayscale-0 transition-all duration-500">
+<div class="min-w-[250px] aspect-square flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Gritty street style photo of a person wearing a mask and a black ROGUE hoodie in a rain-slicked neon-lit alleyway. Low light, heavy grain, cinematic blue and red highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBU5_4TVTDovcF2fd28rPXHBhjejKHBiebV7szv-PcK24TwuM6E6hrPyZ7e2Rp_ZqprpmAf4LCq_h2pbSDvdRtfX2pFUZs3b42HuBGyI7GoJnhoC7RqiKnRmJ-NwnoCImOuwz5MrkSObVag_ImZVJRlNZPRqT6os0Y9wjoMlPQpHs-M1tA4hyjb6luLyzn6St-JkVA1p_iIs293Id-Oc_V2G1GSAAU9XkyK-cJFUjDuqTh-zKX6z4LyVmWnQaMgFP-8hjxxTxlamiY"/>
+</div>
+<div class="min-w-[250px] aspect-square flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Candid film photography of a skate session in an abandoned industrial park. High-contrast black and white, blurry motion, authentic DIY punk energy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTXUSe-LvUNCuiewxRaQli_7SqyK6BEPM-xJy9Pf-bmh09-NGj0b_ZSuz0OafRcp734Ew2Dn7a16K_z1jlvDuub3aNmXgfGIyJ2lVg8ooXmnhZybAuWARePoDO561NlG1_4lthZUdlPc6a0-F2WZA8pR4XLFoWvwqny42lIbQuRygNLK3Zd-CO1WIzozSsPOhdOoRB5UyX9N487CmGCdf8lYhL4tnlrGkfYg0oiAqS7_q_KDW9rnYT-t0GnDMau5rRMzlVcpES5V0"/>
+</div>
+<div class="min-w-[250px] aspect-square flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Close up of a pair of worn-out sneakers resting on a stack of xeroxed concert flyers. Analog film aesthetic, muted colors with a red tint, heavy texture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhKOIJYP-Onu4V4f5fPC8pHYbJrkI4iQybiQVlSDwr0h8PEOITDsGAjLEA6fyfs0blanwj859lfaAJ8j25dl9m7HbovzaIaUm_ZGTlSWZUnp5ZVGWBeZ8pJPXSAtvb1n0dQIj193AJ928gmuASvK4dZcifCvdG4xlrTnsld4-lxQqnDFDJra1lVVwZ5MjpSikQi1_fWtWcYFD4ytpbn26oZXe1yXIMPECRhCiD36sRwrqpndJCqrhG77ZJCuws1bPEyEJDg4a3T2I"/>
+</div>
+<div class="min-w-[250px] aspect-square flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Overhead shot of a crowded street in Shibuya at night, motion blur from people walking. High energy, urban chaos, vibrant red light trails." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJk9KTwNjBcPH6PlUEvqutWlFUiiRpFqpc0zuQlT8746ywhDdQVLm6YlwW1lAnRYqDMJkPhQferQx_7lGX9S7BVBdqDRRlgCWjz1bbxUBNNM6gZ-rQLGBSedFPB_CDnfic-b6JIlMRiv-72CiGwu8rDHelT2th_uI0hitmHHpkSJjDX90fk76FH0zMuHvr_IYTeH2VgBL8aDLuMqH_fN_tHiU3e-jwHR164mcRXtAjrWU0x3FqjVaUSx2OwI_e4MvcbXCoGL_YS6A"/>
+</div>
+<div class="min-w-[250px] aspect-square flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Abstract shot of a glitching digital screen displaying the word ROGUE in distorted typography. Modern brutalism, digital error aesthetic, high contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDyyez5CmH0mHq-WaUOxh9Bi7ju44sU17AYT9fxBsJ-QR0EUnBqb1pITjcr1yk8iMGadO1aPrjRzyoEhDMabR_IJBdVmph3GMjAVO-USC6wJArKFrcvfcpgMaUEs9lYKBGEjELIbhkVjLcUWGjcWOT3is2vzlNkp1-y5ukbazYuu6MIPun5-qnUuUUWggaz0HkjAU7BlXGgu9g_HeKGIRlEMMVANcIVY3IY9aJOzQOKZu1rzBpUz1tupj7fBVpmv74AH4rhoGOrqg"/>
+</div>
+<div class="min-w-[250px] aspect-square flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Portrait of a young woman with neon dyed hair wearing an oversized graphic tee against a chain-link fence. Stark flash photography, 90s grunge vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwh__off1n5K_kObBH4SQJ4Vg_B804ZjrfNFgNwuWpG-Cro5zu307MDe6KZL_m_ZZwz4zk_DFqt-yA9DsDS_lo9wFIcce2zjaeiQDr952Dog2pHGjDoENWAv1SWOxdlyhtL6bLZTLsHdVEBpihISVgExlW6DTUNQ4t1seVFeTavSspN_R-D3sc7gC8b3YYN2_5nGw3wYs-bddzJnNu7LEq4iiQUMhBInmv8uqCTGuCJizYSMx9KSKC2rMTux7DQlsmmcEJXqi2otU"/>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface text-on-surface border-t-8 border-primary-container w-full py-stack-loose px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-gutter relative overflow-hidden">
+<div class="absolute bottom-0 right-0 w-full h-2 caution-tape opacity-30"></div>
+<div class="flex flex-col gap-4">
+<div class="font-headline-lg text-headline-lg text-primary-container uppercase">ROGUE</div>
+<p class="font-label-sm text-on-surface-variant max-w-xs">ESTABLISHED 2024. THE NEW STANDARD IN UNDERGROUND ATTIRE. NO COMPROMISE.</p>
+</div>
+<div class="flex flex-col md:flex-row gap-8 font-label-sm text-label-sm uppercase">
+<a class="text-on-surface-variant hover:text-primary-container transition-none active:scale-95" href="#">TERMS</a>
+<a class="text-primary-container font-bold underline transition-none active:scale-95" href="#">PRIVACY</a>
+<a class="text-on-surface-variant hover:text-primary-container transition-none active:scale-95" href="#">SHIPPING</a>
+<a class="text-on-surface-variant hover:text-primary-container transition-none active:scale-95" href="#">CONTACT</a>
+</div>
+<div class="text-center md:text-right font-label-sm uppercase">
+<div class="mb-2">©2024 ROGUE UNDRGRND. ALL RIGHTS RESERVED.</div>
+<div class="flex gap-4 justify-center md:justify-end">
+<span class="material-symbols-outlined hover:text-primary-container cursor-pointer" data-icon="share">share</span>
+<span class="material-symbols-outlined hover:text-primary-container cursor-pointer" data-icon="language">language</span>
+</div>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for the countdown
+        function updateCountdown() {
+            const secondsElem = document.querySelector('.seconds');
+            const minutesElem = document.querySelector('.minutes');
+            
+            let s = parseInt(secondsElem.innerText);
+            let m = parseInt(minutesElem.innerText);
+            
+            s--;
+            if (s < 0) {
+                s = 59;
+                m--;
+            }
+            
+            secondsElem.innerText = s.toString().padStart(2, '0');
+            minutesElem.innerText = m.toString().padStart(2, '0');
+        }
+        setInterval(updateCountdown, 1000);
+
+        // Hover effect for items
+        document.querySelectorAll('.active-scale').forEach(item => {
+            item.addEventListener('mousedown', () => item.style.transform = 'scale(0.95)');
+            item.addEventListener('mouseup', () => item.style.transform = 'scale(1)');
+        });
+    </script>
+</body></html>

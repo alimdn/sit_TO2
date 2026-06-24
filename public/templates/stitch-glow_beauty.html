@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Glow Beauty | Unlock Your Radiance</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;family=Playfair+Display:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#1e1b17",
+                        "surface-container-highest": "#e8e1da",
+                        "on-tertiary-fixed": "#3e0020",
+                        "tertiary": "#a82d68",
+                        "tertiary-container": "#ffb8d0",
+                        "primary": "#805062",
+                        "surface-variant": "#e8e1da",
+                        "on-primary-fixed": "#330f1f",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#fed65b",
+                        "surface-bright": "#fff8f1",
+                        "on-tertiary-container": "#9d235f",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#65394b",
+                        "on-secondary-container": "#745c00",
+                        "inverse-primary": "#f2b6cb",
+                        "secondary-fixed": "#ffe088",
+                        "error-container": "#ffdad6",
+                        "on-tertiary": "#ffffff",
+                        "outline": "#827377",
+                        "on-surface-variant": "#504447",
+                        "background": "#fff8f1",
+                        "outline-variant": "#d4c2c6",
+                        "surface-container-high": "#eee7df",
+                        "primary-fixed": "#ffd9e4",
+                        "primary-container": "#f8bbd0",
+                        "inverse-on-surface": "#f7f0e8",
+                        "inverse-surface": "#33302b",
+                        "tertiary-fixed": "#ffd9e4",
+                        "surface": "#fff8f1",
+                        "surface-dim": "#dfd9d1",
+                        "surface-container": "#f4ede5",
+                        "surface-container-low": "#f9f3eb",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#805062",
+                        "on-primary-container": "#76485a",
+                        "on-secondary-fixed": "#241a00",
+                        "secondary": "#735c00",
+                        "tertiary-fixed-dim": "#ffb0cc",
+                        "on-background": "#1e1b17",
+                        "on-tertiary-fixed-variant": "#890f50",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#e9c349",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed-dim": "#f2b6cb",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#574500",
+                        "brand-gold": "#D4AF37",
+                        "brand-cream": "#fff8f0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-gap-mobile": "64px",
+                        "section-gap-desktop": "120px",
+                        "base": "8px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "body-lg": ["Montserrat"],
+                        "label-md": ["Montserrat"],
+                        "headline-md": ["Playfair Display"],
+                        "label-sm": ["Montserrat"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "body-md": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-nav {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .hero-gradient-overlay {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(255, 248, 241, 0) 50%, rgba(255, 248, 241, 1) 100%);
+        }
+        .gold-frame {
+            border: 1px solid #D4AF37;
+            padding: 8px;
+            border-radius: 9999px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .gold-frame:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+        .nav-underline {
+            position: relative;
+        }
+        .nav-underline::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 50%;
+            background-color: #D4AF37;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .nav-underline:hover::after {
+            width: 100%;
+        }
+        .product-card-glow:hover {
+            box-shadow: 0 10px 40px rgba(128, 80, 98, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-md border-b border-outline-variant/20">
+<nav class="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-8">
+<a class="font-headline-md text-headline-md italic text-primary" href="#">Glow Beauty</a>
+<div class="hidden md:flex gap-6">
+<a class="font-label-md text-label-md uppercase tracking-widest text-primary font-bold border-b border-secondary nav-underline" href="#">Shop</a>
+<a class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors duration-300 nav-underline" href="#">Brand Story</a>
+<a class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors duration-300 nav-underline" href="#">Best Sellers</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant">search</span>
+<input class="bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-label-sm focus:ring-1 focus:ring-brand-gold w-48 transition-all" placeholder="Search..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-primary hover:text-secondary transition-colors p-2" style="font-variation-settings: 'FILL' 0;">favorite</button>
+<button class="material-symbols-outlined text-primary hover:text-secondary transition-colors p-2" style="font-variation-settings: 'FILL' 0;">shopping_bag</button>
+</div>
+</nav>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative h-screen flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBy_8hD_HTBwCPLYWXHjUikFBrX8r-eioaYrTMZbSYBz6dEeTl-RQCWurAnnKzV_nF6sJOAEqvGFPTc4Xjo4WARV2lwBipvNpPOQ3pAvVL66Xrj2FIcZzDlFIxUL3koflSIzUsb17vNJuKK3UfAejxkgX5TplKBfjMOvuufEFl4uq34oad7oEzagHOPIdF4LB74Y1yDPOWEGqjCIDEE99820zSIJpGSbMaSj3Wr3rI80HT1eTUuu1H28tvNYwazeJJxnwDjGmB4kSfs');"></div>
+<div class="absolute inset-0 hero-gradient-overlay"></div>
+</div>
+<div class="relative z-10 text-center px-gutter">
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-primary-fixed mb-8 opacity-0 translate-y-10 transition-all duration-1000 ease-out animate-fade-in-up" id="hero-title">
+                    Unlock Your Radiance
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">
+                    Experience the ritual of beauty with our high-fashion editorial collection, crafted for the discerning minimalist.
+                </p>
+<button class="bg-primary text-white font-label-md uppercase tracking-widest px-10 py-4 rounded-full border border-brand-gold hover:bg-on-primary-fixed transition-all duration-300 scale-100 hover:scale-105 active:scale-95 shadow-lg">
+                    Shop Now
+                </button>
+</div>
+</section>
+<!-- Product Grid: Our Collection -->
+<section class="py-section-gap-desktop max-w-container-max mx-auto px-gutter">
+<div class="text-center mb-16">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-4">Our Collection</h2>
+<div class="w-24 h-px bg-brand-gold mx-auto"></div>
+</div>
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
+<!-- Lipstick -->
+<div class="group text-center">
+<div class="gold-frame mb-6 aspect-square overflow-hidden mx-auto max-w-[240px]">
+<img class="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700" data-alt="A luxurious close-up of a premium lipstick in a gold-plated case, set against a cream marble surface with soft blush pink lighting. Minimalist editorial style, high contrast, radiant sophistication." src="https://lh3.googleusercontent.com/aida-public/AB6AXuARRDakgJ_FpFeibbTLT4nqPWRyxExU3W-KRaHfJ4jxoJjW4EOD-x1iMI3b3HqNufp7mc5Rs1BxbiR_GppJ9Hn_kOmjyAw-X6e7Ufm9dh4jLys5OHXzUyB_SGUfEP2ZtXoXHARt2MULJqtWQfr7zzVGWKQAgxVOppR2gsWUQsOSpTCdVL7Q8FJoEdahZblfwnEEzrcIAT2DJ0QfISPRzHzFl5VWhayJLbW2fnl5CI7O7ESnn7eQ0V_eRWGZxaK3vg51WVOIDdb8kX3P"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2 group-hover:font-bold transition-all">Lipstick</h3>
+<p class="font-label-sm text-label-sm text-outline tracking-widest uppercase">Velvet Finish</p>
+</div>
+<!-- Foundation -->
+<div class="group text-center">
+<div class="gold-frame mb-6 aspect-square overflow-hidden mx-auto max-w-[240px]">
+<img class="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700" data-alt="A minimalist glass bottle of liquid foundation reflecting soft glowing light, surrounded by a delicate gold ring on a cream fabric background. Soft focus, editorial beauty photography, blush pink accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-0-jQZqJE3FpFzUuqdGbRQH2m4l1HWR_p0Wf2EBBTYzW_PDMn9gJ1QpNxzz0kI7u26RNP9zE6uji-9d_KExMQILoeCcqN125eVRGhb2vYc8322dUtl6ciiK092PCz5H1z9ZwsDKXB4kJon4r3UeYwUNXelotJCB0AzxQTRgxPibNZm2gX4xGEJw6yueWRmIwTsBGk1bOT8BYYyJlaKZTREMOjKbbo1kSiOKXzy56m4fmPr990h0KfgDOgHdVz2tXTtLgZaAJINgrp"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2 group-hover:font-bold transition-all">Foundation</h3>
+<p class="font-label-sm text-label-sm text-outline tracking-widest uppercase">Second Skin</p>
+</div>
+<!-- Palette -->
+<div class="group text-center">
+<div class="gold-frame mb-6 aspect-square overflow-hidden mx-auto max-w-[240px]">
+<img class="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700" data-alt="An open luxury eyeshadow palette showing shimmering nude and rose gold tones, arranged elegantly in a minimalist layout. Bright high-key lighting, cream and gold color palette, high fashion beauty." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCa76aCsTBzV8fC8BuZC2qGcjJxsQreCnDRODMsZR5_HpN-h_6tWkEH6OqDobYRRtC2LAjO-yFEYcT5rXxlP_e6MzROzePIJY0yR-96TGyYmmK5AbgPavdJx2VTFYCDOJJDTkt4Uw4GnTO8xQ0dEgT99cs6ORjUeEARC8WBpNsitae5_VMLtPLDqCgIsVfSFI4bLsLYobwIrJQYlUO4pYJEwA6KAKaZMebbuEcbLfCZIyo-G8DQrJ4km23bnZerIZb1wNmA_iLuncFQ"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2 group-hover:font-bold transition-all">Palette</h3>
+<p class="font-label-sm text-label-sm text-outline tracking-widest uppercase">Celestial Glow</p>
+</div>
+<!-- Skincare -->
+<div class="group text-center">
+<div class="gold-frame mb-6 aspect-square overflow-hidden mx-auto max-w-[240px]">
+<img class="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700" data-alt="A translucent facial oil bottle with gold dropper, backlit by warm golden light to create a radiant glow. Minimalist organic aesthetic, soft cream background, luxury skincare focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuXGUMDeTkkcdMtGjmU7x_IjQj03Bf244FA4a-QNPp2SPgpLHgLQwt9RRxBg9jNWWZ4vLZgEfmIJ1d2vDZhEwDe1HLI5pt-idXDXo6oIG3DBZ59q47XdcMOxQtAJoylhUy18nJ4U-p7kSa3YzUCqfWUaxhCcaN0IA-mBRCEG0Z_2msJwtlPZGJA4nIhF55cK0NBWEBUo8j0ghp998y-Tmmwf3NzmSMkqJmdawkCckSBM75t0LNcXHrYkglLUzPT8s7GCoOr3ouq4AP"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2 group-hover:font-bold transition-all">Skincare</h3>
+<p class="font-label-sm text-label-sm text-outline tracking-widest uppercase">Daily Ritual</p>
+</div>
+</div>
+</section>
+<!-- Best Sellers -->
+<section class="bg-surface-container-low py-section-gap-desktop">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="flex justify-between items-end mb-12">
+<div>
+<span class="font-label-md text-label-md uppercase tracking-[0.2em] text-secondary">The Favorites</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mt-2">Best Sellers</h2>
+</div>
+<a class="font-label-md text-label-md text-primary border-b border-brand-gold pb-1 hover:text-secondary transition-colors" href="#">View All</a>
+</div>
+<div class="flex gap-8 overflow-x-auto pb-12 scrollbar-hide snap-x">
+<!-- Item 1 -->
+<div class="min-w-[300px] bg-surface p-6 rounded-xl snap-start product-card-glow transition-all duration-300 relative group">
+<button class="absolute top-8 right-8 z-10 material-symbols-outlined text-outline-variant hover:text-tertiary transition-colors" style="font-variation-settings: 'FILL' 0;">favorite</button>
+<div class="aspect-[3/4] overflow-hidden mb-6 bg-surface-container-highest">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A premium gold-capped serum bottle standing elegantly against a soft blush pink background with subtle leaf shadows. Cinematic lighting, luxury aesthetic, high detail." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqa1xNvRnYJnoZvwQX0RC0b_OPSHWWzO1d00KYL3QBQN5aujF2f4LVYk1WlaH-L_3-AO7ZqH7c3MqTwyljYFVHcIQFmZTqMD8aY1mRrpAYT6XM-xGkaBP-o59kZzu9uCEJDEV75U-NeBr44ggx9QwQHcVH0mnuIdzqtOr5i2Z5489Wa8PkHdvCgnbPYAB32tg1OMerKXYvZ2uHT9A3DtdGueXBJLDkBnvbXk3XSknvc_v39TSh5wfQOWUgJECcYMMsKKcypDked3Kp"/>
+</div>
+<h4 class="font-headline-md text-on-surface mb-1">Radiance Serum</h4>
+<p class="font-body-md text-on-surface-variant mb-4">$84.00</p>
+<button class="w-full py-3 border border-brand-gold text-label-md uppercase tracking-widest hover:bg-brand-gold hover:text-white transition-all">Add to Bag</button>
+</div>
+<!-- Item 2 -->
+<div class="min-w-[300px] bg-surface p-6 rounded-xl snap-start product-card-glow transition-all duration-300 relative group">
+<button class="absolute top-8 right-8 z-10 material-symbols-outlined text-outline-variant hover:text-tertiary transition-colors" style="font-variation-settings: 'FILL' 0;">favorite</button>
+<div class="aspect-[3/4] overflow-hidden mb-6 bg-surface-container-highest">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A luxury gold-rimmed face cream jar with a creamy texture inside, shot in a high-key bright setting with soft peach and pink tones. High-end beauty editorial style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkWh5EbQaLKbtSgF_dJxKPJDKhrbeqlI0JQc93kD9c820gyTQGwIv8wtbRsuPT2urGGU33YhEdR3zIIlsknpX2pZQW0C7U9B4ExP39BQ6mOSNvAWsUHiDlIaCOx9c7jnxs1wPpHtQLxNV7CrlDIRjJsN9AI64Df2YIKfR16OF5Ke4iMZum5v3V90TpqQmRH7y4m0-W8fbdzd3qzZ9ca8fdTzUQ14eJc8XLo2YUuKFDxU70sk_CfTkPahiUrvUt2jdDaCkEjYun1okA"/>
+</div>
+<h4 class="font-headline-md text-on-surface mb-1">Silk Moisture Cream</h4>
+<p class="font-body-md text-on-surface-variant mb-4">$68.00</p>
+<button class="w-full py-3 border border-brand-gold text-label-md uppercase tracking-widest hover:bg-brand-gold hover:text-white transition-all">Add to Bag</button>
+</div>
+<!-- Item 3 -->
+<div class="min-w-[300px] bg-surface p-6 rounded-xl snap-start product-card-glow transition-all duration-300 relative group">
+<button class="absolute top-8 right-8 z-10 material-symbols-outlined text-outline-variant hover:text-tertiary transition-colors" style="font-variation-settings: 'FILL' 0;">favorite</button>
+<div class="aspect-[3/4] overflow-hidden mb-6 bg-surface-container-highest">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A sleek black and gold mascara tube with a soft focus background of rose petals. Radiant lighting, sophisticated branding, luxury cosmetic aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-d2R1LT7IPhULErBXejjVbWLlqrp-2vuBC12YLe5g2-OZrESKieP0tSRKvU4WKoK3A6w1C6c3ud1D2xhJbRDQ8T42WsFfvAXzkVJhTMJnaNSd11KvEexzvnPi-OmbAAJtMT6vONDdzM7RToMC23ScEUE5dIWgNBJVzmbgFQnukXWFRbtR4x7VRppKMSWdtckCX1rzr7rKtbUhCbdDVJg4iecOiBe4EG-4v-9OpL3eVGm5_w8vwu-X6sD4Z68JU20CcXEoi3Hfzr9p"/>
+</div>
+<h4 class="font-headline-md text-on-surface mb-1">Infinite Lash Mascara</h4>
+<p class="font-body-md text-on-surface-variant mb-4">$32.00</p>
+<button class="w-full py-3 border border-brand-gold text-label-md uppercase tracking-widest hover:bg-brand-gold hover:text-white transition-all">Add to Bag</button>
+</div>
+<!-- Item 4 -->
+<div class="min-w-[300px] bg-surface p-6 rounded-xl snap-start product-card-glow transition-all duration-300 relative group">
+<button class="absolute top-8 right-8 z-10 material-symbols-outlined text-outline-variant hover:text-tertiary transition-colors" style="font-variation-settings: 'FILL' 0;">favorite</button>
+<div class="aspect-[3/4] overflow-hidden mb-6 bg-surface-container-highest">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A bottle of luxury rose-tinted setting spray with golden shimmer particles visible inside, set against a cream backdrop with morning sunlight. Dreamy, ethereal, radiant beauty." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVrUF83ESlTpBQ6Q3881Mwi7Vl2ZK1nTo42pyH2VnayTK3Q1wfP4sMJnWzC7V45rWvtJeJmt5gakUl3BzybsSkz5t_esIvv6VvxxY_RsJixHTCjdOB0OG-sGHor09MWYQqoCXQpSMetddcbIGymGUB20TobvU6kD6jm5xmcybDXtSbDAsDeP4OehqNIsPSWhm1S1QV2m4M5SAg0CC-24bla85Luujym0B-XSz5K_onBPCKOWd_a9HW5W3VL_Iqchhn9w2T5sNGZmdA"/>
+</div>
+<h4 class="font-headline-md text-on-surface mb-1">Golden Hour Spray</h4>
+<p class="font-body-md text-on-surface-variant mb-4">$45.00</p>
+<button class="w-full py-3 border border-brand-gold text-label-md uppercase tracking-widest hover:bg-brand-gold hover:text-white transition-all">Add to Bag</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Brand Story -->
+<section class="py-section-gap-desktop bg-surface relative overflow-hidden">
+<div class="absolute top-0 right-0 w-1/3 h-full bg-primary-container/10 -z-10 translate-x-1/2 rounded-full blur-3xl"></div>
+<div class="max-w-4xl mx-auto px-gutter text-center">
+<span class="font-label-sm text-label-sm uppercase tracking-[0.3em] text-brand-gold mb-6 block">The Essence of Glow</span>
+<h2 class="font-display-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-12 italic">Elegance is an Inner Light</h2>
+<div class="flex items-center justify-center gap-4 mb-10">
+<div class="h-[1px] flex-1 bg-gradient-to-r from-transparent to-outline-variant"></div>
+<span class="material-symbols-outlined text-brand-gold" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<div class="h-[1px] flex-1 bg-gradient-to-l from-transparent to-outline-variant"></div>
+</div>
+<div class="space-y-6 font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+<p>At Glow Beauty, we believe that makeup is not a mask, but a ritual of self-discovery. Our philosophy centers on "Radiant Sophistication"—a harmony of high-fashion editorial aesthetics and organic, skin-loving formulations.</p>
+<p>Each product in our collection is meticulously crafted to capture and reflect light, designed for those who appreciate the subtle luxury of a luminous finish and the quiet confidence of natural beauty.</p>
+</div>
+<div class="mt-16 flex flex-wrap justify-center gap-12 grayscale opacity-60">
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-4xl">eco</span>
+<span class="font-label-sm uppercase tracking-widest">Cruelty Free</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-4xl">biotech</span>
+<span class="font-label-sm uppercase tracking-widest">Clean Formulas</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-4xl">recycling</span>
+<span class="font-label-sm uppercase tracking-widest">Sustainable Packaging</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Newsletter Section -->
+<section class="py-section-gap-desktop px-gutter">
+<div class="max-w-container-max mx-auto bg-primary-container/30 rounded-3xl p-12 md:p-24 text-center relative overflow-hidden">
+<div class="absolute -top-12 -left-12 w-48 h-48 border border-brand-gold/20 rounded-full"></div>
+<div class="absolute -bottom-12 -right-12 w-64 h-64 border border-brand-gold/20 rounded-full"></div>
+<div class="relative z-10 max-w-xl mx-auto">
+<h2 class="font-headline-lg text-headline-lg text-on-primary-container mb-4">Join the Glow</h2>
+<p class="font-body-md text-on-primary-container mb-10">Subscribe to receive beauty rituals, early access to new collections, and exclusive editorial content.</p>
+<form class="flex flex-col sm:flex-row gap-4">
+<input class="flex-1 bg-surface-container-lowest border-b-2 border-brand-gold focus:border-primary focus:ring-0 text-on-surface p-4 text-label-md placeholder:text-outline-variant transition-all" placeholder="Email Address" type="email"/>
+<button class="bg-on-primary-fixed text-white font-label-md uppercase tracking-widest px-8 py-4 hover:bg-primary transition-all active:scale-95 whitespace-nowrap" type="submit">Subscribe</button>
+</form>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-on-primary-fixed text-secondary-fixed w-full">
+<div class="flex flex-col md:flex-row justify-between items-start gap-8 px-gutter py-section-gap-desktop max-w-container-max mx-auto">
+<div class="max-w-xs">
+<h2 class="font-headline-lg text-headline-lg text-secondary-fixed mb-6">Glow Beauty</h2>
+<p class="font-body-md text-secondary-fixed/80 mb-6 leading-relaxed">Defining the next era of radiant sophistication with a commitment to luxury, ritual, and pure ingredients.</p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full border border-secondary-fixed/30 flex items-center justify-center hover:bg-secondary-fixed hover:text-on-primary-fixed transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg">public</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-secondary-fixed/30 flex items-center justify-center hover:bg-secondary-fixed hover:text-on-primary-fixed transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg">camera</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-secondary-fixed/30 flex items-center justify-center hover:bg-secondary-fixed hover:text-on-primary-fixed transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg">play_arrow</span>
+</a>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-12 sm:gap-24">
+<div class="space-y-4">
+<h4 class="font-label-md text-label-md uppercase tracking-widest text-secondary-fixed">Support</h4>
+<ul class="space-y-3 font-body-md text-secondary-fixed/80">
+<li><a class="hover:text-secondary-container transition-all" href="#">Contact Us</a></li>
+<li><a class="hover:text-secondary-container transition-all" href="#">Shipping &amp; Returns</a></li>
+<li><a class="hover:text-secondary-container transition-all" href="#">Order Tracking</a></li>
+<li><a class="hover:text-secondary-container transition-all" href="#">FAQ</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-md text-label-md uppercase tracking-widest text-secondary-fixed">Legal</h4>
+<ul class="space-y-3 font-body-md text-secondary-fixed/80">
+<li><a class="hover:text-secondary-container transition-all" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-secondary-container transition-all" href="#">Terms of Service</a></li>
+<li><a class="hover:text-secondary-container transition-all" href="#">Accessibility</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="border-t border-secondary-fixed/10 max-w-container-max mx-auto px-gutter py-8">
+<p class="font-label-sm text-secondary-fixed/60 text-center">© 2024 Glow Beauty. All Rights Reserved.</p>
+</div>
+</footer>
+<script>
+        // Simple scroll reveal animation for the hero title
+        window.addEventListener('load', () => {
+            const title = document.getElementById('hero-title');
+            title.style.opacity = '1';
+            title.style.transform = 'translateY(0)';
+        });
+
+        // Sticky nav shadow toggle
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('shadow-sm');
+            } else {
+                header.classList.remove('shadow-sm');
+            }
+        });
+    </script>
+</body></html>

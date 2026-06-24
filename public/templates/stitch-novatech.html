@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NovaTech | The Future is Here</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500&amp;family=Geist:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#131313",
+                    "surface-container-lowest": "#0e0e0e",
+                    "tertiary-fixed": "#ffe179",
+                    "on-primary-container": "#006970",
+                    "on-primary-fixed-variant": "#004f54",
+                    "on-secondary-fixed": "#23005b",
+                    "primary-fixed-dim": "#00dbe9",
+                    "on-error-container": "#ffdad6",
+                    "outline": "#849495",
+                    "surface": "#131313",
+                    "on-primary": "#00363a",
+                    "error-container": "#93000a",
+                    "primary-container": "#00f0ff",
+                    "surface-dim": "#131313",
+                    "on-primary-fixed": "#002022",
+                    "primary-fixed": "#7df4ff",
+                    "secondary-fixed": "#e9ddff",
+                    "surface-container": "#201f1f",
+                    "tertiary-container": "#fed639",
+                    "on-surface": "#e5e2e1",
+                    "surface-container-highest": "#353534",
+                    "on-tertiary": "#3b2f00",
+                    "outline-variant": "#3b494b",
+                    "surface-bright": "#3a3939",
+                    "secondary-container": "#7000ff",
+                    "tertiary-fixed-dim": "#eac324",
+                    "secondary-fixed-dim": "#d1bcff",
+                    "on-secondary-container": "#ddcdff",
+                    "inverse-on-surface": "#313030",
+                    "inverse-surface": "#e5e2e1",
+                    "error": "#ffb4ab",
+                    "surface-variant": "#353534",
+                    "on-tertiary-fixed": "#231b00",
+                    "tertiary": "#fff5de",
+                    "on-error": "#690005",
+                    "on-background": "#e5e2e1",
+                    "surface-tint": "#00dbe9",
+                    "surface-container-high": "#2a2a2a",
+                    "primary": "#dbfcff",
+                    "on-tertiary-fixed-variant": "#554500",
+                    "inverse-primary": "#006970",
+                    "on-surface-variant": "#b9cacb",
+                    "on-secondary-fixed-variant": "#5700c9",
+                    "secondary": "#d1bcff",
+                    "on-tertiary-container": "#715d00",
+                    "on-secondary": "#3c0090",
+                    "surface-container-low": "#1c1b1b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "stack-sm": "8px",
+                    "margin-desktop": "64px",
+                    "unit": "4px",
+                    "gutter": "24px",
+                    "container-max": "1440px",
+                    "margin-mobile": "16px",
+                    "stack-md": "16px",
+                    "stack-lg": "32px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Space Grotesk"],
+                    "body-md": ["Inter"],
+                    "headline-lg-mobile": ["Space Grotesk"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Space Grotesk"],
+                    "headline-lg": ["Space Grotesk"],
+                    "label-md": ["Geist"]
+            },
+            "fontSize": {
+                    "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                    "headline-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 5px rgba(0, 240, 255, 0.4); border-color: rgba(0, 240, 255, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.8); border-color: rgba(0, 240, 255, 1); }
+            100% { box-shadow: 0 0 5px rgba(0, 240, 255, 0.4); border-color: rgba(0, 240, 255, 0.5); }
+        }
+        .btn-pulse {
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .glass-card {
+            background: rgba(26, 26, 26, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: #00f0ff;
+            box-shadow: 0px 0px 20px rgba(0, 240, 255, 0.2);
+            transform: scale(1.02);
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            animation: marquee 30s linear infinite;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-white/10 shadow-[0px_0px_20px_rgba(0,240,255,0.15)] h-[72px]">
+<div class="flex justify-between items-center w-full px-margin-desktop py-4 mx-auto">
+<div class="font-display-lg text-headline-md tracking-tighter text-primary">NovaTech</div>
+<div class="hidden md:flex items-center gap-gutter">
+<a class="font-label-md text-label-md text-primary font-bold border-b-2 border-primary pb-1" href="#">Shop</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Innovation</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Support</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Pre-orders</a>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="text-on-surface-variant hover:text-primary transition-all duration-200 active:scale-95">
+<span class="material-symbols-outlined">dark_mode</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-all duration-200 active:scale-95">
+<span class="material-symbols-outlined">shopping_cart</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-all duration-200 active:scale-95">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative h-screen flex items-center justify-center overflow-hidden">
+<!-- STITCH_SHADER_START:ANIMATION_1 class="absolute inset-0 w-full h-full opacity-50" -->
+<div class="absolute inset-0 w-full h-full opacity-50" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_1" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_1');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+varying vec2 v_texCoord;
+uniform float u_time;
+uniform vec2 u_resolution;
+
+void main() {
+    vec2 uv = v_texCoord;
+    
+    // Create organic movement using sine waves
+    float noise = sin(uv.x * 3.0 + u_time * 0.5) * cos(uv.y * 2.0 - u_time * 0.3);
+    noise += sin(uv.y * 5.0 + u_time * 0.8) * cos(uv.x * 4.0 - u_time * 0.4);
+    
+    // Base colors: dark blue to cyan
+    vec3 colorA = vec3(0.02, 0.05, 0.15); // Very dark blue
+    vec3 colorB = vec3(0.0, 0.94, 1.0);   // Cyan (#00f0ff)
+    
+    // Mix based on noise and coordinates
+    float mixFactor = clamp(uv.y + noise * 0.3, 0.0, 1.0);
+    vec3 finalColor = mix(colorA, colorB * 0.4, mixFactor);
+    
+    // Add glowing "energy" pulses
+    float pulse = sin(u_time * 0.5) * 0.5 + 0.5;
+    finalColor += colorB * pulse * 0.1 * (1.0 - distance(uv, vec2(0.5)));
+
+    gl_FragColor = vec4(finalColor, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_1 -->
+<div class="relative z-10 text-center px-margin-mobile md:px-0 reveal">
+<h1 class="font-display-lg text-display-lg mb-stack-md text-primary drop-shadow-[0_0_30px_rgba(0,240,255,0.4)]">
+                The Future is Here
+            </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-stack-lg">
+                Experience engineering excellence with NovaTech. Precision-crafted hardware designed for the next generation of digital pioneers.
+            </p>
+<div class="flex flex-col md:flex-row gap-gutter justify-center">
+<button class="bg-primary-container text-on-primary-container px-10 py-4 font-bold tracking-wider btn-pulse rounded-lg hover:scale-105 transition-transform">
+                    EXPLORE SHOP
+                </button>
+<button class="border border-primary text-primary px-10 py-4 font-bold tracking-wider rounded-lg hover:bg-primary/10 transition-colors">
+                    WATCH KEYNOTE
+                </button>
+</div>
+</div>
+</section>
+<!-- Brand Marquee -->
+<div class="bg-surface-container-lowest py-stack-lg overflow-hidden whitespace-nowrap border-y border-outline-variant">
+<div class="flex animate-marquee gap-margin-desktop items-center">
+<div class="text-headline-md font-display-lg opacity-20 grayscale hover:grayscale-0 transition-all cursor-default">QUANTUM</div>
+<div class="text-headline-md font-display-lg opacity-20 grayscale hover:grayscale-0 transition-all cursor-default">AERO_SYNC</div>
+<div class="text-headline-md font-display-lg opacity-20 grayscale hover:grayscale-0 transition-all cursor-default">VOIDCORE</div>
+<div class="text-headline-md font-display-lg opacity-20 grayscale hover:grayscale-0 transition-all cursor-default">SPECTRA</div>
+<div class="text-headline-md font-display-lg opacity-20 grayscale hover:grayscale-0 transition-all cursor-default">NEBULA_OS</div>
+<div class="text-headline-md font-display-lg opacity-20 grayscale hover:grayscale-0 transition-all cursor-default">ORBITAL</div>
+<!-- Duplicates for seamless loop -->
+<div class="text-headline-md font-display-lg opacity-20 grayscale hover:grayscale-0 transition-all cursor-default">QUANTUM</div>
+<div class="text-headline-md font-display-lg opacity-20 grayscale hover:grayscale-0 transition-all cursor-default">AERO_SYNC</div>
+<div class="text-headline-md font-display-lg opacity-20 grayscale hover:grayscale-0 transition-all cursor-default">VOIDCORE</div>
+<div class="text-headline-md font-display-lg opacity-20 grayscale hover:grayscale-0 transition-all cursor-default">SPECTRA</div>
+<div class="text-headline-md font-display-lg opacity-20 grayscale hover:grayscale-0 transition-all cursor-default">NEBULA_OS</div>
+<div class="text-headline-md font-display-lg opacity-20 grayscale hover:grayscale-0 transition-all cursor-default">ORBITAL</div>
+</div>
+</div>
+<!-- Product Grid -->
+<section class="max-w-container-max mx-auto px-margin-desktop py-32">
+<div class="reveal mb-16">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-4">New Arrivals</h2>
+<p class="text-on-surface-variant max-w-xl">Cutting-edge hardware optimized for the most demanding digital environments.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Product 1 -->
+<div class="glass-card p-6 rounded-xl flex flex-col reveal" style="transition-delay: 100ms;">
+<div class="aspect-square bg-surface-container mb-6 overflow-hidden rounded-lg group">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A high-performance gaming laptop with glowing cyan accents on a dark obsidian surface, minimalist aesthetic with clean lines, cinematic lighting with lens flares, futuristic technology vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDU1B6CG9610g2B--_0GCCv9tUUQZuYRNlyoWAE70FSl10FPXB_EEOQmUTjpuKivkRLj1Pqm2jSuMIVnjrwjBR0npo_YX5spc23N4g5un-DmK258ckE_AkWLZh1ll-ami_y4Kgcj1ETB1_w2f1Ad6UN7vIW_d2rGfpH03GRx_DvVmDd4Se1VRV-a1TzD2rYZQ-TsIx0WAn3jIYkqBtAiMFCPDP3bZoz3qUAV0FKzsdlAGhVWPmaHyanYqSxxMOl3oFnpSSV3iTVEjA"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Nebula X-1 Laptop</h3>
+<p class="text-on-surface-variant text-body-md mb-6 flex-grow">Quantum-cooled architecture with the latest neural processing units.</p>
+<div class="flex justify-between items-center mt-auto">
+<span class="text-primary font-bold text-headline-md">$2,499</span>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 font-bold rounded-lg hover:shadow-[0_0_15px_#00f0ff] transition-all">Buy Now</button>
+</div>
+</div>
+<!-- Product 2 -->
+<div class="glass-card p-6 rounded-xl flex flex-col reveal" style="transition-delay: 200ms;">
+<div class="aspect-square bg-surface-container mb-6 overflow-hidden rounded-lg group">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Futuristic high-fidelity noise-canceling headphones with glowing cyan LED rings, dark metallic finish, premium studio lighting in a dark room with subtle neon reflections." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAEhARPDOph4yfLdRPylTQVsF1HDJGe1szH_OJRXyYZtK9u9_1Eq9EdEDRacn8jSkrrlUvKNbq10GoGy8S57dVSmePuuxLDpaBzwPxQ9Oh7C0QiXefi8TQp3PmeTKbR3vGfxrAESq5EKaWiCvzlHCoT7akVaahd4V2sMR06NFBhIgoei910n5C1NfIIxv2HKtMIL4ylHGmtSfRjwTMGFeG0Ml6Mdw4t_amQgV9Sn-ZJL-Ez05OPJqgqVZkxvF1QtBQpyT6EaePwE8"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Sonic Pulse ANC</h3>
+<p class="text-on-surface-variant text-body-md mb-6 flex-grow">Spatial audio recalibrated for perfect immersion in any dimension.</p>
+<div class="flex justify-between items-center mt-auto">
+<span class="text-primary font-bold text-headline-md">$349</span>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 font-bold rounded-lg hover:shadow-[0_0_15px_#00f0ff] transition-all">Buy Now</button>
+</div>
+</div>
+<!-- Product 3 -->
+<div class="glass-card p-6 rounded-xl flex flex-col reveal" style="transition-delay: 300ms;">
+<div class="aspect-square bg-surface-container mb-6 overflow-hidden rounded-lg group">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A sleek minimalist mechanical keyboard with translucent keycaps and deep cyan RGB lighting underneath, matte black metal frame, macro shot with sharp focus and cinematic depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCa0lz_7y2TlBUyEbO9ryF3XiqSZHbQJbPdPReGxqbCAath-80z8YuDXyGyZOr3gPKH6BUHVSf5oL-iRQh2vucJZ3_z1ARxGq5F_lPFQZAWI4Yx3G5vwuOHf8rqL6EEm9Qo-3EiGX2jS3tdNMKx1pQaIF7X3eW6FymO2lLuyYkq1vhCXLSQ55nuByyj0_nDj0w1BmfD7pa1l42C-PL3rMocuD5rY9Xf5VUzJxamPntACiessfYzrUrC8pAkHfZ8ET14PXiqRqj0cv0"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Ghost Type-Z</h3>
+<p class="text-on-surface-variant text-body-md mb-6 flex-grow">Optical switches with 0.1ms response time and magnetic feedback.</p>
+<div class="flex justify-between items-center mt-auto">
+<span class="text-primary font-bold text-headline-md">$199</span>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 font-bold rounded-lg hover:shadow-[0_0_15px_#00f0ff] transition-all">Buy Now</button>
+</div>
+</div>
+<!-- Product 4 -->
+<div class="glass-card p-6 rounded-xl flex flex-col reveal" style="transition-delay: 400ms;">
+<div class="aspect-square bg-surface-container mb-6 overflow-hidden rounded-lg group">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Advanced curved ultrawide monitor displaying vibrant cosmic data visualizations, slim bezel, glowing cyan stand, set in a darkened high-end home office with minimalist styling." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVCOpyMq5xMdij8wYpU5rr4deJIilABvp_AjZ5fh8s4CXbWe1Oaom68w4WSiDqPyQ-FtZ58fPQf0RpQOB9OiMAgVw4bQ_YJZzjnCUnW3fVOJB_qWGYPph0JkNKk7zdsOZPFnqRAEZVA4T3kKFWUVucgVIebvUP9HmaGbCmgGDmLOvAX530hgO9AhjJHUka3XWf0-Er69VG-CHsUsUGSEs2qfNllzoFg5P8OaMkvEAXAWdWZq1QlsypABpXCl9Pob9LY4AXQHHCQGE"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Vision Horizon X</h3>
+<p class="text-on-surface-variant text-body-md mb-6 flex-grow">49-inch curved OLED panel with 360Hz refresh rate and true-black technology.</p>
+<div class="flex justify-between items-center mt-auto">
+<span class="text-primary font-bold text-headline-md">$1,299</span>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 font-bold rounded-lg hover:shadow-[0_0_15px_#00f0ff] transition-all">Buy Now</button>
+</div>
+</div>
+<!-- Product 5 -->
+<div class="glass-card p-6 rounded-xl flex flex-col reveal" style="transition-delay: 500ms;">
+<div class="aspect-square bg-surface-container mb-6 overflow-hidden rounded-lg group">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Minimalist smartphone with a borderless glass display showing a cyan digital interface, sleek dark titanium frame, professional photography against a dark background with sharp reflections." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAugWWKVZi12UTw7s44nqjViVzVBycZuiMmyVK9zHZMwOVLNePEope-EWWXjC1D2CBee1tID27z3_7GJoXvt41Jyw17sbdHOxn5q382Yy1xw1KN-QpCvYkwuiJMUOTsS5thdiQUO2AOoAKCfERGB8cAxyRo2yMaawvCfegCmooYfqwZKd2QxdauRGuD0iEk5u9i_fWPBl0omtv-uhTtg_bHCVRmFkvd2K-v9_TGwjP4I4gJP5_pCCoVOu50RAdIlxsV07wRiBGAyr0"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Nova Prime V8</h3>
+<p class="text-on-surface-variant text-body-md mb-6 flex-grow">The only smartphone with integrated satellite link and quantum encryption.</p>
+<div class="flex justify-between items-center mt-auto">
+<span class="text-primary font-bold text-headline-md">$1,099</span>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 font-bold rounded-lg hover:shadow-[0_0_15px_#00f0ff] transition-all">Buy Now</button>
+</div>
+</div>
+<!-- Product 6 -->
+<div class="glass-card p-6 rounded-xl flex flex-col reveal" style="transition-delay: 600ms;">
+<div class="aspect-square bg-surface-container mb-6 overflow-hidden rounded-lg group">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A compact external SSD drive with a rugged carbon fiber casing and a glowing blue status light, sleek portable tech, cinematic lighting on a dark stone surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBv2ef6Z_oY1KC3XjUVMjP15fr3QLEra9bD3OCZCJvn2uwl6CH5kNzpN5l8QHg5vDWjmLFyoJBZH_448cQRGGrOPJiW9fYZBfP_ET8YX7JAphn9K2oBL8tqz1g7iZU7j5Ff15N7Et4y-0XJoxWhncptL4o-FtoS5KHjOa7jy-ME4JUBdlBLDYk-xlAG1IcrwexZq2bs8TW5k_f1BCXQKIA95jGhbFr24NeLqEpROVsmZitKRAVueZP4PYWXE7ySiK3tIc87JAKb8rU"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Core Vault Pro</h3>
+<p class="text-on-surface-variant text-body-md mb-6 flex-grow">8TB Thunderbolt 5 drive with military-grade cooling and encryption.</p>
+<div class="flex justify-between items-center mt-auto">
+<span class="text-primary font-bold text-headline-md">$499</span>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 font-bold rounded-lg hover:shadow-[0_0_15px_#00f0ff] transition-all">Buy Now</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonials Section -->
+<section class="bg-surface-container-low py-32 overflow-hidden">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="reveal text-center mb-16">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-4">Elite Users</h2>
+<p class="text-on-surface-variant max-w-xl mx-auto">See why world-class creators and engineers choose NovaTech.</p>
+</div>
+<div class="flex gap-gutter overflow-x-auto pb-8 snap-x no-scrollbar">
+<div class="min-w-[350px] glass-card p-8 rounded-xl snap-center">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-primary/20">
+<img class="w-full h-full object-cover" data-alt="Portrait of a modern digital artist with soft neon lighting reflections on their face, professional photography, cinematic aesthetic, dark minimalist background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrTb3MSqj_ql0XbD_pdLb0S78Pu_G-R861-DWeP8FYvo9eFayHO02UUErZTeTRxtXSBC_KcYWLZRXgyqfsWqLolB_2qyL-qR2cQPxlobA5LXJbnPWDkgEVqfBhklfcCLcbMK_XiM1z78H_mF_Oy3eOvf-cp2r01N1zr_eKnDsLPgSt5mPNyzYLA7XSNV-YZSW510idllrGX3js_a-np2dkfONj9vqQybnVHqcKr_WkxkKk8hf4HEO34DzFMu8nNT6H6Asj9cWk8U0"/>
+</div>
+<div>
+<p class="font-bold">Alex Thorne</p>
+<p class="text-sm text-on-surface-variant">Lead Developer at V-Corp</p>
+</div>
+</div>
+<p class="italic text-on-surface-variant">"The Nebula X-1 isn't just a laptop, it's a workstation from the future. My render times have dropped by 60%."</p>
+</div>
+<div class="min-w-[350px] glass-card p-8 rounded-xl snap-center border-primary/30">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-primary/20">
+<img class="w-full h-full object-cover" data-alt="Portrait of a female professional music producer in a tech-focused studio environment with glowing blue equipment, sharp lighting, cinematic dark mode style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuvcaP13hza38JMZyLk1i4o78fuQTZzor6182CdDDSNuXxFF2_g9GskrGhi4JDBow_05MqSiejiE1hK1nCbxjDGUoK_o0jqmlTkQ-DGfhyxxlfymPAtMTZwM0RWJaz87499-S0fOCz5WQ50aySohGSk0v8kEDTYePNf4HyXeyHEIT7SQsZB8SAD9QT8xPYoKGKUo2OSuCAmgrrLv6Q86eSvVkLyXRi7KZnyVRUKRHVJB42MNIOS1LSsSm8UhdnUxr7a68aL-gJ67Y"/>
+</div>
+<div>
+<p class="font-bold">Sarah Chen</p>
+<p class="text-sm text-on-surface-variant">Music Producer</p>
+</div>
+</div>
+<p class="italic text-on-surface-variant">"Audio fidelity is everything in my world. The Sonic Pulse ANC allows me to mix in complete silence wherever I am."</p>
+</div>
+<div class="min-w-[350px] glass-card p-8 rounded-xl snap-center">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-primary/20">
+<img class="w-full h-full object-cover" data-alt="Portrait of a high-end architect with professional framing, modern tech accessories visible, soft blue studio lighting on dark background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsdkCoogrowXe04TtkidcDk2o2371YNGAJ-D6DNIcm-u5_gTsIrESIWPWL0Q8WEP6eNNe46Q6Lsc_XVy233lnRBOmfKhgLjukuBD_BtpRe5bK_RVo3_Nbz_7VOONVS4dJPkUOzmuH0JNgd3Zy6rZjSr2w-djU1ML2OeiRGkqJijUPQEEENQHQsZccX4Q0g_rB2YMKnIXQ9NMX-a-8wo3wd_wCAWKtekrCLcsUlVH-UqlSVmYBB3ROIvF5UFyz3bgtkxlKIIpUqS0A"/>
+</div>
+<div>
+<p class="font-bold">Marcus Vane</p>
+<p class="text-sm text-on-surface-variant">Concept Architect</p>
+</div>
+</div>
+<p class="italic text-on-surface-variant">"The Vision Horizon monitor changed how I see my designs. The color accuracy and depth are simply unmatched."</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Newsletter Section -->
+<section class="max-w-container-max mx-auto px-margin-desktop py-32 reveal">
+<div class="bg-surface-container-highest p-12 rounded-2xl border border-primary/20 relative overflow-hidden">
+<div class="absolute -right-24 -top-24 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
+<div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-gutter">
+<div class="max-w-md">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-2">Stay Updated</h2>
+<p class="text-on-surface-variant">Join the inner circle for early access to product launches and innovation reports.</p>
+</div>
+<div class="flex w-full md:w-auto gap-stack-sm">
+<input class="bg-background border border-outline-variant px-6 py-4 rounded-lg w-full md:w-80 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-on-surface" placeholder="Enter your email" type="email"/>
+<button class="bg-primary-container text-on-primary-container px-8 py-4 font-bold rounded-lg hover:shadow-[0_0_20px_#00f0ff] active:scale-95 transition-all whitespace-nowrap">SIGN UP</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest w-full py-stack-lg border-t border-outline-variant">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop gap-gutter max-w-container-max mx-auto">
+<div class="font-display-lg text-headline-md text-primary">NovaTech</div>
+<div class="flex gap-gutter">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all opacity-80 hover:opacity-100" href="#">Sustainability</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all opacity-80 hover:opacity-100" href="#">Contact</a>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">© 2024 NovaTech Systems. Engineered for Excellence.</p>
+</div>
+</footer>
+<script>
+        // Reveal on scroll logic
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Micro-interaction for primary CTA
+        const primaryBtn = document.querySelector('.btn-pulse');
+        if (primaryBtn) {
+            primaryBtn.addEventListener('mousemove', (e) => {
+                const rect = primaryBtn.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                primaryBtn.style.setProperty('--x', `${x}px`);
+                primaryBtn.style.setProperty('--y', `${y}px`);
+            });
+        }
+    </script>
+</body></html>

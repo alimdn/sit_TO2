@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Root &amp; Barrel | Organic Grocers</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&amp;family=Work+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed": "#e7e2da",
+                    "surface-container": "#edeee9",
+                    "tertiary-container": "#966744",
+                    "surface-dim": "#d9dbd6",
+                    "on-primary-fixed": "#00210e",
+                    "primary-fixed": "#b9efc5",
+                    "on-surface": "#191c19",
+                    "surface-container-highest": "#e1e3de",
+                    "on-tertiary": "#ffffff",
+                    "outline-variant": "#c1c9bf",
+                    "on-primary-container": "#e1ffe5",
+                    "on-primary-fixed-variant": "#1e5031",
+                    "on-secondary-fixed": "#1d1c17",
+                    "primary-fixed-dim": "#9dd3aa",
+                    "on-error-container": "#93000a",
+                    "background": "#f8faf5",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-fixed": "#ffdcc5",
+                    "primary-container": "#4a7c59",
+                    "surface": "#f8faf5",
+                    "outline": "#717971",
+                    "error-container": "#ffdad6",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#376847",
+                    "surface-container-high": "#e7e9e4",
+                    "primary": "#316342",
+                    "on-tertiary-fixed-variant": "#653d1e",
+                    "tertiary": "#7a4f2f",
+                    "on-error": "#ffffff",
+                    "on-background": "#191c19",
+                    "on-secondary-fixed-variant": "#494741",
+                    "secondary": "#615e58",
+                    "on-tertiary-container": "#fff5f1",
+                    "on-secondary": "#ffffff",
+                    "surface-container-low": "#f3f4ef",
+                    "inverse-primary": "#9dd3aa",
+                    "on-surface-variant": "#414942",
+                    "on-secondary-container": "#67645e",
+                    "inverse-on-surface": "#f0f1ec",
+                    "inverse-surface": "#2e312e",
+                    "error": "#ba1a1a",
+                    "surface-variant": "#e1e3de",
+                    "surface-bright": "#f8faf5",
+                    "secondary-container": "#e7e2da",
+                    "tertiary-fixed-dim": "#f4bb92",
+                    "secondary-fixed-dim": "#cac6be",
+                    "on-tertiary-fixed": "#301400"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "sm": "12px",
+                    "margin-mobile": "16px",
+                    "md": "24px",
+                    "xl": "80px",
+                    "lg": "48px",
+                    "xs": "4px",
+                    "base": "8px",
+                    "margin-desktop": "64px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "body-md": ["Work Sans"],
+                    "label-caps": ["Work Sans"],
+                    "body-lg": ["Work Sans"],
+                    "display-lg": ["Libre Caslon Text"],
+                    "headline-sm": ["Libre Caslon Text"],
+                    "display-lg-mobile": ["Libre Caslon Text"],
+                    "headline-md": ["Libre Caslon Text"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg-mobile": ["36px", {"lineHeight": "42px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .paper-texture {
+            background-color: #f8faf5;
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+        }
+        .wood-texture {
+            background-image: url("https://www.transparenttextures.com/patterns/wood-pattern.png");
+        }
+        .rustic-shadow {
+            box-shadow: 0 10px 30px -10px rgba(122, 79, 47, 0.15);
+        }
+        .hand-drawn-border {
+            border-style: dashed;
+            border-width: 1.5px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .btn-pressed:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body class="paper-texture text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-50 bg-surface/90 backdrop-blur-md">
+<div class="max-w-[1280px] mx-auto px-margin-desktop flex justify-between items-center h-20">
+<div class="font-headline-sm text-headline-sm text-primary">Root &amp; Barrel</div>
+<nav class="hidden md:flex gap-lg items-center">
+<a class="font-body-md text-body-md text-primary font-bold border-b-2 border-primary pb-1" href="#">Shop</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Farms</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Our Story</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Recipes</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-primary hover:scale-110 transition-transform">person</button>
+<button class="material-symbols-outlined text-primary hover:scale-110 transition-transform">favorite</button>
+<button class="flex items-center gap-xs bg-primary text-on-primary px-sm py-xs rounded-lg active:scale-95 transition-transform">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="font-label-caps text-label-caps uppercase">Cart</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Hero Section -->
+<section class="relative h-[600px] overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="Overhead view of fresh organic produce on a rustic wooden table" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMjbE6hE8aHsfpbi3zLLZ7Y-5C0Uk7LA7AhbgP_9atTfdLoufPd6hFdXuSFatRsm44jkbWwm5DNJL7Hc6CggUtdxHDJE7HCIaH3fIumz-k5j_YsEyCabXUJPsCqJGVoR9qyl9r5JWJs88FYV0YK4nsIi6CzCusiskledvrk8JqEXJtUREtsG147kOHFXPSqD0xLFAOSSUUfbeVJn_NTA9UYFuKJrEsAXCDj7bx8_eYKfUbDjzQD1ni5rfhAyRfdValnFmG9Viiz_g"/>
+<div class="absolute inset-0 bg-on-background/10"></div>
+</div>
+<div class="relative z-10 flex items-center justify-center h-full px-margin-mobile">
+<div class="bg-secondary-fixed/95 backdrop-blur-sm p-lg md:p-xl rounded-lg max-w-2xl text-center rustic-shadow border border-outline-variant/30">
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-tertiary mb-md">Farm to Table — Delivered</h1>
+<p class="font-body-lg text-body-lg text-secondary mb-lg">Bringing the market's freshest harvest directly from our fields to your kitchen, with integrity and care.</p>
+<a class="inline-block bg-primary text-on-primary font-label-caps text-label-caps uppercase px-lg py-md rounded-lg shadow-lg hover:shadow-xl transition-all btn-pressed" href="#shop">Explore Today's Harvest</a>
+</div>
+</div>
+</section>
+<!-- Categories (Wooden Signs) -->
+<section class="max-w-[1280px] mx-auto px-margin-desktop py-xl" id="shop">
+<div class="grid grid-cols-2 md:grid-cols-5 gap-md">
+<!-- Sign 1 -->
+<button class="wood-texture bg-tertiary text-on-tertiary p-md rounded-lg flex flex-col items-center justify-center gap-sm border-b-4 border-on-tertiary-fixed-variant transition-transform hover:-translate-y-1 active:translate-y-1 active:border-b-0 rustic-shadow group">
+<span class="material-symbols-outlined text-3xl">nutrition</span>
+<span class="font-headline-sm text-headline-sm">Fruits</span>
+</button>
+<!-- Sign 2 -->
+<button class="wood-texture bg-tertiary text-on-tertiary p-md rounded-lg flex flex-col items-center justify-center gap-sm border-b-4 border-on-tertiary-fixed-variant transition-transform hover:-translate-y-1 active:translate-y-1 active:border-b-0 rustic-shadow group">
+<span class="material-symbols-outlined text-3xl">eco</span>
+<span class="font-headline-sm text-headline-sm">Vegetables</span>
+</button>
+<!-- Sign 3 -->
+<button class="wood-texture bg-tertiary text-on-tertiary p-md rounded-lg flex flex-col items-center justify-center gap-sm border-b-4 border-on-tertiary-fixed-variant transition-transform hover:-translate-y-1 active:translate-y-1 active:border-b-0 rustic-shadow group">
+<span class="material-symbols-outlined text-3xl">grass</span>
+<span class="font-headline-sm text-headline-sm">Grains</span>
+</button>
+<!-- Sign 4 -->
+<button class="wood-texture bg-tertiary text-on-tertiary p-md rounded-lg flex flex-col items-center justify-center gap-sm border-b-4 border-on-tertiary-fixed-variant transition-transform hover:-translate-y-1 active:translate-y-1 active:border-b-0 rustic-shadow group">
+<span class="material-symbols-outlined text-3xl">water_drop</span>
+<span class="font-headline-sm text-headline-sm">Dairy</span>
+</button>
+<!-- Sign 5 -->
+<button class="wood-texture bg-tertiary text-on-tertiary p-md rounded-lg flex flex-col items-center justify-center gap-sm border-b-4 border-on-tertiary-fixed-variant transition-transform hover:-translate-y-1 active:translate-y-1 active:border-b-0 rustic-shadow group">
+<span class="material-symbols-outlined text-3xl">restaurant</span>
+<span class="font-headline-sm text-headline-sm">Meat</span>
+</button>
+</div>
+</section>
+<!-- Featured Product (Bento Style) -->
+<section class="bg-surface-container py-xl">
+<div class="max-w-[1280px] mx-auto px-margin-desktop">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-lg items-center">
+<div class="rounded-xl overflow-hidden rustic-shadow border border-outline-variant/20">
+<img alt="A beautiful wooden crate filled with vibrant, seasonal organic vegetables and artisan bread in a golden field" class="w-full h-[500px] object-cover hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7nUjWquKpuHcSXRhqLHkvjGbZTmwLhfZY5F5eQ-jCUpahj_piOCpFskjBpHvV0cYMI8VARon5lTShMD_-u5M6fx0s82quTlcSPpYVXv4cnbW_TvapqWcYYKYccTYMYqrl3XjI991LcQzkPbvX1T11KnIaKuKgdxaIPEmwsYRbfD_dVTZdJepRb1YRVqAebfXVi-e9eaE_3zmbIctS-b80T_m8C2euKpJ7G_fbZNQmnSxRgThiBB5pyKL1xB-Y2jxS4h2NZSkixio"/>
+</div>
+<div class="space-y-lg">
+<div class="flex gap-sm">
+<span class="bg-primary-container text-on-primary-container font-label-caps text-label-caps px-sm py-1 rounded-full hand-drawn-border border-primary">Certified Organic</span>
+<span class="bg-tertiary-container text-on-tertiary-container font-label-caps text-label-caps px-sm py-1 rounded-full hand-drawn-border border-tertiary">Best Value</span>
+</div>
+<h2 class="font-display-lg text-display-lg text-on-surface">Weekly Harvest Box</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">Our signature subscription box features the peak of the season. Hand-picked at dawn and delivered by dusk. Includes 10-12 seasonal varieties, artisan sourdough, and local dairy.</p>
+<div class="flex items-center gap-lg">
+<span class="font-display-lg text-headline-md text-tertiary">$35.00</span>
+<button class="bg-primary text-on-primary font-label-caps text-label-caps uppercase px-xl py-md rounded-lg shadow-lg hover:bg-primary/90 transition-all btn-pressed flex items-center gap-sm">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+                            Add to Cart
+                        </button>
+</div>
+<ul class="space-y-sm pt-md">
+<li class="flex items-center gap-sm font-body-md text-body-md text-secondary">
+<img alt="leaf icon" class="w-6 h-6" src="data:image/png;base64,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"/> Plastic-free packaging
+                        </li>
+<li class="flex items-center gap-sm font-body-md text-body-md text-secondary">
+<img alt="leaf icon" class="w-6 h-6" src="data:image/png;base64,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"/> Sourced within 50 miles
+                        </li>
+<li class="flex items-center gap-sm font-body-md text-body-md text-secondary">
+<img alt="leaf icon" class="w-6 h-6" src="data:image/png;base64,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"/> Free doorstep delivery
+                        </li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- Farm Story (Accordion) -->
+<section class="max-w-[1280px] mx-auto px-margin-desktop py-xl">
+<div class="max-w-3xl mx-auto">
+<h2 class="font-display-lg text-headline-md text-center text-primary mb-xl">Our Roots</h2>
+<div class="space-y-md">
+<!-- Item 1 -->
+<div class="border-b border-outline-variant py-md">
+<button class="flex justify-between items-center w-full text-left group" onclick="toggleAccordion('acc-1')">
+<span class="font-headline-sm text-headline-sm text-tertiary">The Heritage of the Soil</span>
+<span class="material-symbols-outlined transition-transform" id="icon-acc-1">expand_more</span>
+</button>
+<div class="hidden mt-md" id="acc-1">
+<p class="font-body-md text-body-md text-on-surface-variant">Founded in 1948 by the Miller family, our farm began with a simple philosophy: if you treat the earth with respect, it will feed you for generations. We have never used synthetic fertilizers, preferring the slow, natural cycle of composting and crop rotation.</p>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="border-b border-outline-variant py-md">
+<button class="flex justify-between items-center w-full text-left group" onclick="toggleAccordion('acc-2')">
+<span class="font-headline-sm text-headline-sm text-tertiary">Our Community Promise</span>
+<span class="material-symbols-outlined transition-transform" id="icon-acc-2">expand_more</span>
+</button>
+<div class="hidden mt-md" id="acc-2">
+<p class="font-body-md text-body-md text-on-surface-variant">Root &amp; Barrel isn't just about food; it's about people. We partner with over 40 local artisan producers to ensure that our marketplace supports the local economy and preserves heritage farming techniques.</p>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="border-b border-outline-variant py-md">
+<button class="flex justify-between items-center w-full text-left group" onclick="toggleAccordion('acc-3')">
+<span class="font-headline-sm text-headline-sm text-tertiary">The Future of Farming</span>
+<span class="material-symbols-outlined transition-transform" id="icon-acc-3">expand_more</span>
+</button>
+<div class="hidden mt-md" id="acc-3">
+<p class="font-body-md text-body-md text-on-surface-variant">We are currently implementing regenerative agriculture practices that actively sequester carbon back into our fields, ensuring our grandchildren will enjoy the same bounty we do today.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Why Organic? (3-Column) -->
+<section class="bg-surface-container-high py-xl">
+<div class="max-w-[1280px] mx-auto px-margin-desktop">
+<div class="text-center mb-xl">
+<h2 class="font-display-lg text-display-lg text-primary">Why Organic?</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<div class="text-center space-y-md p-md bg-surface/50 rounded-lg rustic-shadow">
+<div class="inline-block p-sm bg-primary-fixed rounded-full">
+<img alt="leaf icon" class="w-12 h-12" src="data:image/png;base64,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"/>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-tertiary">Soil Health</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Rich, living soil produces nutrient-dense food. Our biological approach ensures the earth remains vibrant and alive.</p>
+</div>
+<div class="text-center space-y-md p-md bg-surface/50 rounded-lg rustic-shadow">
+<div class="inline-block p-sm bg-primary-fixed rounded-full">
+<img alt="leaf icon" class="w-12 h-12" src="data:image/png;base64,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"/>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-tertiary">Pure Flavor</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Without chemicals, the true character of every vegetable shines through. Taste the difference of sun-ripened integrity.</p>
+</div>
+<div class="text-center space-y-md p-md bg-surface/50 rounded-lg rustic-shadow">
+<div class="inline-block p-sm bg-primary-fixed rounded-full">
+<img alt="leaf icon" class="w-12 h-12" src="data:image/png;base64,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"/>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-tertiary">Community</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Supporting local organic farms keeps our rural landscapes beautiful and our neighboring families thriving.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-primary text-secondary-fixed py-xl">
+<div class="max-w-[1280px] mx-auto px-margin-desktop grid grid-cols-1 md:grid-cols-3 gap-lg">
+<div class="space-y-md">
+<div class="font-headline-sm text-headline-sm text-secondary-fixed">Root &amp; Barrel</div>
+<p class="font-body-md text-body-md opacity-80">© 2024 Root &amp; Barrel Organic Grocers. Grown with integrity.</p>
+<div class="flex gap-md">
+<span class="material-symbols-outlined cursor-pointer hover:text-white transition-colors">face_nod</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-white transition-colors">camera</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-white transition-colors">mail</span>
+</div>
+</div>
+<div class="space-y-sm">
+<h4 class="font-label-caps text-label-caps uppercase text-white mb-md">Our Market</h4>
+<a class="block font-body-md text-body-md text-secondary-fixed opacity-80 hover:text-white hover:underline transition-all" href="#">Sustainability Report</a>
+<a class="block font-body-md text-body-md text-secondary-fixed opacity-80 hover:text-white hover:underline transition-all" href="#">Partner Farms</a>
+<a class="block font-body-md text-body-md text-secondary-fixed opacity-80 hover:text-white hover:underline transition-all" href="#">Shipping Info</a>
+<a class="block font-body-md text-body-md text-secondary-fixed opacity-80 hover:text-white hover:underline transition-all" href="#">Privacy Policy</a>
+</div>
+<div class="space-y-md">
+<h4 class="font-label-caps text-label-caps uppercase text-white mb-md">Newsletter</h4>
+<p class="font-body-md text-body-md opacity-80">Join our harvest mailing list for seasonal recipes and market updates.</p>
+<div class="flex">
+<input class="bg-primary-container/30 border border-secondary-fixed/30 rounded-l-lg p-sm w-full text-white placeholder:text-secondary-fixed/50 focus:outline-none focus:ring-1 focus:ring-secondary-fixed" placeholder="Email Address" type="email"/>
+<button class="bg-secondary-fixed text-primary px-md py-sm rounded-r-lg font-label-caps text-label-caps uppercase hover:bg-white transition-colors">Join</button>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            
+            // Close others (optional, but clean)
+            document.querySelectorAll('[id^="acc-"]').forEach(el => {
+                if(el.id !== id) {
+                    el.classList.add('hidden');
+                    const otherIcon = document.getElementById('icon-' + el.id);
+                    if(otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+                }
+            });
+
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+    </script>
+</body></html>

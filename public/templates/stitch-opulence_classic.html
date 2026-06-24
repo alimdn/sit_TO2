@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OPULENCE | Ultra-Luxury Lifestyle</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&amp;family=Montserrat:wght@300;400;500;600;700&amp;family=Source+Serif+4:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#5f5e5e",
+                        "on-background": "#1a1c1c",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#c9c6c5",
+                        "primary-fixed": "#e5e2e1",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#e2e2e2",
+                        "surface-container": "#eeeeee",
+                        "inverse-surface": "#2f3131",
+                        "on-primary-fixed-variant": "#474646",
+                        "outline-variant": "#c4c7c7",
+                        "surface-dim": "#dadada",
+                        "primary": "#000000",
+                        "background": "#f9f9f9",
+                        "surface-bright": "#f9f9f9",
+                        "on-tertiary-fixed-variant": "#484643",
+                        "on-primary-fixed": "#1c1b1b",
+                        "on-tertiary-fixed": "#1d1b19",
+                        "secondary-fixed": "#ffe08f",
+                        "inverse-on-surface": "#f0f1f1",
+                        "surface-container-high": "#e8e8e8",
+                        "tertiary-container": "#1d1b19",
+                        "tertiary": "#000000",
+                        "outline": "#747878",
+                        "surface": "#f9f9f9",
+                        "surface-container-highest": "#e2e2e2",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#858383",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#241a00",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#86837f",
+                        "on-surface": "#1a1c1c",
+                        "inverse-primary": "#c9c6c5",
+                        "tertiary-fixed": "#e6e2dd",
+                        "on-secondary-container": "#785d00",
+                        "secondary-container": "#fed977",
+                        "on-secondary-fixed-variant": "#584400",
+                        "surface-container-low": "#f3f3f3",
+                        "primary-container": "#1c1b1b",
+                        "tertiary-fixed-dim": "#cac6c1",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#e6c364",
+                        "secondary": "#755b00",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#444748",
+                        "gold": "#c9a84c",
+                        "cream": "#f5f0eb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "64px",
+                        "stack-xl": "120px",
+                        "container-max": "1440px",
+                        "margin-mobile": "24px",
+                        "margin-desktop": "80px",
+                        "gutter": "32px"
+                    },
+                    "fontFamily": {
+                        "cta": ["Montserrat"],
+                        "body-lg": ["\"Source Serif 4\""],
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "body-md": ["\"Source Serif 4\""],
+                        "display-lg": ["Playfair Display"],
+                        "headline-lg": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "label-caps": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "cta": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "32px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                        "headline-lg": ["48px", {"lineHeight": "56px", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.15em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .gold-divider {
+            height: 1px;
+            background: #c9a84c;
+            width: 120px;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface overflow-x-hidden selection:bg-gold selection:text-surface">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-md flex justify-between items-center px-margin-desktop py-6 w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-8">
+<img alt="Opulence O Logo" class="h-8 w-8 object-contain" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAOB0lEQVR4Aexca5QUxRW+t3p3ERffHiIaPb7fP1TY6QGN4uMo7Mwij8NsD2AUDRqNkpgY0SNHCIk5gUSiJnh8G54zuyrI0r0LBA2KwswuHCNBg6KCj+PKUVFessvu1M2tyQ7sPLdnppvHwpyuqbpVt27d+vrWreqqnhFw+FMUAocBLAo+gMMAdicA31kw9NhVYd8FkRrf1dGQf1Q07P91PHBa5akyxVNknx2tvt8scO1c33GNocpbIiHfSxw2MVCtrS1tn7BCL6PEiYBUSUAnq6DSKk+VKR7FG69T43+J0z/dn6CyTo7ekJzCmmoHnccd/m0k7HvrBw0+kiiuRKSZJRpeqW1t7uUNWsfrhnWRHjSv5XiM17DuU0GlO/IuUjyKV9URkmYD0TUK1EjIv4JBvS8arjw3pxIOF+4TACNh/1ju3NJYrORVAHmiILifgTnBa5i36ka92S9gftbvjjVtdvumeFWdiqBVpwetW+KgitgDiNib3XpdNORriNb4brYrrxg+VwGMhvzD2DI+RKIryiSN8wbNCxiwCZ6gtbIYpTPVrahueFs3zPs5nC8hdicRDGRrXx8JV96Yid+pPFcAVA6flW8kpDGlWlslW8ltl42u/9QppbuS0z+4eJPXsMaytQ9BEMrPRhprq64CFz6OAriudmAvNVSVwweSd3EnRvQNLPnIBb1tiWRr/5Atcpim4XgpaXI07Fu8srZ/T1uVbTI5BmBjyDdghyz/VBMwTVeTQLB+tU0dXGerCJiNXsO8mgCna/KEb1aFKnWnGnUEwGi48g6JMM1rWCdUVFvLnFLOaTlew1zKFlkuUDzGOv/MCflFAxgN+54EEpd4DesKJxTaBzKAQexPJDys+9+Kba8oAHmGXQGEa3nI3lmsIvu6vjdo3k6E66Mh//Ji2i4YwFUh33xBsYkM3lPFKLA/6zKIM6Rs+wNbYm2hehQEoLI8TZOPe0Y1vFFowwdKvf6jlywTCM/wYv9fheiUN4B8t55EgLmewMEPXgIwNfFxn17hvj2RyLMb5wVglGdb9nl4MA/bbMDwxPJ3AOzJj4G3QR4f2wA28jqP11E3MXgH3YRhFw8GcRwBjGuq9Xvs1rEFoHrCIIRFB9NSxS4AqXzeoOWVMfrnxhcHHpFalom2BeCOWPl8drTVmQR0xzze/Kje3LPXfDt96xJAtTGAgJpytHYEdgcez6j6xQhUzv7wJ131p0sAkXAq72pM6EpQdysnkNxn1ffcPcsJYJT38wjoc/0A2hjI3R3nSr1GQ4T7/nVjjb8ql9ScAPKMNLVUtPOdyCWi+5aVkJggiXgEZu9jVgB5ZT6W/cCKvvtoP48IUN1t3k/8M1v+a9z+Bg7bomFfSyTk2xThc5RojX+SOlfJ3h1nS/qNWrSe/X9TJFR5UzbJWQEEomB7GU3JVtHJ/Gitv3+0xtfEINYBwq94yXQs37zFfHYyDhEe4tDI7Z0CBJOlLFnPu911q0KDTuc81692iE1BxNHZGsoIYBOfngHgqZePcHcbfnXtdcfwTPc8SFjJd7ovAK1DIc71GmZf3bDu8QTNGk+19SinA17DOoNADiWA7QBQJbDkg0iN/0FOu3pdbjR8TIBnrQ4PPitTQxkB5Ls8BFHWZargVJ6yoPbYEe8D4q1xmQQv9961s0IPLNoYpzN8eY36haWi7TK2xPe4uAwJ/sjD3Hp31vXlTLt2IUBdjHBIpgYyAkhANyLhwkwVnMhbWXvD8QK1ZYhwclwe0Uo9aI48Y+zyljid4yvuk3vs4gMi2qrYuHOVLaWlNSrtVmBjYixExtO9NADVGwOsyAUeF44eWW78ErL0GeBhAepDtJPKZF5POfrw174FwEcg8UH08WTzUIJ0OvZU17/J7uXStxYOOSpVdhqALYIYaWTEU1mdoZtC/oFsNSP2SEN8xTui4Ys9tM1Euej5OE902xLsBDC5MXT9qQna6ZgAF5a1xBibZMlpAEpAH4K09RyYLKprimpHahLpuc6cSDCrM203fXHgpd2AEErwI2AJYdnDCdrpGAXOlzHwpcpNA5AZKjQh1nLs+NVEuyohMXSBBwVRiydovsbJgi5EtFIqjlI3KSXPGRLhXURI2+ZKAxAR+8B3zc3OtJoshVf1g5Jz4N0UOi+yHdveTqlwZFTuujYlzxGy987tzaSwSZGWBOA7C4YeS+zU1cs7KXyOkDzMkjvHd7UYwQMCS7YQwZdJMih9mCWVF0ioFQIC7Y7MGXx0ZxFJALa0tvVBBFesr6PR8zrieMT+z4H3ZejzuLCOL9b/oo6k4xERNmtl1Kez4CQAufGTgPCrzgxOpVcvqjoyVRYPiZ2pefnSbNXJMoiOyVeGbX6kZoiV5ABQsv9TTLYl5mBMKSpta+2VkgVsga2pefnShKQe7fZWQ0i7UXsLi0shW6AUMjuAgHASAbhigW2lPXakqS8gyZ+kldvIQIDdyWy4Z22YnF88xTerGUjkALD4NrJK6Fe16AdeuCRbHFHRAALBUSmNfp1Cu0om+UBW5iu+oye51iLBlhTZRfsrwhQAid5PacMxEkm5OJk0ySYBSIKdpGJyrMlkQewe1nXOIcAzO9MFpk/pXI9P1Ip6WaizrNQ0D+E+QoocABL7PyTXLJDXUQ2dlUKCtJV95/Ku0utqR5Yh4J6NVd5Fam8v+c6993WUcWnt2QE8okdpMxEkOcmuOpFXeY/WWbxQ37tlhXBiNFTZLy8ZnZh30Y6KTiTPgbBgQGDVrs55TqYRqU9sN2YH8NJhr36PiOWrn+5b6mTDCVlqG4rlz0nQKiYQt6i4kBAjzb+nHoHUpHh4D+1wYuOLA49gl1PmHdOQNMuL1HbYQprhuD6uWSHFYBpPVjLRLgJUE2uWoO3GNBkEy/n/braqhPS0OgRSSTfCN2XlJyNQ8mMjN5QGIAI2UYwu4TJXLu9ocwMBTd4jnIdxY9iX99lG9Dz/7xCht5JDQJuOP1req9JuBdLgEjautBfn0wBkR7KIzWO4W4ooud6g9XveDJ2p0vGAOCk6b/A18bSNL/ab97I/iu9AM3jtKHDUOZUNrTaqFsxCAMMRRNo5URqAZT1K6pg54wEKOPjRg5byfdM7RJaREEsUMB10xmhD/eAefIj0MqDgegwhwHaeya/RA+aqjBUczCTAIeXajq4BVBMJAL7XVDP4cnD5oxvmb9j/3U0KCN5RVsAogKIh/zC1taaa38jOm4f48EjIN/vbraIZAeLHAUSwtkTIy/lGrFB8boaOXzmtuTiwPO1xNMkC9ypBCyVpafv/e8udS3mD5gyQ4hyWOIuB3BUHCGH+7tb27xjIdZt79tpCgK8g4hgOxzHfRra62xn8S/oF6v/DtOsXxSRjQRnPiTICyINDmarrwzjRc++ous0MyM29RM9jeWYdTgB/Yh85FYBMfrJ4oiM9EYW8lPnO5GOAZ5GnxER912OEIVoMFCZpTWUEUP3GjEHcqA6/02q4mKEOivSgucBrmA/qQeuBpGBYj3gC9f92sfmMotfU3nA2SfigYrT1SSaGjAAqRraCMKI2SaUP5dAWK5kkBM7LhkFWAPVqayYC9o/u41+AZ1N0f+RHagdfyBhc6jHMudnazwqgqkDxtzQF+yJFHXoBpcZ9p5zvR+YEUL3Mw6vvPvm89t9dYG6M/6yDjtODlpWrTzkBVBWFJibEJPCdUNShEyTgVA1lTutTaHQJoCew6A1eMbTyAvd6VeFQCJEafyX3eav6H4au+tslgEpATGwZhgALVPpQCLxQX6Bt+2qYnb7aAlBtUkqS10TDftefOe0o7SZPNORr4qONAXbfzrAFoFK4f7A+CiCfj4T8zyi6OwZ2Uy/w0J3hDVhr7PbPNoBKoG7UP8dPKK0M4i8U3R1Cog8M3i95h3arJ1j/j0SenTgvAJVA3bDuYX84clWN7zpFd4fQOK9yEPepymNYeW/K5g2gAkwPmgMFwe1N3QBEBR4vWW7WDbMggygIwDiIhhWIET7EE8vdij4Ygxq2vJF7n3eUFSxU/4IBVA3yrsnVAHQug/isog+mwOC9wD7v9EItL9HXogBUQnTDGs/7dRHeMY4o+mAIaqkiSL5ZiM9L7V/RACqBetB6XtNwPCu2VfkUlXcghgg/YfBoaeUTtp978pxts/XHEQCV8IqA2di7ZeePpBDjo2HfG5HwYK/KPxCC2hjgpdcKlHSX+vPGfNZ5XenvGICqIfUeMfvFSiCYiKRN52G9cPW8qvNV2f4Iaj+PLW6RRJimiZja4fbbfcKwq6+jACYa1YPWCj1oDuCd3OfahZzPnZiZ7cd6iTpOxitn33A237zZGNNq2T8/5TWsK+xsDBSigysAJhTxVJvqnz4uJJLL2kHM4JlvA4P5aGNN5ZUJHqfixtqqq9gHT4+GfR+J0pLHBeJivokX613s5xXbvqsAJpTzButnsxUMKoHYICD5BUkxhTu7lf3SrGhN1dBobdUZG1+09zcjSqbibZrrO7Mx7BvOgM3hG7NN/cEiIXwmYnA9t+Xz5NiGVzKcCvsEwISy/YyGj/Vg/V91fpJpO1L7sRC0lM9cqyEml23m818G43sG9b+RsO/1aMg/l+O/qNCRfl2VKR7FKzVYGiMKAGF9L7HjZK9hXu01rMeynZ4ldHA63qcAdlb+ihvrtnuqrTnqKUAPWmd5DfNIapenaVr7UI1wCghpIuCXKqi0ylNl1C5PU7y6YZ3NO0SGHjTnZXpjoHNbbqb3G4CZOqXevasILP6gImgu16vrQ7phTo8HTqs8VaZ4MtXdX3kHFID7C4Ri2j0MYDHoAcD/AAAA//8B3bmFAAAABklEQVQDAGi/fey136RHAAAAAElFTkSuQmCC"/>
+<div class="hidden md:flex gap-10">
+<a class="font-cta text-cta uppercase tracking-widest text-primary hover:text-gold transition-colors duration-300 border-b border-primary pb-1" href="#">Collections</a>
+<a class="font-cta text-cta uppercase tracking-widest text-on-surface-variant hover:text-gold transition-colors duration-300" href="#">Watches</a>
+<a class="font-cta text-cta uppercase tracking-widest text-on-surface-variant hover:text-gold transition-colors duration-300" href="#">Leather</a>
+<a class="font-cta text-cta uppercase tracking-widest text-on-surface-variant hover:text-gold transition-colors duration-300" href="#">Fragrance</a>
+<a class="font-cta text-cta uppercase tracking-widest text-on-surface-variant hover:text-gold transition-colors duration-300" href="#">Jewelry</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="cursor-pointer active:opacity-70 transition-opacity">
+<span class="material-symbols-outlined text-primary">shopping_bag</span>
+</button>
+<button class="cursor-pointer active:opacity-70 transition-opacity">
+<span class="material-symbols-outlined text-primary">person</span>
+</button>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full parallax-bg" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB6ZDn_KSUHQdB59nUlfhisle60w7mX1yTYnMBN8wRF9TSglQQDXsneAmShbaxvaYnRmMM9VY_npPZtH580ISmYqPtU-UyW4apZkvW4u9ymawvgnN_hgJYMuzQJw2o3wXDghc0DGE01hhOUV8d8jFwWWp3bsbqVLKanIAiuerSl9neGyOPiNIP15PdulAbKmljr0LlEXa8JDXqv7758SwdIRkAegzJAcFAV2XnvIJLlJ4oaFiDh-Dw1ORzicd1maMOPP0yAZ7uQNcw')"></div>
+<div class="absolute inset-0 bg-black/10"></div>
+</div>
+<div class="relative z-10 text-center flex flex-col items-center">
+<h1 class="font-display-lg text-display-lg md:text-[88px] text-white leading-tight mb-6 drop-shadow-sm">
+                Define Your Elegance
+            </h1>
+<div class="gold-divider mb-8"></div>
+<p class="font-cta text-cta text-white uppercase tracking-[0.3em] opacity-90">Est. 1924 • Geneva</p>
+</div>
+<div class="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce">
+<span class="material-symbols-outlined text-white text-3xl font-light">keyboard_arrow_down</span>
+</div>
+</header>
+<!-- Collections Grid Section -->
+<section class="py-stack-xl px-margin-desktop max-w-container-max mx-auto">
+<div class="mb-16">
+<p class="font-label-caps text-label-caps text-gold uppercase mb-2">The Curation</p>
+<h2 class="font-headline-lg text-headline-lg text-primary">Curated Masterpieces</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Watches -->
+<div class="group relative aspect-[4/5] overflow-hidden bg-cream cursor-pointer">
+<div class="w-full h-full transition-transform duration-1000 group-hover:scale-105 bg-center bg-cover" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB6ZDn_KSUHQdB59nUlfhisle60w7mX1yTYnMBN8wRF9TSglQQDXsneAmShbaxvaYnRmMM9VY_npPZtH580ISmYqPtU-UyW4apZkvW4u9ymawvgnN_hgJYMuzQJw2o3wXDghc0DGE01hhOUV8d8jFwWWp3bsbqVLKanIAiuerSl9neGyOPiNIP15PdulAbKmljr0LlEXa8JDXqv7758SwdIRkAegzJAcFAV2XnvIJLlJ4oaFiDh-Dw1ORzicd1maMOPP0yAZ7uQNcw')"></div>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500"></div>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-white p-12 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+<h3 class="font-headline-md text-headline-md mb-6">Watches</h3>
+<button class="px-8 py-3 border border-gold font-cta text-cta uppercase tracking-widest hover:bg-gold hover:text-primary transition-all duration-300">
+                        Explore Collection
+                    </button>
+</div>
+</div>
+<!-- Leather -->
+<div class="group relative aspect-[4/5] overflow-hidden bg-cream cursor-pointer">
+<div class="w-full h-full transition-transform duration-1000 group-hover:scale-105 bg-center bg-cover" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBhI2UlXYQbrW4I3BibmdIK6tvdvot0JzMbr83-wLsn1Yrv1YHnzhUlT-vVtb8AyHdFdxyZ7PBgjDbjiSuMt5RK6edpEGpC8aB26V8-atKxTaJ0RF57xMnv2XAB8m6aLjqLR3RP_JL4uP26XRfEuhSfp3S3wuBFzIFc1zzaho4zi8xiz9BenMBVjAsLqBIgY-Niah9jV_9iBx3rEPPtlumUs-dh_DLvSWrLQuREytFf4KjntqyFu-hWa8XNu-zD144ZojLN-5sQGnE')"></div>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500"></div>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-white p-12 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+<h3 class="font-headline-md text-headline-md mb-6">Leather</h3>
+<button class="px-8 py-3 border border-gold font-cta text-cta uppercase tracking-widest hover:bg-gold hover:text-primary transition-all duration-300">
+                        Explore Collection
+                    </button>
+</div>
+</div>
+<!-- Fragrance -->
+<div class="group relative aspect-[4/5] overflow-hidden bg-cream cursor-pointer">
+<div class="w-full h-full transition-transform duration-1000 group-hover:scale-105 bg-center bg-cover" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCy1QVO7e3Wdr-V6EN3m4BiczB9tRwA8L9uPrb0iSO6wWG7UO430TN-U_ErgQosfUYER2OI7Td6u9lFklhYKES3OMdZA3WC25EZM01RrC1YprGnM-nOSxfZeXwsOlaaUm8gu9HG51IiPN3IzbKX9wj3HYX72i-S88WlKwcZcEk5b9y9iu5rbtKYZV-8yuPP4ofR5ey2ZO9GJwwHatxAMZoVu1uR3_KhS3DHCXcrVVrspSW-UDtXOuaSI900i2yNiOOVhykrGXqptAU')"></div>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500"></div>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-white p-12 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+<h3 class="font-headline-md text-headline-md mb-6">Fragrance</h3>
+<button class="px-8 py-3 border border-gold font-cta text-cta uppercase tracking-widest hover:bg-gold hover:text-primary transition-all duration-300">
+                        Explore Collection
+                    </button>
+</div>
+</div>
+<!-- Jewelry -->
+<div class="group relative aspect-[4/5] overflow-hidden bg-cream cursor-pointer">
+<div class="w-full h-full transition-transform duration-1000 group-hover:scale-105 bg-center bg-cover" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDPMWDJOeB1t8RG1Q2O9sM1KyAw6AgFpOdoEmLmyYpDbrG0cuueF_PgD7rRnlXyEhw76K0ztF_fblHgRb6eMYb-OuDqYFMj1uKT_sc4BxZ-4Uob6OPj4cIpy74TMLiVkm2bbHAIhlW4wBCWEIxEa3EOtNYXqKrd_8NQTIHm3KEo5yEs8cvmKu22HL1fXVaKvVAyU4qZYlKjZnnFga52AUZxB6Vs3ErweMy0xX-COB0zNsYVew9izmLecYXKE6t-xjzoH-yhF1qfwzU')"></div>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500"></div>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-white p-12 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+<h3 class="font-headline-md text-headline-md mb-6">Jewelry</h3>
+<button class="px-8 py-3 border border-gold font-cta text-cta uppercase tracking-widest hover:bg-gold hover:text-primary transition-all duration-300">
+                        Explore Collection
+                    </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Product Showcase Horizontal Scroll -->
+<section class="bg-cream/50 py-stack-xl overflow-hidden">
+<div class="px-margin-desktop max-w-container-max mx-auto mb-12">
+<h2 class="font-headline-lg text-headline-lg">Signature Pieces</h2>
+</div>
+<div class="flex overflow-x-auto hide-scrollbar px-margin-desktop gap-10 pb-10">
+<!-- Piece 1 -->
+<div class="flex-none w-[350px]">
+<div class="aspect-[3/4] bg-white mb-6 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 hover:scale-110" data-alt="A macro close-up of a luxury mechanical watch movement, gold gears visible through sapphire glass, high-end editorial lighting, dark background, sharp details." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYxA4hpuNSKuTjGoH7HsRB0EgLAJCbOWLDmYFLE4zMJmKlOR5SOf6yCQ8LOm7rwt4zelq2UUIyT6AH4L3_t8kcWfB9XgAGLSIh9HahPk_zmils3oRMPEgteDkCk0x4o5unVOOzCTOld-WHwxc5ws36V4166fl5cxuJhhBKkusMWADjFlBRKD4zGjhFH5RuhVPuYx_3oJq29c3nESHifCfR0dbFMANixjTeDI-A0Wj3b8ArDiWSjuEAwZ68ZK--kbtEz5vcX_maI7Q"/>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">Horology</p>
+<h4 class="font-headline-md text-[24px] mb-2">Chronos Infinite Gold</h4>
+<p class="font-cta text-cta text-gold">$24,500</p>
+</div>
+<!-- Piece 2 -->
+<div class="flex-none w-[350px]">
+<div class="aspect-[3/4] bg-white mb-6 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 hover:scale-110" data-alt="A minimalist studio shot of a designer leather handbag in a muted beige color, standing on a marble pedestal. The lighting is soft and high-key, emphasizing the fine texture of the leather and the gold brand logo." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeZIlUZ0onzByVO-M9h9l0GK8fCipp-uKilh5uPPdKKCozbRSSMlVqTKFGVKk-infwpNHXcmibkhDg4yajxWDo93oanUEVCYLCR1xCzzhYhocZsX08zbBXoxSTLn6IvRG3QCA7cLSt-PFn6OHDAlcQh_dQxd_gtD4Z1IBP4ZhjRnnMs0ZEYhqZ3Wa4MYktt1NElsB6JC72B48mLkJzkN1KWEeKH3-4kK-kLxgtBrX5NuJ3zSjbsSgUDLimFzMswz6ye5MB6NcnpuI"/>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">Leather Goods</p>
+<h4 class="font-headline-md text-[24px] mb-2">The Heritage Tote</h4>
+<p class="font-cta text-cta text-gold">$4,200</p>
+</div>
+<!-- Piece 3 -->
+<div class="flex-none w-[350px]">
+<div class="aspect-[3/4] bg-white mb-6 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 hover:scale-110" data-alt="A luxury perfume bottle with a crystal cap sitting on a polished reflective surface. Warm bokeh lighting in the background creates a festive and sophisticated mood. The liquid inside glows with a golden amber hue." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_poPzqzE3mw4lO48SFGpigPUyt_NowfmNbT_U3-6HghbgmzESmZ25Yoq9EBjBaon7an1RGbLmNlgTa_S21egfQE7OUpD96nGxjOSXJR45xnDOsBen9io5bi8WYQad4Ioxt9EhLuyZ9BTEfO8VORcSi-3cfDlOPIRSn9VN5VOVuyca-Fz4E0G9ZimhsJyOO6QeszPVwAWrypm5pLiMU2CJR8TYn7KkvqVF0bP_uvs8s7dpsfhR1y-Rgzc-_-Iip6hYBkibgafnu7Q"/>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">Fragrance</p>
+<h4 class="font-headline-md text-[24px] mb-2">Essence of Lumière</h4>
+<p class="font-cta text-cta text-gold">$350</p>
+</div>
+<!-- Piece 4 -->
+<div class="flex-none w-[350px]">
+<div class="aspect-[3/4] bg-white mb-6 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 hover:scale-110" data-alt="A close-up of a diamond necklace resting on a velvet bust. The lighting is focused and dramatic, making the diamonds sparkle intensely against the deep black background. Elegant and timeless design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQnREk2wJDzJTfJG-TiakFFgF7WGrA5T_4sQWNk06g_ll7KjRL3pfgz0tMsmHOsf2TWMqsId5nxfxX4C2DygZVt-D5NPHvskovr19jG8ZZIeehHos2_ewIfjDWglLNzVW0Im6GisML8BJeHbX01PkbehXJodmf4a-GvCmRVUyAjknuiSSyLPtZyyOTwa1pwISVyMYHeEO3BvzH6ol0407lLhMeobFbSqK2ecLefVjctqK8IRRJHxq7jBSUVxlEyXg0QbOq96Fim-M"/>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">Fine Jewelry</p>
+<h4 class="font-headline-md text-[24px] mb-2">Starlight Diadem</h4>
+<p class="font-cta text-cta text-gold">$18,900</p>
+</div>
+</div>
+</section>
+<!-- The Difference Section -->
+<section class="py-stack-xl px-margin-desktop max-w-container-max mx-auto text-center">
+<h2 class="font-headline-lg text-headline-lg mb-20">The Opulence Standard</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-16">
+<div class="flex flex-col items-center">
+<div class="mb-8">
+<span class="material-symbols-outlined text-4xl text-gold" style="font-variation-settings: 'wght' 200;">architecture</span>
+</div>
+<h3 class="font-cta text-cta uppercase tracking-widest mb-4">Unrivaled Craftsmanship</h3>
+<div class="gold-divider mb-6 mx-auto w-10"></div>
+<p class="font-body-md text-on-surface-variant max-w-xs mx-auto">
+                    Every piece is meticulously handcrafted by master artisans using techniques preserved over centuries.
+                </p>
+</div>
+<div class="flex flex-col items-center">
+<div class="mb-8">
+<span class="material-symbols-outlined text-4xl text-gold" style="font-variation-settings: 'wght' 200;">history_edu</span>
+</div>
+<h3 class="font-cta text-cta uppercase tracking-widest mb-4">Timeless Heritage</h3>
+<div class="gold-divider mb-6 mx-auto w-10"></div>
+<p class="font-body-md text-on-surface-variant max-w-xs mx-auto">
+                    A legacy built on excellence since 1924, merging traditional artistry with visionary contemporary design.
+                </p>
+</div>
+<div class="flex flex-col items-center">
+<div class="mb-8">
+<span class="material-symbols-outlined text-4xl text-gold" style="font-variation-settings: 'wght' 200;">lock</span>
+</div>
+<h3 class="font-cta text-cta uppercase tracking-widest mb-4">Absolute Exclusivity</h3>
+<div class="gold-divider mb-6 mx-auto w-10"></div>
+<p class="font-body-md text-on-surface-variant max-w-xs mx-auto">
+                    Limited production runs and bespoke services ensure that your luxury remains truly personal and unique.
+                </p>
+</div>
+</div>
+</section>
+<!-- Newsletter Splash -->
+<section class="bg-cream py-stack-md flex flex-col md:flex-row items-center justify-between px-margin-desktop gap-12">
+<div class="max-w-xl">
+<h2 class="font-headline-md text-headline-md mb-4">Join the Circle</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                Experience the world of Opulence. Subscribe for exclusive releases, private viewings, and artisan insights.
+            </p>
+</div>
+<div class="flex-1 w-full max-w-md">
+<form class="flex gap-4 border-b border-primary pb-2">
+<input class="bg-transparent border-none focus:ring-0 font-cta text-cta flex-1 placeholder:text-on-surface-variant/50" placeholder="YOUR EMAIL ADDRESS" type="email"/>
+<button class="font-cta text-cta uppercase tracking-widest hover:text-gold transition-colors" type="submit">Submit</button>
+</form>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-primary dark:bg-primary-container w-full border-t border-primary-fixed-dim/30">
+<div class="flex flex-col items-center justify-center px-margin-desktop py-stack-xl space-y-8">
+<div class="text-center">
+<h2 class="font-display-lg text-headline-lg text-on-primary mb-2">OPULENCE</h2>
+<div class="gold-divider mx-auto mb-8"></div>
+</div>
+<div class="flex flex-wrap justify-center gap-x-12 gap-y-6">
+<a class="font-cta text-label-caps uppercase text-on-primary-container hover:text-secondary-fixed transition-colors" href="#">Privacy Policy</a>
+<a class="font-cta text-label-caps uppercase text-on-primary-container hover:text-secondary-fixed transition-colors" href="#">Terms of Service</a>
+<a class="font-cta text-label-caps uppercase text-on-primary-container hover:text-secondary-fixed transition-colors" href="#">Shipping</a>
+<a class="font-cta text-label-caps uppercase text-on-primary-container hover:text-secondary-fixed transition-colors" href="#">Contact</a>
+</div>
+<div class="flex gap-8 mt-4">
+<a class="text-on-primary-container hover:text-gold transition-colors" href="#"><span class="material-symbols-outlined">share</span></a>
+<a class="text-on-primary-container hover:text-gold transition-colors" href="#"><span class="material-symbols-outlined">star</span></a>
+<a class="text-on-primary-container hover:text-gold transition-colors" href="#"><span class="material-symbols-outlined">public</span></a>
+</div>
+<p class="font-cta text-label-caps uppercase text-on-primary-container mt-8 tracking-widest text-center">
+                © 2024 OPULENCE LUXURY. ALL RIGHTS RESERVED.
+            </p>
+</div>
+</footer>
+<script>
+        // Smooth scroll interaction for the down arrow
+        document.querySelector('.animate-bounce').addEventListener('click', () => {
+            window.scrollTo({
+                top: window.innerHeight,
+                behavior: 'smooth'
+            });
+        });
+
+        // Parallax effect for hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroBg = document.querySelector('.parallax-bg');
+            if (heroBg) {
+                heroBg.style.transform = `translateY(${scrolled * 0.3}px)`;
+            }
+        });
+    </script>
+</body></html>

@@ -1,32 +1,72 @@
 'use client'
 
-import { Palette, Server, Database, Headphones, CreditCard } from 'lucide-react'
+import { Palette, Server, Database, Headphones, CreditCard, Monitor, Smartphone, Search, Zap, Shield, Code, ShoppingCart } from 'lucide-react'
 
-const features = [
+// Left column: Website design & creation services
+const designServices = [
   {
-    icon: <Palette className="h-6 w-6" />,
-    title: 'Professional Designs',
+    icon: <Palette className="h-5 w-5" />,
+    title: 'Professional Design',
     description: 'Stunning, modern templates crafted by expert designers to make your brand stand out.',
   },
   {
-    icon: <Server className="h-6 w-6" />,
+    icon: <Code className="h-5 w-5" />,
+    title: 'Custom Development',
+    description: 'Tailored code and features built specifically for your business needs and goals.',
+  },
+  {
+    icon: <Monitor className="h-5 w-5" />,
+    title: 'Responsive Layout',
+    description: 'Your website looks perfect on desktop, tablet, and mobile devices.',
+  },
+  {
+    icon: <Smartphone className="h-5 w-5" />,
+    title: 'Mobile-First Design',
+    description: 'Optimized for mobile users with fast loading and intuitive navigation.',
+  },
+  {
+    icon: <Search className="h-5 w-5" />,
+    title: 'SEO Optimized',
+    description: 'Built with search engine best practices to help customers find you online.',
+  },
+  {
+    icon: <ShoppingCart className="h-5 w-5" />,
+    title: 'E-Commerce Ready',
+    description: 'Store Package includes full shopping cart, product catalog, and checkout.',
+  },
+]
+
+// Right column: Hosting & management services
+const hostingServices = [
+  {
+    icon: <Server className="h-5 w-5" />,
     title: 'Hosting Included',
-    description: 'Fast, secure hosting with SSL certificates and CDN included. No extra costs or setup required.',
+    description: 'Fast, secure hosting with SSL certificates and CDN included. No extra costs.',
   },
   {
-    icon: <Database className="h-6 w-6" />,
+    icon: <Database className="h-5 w-5" />,
     title: 'Database Setup',
-    description: 'Complete database integration and management. We handle the technical complexity for you.',
+    description: 'Complete database integration and management. We handle the technical complexity.',
   },
   {
-    icon: <Headphones className="h-6 w-6" />,
+    icon: <Shield className="h-5 w-5" />,
+    title: 'Security & Backups',
+    description: 'Daily backups, SSL encryption, and DDoS protection keep your site safe.',
+  },
+  {
+    icon: <Zap className="h-5 w-5" />,
+    title: 'Performance Optimized',
+    description: 'CDN, image optimization, and lazy loading for blazing-fast page speeds.',
+  },
+  {
+    icon: <Headphones className="h-5 w-5" />,
     title: 'Technical Support',
-    description: 'Dedicated support team available to help with any issues. Priority support on annual plans.',
+    description: 'Dedicated support team available to help with any issues. Priority on annual plans.',
   },
   {
-    icon: <CreditCard className="h-6 w-6" />,
+    icon: <CreditCard className="h-5 w-5" />,
     title: 'Subscription Management',
-    description: 'Flexible monthly, semi-annual, or annual plans. Easy upgrades, downgrades, and transparent billing.',
+    description: 'Flexible monthly, semi-annual, or annual plans. Easy upgrades and transparent billing.',
   },
 ]
 
@@ -44,19 +84,63 @@ export default function FeaturesSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className="group p-6 rounded-xl bg-white shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1"
-            >
-              <div className="w-12 h-12 rounded-xl bg-[#000f22]/5 group-hover:bg-[#00D1FF]/10 flex items-center justify-center text-[#000f22] group-hover:text-[#00D1FF] transition-colors mb-4">
-                {feature.icon}
+        {/* Two-column layout: Design services | Hosting & Management */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Left: Website Design & Creation */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00D1FF] to-[#10B981] flex items-center justify-center">
+                <Palette className="h-5 w-5 text-[#000f22]" />
               </div>
-              <h3 className="font-semibold text-[#000f22] mb-2">{feature.title}</h3>
-              <p className="text-sm text-[#4F5B76] leading-relaxed">{feature.description}</p>
+              <div>
+                <h3 className="font-bold text-[#000f22] text-lg">Website Design & Creation</h3>
+                <p className="text-xs text-[#4F5B76]">We design and build your website from scratch</p>
+              </div>
             </div>
-          ))}
+
+            {designServices.map((feature, index) => (
+              <div
+                key={index}
+                className="group flex items-start gap-4 p-4 rounded-xl bg-[#f7fafd] hover:bg-white hover:shadow-card transition-all duration-300 border border-transparent hover:border-[#e6ebf1]"
+              >
+                <div className="w-10 h-10 rounded-lg bg-[#00D1FF]/10 group-hover:bg-[#00D1FF]/20 flex items-center justify-center text-[#00D1FF] flex-shrink-0 transition-colors">
+                  {feature.icon}
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-[#000f22] text-sm mb-1">{feature.title}</h4>
+                  <p className="text-xs text-[#4F5B76] leading-relaxed">{feature.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Right: Hosting & Management */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#000f22] to-[#0A2540] flex items-center justify-center">
+                <Server className="h-5 w-5 text-[#00D1FF]" />
+              </div>
+              <div>
+                <h3 className="font-bold text-[#000f22] text-lg">Hosting & Management</h3>
+                <p className="text-xs text-[#4F5B76]">We host, maintain, and support your website</p>
+              </div>
+            </div>
+
+            {hostingServices.map((feature, index) => (
+              <div
+                key={index}
+                className="group flex items-start gap-4 p-4 rounded-xl bg-[#f7fafd] hover:bg-white hover:shadow-card transition-all duration-300 border border-transparent hover:border-[#e6ebf1]"
+              >
+                <div className="w-10 h-10 rounded-lg bg-[#000f22]/5 group-hover:bg-[#000f22]/10 flex items-center justify-center text-[#000f22] flex-shrink-0 transition-colors">
+                  {feature.icon}
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-[#000f22] text-sm mb-1">{feature.title}</h4>
+                  <p className="text-xs text-[#4F5B76] leading-relaxed">{feature.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

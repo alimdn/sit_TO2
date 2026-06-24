@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-export type Page = 'home' | 'templates' | 'plans' | 'contact' | 'login' | 'dashboard' | 'admin' | 'checkout'
+export type Page = 'home' | 'templates' | 'plans' | 'contact' | 'login' | 'dashboard' | 'admin' | 'checkout' | 'about' | 'privacy' | 'terms' | 'support'
 export type DashboardTab = 'overview' | 'orders' | 'support' | 'settings'
 export type AdminTab = 'templates' | 'plans' | 'orders' | 'messages' | 'testimonials' | 'social' | 'payments' | 'settings'
 
@@ -21,6 +21,7 @@ export interface CheckoutData {
   templateCategory: string
   templateFeatures: string[]
   billing: 'monthly' | 'semi_annual' | 'annual' | 'store' | 'store_semi_annual' | 'store_annual'
+  planType: 'regular' | 'store'
   selectedAddOns: string[]
   additionalInfo?: string
   similarSiteUrl?: string
@@ -43,7 +44,11 @@ interface AppStore {
   user: AppUser | null
   setUser: (user: AppUser | null) => void
   checkoutData: CheckoutData | null
+  checkoutItems: CheckoutData[]
   setCheckoutData: (data: CheckoutData | null) => void
+  addCheckoutItem: (data: CheckoutData) => void
+  removeCheckoutItem: (index: number) => void
+  clearCheckoutItems: () => void
 }
 
 export const useAppStore = create<AppStore>((set) => ({
@@ -60,5 +65,9 @@ export const useAppStore = create<AppStore>((set) => ({
   user: null,
   setUser: (user) => set({ user }),
   checkoutData: null,
+  checkoutItems: [],
   setCheckoutData: (data) => set({ checkoutData: data }),
+  addCheckoutItem: (data) => set((state) => ({ checkoutItems: [...state.checkoutItems, data] })),
+  removeCheckoutItem: (index) => set((state) => ({ checkoutItems: state.checkoutItems.filter((_, i) => i !== index) })),
+  clearCheckoutItems: () => set({ checkoutItems: [] }),
 }))

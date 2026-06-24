@@ -28,7 +28,9 @@ import AdminSocial from '@/components/admin/AdminSocial'
 import AdminPayments from '@/components/admin/AdminPayments'
 import AdminSettings from '@/components/admin/AdminSettings'
 import CheckoutPage from '@/components/checkout/CheckoutPage'
+import LegalPage from '@/components/legal/LegalPage'
 import { Button } from '@/components/ui/button'
+import { ChevronDown } from 'lucide-react'
 
 // Lazy-load TemplatePreview — it's 948 lines and only needed when a user
 // clicks "Preview Template". Loading it eagerly adds ~50KB to the main
@@ -282,6 +284,10 @@ export default function Home() {
       case 'dashboard': return <DashboardPage />
       case 'admin': return <AdminPage />
       case 'checkout': return <CheckoutPageRoute />
+      case 'about': return <LegalPage pageType="about" />
+      case 'privacy': return <LegalPage pageType="privacy" />
+      case 'terms': return <LegalPage pageType="terms" />
+      case 'support': return <LegalPage pageType="support" />
       default: return <HomePage />
     }
   }
@@ -293,6 +299,46 @@ export default function Home() {
         {renderPage()}
       </main>
       <Footer />
+
+      {/* Scroll to bottom button — only visible on home page when not at bottom */}
+      {currentPage === 'home' && (
+        <ScrollToBottomButton />
+      )}
     </div>
+  )
+}
+
+function ScrollToBottomButton() {
+  const [visible, setVisible] = useState(false)
+  const [atBottom, setAtBottom] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrolled = window.scrollY
+      const windowHeight = window.innerHeight
+      const docHeight = document.documentElement.scrollHeight
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+
+      // Show button after scrolling 300px down
+      setVisible(scrolled > 300)
+      // Hide when near bottom (within 200px)
+      setAtBottom(scrollTop + windowHeight >= docHeight - 200)
+    }
+    window.addEventListener('scroll', handleScroll)
+    handleScroll() // Check initial state
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  if (!visible || atBottom) return null
+
+  return (
+    <button
+      onClick={() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' })}
+      className="fixed bottom-6 right-6 z-40 w-11 h-11 rounded-full bg-[#000f22] hover:bg-[#0A2540] text-white shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 group"
+      title="Scroll to bottom"
+      aria-label="Scroll to bottom"
+    >
+      <ChevronDown className="h-5 w-5 group-hover:animate-bounce" />
+    </button>
   )
 }

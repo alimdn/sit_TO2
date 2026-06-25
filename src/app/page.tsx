@@ -262,7 +262,9 @@ function AdminPage() {
 export default function Home() {
   const { currentPage, setUser } = useAppStore()
 
-  // Restore user from localStorage on mount
+  // Restore user from localStorage on mount (optimistic — for fast initial render).
+  // The authoritative session check is done by Header.tsx via GET /api/auth,
+  // which will clear stale localStorage if the session cookie is invalid.
   useEffect(() => {
     const stored = localStorage.getItem('user')
     if (stored) {

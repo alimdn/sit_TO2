@@ -58,13 +58,23 @@ export default function AdminTemplates() {
     active: true,
   })
 
+  const [authError, setAuthError] = useState(false)
+
   const fetchTemplates = () => {
+    setAuthError(false)
     // Use the /admin endpoint which returns ALL templates (active + inactive).
     // The public /api/templates only returns active ones, which would make
     // toggled-off templates disappear from this admin view — making it look
     // like Inactive was deleting them.
     fetch('/api/templates/admin', { cache: 'no-store' })
-      .then(r => r.json())
+      .then(r => {
+        if (!r.ok) {
+          // 401 Unauthorized — session expired or invalid
+          setAuthError(true)
+          throw new Error(`HTTP ${r.status}`)
+        }
+        return r.json()
+      })
       .then(data => {
         if (Array.isArray(data)) setTemplates(data)
       })
@@ -455,7 +465,14 @@ export default function AdminTemplates() {
               {templates.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={5} className="text-center py-8 text-[#4F5B76]">
-                    No templates found. Click "Add Template" to create one.
+                    {authError ? (
+                      <div className="space-y-2">
+                        <p className="text-[#ba1a1a] font-medium">⚠️ Session expired or unauthorized</p>
+                        <p className="text-xs">Your login session has expired. Please sign in again to view templates.</p>
+                      </div>
+                    ) : (
+                      'No templates found. Click "Add Template" to create one.'
+                    )}
                   </TableCell>
                 </TableRow>
               )}

@@ -29,7 +29,24 @@ export default function Header() {
         if (found?.value) setSiteName(found.value)
       })
       .catch((e) => console.error('[Header] fetch error:', e))
-  }, [])
+
+    // Restore session from HTTP-only cookie on first mount.
+    // The cookie itself is not readable from JS (HttpOnly), so we ask the server.
+    // This validates that the session is still active server-side.
+    fetch('/api/auth', { cache: 'no-store' })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.user) {
+          setUser(data.user)
+          try { localStorage.setItem('user', JSON.stringify(data.user)) } catch {}
+        } else {
+          // Session invalid or expired — clear stale localStorage
+          setUser(null)
+          try { localStorage.removeItem('user') } catch {}
+        }
+      })
+      .catch((e) => console.error('[Header] session restore error:', e))
+  }, [setUser])
 
   // Use shared Brand component for consistent rendering
   const renderBrand = () => <Brand siteName={siteName} />
@@ -47,7 +64,9 @@ export default function Header() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    // Clear the session cookie server-side
+    try { await fetch('/api/auth', { method: 'DELETE' }) } catch {}
     setUser(null)
     setCurrentPage('home')
     localStorage.removeItem('user')

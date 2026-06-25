@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAdmin } from '@/lib/session'
 import { fallbackTemplates } from '@/lib/fallback-data'
 import {
   getAdminTemplates,
@@ -48,8 +49,15 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
 
 // PUT — update a template (create or replace an override)
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const admin = await requireAdmin(req)
+  if (!admin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   const { id } = await params
   const body = await req.json()
+  // Strip server-controlled fields.
+  delete body.id
+  delete body.createdAt
 
   // 1) Try DB first
   try {
@@ -63,6 +71,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       return NextResponse.json(template)
     }
   } catch (e) {
+    console.error('[api/templates/[id]] PUT DB error:', e)
     // Fall through to Blob fallback
   }
 
@@ -111,7 +120,11 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 }
 
 // DELETE — soft-delete a template (writes a deletion marker)
-export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const admin = await requireAdmin(req)
+  if (!admin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   const { id } = await params
 
   // 1) Try DB first
@@ -126,6 +139,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
       return NextResponse.json({ success: true })
     }
   } catch (e) {
+    console.error('[api/templates/[id]] DELETE DB error:', e)
     // Fall through to Blob fallback
   }
 

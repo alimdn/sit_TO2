@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAdmin } from '@/lib/session'
 import { fallbackPlans } from '@/lib/fallback-data'
 import {
   getAdminPlans,
@@ -47,8 +48,15 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
 
 // PUT — update a plan (create or replace an override)
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const admin = await requireAdmin(req)
+  if (!admin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   const { id } = await params
   const body = await req.json()
+  // Strip server-controlled fields.
+  delete body.id
+  delete body.createdAt
 
   // 1) Try DB first
   try {
@@ -56,6 +64,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const plan = await db.subscriptionPlan.update({ where: { id }, data: body })
     return NextResponse.json(plan)
   } catch (e) {
+    console.error('[api/plans/[id]] PUT DB error:', e)
     // Fall through to Blob fallback
   }
 
@@ -92,7 +101,11 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 }
 
 // DELETE — soft-delete a plan (writes a deletion marker)
-export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const admin = await requireAdmin(req)
+  if (!admin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   const { id } = await params
 
   // 1) Try DB first
@@ -101,6 +114,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     await db.subscriptionPlan.delete({ where: { id } })
     return NextResponse.json({ success: true })
   } catch (e) {
+    console.error('[api/plans/[id]] DELETE DB error:', e)
     // Fall through to Blob fallback
   }
 

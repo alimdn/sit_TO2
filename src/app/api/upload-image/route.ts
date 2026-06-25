@@ -1,24 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAdmin } from '@/lib/session'
 
-/**
- * POST /api/upload-image
- *
- * Uploads an image to Cloudinary. Supports two modes:
- *
- * 1. URL upload:  { "url": "https://example.com/image.png" }
- *    → Cloudinary fetches the image from the URL and stores it.
- *
- * 2. Base64 upload: { "base64": "data:image/png;base64,iVBOR..." }
- *    → Cloudinary stores the base64-encoded image directly.
- *
- * Both modes return:
- *   { "url": "https://res.cloudinary.com/.../upload/v.../templates/xxx.png",
- *     "publicId": "templates/xxx" }
- *
- * The image is stored in a "templates" folder in the Cloudinary account
- * for easy organization.
- */
+/** POST /api/upload-image — admin-only. Uploads an image to Cloudinary. */
 export async function POST(req: NextRequest) {
+  const admin = await requireAdmin(req)
+  if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
   try {
     const body = await req.json()
     const { url, base64, folder } = body

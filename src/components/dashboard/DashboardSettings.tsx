@@ -30,13 +30,20 @@ export default function DashboardSettings() {
       const res = await fetch(`/api/auth/register`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: user.id, ...profile }),
+        body: JSON.stringify(profile),
       })
       if (res.ok) {
         const data = await res.json()
-        setUser({ ...user, ...profile })
-        localStorage.setItem('user', JSON.stringify({ ...user, ...profile }))
+        if (data.user) {
+          setUser(data.user)
+          try { localStorage.setItem('user', JSON.stringify(data.user)) } catch {}
+        } else {
+          setUser({ ...user, ...profile })
+        }
         toast.success('Profile updated successfully')
+      } else {
+        const data = await res.json().catch(() => ({}))
+        toast.error(data.error || 'Failed to update profile')
       }
     } catch {
       toast.error('Failed to update profile')
@@ -52,12 +59,16 @@ export default function DashboardSettings() {
       toast.error('New passwords do not match')
       return
     }
+    if (passwords.newPass.length < 8) {
+      toast.error('New password must be at least 8 characters')
+      return
+    }
     if (!user) return
     try {
       const res = await fetch('/api/auth', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: user.id, currentPassword: passwords.current, newPassword: passwords.newPass }),
+        body: JSON.stringify({ currentPassword: passwords.current, newPassword: passwords.newPass }),
       })
       const data = await res.json()
       if (res.ok) {

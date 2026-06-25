@@ -1,9 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getSessionFromRequest } from '@/lib/session'
 
 export async function GET(req: NextRequest) {
+  const sessionUser = await getSessionFromRequest(req)
+  if (!sessionUser) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+  const isAdmin = sessionUser.role === 'admin'
+  const requestedUserId = req.nextUrl.searchParams.get('userId')
+  if (!isAdmin && requestedUserId && requestedUserId !== sessionUser.id) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  }
+  const userId = isAdmin ? (requestedUserId || undefined) : sessionUser.id
   try {
     const { db } = await import('@/lib/db')
-    const userId = req.nextUrl.searchParams.get('userId')
     if (userId) {
       const subs = await db.subscription.findMany({
         where: { userId },
@@ -56,16 +66,19 @@ function computeEndDate(interval: string, startDate: Date): Date {
 }
 
 export async function POST(req: NextRequest) {
+  const sessionUser = await getSessionFromRequest(req)
+  if (!sessionUser) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+  const isAdmin = sessionUser.role === 'admin'
   try {
     const { db } = await import('@/lib/db')
     const body = await req.json()
 
-    // Accept either:
-    //   { userId, planId: '<cuid>' }           — lookup by DB id
-    //   { userId, planId: 'monthly' | 'store' | 'store_semi_annual' | ... } — lookup by interval
-    // The PlansPage sends interval strings ('monthly', 'semi_annual', 'annual',
-    // 'store', 'store_semi_annual', 'store_annual'), so we look up by interval first.
-    const { userId, planId } = body
+    // Resolve userId: regular users always use their own session id.
+    // Admins may override via body.userId.
+    const userId = isAdmin && body.userId ? body.userId : sessionUser.id
+    const { planId } = body
     if (!userId || !planId) {
       return NextResponse.json({ error: 'userId and planId are required' }, { status: 400 })
     }

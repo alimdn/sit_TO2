@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAdmin } from '@/lib/session'
 import { fallbackTemplates } from '@/lib/fallback-data'
 import {
   getAdminTemplates,
@@ -81,8 +82,15 @@ export async function GET() {
 
 // POST — admin creates a new template (or override of an existing one)
 export async function POST(req: NextRequest) {
+  const admin = await requireAdmin(req)
+  if (!admin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   try {
     const body = await req.json()
+    // Strip server-controlled fields.
+    delete body.id
+    delete body.createdAt
 
     // Try DB first
     try {
@@ -90,6 +98,7 @@ export async function POST(req: NextRequest) {
       const template = await db.template.create({ data: body })
       return NextResponse.json(template)
     } catch (dbErr) {
+      console.error('[api/templates] POST DB error:', dbErr)
       // Fall through to Blob fallback
     }
 

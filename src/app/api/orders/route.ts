@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getSessionFromRequest } from '@/lib/session'
 import { getAllOrders, getOrdersByUser, createOrder } from '@/lib/file-store'
 
 const NO_CACHE_HEADERS = {
@@ -10,7 +11,16 @@ const NO_CACHE_HEADERS = {
 // GET — list orders. If ?userId is provided, filter by user.
 // Admin (no userId) sees all orders.
 export async function GET(req: NextRequest) {
-  const userId = req.nextUrl.searchParams.get('userId')
+  const sessionUser = await getSessionFromRequest(req)
+  if (!sessionUser) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: NO_CACHE_HEADERS })
+  }
+  const isAdmin = sessionUser.role === 'admin'
+  const requestedUserId = req.nextUrl.searchParams.get('userId')
+  if (!isAdmin && requestedUserId && requestedUserId !== sessionUser.id) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403, headers: NO_CACHE_HEADERS })
+  }
+  const userId = isAdmin ? (requestedUserId || undefined) : sessionUser.id
 
   // 1) Try DB first (when DATABASE_URL is configured)
   try {
@@ -44,6 +54,7 @@ export async function GET(req: NextRequest) {
     merged.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     return NextResponse.json(merged, { headers: NO_CACHE_HEADERS })
   } catch (e) {
+    console.error('[api/orders] GET DB error:', e)
     // Fall through to Blob-only response
   }
 
@@ -59,8 +70,19 @@ export async function GET(req: NextRequest) {
 
 // POST — create a new order (from Checkout page or admin "Add Test Order")
 export async function POST(req: NextRequest) {
+  const sessionUser = await getSessionFromRequest(req)
+  if (!sessionUser) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+  const isAdmin = sessionUser.role === 'admin'
   try {
     const body = await req.json()
+
+    // Resolve userId: regular users always use their own session id.
+    // Admins may override via body.userId (including null for test orders).
+    const effectiveUserId = isAdmin
+      ? (body.userId !== undefined ? body.userId : sessionUser.id)
+      : sessionUser.id
 
     // Parse milestones from body, or use default 7-stage lifecycle
     const DEFAULT_MILESTONES = [
@@ -128,17 +150,19 @@ export async function POST(req: NextRequest) {
     // 1) Try DB first
     try {
       const { db } = await import('@/lib/db')
+      const { id: _id, createdAt: _createdAt, ...restBody } = body
       const order = await db.order.create({
-        data: { ...body, milestones: milestonesJson, progress: finalProgress, status: finalStatus }
+        data: { ...restBody, userId: effectiveUserId ?? null, milestones: milestonesJson, progress: finalProgress, status: finalStatus }
       })
       return NextResponse.json(order)
     } catch (dbErr) {
+      console.error('[api/orders] POST DB error:', dbErr)
       // Fall through to Blob fallback
     }
 
     // 2) Fallback: persist via Blob
     const stored = await createOrder({
-      userId: body.userId ? String(body.userId) : null,
+      userId: effectiveUserId ? String(effectiveUserId) : null,
       templateId: body.templateId ? String(body.templateId) : null,
       status: finalStatus,
       progress: finalProgress,

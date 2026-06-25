@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAdmin } from '@/lib/session'
 import { fallbackPlans } from '@/lib/fallback-data'
 import {
   getAdminPlans,
@@ -77,8 +78,15 @@ export async function GET() {
 
 // POST — admin creates a new plan (or override of an existing one)
 export async function POST(req: NextRequest) {
+  const admin = await requireAdmin(req)
+  if (!admin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   try {
     const body = await req.json()
+    // Strip server-controlled fields.
+    delete body.id
+    delete body.createdAt
 
     // Try DB first
     try {
@@ -86,6 +94,7 @@ export async function POST(req: NextRequest) {
       const plan = await db.subscriptionPlan.create({ data: body })
       return NextResponse.json(plan)
     } catch (dbErr) {
+      console.error('[api/plans] POST DB error:', dbErr)
       // Fall through to Blob fallback
     }
 

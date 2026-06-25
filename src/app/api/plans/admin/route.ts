@@ -1,4 +1,5 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { requireAdmin } from '@/lib/session'
 import { fallbackPlans } from '@/lib/fallback-data'
 import {
   getAdminPlans,
@@ -18,8 +19,14 @@ import {
  *   3. Fallback seed plans
  *
  * Excluded: soft-deleted plans (deletion marker in Blob).
+ *
+ * Admin-only.
  */
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const admin = await requireAdmin(req)
+  if (!admin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   // 1) Try DB first
   let dbPlans: any[] = []
   let dbAvailable = false
@@ -28,6 +35,7 @@ export async function GET() {
     dbPlans = await db.subscriptionPlan.findMany({ orderBy: { price: 'asc' } })
     dbAvailable = true
   } catch (e) {
+    console.error('[api/plans/admin] GET DB error:', e)
     // DB unavailable
   }
 

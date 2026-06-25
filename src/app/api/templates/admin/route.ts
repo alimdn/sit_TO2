@@ -1,4 +1,5 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { requireAdmin } from '@/lib/session'
 import { fallbackTemplates } from '@/lib/fallback-data'
 import {
   getAdminTemplates,
@@ -18,8 +19,14 @@ import {
  *   3. Fallback seed templates
  *
  * Excluded: soft-deleted templates (deletion marker in Blob).
+ *
+ * Admin-only.
  */
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const admin = await requireAdmin(req)
+  if (!admin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   // 1) Try DB first
   let dbTemplates: any[] = []
   let dbAvailable = false
@@ -28,6 +35,7 @@ export async function GET() {
     dbTemplates = await db.template.findMany({ orderBy: { createdAt: 'desc' } })
     dbAvailable = true
   } catch (e) {
+    console.error('[api/templates/admin] GET DB error:', e)
     // DB unavailable
   }
 

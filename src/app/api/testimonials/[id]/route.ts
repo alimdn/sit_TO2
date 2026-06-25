@@ -1,37 +1,49 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { requireAdmin } from '@/lib/session'
 import {
   deletePendingTestimonial,
   approvePendingTestimonial,
   unapprovePendingTestimonial,
   updatePendingTestimonial,
+  getAllPendingTestimonials,
 } from '@/lib/file-store'
 
-// GET a single testimonial by id (admin)
+// GET a single testimonial by id (admin-only)
 export async function GET(
-  _request: Request,
-  { params }: { params: { id: string } },
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
 ) {
+  const admin = await requireAdmin(req)
+  if (!admin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+  const { id } = await params
   try {
     const { db } = await import('@/lib/db')
-    const t = await db.testimonial.findUnique({ where: { id: params.id } })
+    const t = await db.testimonial.findUnique({ where: { id } })
     if (t) return NextResponse.json(t)
   } catch (e) {
+    console.error('[api/testimonials/[id]] GET DB error:', e)
     // fall through to file-store
   }
-  const { getAllPendingTestimonials } = await import('@/lib/file-store')
   const all = await getAllPendingTestimonials()
-  const found = all.find(t => t.id === params.id)
+  const found = all.find(t => t.id === id)
   if (found) return NextResponse.json(found)
   return NextResponse.json({ error: 'Not found' }, { status: 404 })
 }
 
-// PUT - update testimonial (e.g. approve/activate, edit content)
+// PUT - update testimonial (e.g. approve/activate, edit content) — admin-only
 export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } },
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
 ) {
+  const admin = await requireAdmin(req)
+  if (!admin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+  const { id } = await params
   try {
-    const body = await request.json()
+    const body = await req.json()
     const { name, role, company, content, rating, active } = body || {}
 
     const data: Record<string, unknown> = {}
@@ -48,17 +60,18 @@ export async function PUT(
     try {
       const { db } = await import('@/lib/db')
       const updated = await db.testimonial.update({
-        where: { id: params.id },
+        where: { id },
         data,
       })
       return NextResponse.json(updated)
     } catch (dbErr) {
+      console.error('[api/testimonials/[id]] PUT DB error:', dbErr)
       // Fallback: file-store. Handle approve / unapprove / general update.
       if (typeof active === 'boolean') {
         if (active) {
-          await approvePendingTestimonial(params.id)
+          await approvePendingTestimonial(id)
         } else {
-          await unapprovePendingTestimonial(params.id)
+          await unapprovePendingTestimonial(id)
         }
       }
       // Apply other edits (name/role/company/content/rating) if provided
@@ -69,27 +82,33 @@ export async function PUT(
       if (data.content) otherUpdates.content = data.content
       if (data.rating !== undefined) otherUpdates.rating = data.rating
       if (Object.keys(otherUpdates).length > 0) {
-        await updatePendingTestimonial(params.id, otherUpdates as any)
+        await updatePendingTestimonial(id, otherUpdates as any)
       }
-      return NextResponse.json({ ok: true, id: params.id, ...data })
+      return NextResponse.json({ ok: true, id, ...data })
     }
   } catch (e) {
+    console.error('[api/testimonials/[id]] PUT error:', e)
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
   }
 }
 
-// DELETE - permanently remove a testimonial
+// DELETE - permanently remove a testimonial — admin-only
 export async function DELETE(
-  _request: Request,
-  { params }: { params: { id: string } },
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
 ) {
+  const admin = await requireAdmin(req)
+  if (!admin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+  const { id } = await params
   try {
     const { db } = await import('@/lib/db')
-    await db.testimonial.delete({ where: { id: params.id } })
+    await db.testimonial.delete({ where: { id } })
     return NextResponse.json({ ok: true })
-  } catch {
-    await deletePendingTestimonial(params.id)
+  } catch (e) {
+    console.error('[api/testimonials/[id]] DELETE DB error:', e)
+    await deletePendingTestimonial(id)
     return NextResponse.json({ ok: true })
   }
 }
-

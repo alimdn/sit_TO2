@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAdmin } from '@/lib/session'
 import { markContactMessageRead, deleteContactMessage } from '@/lib/file-store'
 
-// PUT /api/contact/[id] — mark message as read (or perform an action passed via body)
+// PUT /api/contact/[id] — admin-only (mark message as read/unread or delete)
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const admin = await requireAdmin(req)
+  if (!admin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   const { id } = await params
   const body = await req.json().catch(() => ({})) as { action?: 'read' | 'unread' | 'delete' }
   const action = body.action || 'read'
@@ -19,7 +24,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       return NextResponse.json(updated)
     }
     return NextResponse.json({ ok: true })
-  } catch {
+  } catch (e) {
+    console.error('[api/contact/[id]] PUT DB error:', e)
     // Fallback to file-store
     if (action === 'delete') {
       await deleteContactMessage(id)
@@ -30,14 +36,19 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   }
 }
 
-// DELETE /api/contact/[id] — remove a message
-export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+// DELETE /api/contact/[id] — admin-only (remove a message)
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const admin = await requireAdmin(req)
+  if (!admin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   const { id } = await params
   try {
     const { db } = await import('@/lib/db')
     await db.contactMessage.delete({ where: { id } })
     return NextResponse.json({ ok: true })
-  } catch {
+  } catch (e) {
+    console.error('[api/contact/[id]] DELETE DB error:', e)
     await deleteContactMessage(id)
     return NextResponse.json({ ok: true })
   }

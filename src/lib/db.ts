@@ -276,12 +276,21 @@ function createModelAdapter(table: string) {
         // Generate a CUID-like ID
         data.id = `${table.toLowerCase().slice(0, 3)}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
       }
-      if (!data.createdAt) {
-        data.createdAt = new Date().toISOString()
-      }
-      // updatedAt is NOT NULL on most tables
-      if (!data.updatedAt && table !== 'ContactMessage' && table !== 'Testimonial' && table !== 'FAQ' && table !== 'Payment' && table !== 'SiteSetting') {
-        data.updatedAt = new Date().toISOString()
+      // SiteSetting only has (id, key, value) — no createdAt/updatedAt columns.
+      // Inserting them would cause a "column does not exist" error from PostgREST.
+      const hasTimestamps = table !== 'SiteSetting'
+      if (hasTimestamps) {
+        if (!data.createdAt) {
+          data.createdAt = new Date().toISOString()
+        }
+        // updatedAt is NOT NULL on most tables
+        if (!data.updatedAt && table !== 'ContactMessage' && table !== 'Testimonial' && table !== 'FAQ' && table !== 'Payment') {
+          data.updatedAt = new Date().toISOString()
+        }
+      } else {
+        // Strip any timestamps that callers might have passed
+        delete data.createdAt
+        delete data.updatedAt
       }
       const { data: result, error } = await getClient()
         .from(table)

@@ -45,27 +45,32 @@ interface FindManyArgs {
   take?: number
   skip?: number
   select?: Record<string, boolean>
+  include?: Record<string, boolean | object>
 }
 
 interface FindUniqueArgs {
   where: Record<string, any>
   select?: Record<string, boolean>
+  include?: Record<string, boolean | object>
 }
 
 interface CreateArgs {
   data: Record<string, any>
   select?: Record<string, boolean>
+  include?: Record<string, boolean | object>
 }
 
 interface UpdateArgs {
   where: Record<string, any>
   data: Record<string, any>
   select?: Record<string, boolean>
+  include?: Record<string, boolean | object>
 }
 
 interface DeleteArgs {
   where: Record<string, any>
   select?: Record<string, boolean>
+  include?: Record<string, boolean | object>
 }
 
 interface UpsertArgs {
@@ -73,6 +78,7 @@ interface UpsertArgs {
   create: Record<string, any>
   update: Record<string, any>
   select?: Record<string, boolean>
+  include?: Record<string, boolean | object>
 }
 
 interface CountArgs {

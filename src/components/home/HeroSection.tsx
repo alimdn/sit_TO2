@@ -134,15 +134,19 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Hero image */}
+          {/* Hero image — URL configurable from admin Settings (key: home_hero_image) */}
           <div className="hidden lg:block animate-slide-in-right">
             <div className="relative">
               <div className="absolute -inset-4 bg-gradient-to-r from-[#00D1FF]/20 to-[#10B981]/20 rounded-2xl blur-xl" />
               <div className="relative rounded-2xl overflow-hidden shadow-overlay border border-[#768dad]/20">
                 <img
-                  src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80"
+                  src={settings.home_hero_image || '/images/home/hero-default.png'}
                   alt="Professional Website Design"
                   className="w-full h-[300px] object-cover"
+                  onError={(e) => {
+                    // If the configured URL fails to load, fall back to the local default.
+                    ;(e.currentTarget as HTMLImageElement).src = '/images/home/hero-default.png'
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#000f22]/60 to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6">

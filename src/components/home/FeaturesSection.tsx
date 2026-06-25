@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { Palette, Server, Database, Headphones, CreditCard, Monitor, Smartphone, Search, Zap, Shield, Code, ShoppingCart } from 'lucide-react'
 
 // Left column: Website design & creation services
@@ -71,6 +72,22 @@ const hostingServices = [
 ]
 
 export default function FeaturesSection() {
+  const [settings, setSettings] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    fetch('/api/settings')
+      .then((res) => res.json())
+      .then((data: { key: string; value: string }[]) => {
+        const map: Record<string, string> = {}
+        data.forEach((s) => { map[s.key] = s.value })
+        setSettings(map)
+      })
+      .catch(() => {})
+  }, [])
+
+  const designImg = settings.home_features_design_image || '/images/home/features-design.png'
+  const hostingImg = settings.home_features_hosting_image || '/images/home/features-hosting.png'
+
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -96,6 +113,19 @@ export default function FeaturesSection() {
                 <h3 className="font-bold text-[#000f22] text-lg">Website Design & Creation</h3>
                 <p className="text-xs text-[#4F5B76]">We design and build your website from scratch</p>
               </div>
+            </div>
+
+            {/* Design services image — configurable via admin (key: home_features_design_image) */}
+            <div className="rounded-xl overflow-hidden shadow-card border border-[#e6ebf1] mb-2 bg-[#f7fafd]">
+              <img
+                src={designImg}
+                alt="Website Design & Creation"
+                className="w-full h-48 object-cover"
+                loading="lazy"
+                onError={(e) => {
+                  ;(e.currentTarget as HTMLImageElement).src = '/images/home/features-design.png'
+                }}
+              />
             </div>
 
             {designServices.map((feature, index) => (
@@ -124,6 +154,19 @@ export default function FeaturesSection() {
                 <h3 className="font-bold text-[#000f22] text-lg">Hosting & Management</h3>
                 <p className="text-xs text-[#4F5B76]">We host, maintain, and support your website</p>
               </div>
+            </div>
+
+            {/* Hosting services image — configurable via admin (key: home_features_hosting_image) */}
+            <div className="rounded-xl overflow-hidden shadow-card border border-[#e6ebf1] mb-2 bg-[#f7fafd]">
+              <img
+                src={hostingImg}
+                alt="Hosting & Management"
+                className="w-full h-48 object-cover"
+                loading="lazy"
+                onError={(e) => {
+                  ;(e.currentTarget as HTMLImageElement).src = '/images/home/features-hosting.png'
+                }}
+              />
             </div>
 
             {hostingServices.map((feature, index) => (

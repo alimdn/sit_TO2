@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { LayoutDashboard, Clock, Check, Circle, ArrowRight, MessageSquare, Globe, RefreshCw, Plus } from 'lucide-react'
+import { LayoutDashboard, Clock, Check, Circle, ArrowRight, MessageSquare, Globe, RefreshCw, Plus, Image as ImageIcon } from 'lucide-react'
 
 const ADD_ON_NAMES: Record<string, string> = {
   seo: 'Advanced SEO Package',
@@ -53,6 +53,8 @@ interface Order {
   similarSiteCriteria: string | null
   domain: string | null
   domainPrice: number | null
+  logoUrl?: string | null
+  uploadedImages?: string | null
   startDate?: string | null
   deliveryDate?: string | null
   isDemo?: boolean
@@ -605,6 +607,66 @@ export default function OrdersPage() {
                     )}
                   </div>
                 )}
+
+                {/* Brand Logo */}
+                {selectedOrder.logoUrl && (
+                  <div className="p-3 bg-[#10B981]/5 rounded-xl border border-[#10B981]/10">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <ImageIcon className="h-3.5 w-3.5 text-[#10B981]" />
+                      <span className="text-xs font-semibold text-[#000f22]">Your Brand Logo</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={selectedOrder.logoUrl}
+                        alt="Your logo"
+                        className="w-16 h-16 object-contain rounded-lg bg-white border border-[#e6ebf1] p-1"
+                      />
+                      <a
+                        href={selectedOrder.logoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[10px] text-[#10B981] hover:underline break-all font-mono"
+                      >
+                        View full size
+                      </a>
+                    </div>
+                  </div>
+                )}
+
+                {/* Reference Images */}
+                {(() => {
+                  let imgs: { url: string; comment?: string }[] = []
+                  try {
+                    const parsed = selectedOrder.uploadedImages ? JSON.parse(selectedOrder.uploadedImages) : []
+                    if (Array.isArray(parsed)) imgs = parsed
+                  } catch { /* invalid JSON */ }
+                  if (imgs.length === 0) return null
+                  return (
+                    <div className="p-3 bg-[#10B981]/5 rounded-xl border border-[#10B981]/10">
+                      <div className="flex items-center gap-1.5 mb-2">
+                        <ImageIcon className="h-3.5 w-3.5 text-[#10B981]" />
+                        <span className="text-xs font-semibold text-[#000f22]">Your Reference Images ({imgs.length})</span>
+                      </div>
+                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                        {imgs.map((img, i) => (
+                          <div key={i} className="rounded-lg overflow-hidden border border-[#e6ebf1] bg-white">
+                            <a href={img.url} target="_blank" rel="noopener noreferrer" className="block relative aspect-square bg-[#f7fafd]">
+                              <img src={img.url} alt={`Reference ${i + 1}`} className="w-full h-full object-cover" />
+                              <span className="absolute bottom-1 left-1 bg-[#000f22]/80 text-white text-[9px] px-1.5 py-0.5 rounded">
+                                #{i + 1}
+                              </span>
+                            </a>
+                            {img.comment && (
+                              <p className="px-1.5 py-1 text-[10px] text-[#43474d] leading-snug border-t border-[#e6ebf1] bg-[#f7fafd]">
+                                {img.comment}
+                              </p>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )
+                })()}
 
                 {/* Domain */}
                 {selectedOrder.domain && (

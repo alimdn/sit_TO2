@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
-import { Copy, Check, FileText, Globe, MessageSquare, Sparkles, Plus, Trash2, Edit3, Save, RefreshCw } from 'lucide-react'
+import { Copy, Check, FileText, Globe, MessageSquare, Sparkles, Plus, Trash2, Edit3, Save, RefreshCw, Image as ImageIcon } from 'lucide-react'
 
 const ADD_ON_NAMES: Record<string, string> = {
   seo: 'Advanced SEO Package',
@@ -84,6 +84,8 @@ interface Order {
   similarSiteCriteria: string | null
   domain: string | null
   domainPrice: number | null
+  logoUrl?: string | null
+  uploadedImages?: string | null  // JSON string of {url, comment}[]
   startDate?: string | null
   deliveryDate?: string | null
   isDemo?: boolean
@@ -617,6 +619,26 @@ export default function AdminOrders() {
       lines.push('')
     }
 
+    if (order.logoUrl) {
+      lines.push('── Brand Logo ──')
+      lines.push(`  ${order.logoUrl}`)
+      lines.push('')
+    }
+
+    if (order.uploadedImages) {
+      try {
+        const imgs = JSON.parse(order.uploadedImages)
+        if (Array.isArray(imgs) && imgs.length > 0) {
+          lines.push(`── Reference Images (${imgs.length}) ──`)
+          imgs.forEach((img: { url: string; comment?: string }, i: number) => {
+            lines.push(`  [${i + 1}] ${img.url}`)
+            if (img.comment) lines.push(`      Comment: ${img.comment}`)
+          })
+          lines.push('')
+        }
+      } catch { /* invalid JSON */ }
+    }
+
     if (order.notes) {
       lines.push('── Admin Notes ──')
       lines.push(`  ${order.notes}`)
@@ -1101,6 +1123,69 @@ export default function AdminOrders() {
                     )}
                   </div>
                 )}
+
+                {/* Brand Logo */}
+                {selected.logoUrl && (
+                  <div className="p-3 bg-[#10B981]/5 rounded-xl border border-[#10B981]/10">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <ImageIcon className="h-3.5 w-3.5 text-[#10B981]" />
+                      <span className="text-xs font-semibold text-[#000f22]">Brand Logo</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={selected.logoUrl}
+                        alt="Brand logo"
+                        className="w-20 h-20 object-contain rounded-lg bg-white border border-[#e6ebf1] p-1.5"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <a
+                          href={selected.logoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[10px] text-[#10B981] hover:underline break-all font-mono"
+                        >
+                          {selected.logoUrl}
+                        </a>
+                        <p className="text-[10px] text-[#74777e] mt-1">Click image URL to open full size</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Reference Images with comments */}
+                {(() => {
+                  let imgs: { url: string; comment?: string }[] = []
+                  try {
+                    const parsed = selected.uploadedImages ? JSON.parse(selected.uploadedImages) : []
+                    if (Array.isArray(parsed)) imgs = parsed
+                  } catch { /* invalid JSON */ }
+                  if (imgs.length === 0) return null
+                  return (
+                    <div className="p-3 bg-[#10B981]/5 rounded-xl border border-[#10B981]/10">
+                      <div className="flex items-center gap-1.5 mb-2">
+                        <ImageIcon className="h-3.5 w-3.5 text-[#10B981]" />
+                        <span className="text-xs font-semibold text-[#000f22]">Reference Images ({imgs.length})</span>
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        {imgs.map((img, i) => (
+                          <div key={i} className="rounded-lg overflow-hidden border border-[#e6ebf1] bg-white">
+                            <a href={img.url} target="_blank" rel="noopener noreferrer" className="block relative aspect-square bg-[#f7fafd]">
+                              <img src={img.url} alt={`Reference ${i + 1}`} className="w-full h-full object-cover" />
+                              <span className="absolute bottom-1 left-1 bg-[#000f22]/80 text-white text-[9px] px-1.5 py-0.5 rounded">
+                                #{i + 1}
+                              </span>
+                            </a>
+                            {img.comment && (
+                              <p className="px-2 py-1.5 text-[11px] text-[#43474d] leading-snug border-t border-[#e6ebf1] bg-[#f7fafd]">
+                                {img.comment}
+                              </p>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )
+                })()}
 
                 {/* Domain */}
                 {selected.domain && (

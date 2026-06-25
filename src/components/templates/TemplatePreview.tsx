@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react'
 import { useAppStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, PenLine, LayoutDashboard, Clock, Search, AlertTriangle, ExternalLink, RotateCw, Heart } from 'lucide-react'
+import { Check, ArrowRight, ArrowLeft, Plus, ShoppingCart, Sparkles, X, Globe, MessageSquare, PenLine, LayoutDashboard, Clock, Search, AlertTriangle, ExternalLink, RotateCw, Heart, Upload, Image as ImageIcon, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 import FavoriteButton from './FavoriteButton'
 
@@ -156,6 +156,109 @@ export default function TemplatePreview() {
   const [additionalInfoSaved, setAdditionalInfoSaved] = useState(false)
   const [similarSiteUrl, setSimilarSiteUrl] = useState('')
   const [selectedSimilarities, setSelectedSimilarities] = useState<string[]>([])
+
+  // Brand logo + reference images (uploaded to Cloudinary via /api/upload-image)
+  const [logoUrl, setLogoUrl] = useState<string | null>(null)
+  const [logoUploading, setLogoUploading] = useState(false)
+  const [uploadedImages, setUploadedImages] = useState<{ url: string; comment: string }[]>([])
+  const [imageUploading, setImageUploading] = useState(false)
+  const logoInputRef = useRef<HTMLInputElement | null>(null)
+  const imageInputRef = useRef<HTMLInputElement | null>(null)
+  const MAX_IMAGES = 10
+
+  // Upload a single file to Cloudinary via the admin-only /api/upload-image endpoint.
+  // The endpoint is admin-only — non-admin users will get 401 and we show a friendly message.
+  async function uploadFileToCloudinary(file: File): Promise<string | null> {
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file')
+      return null
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image must be smaller than 5MB')
+      return null
+    }
+    const reader = new FileReader()
+    const base64 = await new Promise<string>((resolve, reject) => {
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = reject
+      reader.readAsDataURL(file)
+    })
+    const res = await fetch('/api/upload-image', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ base64, folder: 'client-uploads' }),
+    })
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}))
+      if (res.status === 401) {
+        toast.error('Please sign in to upload images')
+      } else {
+        toast.error(err.error || 'Upload failed')
+      }
+      return null
+    }
+    const data = await res.json()
+    return data.url as string
+  }
+
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file) return
+    setLogoUploading(true)
+    try {
+      const url = await uploadFileToCloudinary(file)
+      if (url) {
+        setLogoUrl(url)
+        toast.success('Logo uploaded')
+      }
+    } catch (err) {
+      console.error('[TemplatePreview] logo upload error:', err)
+      toast.error('Failed to upload logo')
+    } finally {
+      setLogoUploading(false)
+    }
+  }
+
+  const handleImagesUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || [])
+    e.target.value = ''
+    if (files.length === 0) return
+    const remaining = MAX_IMAGES - uploadedImages.length
+    if (remaining <= 0) {
+      toast.error(`Maximum ${MAX_IMAGES} images reached`)
+      return
+    }
+    const toUpload = files.slice(0, remaining)
+    if (files.length > remaining) {
+      toast.error(`Only ${remaining} more image${remaining > 1 ? 's' : ''} allowed`)
+    }
+    setImageUploading(true)
+    try {
+      const newImages: { url: string; comment: string }[] = []
+      for (const file of toUpload) {
+        const url = await uploadFileToCloudinary(file)
+        if (url) newImages.push({ url, comment: '' })
+      }
+      if (newImages.length > 0) {
+        setUploadedImages((prev) => [...prev, ...newImages])
+        toast.success(`${newImages.length} image${newImages.length > 1 ? 's' : ''} uploaded`)
+      }
+    } catch (err) {
+      console.error('[TemplatePreview] images upload error:', err)
+      toast.error('Failed to upload images')
+    } finally {
+      setImageUploading(false)
+    }
+  }
+
+  const updateImageComment = (index: number, comment: string) => {
+    setUploadedImages((prev) => prev.map((img, i) => (i === index ? { ...img, comment } : img)))
+  }
+
+  const removeImage = (index: number) => {
+    setUploadedImages((prev) => prev.filter((_, i) => i !== index))
+  }
 
   // Extra template features (beyond the free limit) — available to add as paid extras
   const [extraTemplateFeatures, setExtraTemplateFeatures] = useState<string[]>([])
@@ -416,6 +519,8 @@ export default function TemplatePreview() {
       similarSiteCriteria: selectedSimilarities,
       domain: selectedDomain?.domain || null,
       domainPrice: selectedDomain?.price || null,
+      logoUrl,
+      uploadedImages,
     })
     setPreviewTemplate(null)
     setCurrentPage('checkout')
@@ -799,6 +904,137 @@ export default function TemplatePreview() {
                     )}
                   </div>
                 )}
+              </div>
+
+              {/* Brand Logo & Reference Images — new section */}
+              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-7 h-7 rounded-lg bg-[#10B981]/10 flex items-center justify-center">
+                    <ImageIcon className="h-4 w-4 text-[#10B981]" />
+                  </div>
+                  <div className="flex-1">
+                    <h2 className="text-sm font-bold text-[#000f22]">Brand Logo & Reference Images</h2>
+                    <p className="text-[11px] text-[#74777e]">Optional — upload your logo and up to {MAX_IMAGES} reference images</p>
+                  </div>
+                </div>
+
+                {/* Logo upload */}
+                <div className="mb-4">
+                  <p className="text-xs font-medium text-[#43474d] mb-2">Brand Logo <span className="text-[#74777e] font-normal">(PNG/SVG preferred, max 5MB)</span></p>
+                  <input
+                    ref={logoInputRef}
+                    type="file"
+                    accept="image/png,image/jpeg,image/svg+xml,image/webp"
+                    className="hidden"
+                    onChange={handleLogoUpload}
+                  />
+                  {logoUrl ? (
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-[#10B981]/5 border border-[#10B981]/20">
+                      <img
+                        src={logoUrl}
+                        alt="Brand logo"
+                        className="w-16 h-16 object-contain rounded-lg bg-white border border-[#e6ebf1] p-1"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-medium text-[#10B981]">✓ Logo uploaded</p>
+                        <p className="text-[10px] text-[#74777e] truncate font-mono">{logoUrl}</p>
+                      </div>
+                      <button
+                        onClick={() => setLogoUrl(null)}
+                        className="w-7 h-7 rounded-lg bg-[#ef4444]/10 hover:bg-[#ef4444]/20 flex items-center justify-center flex-shrink-0"
+                        title="Remove logo"
+                      >
+                        <Trash2 className="h-3.5 w-3.5 text-[#ef4444]" />
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => logoInputRef.current?.click()}
+                      disabled={logoUploading}
+                      className="w-full p-4 rounded-xl border-2 border-dashed border-[#e6ebf1] hover:border-[#10B981]/40 hover:bg-[#10B981]/5 transition-all flex items-center justify-center gap-2 text-xs text-[#4F5B76] disabled:opacity-50"
+                    >
+                      <Upload className="h-4 w-4" />
+                      {logoUploading ? 'Uploading...' : 'Click to upload logo'}
+                    </button>
+                  )}
+                </div>
+
+                {/* Reference images upload */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs font-medium text-[#43474d]">Reference Images <span className="text-[#74777e] font-normal">(with optional comment)</span></p>
+                    <span className="text-[10px] text-[#74777e]">{uploadedImages.length} / {MAX_IMAGES}</span>
+                  </div>
+                  <input
+                    ref={imageInputRef}
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp"
+                    multiple
+                    className="hidden"
+                    onChange={handleImagesUpload}
+                  />
+                  {uploadedImages.length === 0 ? (
+                    <button
+                      onClick={() => imageInputRef.current?.click()}
+                      disabled={imageUploading}
+                      className="w-full p-4 rounded-xl border-2 border-dashed border-[#e6ebf1] hover:border-[#10B981]/40 hover:bg-[#10B981]/5 transition-all flex items-center justify-center gap-2 text-xs text-[#4F5B76] disabled:opacity-50"
+                    >
+                      <Upload className="h-4 w-4" />
+                      {imageUploading ? 'Uploading...' : `Click to upload up to ${MAX_IMAGES} images`}
+                    </button>
+                  ) : (
+                    <>
+                      {/* Grid of uploaded images with comment field under each */}
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-3">
+                        {uploadedImages.map((img, index) => (
+                          <div key={index} className="rounded-xl border border-[#e6ebf1] overflow-hidden bg-[#f7fafd]">
+                            <div className="relative aspect-square bg-white">
+                              <img src={img.url} alt={`Reference ${index + 1}`} className="w-full h-full object-cover" />
+                              <button
+                                onClick={() => removeImage(index)}
+                                className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-[#ef4444] text-white hover:bg-[#dc2626] flex items-center justify-center shadow-md"
+                                title="Remove image"
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
+                              <span className="absolute bottom-1.5 left-1.5 bg-[#000f22]/80 text-white text-[9px] px-1.5 py-0.5 rounded">
+                                #{index + 1}
+                              </span>
+                            </div>
+                            <input
+                              type="text"
+                              value={img.comment}
+                              onChange={(e) => updateImageComment(index, e.target.value)}
+                              placeholder="Optional comment..."
+                              maxLength={200}
+                              className="w-full px-2 py-1.5 text-[11px] text-[#000f22] placeholder:text-[#74777e] bg-transparent border-0 border-t border-[#e6ebf1] focus:outline-none focus:bg-white focus:ring-1 focus:ring-[#10B981]/20"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                      {uploadedImages.length < MAX_IMAGES && (
+                        <button
+                          onClick={() => imageInputRef.current?.click()}
+                          disabled={imageUploading}
+                          className="w-full py-2.5 rounded-xl border border-[#10B981]/30 bg-[#10B981]/5 hover:bg-[#10B981]/10 text-[#10B981] text-xs font-medium transition-all flex items-center justify-center gap-1.5 disabled:opacity-50"
+                        >
+                          {imageUploading ? (
+                            <>Uploading...</>
+                          ) : (
+                            <>
+                              <Plus className="h-3.5 w-3.5" />
+                              Add more images ({MAX_IMAGES - uploadedImages.length} remaining)
+                            </>
+                          )}
+                        </button>
+                      )}
+                    </>
+                  )}
+                </div>
+
+                <div className="mt-3 p-2.5 rounded-lg bg-[#00D1FF]/5 border border-[#00D1FF]/10 text-[10px] text-[#74777e] leading-relaxed">
+                  <strong className="text-[#00D1FF]">Note:</strong> Logo and images are uploaded to Cloudinary and attached to your order. The design team will review them when building your website.
+                </div>
               </div>
 
               {/* Domain Search */}

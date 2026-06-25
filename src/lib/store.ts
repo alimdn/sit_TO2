@@ -14,6 +14,11 @@ interface AppUser {
   company?: string | null
 }
 
+export interface UploadedImage {
+  url: string
+  comment?: string
+}
+
 export interface CheckoutData {
   templateId: string
   templateTitle: string
@@ -28,6 +33,10 @@ export interface CheckoutData {
   similarSiteCriteria?: string[]
   domain?: string | null
   domainPrice?: number | null
+  /** Optional: client-uploaded brand logo URL (Cloudinary) */
+  logoUrl?: string | null
+  /** Optional: up to 10 reference images with optional comments */
+  uploadedImages?: UploadedImage[]
 }
 
 interface AppStore {

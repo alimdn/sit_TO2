@@ -246,6 +246,8 @@ export default function CheckoutPage() {
             similarSiteCriteria: JSON.stringify(c.item.similarSiteCriteria || []),
             domain: c.item.domain || null,
             domainPrice: c.item.domainPrice || null,
+            logoUrl: c.item.logoUrl || null,
+            uploadedImages: JSON.stringify(c.item.uploadedImages || []),
           }),
         })
       }

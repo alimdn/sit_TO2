@@ -337,16 +337,16 @@ export default function AdminTemplates() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-[#000f22]">Templates Management</h2>
-          <p className="text-xs text-[#4F5B76] mt-1 flex items-center gap-3 flex-wrap">
+          <h2 className="text-2xl font-bold text-[#29503c]">Templates Management</h2>
+          <p className="text-xs text-[#414843] mt-1 flex items-center gap-3 flex-wrap">
             <span>
-              <span className="font-semibold text-[#10B981]">{templates.filter(t => t.active).length}</span> active
+              <span className="font-semibold text-[#29503c]">{templates.filter(t => t.active).length}</span> active
               <span className="mx-1">·</span>
-              <span className="font-semibold text-[#74777e]">{templates.filter(t => !t.active).length}</span> inactive
+              <span className="font-semibold text-[#717973]">{templates.filter(t => !t.active).length}</span> inactive
               <span className="mx-1">·</span>
               <span>{templates.length} total</span>
             </span>
-            <span className="text-[#74777e]">
+            <span className="text-[#717973]">
               Inactive templates are hidden from the public site but kept here for reactivation.
             </span>
           </p>
@@ -356,33 +356,33 @@ export default function AdminTemplates() {
             variant="outline"
             onClick={handleRefresh}
             disabled={refreshing}
-            className="h-9 border-[#e6ebf1] hover:bg-[#f7fafd]"
+            className="h-9 border-[#c1c8c1] hover:bg-[#faf9f6]"
           >
             <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          <Button onClick={openCreate} className="bg-[#000f22] hover:bg-[#0A2540] text-white h-9">
+          <Button onClick={openCreate} className="bg-[#29503c] hover:bg-[#284e3b] text-white h-9">
             <Plus className="h-4 w-4 mr-2" /> Add Template
           </Button>
         </div>
       </div>
 
       {/* Search & Filters Bar */}
-      <div className="bg-white rounded-xl border border-[#e6ebf1] shadow-card p-4 space-y-3">
+      <div className="bg-white rounded-xl border border-[#c1c8c1] shadow-card p-4 space-y-3">
         <div className="flex flex-col md:flex-row md:items-center gap-3">
           {/* Search Input */}
           <div className="relative flex-1 min-w-[240px]">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#74777e] pointer-events-none" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#717973] pointer-events-none" />
             <Input
               placeholder="Search by title, description, category, features, or industries..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-10 pr-9 h-9 border-[#e6ebf1] focus:border-[#00D1FF]"
+              className="pl-10 pr-9 h-9 border-[#c1c8c1] focus:border-[#416853]"
             />
             {search && (
               <button
                 onClick={() => setSearch('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#74777e] hover:text-[#000f22]"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#717973] hover:text-[#29503c]"
                 title="Clear search"
               >
                 <X className="h-4 w-4" />
@@ -392,9 +392,9 @@ export default function AdminTemplates() {
 
           {/* Category Filter */}
           <Select value={filterCategory} onValueChange={setFilterCategory}>
-            <SelectTrigger className="w-full md:w-[180px] h-9 border-[#e6ebf1]">
+            <SelectTrigger className="w-full md:w-[180px] h-9 border-[#c1c8c1]">
               <div className="flex items-center gap-2">
-                <Filter className="h-3.5 w-3.5 text-[#74777e]" />
+                <Filter className="h-3.5 w-3.5 text-[#717973]" />
                 <SelectValue placeholder="All Categories" />
               </div>
             </SelectTrigger>
@@ -408,9 +408,9 @@ export default function AdminTemplates() {
 
           {/* Status Filter */}
           <Select value={filterStatus} onValueChange={setFilterStatus}>
-            <SelectTrigger className="w-full md:w-[160px] h-9 border-[#e6ebf1]">
+            <SelectTrigger className="w-full md:w-[160px] h-9 border-[#c1c8c1]">
               <div className="flex items-center gap-2">
-                <Filter className="h-3.5 w-3.5 text-[#74777e]" />
+                <Filter className="h-3.5 w-3.5 text-[#717973]" />
                 <SelectValue placeholder="All Status" />
               </div>
             </SelectTrigger>
@@ -427,7 +427,7 @@ export default function AdminTemplates() {
             <Button
               variant="outline"
               onClick={clearFilters}
-              className="h-9 border-[#e6ebf1] hover:bg-[#f7fafd] whitespace-nowrap"
+              className="h-9 border-[#c1c8c1] hover:bg-[#faf9f6] whitespace-nowrap"
             >
               <X className="h-4 w-4 mr-1" />
               Clear
@@ -436,13 +436,13 @@ export default function AdminTemplates() {
         </div>
 
         {/* Results summary */}
-        <div className="flex items-center justify-between text-xs text-[#4F5B76] pt-1 border-t border-[#f1f4f7]">
+        <div className="flex items-center justify-between text-xs text-[#414843] pt-1 border-t border-[#eeeeea]">
           <span>
-            Showing <span className="font-semibold text-[#000f22]">{filteredTemplates.length}</span> of{' '}
-            <span className="font-semibold text-[#000f22]">{templates.length}</span> templates
+            Showing <span className="font-semibold text-[#29503c]">{filteredTemplates.length}</span> of{' '}
+            <span className="font-semibold text-[#29503c]">{templates.length}</span> templates
           </span>
           {hasActiveFilters && (
-            <span className="text-[#00D1FF] font-medium">
+            <span className="text-[#416853] font-medium">
               Filters active
             </span>
           )}
@@ -464,7 +464,7 @@ export default function AdminTemplates() {
             <TableBody>
               {templates.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center py-8 text-[#4F5B76]">
+                  <TableCell colSpan={5} className="text-center py-8 text-[#414843]">
                     {authError ? (
                       <div className="space-y-2">
                         <p className="text-[#ba1a1a] font-medium">⚠️ Session expired or unauthorized</p>
@@ -478,15 +478,15 @@ export default function AdminTemplates() {
               )}
               {templates.length > 0 && filteredTemplates.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center py-8 text-[#4F5B76]">
+                  <TableCell colSpan={5} className="text-center py-8 text-[#414843]">
                     <div className="flex flex-col items-center gap-2">
-                      <Search className="h-8 w-8 text-[#74777e]/40" />
+                      <Search className="h-8 w-8 text-[#717973]/40" />
                       <span>No templates match your search or filters.</span>
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={clearFilters}
-                        className="mt-2 h-8 border-[#e6ebf1] hover:bg-[#f7fafd]"
+                        className="mt-2 h-8 border-[#c1c8c1] hover:bg-[#faf9f6]"
                       >
                         <X className="h-3.5 w-3.5 mr-1" /> Clear Filters
                       </Button>
@@ -501,22 +501,22 @@ export default function AdminTemplates() {
                       <img
                         src={t.image}
                         alt={t.title}
-                        className="w-16 h-10 object-cover rounded border border-[#e6ebf1]"
+                        className="w-16 h-10 object-cover rounded border border-[#c1c8c1]"
                         onError={(e) => {
                           ;(e.target as HTMLImageElement).style.display = 'none'
                         }}
                       />
                     ) : (
-                      <div className="w-16 h-10 rounded bg-[#f1f4f7] flex items-center justify-center">
-                        <ImageOff className="h-4 w-4 text-[#74777e]" />
+                      <div className="w-16 h-10 rounded bg-[#eeeeea] flex items-center justify-center">
+                        <ImageOff className="h-4 w-4 text-[#717973]" />
                       </div>
                     )}
                   </TableCell>
                   <TableCell>
                     <div>
-                      <div className="font-medium text-[#000f22]">{t.title}</div>
+                      <div className="font-medium text-[#29503c]">{t.title}</div>
                       {t.featured && (
-                        <span className="text-[10px] text-[#00D1FF] font-semibold">★ Featured</span>
+                        <span className="text-[10px] text-[#416853] font-semibold">★ Featured</span>
                       )}
                     </div>
                   </TableCell>
@@ -530,8 +530,8 @@ export default function AdminTemplates() {
                       title={t.active ? 'Click to deactivate — template will be hidden from the public site but kept here for reactivation' : 'Click to activate — template will be visible on the public site again'}
                       className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer disabled:opacity-60 disabled:cursor-wait select-none ${
                         t.active
-                          ? 'bg-[#10B981]/15 text-[#10B981] hover:bg-[#10B981]/25 hover:shadow-sm border border-[#10B981]/30'
-                          : 'bg-[#74777e]/10 text-[#74777e] hover:bg-[#74777e]/20 hover:shadow-sm border border-[#74777e]/20'
+                          ? 'bg-[#29503c]/15 text-[#29503c] hover:bg-[#29503c]/25 hover:shadow-sm border border-[#29503c]/30'
+                          : 'bg-[#717973]/10 text-[#717973] hover:bg-[#717973]/20 hover:shadow-sm border border-[#717973]/20'
                       }`}
                     >
                       {togglingId === t.id ? (
@@ -541,9 +541,9 @@ export default function AdminTemplates() {
                         </>
                       ) : (
                         <>
-                          <span className={`relative w-2 h-2 rounded-full ${t.active ? 'bg-[#10B981]' : 'bg-[#74777e]'}`}>
+                          <span className={`relative w-2 h-2 rounded-full ${t.active ? 'bg-[#29503c]' : 'bg-[#717973]'}`}>
                             {t.active && (
-                              <span className="absolute inset-0 rounded-full bg-[#10B981] animate-ping opacity-75"></span>
+                              <span className="absolute inset-0 rounded-full bg-[#29503c] animate-ping opacity-75"></span>
                             )}
                           </span>
                           {t.active ? 'Active' : 'Inactive'}
@@ -559,7 +559,7 @@ export default function AdminTemplates() {
                         variant="ghost"
                         size="sm"
                         onClick={() => openPreview(t)}
-                        className="h-8 w-8 p-0 text-[#00D1FF] hover:bg-[#00D1FF]/10"
+                        className="h-8 w-8 p-0 text-[#416853] hover:bg-[#416853]/10"
                         title="Preview template details"
                       >
                         <Eye className="h-4 w-4" />
@@ -570,7 +570,7 @@ export default function AdminTemplates() {
                           variant="ghost"
                           size="sm"
                           onClick={() => openLivePreview(t)}
-                          className="h-8 w-8 p-0 text-[#10B981] hover:bg-[#10B981]/10"
+                          className="h-8 w-8 p-0 text-[#29503c] hover:bg-[#29503c]/10"
                           title="Open live preview in new tab"
                         >
                           <ExternalLink className="h-4 w-4" />
@@ -581,7 +581,7 @@ export default function AdminTemplates() {
                         variant="ghost"
                         size="sm"
                         onClick={() => openEdit(t)}
-                        className="h-8 w-8 p-0 text-[#43474d] hover:bg-[#f1f4f7]"
+                        className="h-8 w-8 p-0 text-[#43474d] hover:bg-[#eeeeea]"
                         title="Edit template"
                       >
                         <Pencil className="h-4 w-4" />
@@ -648,7 +648,7 @@ export default function AdminTemplates() {
                 <Label>Template Image <span className="text-[#ba1a1a]">*</span></Label>
                 {/* Image preview */}
                 {form.image && (
-                  <div className="relative rounded-xl overflow-hidden border border-[#e6ebf1] mb-2 bg-[#f7fafd]">
+                  <div className="relative rounded-xl overflow-hidden border border-[#c1c8c1] mb-2 bg-[#faf9f6]">
                     <img
                       src={form.image}
                       alt="Template preview"
@@ -662,10 +662,10 @@ export default function AdminTemplates() {
                 {/* Upload from file */}
                 <div className="flex gap-2">
                   <label className="flex-1 cursor-pointer">
-                    <div className="flex items-center justify-center gap-2 px-4 py-2.5 border-2 border-dashed border-[#c4c6ce] hover:border-[#00D1FF] rounded-xl text-xs text-[#74777e] hover:text-[#00D1FF] hover:bg-[#00D1FF]/5 transition-all">
+                    <div className="flex items-center justify-center gap-2 px-4 py-2.5 border-2 border-dashed border-[#c1c8c1] hover:border-[#416853] rounded-xl text-xs text-[#717973] hover:text-[#416853] hover:bg-[#416853]/5 transition-all">
                       {uploadingImage ? (
                         <>
-                          <div className="w-4 h-4 border-2 border-[#00D1FF] border-t-transparent rounded-full animate-spin" />
+                          <div className="w-4 h-4 border-2 border-[#416853] border-t-transparent rounded-full animate-spin" />
                           Uploading...
                         </>
                       ) : (
@@ -690,7 +690,7 @@ export default function AdminTemplates() {
                   onChange={(e) => setForm({ ...form, image: e.target.value })}
                   placeholder="https://res.cloudinary.com/... or /images/template.png"
                 />
-                <p className="text-[10px] text-[#74777e]">
+                <p className="text-[10px] text-[#717973]">
                   Upload a file (auto-uploads to Cloudinary) or paste an image URL directly.
                 </p>
               </div>
@@ -744,14 +744,14 @@ export default function AdminTemplates() {
                 variant="outline"
                 onClick={() => setDialogOpen(false)}
                 disabled={saving}
-                className="flex-1 border-[#e6ebf1]"
+                className="flex-1 border-[#c1c8c1]"
               >
                 Cancel
               </Button>
               <Button
                 onClick={handleSave}
                 disabled={saving || !form.title.trim() || !form.image.trim()}
-                className="flex-1 bg-[#000f22] hover:bg-[#0A2540] text-white"
+                className="flex-1 bg-[#29503c] hover:bg-[#284e3b] text-white"
               >
                 {saving ? (
                   <>
@@ -770,17 +770,17 @@ export default function AdminTemplates() {
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Eye className="h-5 w-5 text-[#00D1FF]" />
+              <Eye className="h-5 w-5 text-[#416853]" />
               {previewTemplate?.title}
             </DialogTitle>
             <DialogDescription>
-              Template preview · ID: <code className="text-[10px] bg-[#f1f4f7] px-1.5 py-0.5 rounded">{previewTemplate?.id}</code>
+              Template preview · ID: <code className="text-[10px] bg-[#eeeeea] px-1.5 py-0.5 rounded">{previewTemplate?.id}</code>
             </DialogDescription>
           </DialogHeader>
           {previewTemplate && (
             <div className="space-y-4 mt-2">
               {/* Image preview */}
-              <div className="rounded-xl overflow-hidden border border-[#e6ebf1] bg-[#f7fafd]">
+              <div className="rounded-xl overflow-hidden border border-[#c1c8c1] bg-[#faf9f6]">
                 {previewTemplate.image ? (
                   <img
                     src={previewTemplate.image}
@@ -789,11 +789,11 @@ export default function AdminTemplates() {
                     onError={(e) => {
                       const target = e.target as HTMLImageElement
                       target.style.display = 'none'
-                      target.parentElement!.innerHTML = '<div class="flex items-center justify-center h-72 text-[#74777e] text-sm"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15V6a2 2 0 0 0-2-2H6L3 7l3 3"/><path d="m9 21 12-12"/></svg></div>'
+                      target.parentElement!.innerHTML = '<div class="flex items-center justify-center h-72 text-[#717973] text-sm"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15V6a2 2 0 0 0-2-2H6L3 7l3 3"/><path d="m9 21 12-12"/></svg></div>'
                     }}
                   />
                 ) : (
-                  <div className="flex items-center justify-center h-72 text-[#74777e]">
+                  <div className="flex items-center justify-center h-72 text-[#717973]">
                     <ImageOff className="h-12 w-12" />
                   </div>
                 )}
@@ -803,17 +803,17 @@ export default function AdminTemplates() {
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="secondary" className="text-xs">{previewTemplate.category}</Badge>
                 {previewTemplate.featured && (
-                  <Badge className="bg-[#00D1FF]/10 text-[#00D1FF] text-xs">★ Featured</Badge>
+                  <Badge className="bg-[#416853]/10 text-[#416853] text-xs">★ Featured</Badge>
                 )}
-                <Badge className={previewTemplate.active ? 'bg-[#10B981]/10 text-[#10B981]' : 'bg-[#74777e]/10 text-[#74777e]'}>
+                <Badge className={previewTemplate.active ? 'bg-[#29503c]/10 text-[#29503c]' : 'bg-[#717973]/10 text-[#717973]'}>
                   {previewTemplate.active ? 'Active' : 'Inactive'}
                 </Badge>
               </div>
 
               {/* Description */}
               <div>
-                <h4 className="text-xs font-semibold text-[#4F5B76] uppercase tracking-wide mb-1">Description</h4>
-                <p className="text-sm text-[#000f22] leading-relaxed">{previewTemplate.description || '—'}</p>
+                <h4 className="text-xs font-semibold text-[#414843] uppercase tracking-wide mb-1">Description</h4>
+                <p className="text-sm text-[#29503c] leading-relaxed">{previewTemplate.description || '—'}</p>
               </div>
 
               {/* Features */}
@@ -826,10 +826,10 @@ export default function AdminTemplates() {
                 if (features.length === 0) return null
                 return (
                   <div>
-                    <h4 className="text-xs font-semibold text-[#4F5B76] uppercase tracking-wide mb-2">Features ({features.length})</h4>
+                    <h4 className="text-xs font-semibold text-[#414843] uppercase tracking-wide mb-2">Features ({features.length})</h4>
                     <div className="flex flex-wrap gap-1.5">
                       {features.map((f, i) => (
-                        <span key={i} className="text-xs px-2 py-1 rounded-md bg-[#f1f4f7] text-[#43474d]">
+                        <span key={i} className="text-xs px-2 py-1 rounded-md bg-[#eeeeea] text-[#43474d]">
                           {f}
                         </span>
                       ))}
@@ -848,7 +848,7 @@ export default function AdminTemplates() {
                 if (industries.length === 0) return null
                 return (
                   <div>
-                    <h4 className="text-xs font-semibold text-[#4F5B76] uppercase tracking-wide mb-2">Industries ({industries.length})</h4>
+                    <h4 className="text-xs font-semibold text-[#414843] uppercase tracking-wide mb-2">Industries ({industries.length})</h4>
                     <div className="flex flex-wrap gap-1.5">
                       {industries.map((ind, i) => (
                         <span key={i} className="text-xs px-2 py-1 rounded-md bg-[#7C3AED]/10 text-[#7C3AED]">
@@ -861,35 +861,35 @@ export default function AdminTemplates() {
               })()}
 
               {/* URLs */}
-              <div className="grid grid-cols-2 gap-3 pt-2 border-t border-[#e6ebf1]">
+              <div className="grid grid-cols-2 gap-3 pt-2 border-t border-[#c1c8c1]">
                 <div>
-                  <h4 className="text-xs font-semibold text-[#4F5B76] uppercase tracking-wide mb-1">Preview URL</h4>
+                  <h4 className="text-xs font-semibold text-[#414843] uppercase tracking-wide mb-1">Preview URL</h4>
                   {previewTemplate.previewUrl ? (
                     <a
                       href={previewTemplate.previewUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs text-[#00D1FF] hover:underline break-all"
+                      className="text-xs text-[#416853] hover:underline break-all"
                     >
                       {previewTemplate.previewUrl}
                     </a>
                   ) : (
-                    <span className="text-xs text-[#74777e]">—</span>
+                    <span className="text-xs text-[#717973]">—</span>
                   )}
                 </div>
                 <div>
-                  <h4 className="text-xs font-semibold text-[#4F5B76] uppercase tracking-wide mb-1">Live Preview URL</h4>
+                  <h4 className="text-xs font-semibold text-[#414843] uppercase tracking-wide mb-1">Live Preview URL</h4>
                   {previewTemplate.livePreview ? (
                     <a
                       href={previewTemplate.livePreview}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs text-[#10B981] hover:underline break-all"
+                      className="text-xs text-[#29503c] hover:underline break-all"
                     >
                       {previewTemplate.livePreview}
                     </a>
                   ) : (
-                    <span className="text-xs text-[#74777e]">—</span>
+                    <span className="text-xs text-[#717973]">—</span>
                   )}
                 </div>
               </div>
@@ -903,7 +903,7 @@ export default function AdminTemplates() {
                     setPreviewTemplate(null)
                     setTimeout(() => openEdit(t), 100)
                   }}
-                  className="flex-1 border-[#e6ebf1]"
+                  className="flex-1 border-[#c1c8c1]"
                 >
                   <Pencil className="h-4 w-4 mr-2" />
                   Edit
@@ -911,7 +911,7 @@ export default function AdminTemplates() {
                 {(previewTemplate.livePreview || previewTemplate.previewUrl) && (
                   <Button
                     onClick={() => openLivePreview(previewTemplate)}
-                    className="flex-1 bg-[#10B981] hover:bg-[#059669] text-white"
+                    className="flex-1 bg-[#29503c] hover:bg-[#284e3b] text-white"
                   >
                     <ExternalLink className="h-4 w-4 mr-2" />
                     Open Live
@@ -920,7 +920,7 @@ export default function AdminTemplates() {
                 <Button
                   variant="outline"
                   onClick={() => setPreviewTemplate(null)}
-                  className="border-[#e6ebf1]"
+                  className="border-[#c1c8c1]"
                 >
                   Close
                 </Button>

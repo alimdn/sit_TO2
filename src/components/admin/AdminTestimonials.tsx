@@ -141,11 +141,11 @@ export default function AdminTestimonials() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-2xl font-bold text-[#000f22] flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-[#29503c] flex items-center gap-2">
             <MessageSquare className="h-6 w-6" />
             Reviews Management
           </h2>
-          <p className="text-sm text-[#4F5B76] mt-1">
+          <p className="text-sm text-[#414843] mt-1">
             Approve, edit, or delete customer reviews submitted from the homepage.
           </p>
         </div>
@@ -153,14 +153,14 @@ export default function AdminTestimonials() {
           <Badge className="bg-[#FFF8E1] text-[#92400E] border border-[#FFE082]">
             {pendingCount} pending
           </Badge>
-          <Badge className="bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/20">
+          <Badge className="bg-[#29503c]/10 text-[#29503c] border border-[#29503c]/20">
             {activeCount} published
           </Badge>
         </div>
       </div>
 
       {/* Filter tabs */}
-      <div className="inline-flex items-center bg-[#f1f4f7] rounded-xl p-1 gap-1">
+      <div className="inline-flex items-center bg-[#eeeeea] rounded-xl p-1 gap-1">
         {([
           { id: 'all', label: `All (${items.length})` },
           { id: 'pending', label: `Pending (${pendingCount})` },
@@ -171,8 +171,8 @@ export default function AdminTestimonials() {
             onClick={() => setFilter(f.id)}
             className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
               filter === f.id
-                ? 'bg-[#000f22] text-white shadow-md'
-                : 'text-[#43474d] hover:text-[#000f22]'
+                ? 'bg-[#29503c] text-white shadow-md'
+                : 'text-[#43474d] hover:text-[#29503c]'
             }`}
           >
             {f.label}
@@ -182,12 +182,12 @@ export default function AdminTestimonials() {
 
       {/* List */}
       {loading ? (
-        <div className="text-center py-12 text-[#74777e]">Loading reviews...</div>
+        <div className="text-center py-12 text-[#717973]">Loading reviews...</div>
       ) : filtered.length === 0 ? (
         <Card className="shadow-card">
           <CardContent className="py-12 text-center">
-            <MessageSquare className="h-10 w-10 text-[#c4c6ce] mx-auto mb-3" />
-            <p className="text-sm text-[#4F5B76]">No reviews in this view.</p>
+            <MessageSquare className="h-10 w-10 text-[#c1c8c1] mx-auto mb-3" />
+            <p className="text-sm text-[#414843]">No reviews in this view.</p>
           </CardContent>
         </Card>
       ) : (
@@ -199,11 +199,11 @@ export default function AdminTestimonials() {
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       <CardTitle className="text-base">{t.name}</CardTitle>
-                      <Badge className={t.active ? 'bg-[#10B981]/10 text-[#10B981]' : 'bg-[#F59E0B]/10 text-[#F59E0B]'}>
+                      <Badge className={t.active ? 'bg-[#29503c]/10 text-[#29503c]' : 'bg-[#F59E0B]/10 text-[#F59E0B]'}>
                         {t.active ? 'Published' : 'Pending'}
                       </Badge>
                     </div>
-                    <p className="text-xs text-[#4F5B76] mt-1">
+                    <p className="text-xs text-[#414843] mt-1">
                       {t.role}{t.company ? ` · ${t.company}` : ''}
                       {t.createdAt && (
                         <> · {new Date(t.createdAt).toLocaleDateString()}</>
@@ -215,7 +215,7 @@ export default function AdminTestimonials() {
                       <Star
                         key={i}
                         className={`h-3.5 w-3.5 ${
-                          i < t.rating ? 'fill-[#FFB800] text-[#FFB800]' : 'text-[#c4c6ce]'
+                          i < t.rating ? 'fill-[#FFB800] text-[#FFB800]' : 'text-[#c1c8c1]'
                         }`}
                       />
                     ))}
@@ -231,7 +231,7 @@ export default function AdminTestimonials() {
                     <Button
                       size="sm"
                       onClick={() => toggleActive(t)}
-                      className="bg-[#10B981] hover:bg-[#059669] text-white h-8"
+                      className="bg-[#29503c] hover:bg-[#284e3b] text-white h-8"
                     >
                       <Check className="h-3.5 w-3.5 mr-1.5" />
                       Approve & Publish
@@ -241,7 +241,7 @@ export default function AdminTestimonials() {
                       size="sm"
                       variant="outline"
                       onClick={() => toggleActive(t)}
-                      className="border-[#e6ebf1] h-8"
+                      className="border-[#c1c8c1] h-8"
                     >
                       <X className="h-3.5 w-3.5 mr-1.5" />
                       Unpublish
@@ -251,7 +251,7 @@ export default function AdminTestimonials() {
                     size="sm"
                     variant="outline"
                     onClick={() => openEdit(t)}
-                    className="border-[#e6ebf1] h-8"
+                    className="border-[#c1c8c1] h-8"
                   >
                     <Pencil className="h-3.5 w-3.5 mr-1.5" />
                     Edit
@@ -303,7 +303,7 @@ export default function AdminTestimonials() {
                     onClick={() => setForm({ ...form, rating: n })}
                     className="p-0.5"
                   >
-                    <Star className={`h-6 w-6 ${n <= form.rating ? 'fill-[#FFB800] text-[#FFB800]' : 'text-[#c4c6ce]'}`} />
+                    <Star className={`h-6 w-6 ${n <= form.rating ? 'fill-[#FFB800] text-[#FFB800]' : 'text-[#c1c8c1]'}`} />
                   </button>
                 ))}
                 <span className="ml-2 text-sm text-[#43474d]">{form.rating} / 5</span>
@@ -319,7 +319,7 @@ export default function AdminTestimonials() {
             </div>
             <div className="flex items-center justify-end gap-3 pt-2">
               <Button variant="outline" onClick={closeDialog}>Cancel</Button>
-              <Button onClick={handleSave} className="bg-[#000f22] hover:bg-[#0A2540] text-white">
+              <Button onClick={handleSave} className="bg-[#29503c] hover:bg-[#284e3b] text-white">
                 Save Changes
               </Button>
             </div>

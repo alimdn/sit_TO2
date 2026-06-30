@@ -96,7 +96,7 @@ export default function TemplateGrid() {
       {/* Filters */}
       <div className="mb-8 space-y-4">
         <div className="relative max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#74777e]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#717973]" />
           <Input
             placeholder="Search templates..."
             value={search}
@@ -111,8 +111,8 @@ export default function TemplateGrid() {
               onClick={() => setActiveCategory(cat)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                 activeCategory === cat
-                  ? 'bg-[#000f22] text-white'
-                  : 'bg-white text-[#43474d] hover:bg-[#f1f4f7] shadow-card'
+                  ? 'bg-[#29503c] text-white'
+                  : 'bg-white text-[#43474d] hover:bg-[#eeeeea] shadow-card'
               }`}
             >
               {cat}
@@ -134,7 +134,7 @@ export default function TemplateGrid() {
               <Button
                 onClick={() => setVisibleCount(prev => prev + 12)}
                 variant="outline"
-                className="border-[#000f22] text-[#000f22] hover:bg-[#000f22] hover:text-white h-11 px-8"
+                className="border-[#29503c] text-[#29503c] hover:bg-[#29503c] hover:text-white h-11 px-8"
               >
                 Load More ({filtered.length - visibleCount} remaining)
               </Button>
@@ -143,14 +143,14 @@ export default function TemplateGrid() {
         </>
       ) : (
         <div className="text-center py-16">
-          <p className="text-[#4F5B76] text-lg">No templates found matching your criteria.</p>
+          <p className="text-[#414843] text-lg">No templates found matching your criteria.</p>
         </div>
       )}
 
       {/* Custom template CTA */}
-      <div className="mt-16 rounded-2xl bg-gradient-to-r from-[#000f22] to-[#0A2540] p-8 sm:p-12 text-center">
+      <div className="mt-16 rounded-2xl bg-gradient-to-r from-[#29503c] to-[#284e3b] p-8 sm:p-12 text-center">
         <h3 className="text-2xl font-bold text-white mb-3">Need a Custom Template?</h3>
-        <p className="text-[#768dad] max-w-lg mx-auto mb-6">
+        <p className="text-[#717973] max-w-lg mx-auto mb-6">
           Can&apos;t find what you&apos;re looking for? Our design team can create a custom template tailored to your specific needs.
         </p>
         <Button
@@ -158,7 +158,7 @@ export default function TemplateGrid() {
             setCurrentPage('contact')
             window.scrollTo({ top: 0, behavior: 'smooth' })
           }}
-          className="bg-[#00D1FF] hover:bg-[#00b8e6] text-[#000f22] font-semibold h-11 px-8"
+          className="bg-[#416853] hover:bg-[#284e3b] text-[#29503c] font-semibold h-11 px-8"
         >
           Contact Us
         </Button>

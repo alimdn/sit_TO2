@@ -34,11 +34,11 @@ export default function HowItWorksSection() {
     <section className="py-20 section-bg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
-          <span className="label-style text-[#00D1FF] text-xs block mb-3">How It Works</span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#000f22]" style={{ letterSpacing: '-0.02em' }}>
+          <span className="label-style text-[#416853] text-xs block mb-3">How It Works</span>
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#29503c]" style={{ letterSpacing: '-0.02em' }}>
             Get Your Website in 4 Simple Steps
           </h2>
-          <p className="mt-4 text-[#4F5B76] max-w-2xl mx-auto">
+          <p className="mt-4 text-[#414843] max-w-2xl mx-auto">
             Our streamlined process makes it easy to go from idea to launch in as little as one week.
           </p>
         </div>
@@ -48,18 +48,18 @@ export default function HowItWorksSection() {
             <div key={index} className="relative text-center">
               {/* Connector line */}
               {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-8 left-[60%] w-[80%] h-px bg-[#e6ebf1]" />
+                <div className="hidden lg:block absolute top-8 left-[60%] w-[80%] h-px bg-[#c1c8c1]" />
               )}
               
               <div className="relative z-10 inline-flex items-center justify-center w-16 h-16 rounded-full bg-white shadow-card mb-5">
-                <div className="text-[#00D1FF]">{step.icon}</div>
-                <span className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-[#000f22] text-white text-xs flex items-center justify-center font-bold">
+                <div className="text-[#416853]">{step.icon}</div>
+                <span className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-[#29503c] text-white text-xs flex items-center justify-center font-bold">
                   {step.number}
                 </span>
               </div>
               
-              <h3 className="font-semibold text-[#000f22] mb-2">{step.title}</h3>
-              <p className="text-sm text-[#4F5B76] leading-relaxed max-w-xs mx-auto">{step.description}</p>
+              <h3 className="font-semibold text-[#29503c] mb-2">{step.title}</h3>
+              <p className="text-sm text-[#414843] leading-relaxed max-w-xs mx-auto">{step.description}</p>
             </div>
           ))}
         </div>

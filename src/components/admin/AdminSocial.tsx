@@ -86,8 +86,8 @@ export default function AdminSocial() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-[#000f22]">Social Links</h2>
-        <Button onClick={openCreate} className="bg-[#000f22] hover:bg-[#0A2540] text-white h-9">
+        <h2 className="text-2xl font-bold text-[#29503c]">Social Links</h2>
+        <Button onClick={openCreate} className="bg-[#29503c] hover:bg-[#284e3b] text-white h-9">
           <Plus className="h-4 w-4 mr-2" /> Add Link
         </Button>
       </div>
@@ -100,12 +100,12 @@ export default function AdminSocial() {
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-[#000f22]/5 flex items-center justify-center text-[#000f22]">
+                    <div className="w-10 h-10 rounded-lg bg-[#29503c]/5 flex items-center justify-center text-[#29503c]">
                       {platform?.icon}
                     </div>
                     <div>
-                      <p className="font-medium text-sm text-[#000f22]">{platform?.label}</p>
-                      <Badge className={link.active ? 'bg-[#10B981]/10 text-[#10B981]' : 'bg-[#74777e]/10 text-[#74777e]'}>
+                      <p className="font-medium text-sm text-[#29503c]">{platform?.label}</p>
+                      <Badge className={link.active ? 'bg-[#29503c]/10 text-[#29503c]' : 'bg-[#717973]/10 text-[#717973]'}>
                         {link.active ? 'Active' : 'Inactive'}
                       </Badge>
                     </div>
@@ -119,7 +119,7 @@ export default function AdminSocial() {
                     </Button>
                   </div>
                 </div>
-                <p className="text-xs text-[#4F5B76] truncate">{link.url}</p>
+                <p className="text-xs text-[#414843] truncate">{link.url}</p>
               </CardContent>
             </Card>
           )
@@ -140,7 +140,7 @@ export default function AdminSocial() {
                     key={p.value}
                     onClick={() => setForm({ ...form, platform: p.value })}
                     className={`p-2 rounded-lg flex flex-col items-center gap-1 transition-colors ${
-                      form.platform === p.value ? 'bg-[#000f22] text-white' : 'bg-[#f1f4f7] text-[#43474d]'
+                      form.platform === p.value ? 'bg-[#29503c] text-white' : 'bg-[#eeeeea] text-[#43474d]'
                     }`}
                   >
                     {p.icon}
@@ -157,7 +157,7 @@ export default function AdminSocial() {
               <Switch checked={form.active} onCheckedChange={(v) => setForm({ ...form, active: v })} />
               <Label>Active</Label>
             </div>
-            <Button onClick={handleSave} className="w-full bg-[#000f22] hover:bg-[#0A2540] text-white">
+            <Button onClick={handleSave} className="w-full bg-[#29503c] hover:bg-[#284e3b] text-white">
               {editing ? 'Update Link' : 'Add Link'}
             </Button>
           </div>

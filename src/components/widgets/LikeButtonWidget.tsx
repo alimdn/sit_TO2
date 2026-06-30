@@ -17,7 +17,7 @@ interface LikeButtonWidgetProps {
 
 export default function LikeButtonWidget({ count = 0, size = 48 }: LikeButtonWidgetProps) {
   return (
-    <div className="flex items-center gap-3 p-4 bg-white rounded-xl border border-[#e6ebf1] shadow-card">
+    <div className="flex items-center gap-3 p-4 bg-white rounded-xl border border-[#c1c8c1] shadow-card">
       <LikeButton
         size={size}
         shape="rounded"
@@ -26,8 +26,8 @@ export default function LikeButtonWidget({ count = 0, size = 48 }: LikeButtonWid
         }}
       />
       <div>
-        <p className="text-sm font-semibold text-[#000f22]">Like / Favorite</p>
-        <p className="text-xs text-[#4F5B76]">Animated like button with particle effects</p>
+        <p className="text-sm font-semibold text-[#29503c]">Like / Favorite</p>
+        <p className="text-xs text-[#414843]">Animated like button with particle effects</p>
       </div>
     </div>
   )

@@ -207,16 +207,16 @@ export default function AdminPlans() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-[#000f22]">Plans Management</h2>
-          <p className="text-xs text-[#4F5B76] mt-1 flex items-center gap-3 flex-wrap">
+          <h2 className="text-2xl font-bold text-[#29503c]">Plans Management</h2>
+          <p className="text-xs text-[#414843] mt-1 flex items-center gap-3 flex-wrap">
             <span>
-              <span className="font-semibold text-[#10B981]">{activeCount}</span> active
+              <span className="font-semibold text-[#29503c]">{activeCount}</span> active
               <span className="mx-1">·</span>
-              <span className="font-semibold text-[#74777e]">{inactiveCount}</span> inactive
+              <span className="font-semibold text-[#717973]">{inactiveCount}</span> inactive
               <span className="mx-1">·</span>
               <span>{plans.length} total</span>
             </span>
-            <span className="text-[#74777e]">
+            <span className="text-[#717973]">
               Changes reflect on the live site (Pricing page, Checkout) immediately.
             </span>
           </p>
@@ -226,12 +226,12 @@ export default function AdminPlans() {
             variant="outline"
             onClick={handleRefresh}
             disabled={refreshing}
-            className="h-9 border-[#e6ebf1] hover:bg-[#f7fafd]"
+            className="h-9 border-[#c1c8c1] hover:bg-[#faf9f6]"
           >
             <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          <Button onClick={openCreate} className="bg-[#000f22] hover:bg-[#0A2540] text-white h-9">
+          <Button onClick={openCreate} className="bg-[#29503c] hover:bg-[#284e3b] text-white h-9">
             <Plus className="h-4 w-4 mr-2" /> Add Plan
           </Button>
         </div>
@@ -239,7 +239,7 @@ export default function AdminPlans() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {plans.length === 0 && (
-          <div className="col-span-full text-center py-12 text-[#4F5B76]">
+          <div className="col-span-full text-center py-12 text-[#414843]">
             No plans found. Click "Add Plan" to create one.
           </div>
         )}
@@ -250,13 +250,13 @@ export default function AdminPlans() {
             if (Array.isArray(parsed)) features = parsed
           } catch { /* ignore */ }
           return (
-            <Card key={plan.id} className={`shadow-card ${plan.popular ? 'ring-2 ring-[#00D1FF]' : ''}`}>
+            <Card key={plan.id} className={`shadow-card ${plan.popular ? 'ring-2 ring-[#416853]' : ''}`}>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-base flex items-center gap-2">
                     {plan.name}
                     {plan.popular && (
-                      <Badge className="bg-[#00D1FF]/10 text-[#00D1FF]">
+                      <Badge className="bg-[#416853]/10 text-[#416853]">
                         <Star className="h-3 w-3 mr-1" />Popular
                       </Badge>
                     )}
@@ -267,8 +267,8 @@ export default function AdminPlans() {
                     title={plan.active ? 'Click to deactivate — plan will be hidden from the public site but kept here for reactivation' : 'Click to activate — plan will be visible on the public site again'}
                     className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer disabled:opacity-50 disabled:cursor-wait ${
                       plan.active
-                        ? 'bg-[#10B981]/10 text-[#10B981] hover:bg-[#10B981]/20'
-                        : 'bg-[#74777e]/10 text-[#74777e] hover:bg-[#74777e]/20'
+                        ? 'bg-[#29503c]/10 text-[#29503c] hover:bg-[#29503c]/20'
+                        : 'bg-[#717973]/10 text-[#717973] hover:bg-[#717973]/20'
                     }`}
                   >
                     {togglingId === plan.id ? (
@@ -278,28 +278,28 @@ export default function AdminPlans() {
                       </>
                     ) : (
                       <>
-                        <span className={`w-1.5 h-1.5 rounded-full ${plan.active ? 'bg-[#10B981]' : 'bg-[#74777e]'}`} />
+                        <span className={`w-1.5 h-1.5 rounded-full ${plan.active ? 'bg-[#29503c]' : 'bg-[#717973]'}`} />
                         {plan.active ? 'Active' : 'Inactive'}
                       </>
                     )}
                   </button>
                 </div>
-                <p className="text-2xl font-bold text-[#000f22]">
+                <p className="text-2xl font-bold text-[#29503c]">
                   ${plan.price}
-                  <span className="text-sm font-normal text-[#4F5B76]">/{intervalLabel(plan.interval)}</span>
+                  <span className="text-sm font-normal text-[#414843]">/{intervalLabel(plan.interval)}</span>
                 </p>
-                <p className="text-xs text-[#74777e]">{intervalFullLabel(plan.interval)} plan</p>
+                <p className="text-xs text-[#717973]">{intervalFullLabel(plan.interval)} plan</p>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-1 mb-4">
                   {features.slice(0, 4).map((f, i) => (
-                    <li key={i} className="text-xs text-[#4F5B76]">• {f}</li>
+                    <li key={i} className="text-xs text-[#414843]">• {f}</li>
                   ))}
-                  {features.length > 4 && <li className="text-xs text-[#74777e]">+{features.length - 4} more</li>}
-                  {features.length === 0 && <li className="text-xs text-[#74777e] italic">No features listed</li>}
+                  {features.length > 4 && <li className="text-xs text-[#717973]">+{features.length - 4} more</li>}
+                  {features.length === 0 && <li className="text-xs text-[#717973] italic">No features listed</li>}
                 </ul>
                 <div className="flex items-center gap-2">
-                  <Button variant="outline" size="sm" onClick={() => openEdit(plan)} className="flex-1 border-[#e6ebf1]">
+                  <Button variant="outline" size="sm" onClick={() => openEdit(plan)} className="flex-1 border-[#c1c8c1]">
                     <Pencil className="h-4 w-4 mr-2" /> Edit
                   </Button>
                   <Button
@@ -358,7 +358,7 @@ export default function AdminPlans() {
                     key={int}
                     onClick={() => setForm({ ...form, interval: int })}
                     className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      form.interval === int ? 'bg-[#000f22] text-white' : 'bg-[#f1f4f7] text-[#43474d] hover:bg-[#e5e8eb]'
+                      form.interval === int ? 'bg-[#29503c] text-white' : 'bg-[#eeeeea] text-[#43474d] hover:bg-[#e5e8eb]'
                     }`}
                   >
                     {intervalFullLabel(int)}
@@ -374,12 +374,12 @@ export default function AdminPlans() {
                 rows={6}
                 placeholder={'Professional website design\nResponsive mobile layout\nSSL certificate included'}
               />
-              <p className="text-[10px] text-[#74777e]">Each line will be a separate feature bullet.</p>
+              <p className="text-[10px] text-[#717973]">Each line will be a separate feature bullet.</p>
             </div>
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">
                 <Switch checked={form.popular} onCheckedChange={(v) => setForm({ ...form, popular: v })} />
-                <Label>Popular <span className="text-[#74777e] text-xs">(highlighted)</span></Label>
+                <Label>Popular <span className="text-[#717973] text-xs">(highlighted)</span></Label>
               </div>
               <div className="flex items-center gap-2">
                 <Switch checked={form.active} onCheckedChange={(v) => setForm({ ...form, active: v })} />
@@ -391,14 +391,14 @@ export default function AdminPlans() {
                 variant="outline"
                 onClick={() => setDialogOpen(false)}
                 disabled={saving}
-                className="flex-1 border-[#e6ebf1]"
+                className="flex-1 border-[#c1c8c1]"
               >
                 Cancel
               </Button>
               <Button
                 onClick={handleSave}
                 disabled={saving || !form.name.trim()}
-                className="flex-1 bg-[#000f22] hover:bg-[#0A2540] text-white"
+                className="flex-1 bg-[#29503c] hover:bg-[#284e3b] text-white"
               >
                 {saving ? (
                   <>

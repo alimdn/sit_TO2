@@ -100,17 +100,17 @@ export default function SupportCenter() {
   }
 
   const statusColors: Record<string, string> = {
-    open: 'bg-[#00D1FF]/10 text-[#00D1FF]',
+    open: 'bg-[#416853]/10 text-[#416853]',
     in_progress: 'bg-[#FFB800]/10 text-[#FFB800]',
-    resolved: 'bg-[#10B981]/10 text-[#10B981]',
-    closed: 'bg-[#74777e]/10 text-[#74777e]',
+    resolved: 'bg-[#29503c]/10 text-[#29503c]',
+    closed: 'bg-[#717973]/10 text-[#717973]',
   }
 
   if (loading) {
     return (
       <div className="space-y-6">
         {[1, 2].map(i => (
-          <div key={i} className="h-40 rounded-xl bg-[#f1f4f7] animate-pulse" />
+          <div key={i} className="h-40 rounded-xl bg-[#eeeeea] animate-pulse" />
         ))}
       </div>
     )
@@ -119,10 +119,10 @@ export default function SupportCenter() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-[#000f22]">Support Center</h2>
+        <h2 className="text-2xl font-bold text-[#29503c]">Support Center</h2>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-[#000f22] hover:bg-[#0A2540] text-white h-9">
+            <Button className="bg-[#29503c] hover:bg-[#284e3b] text-white h-9">
               <Plus className="h-4 w-4 mr-2" /> New Ticket
             </Button>
           </DialogTrigger>
@@ -160,7 +160,7 @@ export default function SupportCenter() {
                   rows={4}
                 />
               </div>
-              <Button onClick={handleCreateTicket} className="w-full bg-[#000f22] hover:bg-[#0A2540] text-white">
+              <Button onClick={handleCreateTicket} className="w-full bg-[#29503c] hover:bg-[#284e3b] text-white">
                 Submit Ticket
               </Button>
             </div>
@@ -174,8 +174,8 @@ export default function SupportCenter() {
           {tickets.length === 0 ? (
             <Card className="shadow-card">
               <CardContent className="p-6 text-center">
-                <MessageCircle className="h-8 w-8 text-[#c4c6ce] mx-auto mb-3" />
-                <p className="text-sm text-[#4F5B76]">No support tickets yet.</p>
+                <MessageCircle className="h-8 w-8 text-[#c1c8c1] mx-auto mb-3" />
+                <p className="text-sm text-[#414843]">No support tickets yet.</p>
               </CardContent>
             </Card>
           ) : (
@@ -185,12 +185,12 @@ export default function SupportCenter() {
                 onClick={() => handleSelectTicket(ticket)}
                 className={`w-full text-left p-4 rounded-xl transition-all ${
                   selectedTicket?.id === ticket.id
-                    ? 'bg-[#000f22] text-white shadow-card-hover'
+                    ? 'bg-[#29503c] text-white shadow-card-hover'
                     : 'bg-white shadow-card hover:shadow-card-hover'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
-                  <span className={`text-sm font-medium ${selectedTicket?.id === ticket.id ? 'text-white' : 'text-[#000f22]'}`}>
+                  <span className={`text-sm font-medium ${selectedTicket?.id === ticket.id ? 'text-white' : 'text-[#29503c]'}`}>
                     {ticket.subject}
                   </span>
                 </div>
@@ -198,7 +198,7 @@ export default function SupportCenter() {
                   <Badge className={`text-xs ${statusColors[ticket.status]}`}>
                     {ticket.status.replace('_', ' ')}
                   </Badge>
-                  <span className={`text-xs ${selectedTicket?.id === ticket.id ? 'text-[#768dad]' : 'text-[#74777e]'}`}>
+                  <span className={`text-xs ${selectedTicket?.id === ticket.id ? 'text-[#717973]' : 'text-[#717973]'}`}>
                     {new Date(ticket.createdAt).toLocaleDateString()}
                   </span>
                 </div>
@@ -227,11 +227,11 @@ export default function SupportCenter() {
                       <div key={msg.id} className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
                         <div className={`max-w-[80%] p-3 rounded-xl text-sm ${
                           isUser
-                            ? 'bg-[#000f22] text-white'
-                            : 'bg-[#f1f4f7] text-[#000f22]'
+                            ? 'bg-[#29503c] text-white'
+                            : 'bg-[#eeeeea] text-[#29503c]'
                         }`}>
                           <p className="whitespace-pre-wrap">{msg.content}</p>
-                          <span className={`text-xs mt-1 block ${isUser ? 'text-[#768dad]' : 'text-[#74777e]'}`}>
+                          <span className={`text-xs mt-1 block ${isUser ? 'text-[#717973]' : 'text-[#717973]'}`}>
                             {new Date(msg.createdAt).toLocaleString()}
                           </span>
                         </div>
@@ -241,7 +241,7 @@ export default function SupportCenter() {
                 </div>
 
                 {selectedTicket.status !== 'closed' && selectedTicket.status !== 'resolved' && (
-                  <div className="flex gap-3 pt-4 border-t border-[#e6ebf1]">
+                  <div className="flex gap-3 pt-4 border-t border-[#c1c8c1]">
                     <Textarea
                       value={replyText}
                       onChange={(e) => setReplyText(e.target.value)}
@@ -252,7 +252,7 @@ export default function SupportCenter() {
                     <Button
                       onClick={handleReply}
                       disabled={!replyText.trim()}
-                      className="bg-[#000f22] hover:bg-[#0A2540] text-white self-end"
+                      className="bg-[#29503c] hover:bg-[#284e3b] text-white self-end"
                     >
                       Send
                     </Button>
@@ -263,8 +263,8 @@ export default function SupportCenter() {
           ) : (
             <Card className="shadow-card">
               <CardContent className="p-12 text-center">
-                <MessageCircle className="h-10 w-10 text-[#c4c6ce] mx-auto mb-3" />
-                <p className="text-[#4F5B76]">Select a ticket to view details</p>
+                <MessageCircle className="h-10 w-10 text-[#c1c8c1] mx-auto mb-3" />
+                <p className="text-[#414843]">Select a ticket to view details</p>
               </CardContent>
             </Card>
           )}

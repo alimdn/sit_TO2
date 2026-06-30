@@ -528,24 +528,24 @@ export default function TemplatePreview() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#f7fafd] overflow-y-auto">
+    <div className="fixed inset-0 z-50 bg-[#faf9f6] overflow-y-auto">
       {/* Top bar */}
-      <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-[#e6ebf1]">
+      <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-[#c1c8c1]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <button
             onClick={() => setPreviewTemplate(null)}
-            className="flex items-center gap-2 text-sm font-medium text-[#43474d] hover:text-[#000f22] transition-colors"
+            className="flex items-center gap-2 text-sm font-medium text-[#43474d] hover:text-[#29503c] transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Templates
           </button>
           {template && (
             <div className="flex items-center gap-3">
-              <Badge className="bg-[#f1f4f7] text-[#4F5B76] hover:bg-[#e5e8eb] text-xs">
+              <Badge className="bg-[#eeeeea] text-[#414843] hover:bg-[#e5e8eb] text-xs">
                 {template.category}
               </Badge>
               {template.featured && (
-                <Badge className="bg-[#00D1FF]/10 text-[#00D1FF] text-xs">
+                <Badge className="bg-[#416853]/10 text-[#416853] text-xs">
                   <Sparkles className="h-3 w-3 mr-1" /> Featured
                 </Badge>
               )}
@@ -562,27 +562,27 @@ export default function TemplatePreview() {
               {/* Preview image */}
               <div>
                 <div className="flex items-start justify-between gap-4 mb-4">
-                  <h1 className="text-2xl sm:text-3xl font-bold text-[#000f22]" style={{ letterSpacing: '-0.02em' }}>
+                  <h1 className="text-2xl sm:text-3xl font-bold text-[#29503c]" style={{ letterSpacing: '-0.02em' }}>
                     {template.title}
                   </h1>
                   {/* Wishlist button */}
                   <FavoriteButton templateId={template.id} />
                 </div>
-                <p className="text-[#4F5B76] mb-6 leading-relaxed">{template.description}</p>
-                <div className="rounded-2xl overflow-hidden border border-[#e6ebf1] shadow-card">
+                <p className="text-[#414843] mb-6 leading-relaxed">{template.description}</p>
+                <div className="rounded-2xl overflow-hidden border border-[#c1c8c1] shadow-card">
                   <img src={template.image} alt={template.title} className="w-full object-cover" />
                 </div>
                 {/* Live Preview action bar */}
                 <div className="mt-3 flex items-center gap-3">
                   <button
                     onClick={() => { setIframeLoaded(false); setShowFullPreview(true) }}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#000f22] hover:bg-[#0A2540] text-white text-xs font-medium transition-colors relative overflow-hidden group/lp"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#29503c] hover:bg-[#284e3b] text-white text-xs font-medium transition-colors relative overflow-hidden group/lp"
                   >
-                    <span className="absolute inset-0 bg-gradient-to-r from-[#00D1FF]/0 via-[#00D1FF]/10 to-[#00D1FF]/0 translate-x-[-100%] group-hover/lp:translate-x-[100%] transition-transform duration-700" />
+                    <span className="absolute inset-0 bg-gradient-to-r from-[#416853]/0 via-[#416853]/10 to-[#416853]/0 translate-x-[-100%] group-hover/lp:translate-x-[100%] transition-transform duration-700" />
                     <ExternalLink className="h-3.5 w-3.5 relative z-10" />
                     <span className="relative z-10">Open Full Preview</span>
                   </button>
-                  <span className="text-[10px] text-[#74777e]">View template in full screen</span>
+                  <span className="text-[10px] text-[#717973]">View template in full screen</span>
                 </div>
               </div>
 
@@ -591,32 +591,32 @@ export default function TemplatePreview() {
                   Customer explicitly chooses plan type here. The rest of the
                   page (features, add-ons, billing cycle) stays the same —
                   only the pricing and Store-specific features change. */}
-              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
-                <h2 className="text-base font-bold text-[#000f22] mb-3">Choose Your Plan Type</h2>
+              <div className="bg-white rounded-2xl p-5 border border-[#c1c8c1] shadow-card">
+                <h2 className="text-base font-bold text-[#29503c] mb-3">Choose Your Plan Type</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {/* Regular Plan Option */}
                   <button
                     onClick={() => setPlanType('regular')}
                     className={`text-left p-4 rounded-xl border-2 transition-all duration-200 ${
                       planType === 'regular'
-                        ? 'border-[#00D1FF] bg-[#00D1FF]/5 ring-1 ring-[#00D1FF]/30'
-                        : 'border-[#e6ebf1] hover:border-[#c4c6ce] bg-white'
+                        ? 'border-[#416853] bg-[#416853]/5 ring-1 ring-[#416853]/30'
+                        : 'border-[#c1c8c1] hover:border-[#c1c8c1] bg-white'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1.5">
                       <div className="flex items-center gap-2">
                         <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                          planType === 'regular' ? 'border-[#00D1FF] bg-[#00D1FF]' : 'border-[#c4c6ce]'
+                          planType === 'regular' ? 'border-[#416853] bg-[#416853]' : 'border-[#c1c8c1]'
                         }`}>
                           {planType === 'regular' && <Check className="h-3 w-3 text-white" />}
                         </div>
-                        <span className="font-bold text-sm text-[#000f22]">Regular Website</span>
+                        <span className="font-bold text-sm text-[#29503c]">Regular Website</span>
                       </div>
-                      <span className="text-sm font-bold text-[#000f22]">
+                      <span className="text-sm font-bold text-[#29503c]">
                         ${billing === 'monthly' ? basePriceMonthly : billing === 'semi_annual' ? basePriceSemiAnnual : basePriceAnnual}/{period}
                       </span>
                     </div>
-                    <p className="text-[11px] text-[#4F5B76] leading-relaxed">
+                    <p className="text-[11px] text-[#414843] leading-relaxed">
                       Professional website design + hosting + maintenance.
                     </p>
                   </button>
@@ -627,7 +627,7 @@ export default function TemplatePreview() {
                     className={`text-left p-4 rounded-xl border-2 transition-all duration-200 relative overflow-hidden ${
                       planType === 'store'
                         ? 'border-[#F59E0B] bg-gradient-to-br from-[#FFF8E1] to-[#FFFBF0] ring-1 ring-[#F59E0B]/30'
-                        : 'border-[#e6ebf1] hover:border-[#F59E0B]/50 bg-white'
+                        : 'border-[#c1c8c1] hover:border-[#F59E0B]/50 bg-white'
                     }`}
                   >
                     {planType === 'store' && (
@@ -638,11 +638,11 @@ export default function TemplatePreview() {
                     <div className="flex items-center justify-between mb-1.5">
                       <div className="flex items-center gap-2">
                         <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                          planType === 'store' ? 'border-[#F59E0B] bg-[#F59E0B]' : 'border-[#c4c6ce]'
+                          planType === 'store' ? 'border-[#F59E0B] bg-[#F59E0B]' : 'border-[#c1c8c1]'
                         }`}>
                           {planType === 'store' && <Check className="h-3 w-3 text-white" />}
                         </div>
-                        <span className="font-bold text-sm text-[#000f22] flex items-center gap-1">
+                        <span className="font-bold text-sm text-[#29503c] flex items-center gap-1">
                           <ShoppingCart className="h-3.5 w-3.5 text-[#F59E0B]" />
                           Store Package
                         </span>
@@ -651,7 +651,7 @@ export default function TemplatePreview() {
                         ${billing === 'monthly' ? storePriceMonthly : billing === 'semi_annual' ? storePriceSemiAnnual : storePriceAnnual}/{period}
                       </span>
                     </div>
-                    <p className="text-[11px] text-[#4F5B76] leading-relaxed">
+                    <p className="text-[11px] text-[#414843] leading-relaxed">
                       Everything in Regular + e-commerce + daily backups + priority support.
                     </p>
                   </button>
@@ -659,18 +659,18 @@ export default function TemplatePreview() {
               </div>
 
               {/* Features - compact */}
-              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
+              <div className="bg-white rounded-2xl p-5 border border-[#c1c8c1] shadow-card">
                 <div className="flex items-center justify-between mb-2">
-                  <h2 className="text-base font-bold text-[#000f22] flex items-center gap-2">
+                  <h2 className="text-base font-bold text-[#29503c] flex items-center gap-2">
                     {planType === 'store' && <ShoppingCart className="h-4 w-4 text-[#F59E0B]" />}
                     {planType === 'store' ? 'Store Features' : 'Features'}
                   </h2>
-                  <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${planType === 'store' ? 'bg-[#F59E0B]/15 text-[#92400E]' : 'bg-[#f1f4f7] text-[#4F5B76]'}`} translate="no" lang="en">
+                  <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${planType === 'store' ? 'bg-[#F59E0B]/15 text-[#92400E]' : 'bg-[#eeeeea] text-[#414843]'}`} translate="no" lang="en">
                     {selectedFeatures.length} selected · {currentFreeLimit} free
                   </span>
                 </div>
-                <p className="text-xs text-[#4F5B76] mb-3">
-                  First {currentFreeLimit} free. Extra: <span className="font-semibold text-[#000f22]" translate="no" lang="en">+$3/{period}</span> each.
+                <p className="text-xs text-[#414843] mb-3">
+                  First {currentFreeLimit} free. Extra: <span className="font-semibold text-[#29503c]" translate="no" lang="en">+$3/{period}</span> each.
                 </p>
 
                 {/* Selected features - compact grid */}
@@ -679,12 +679,12 @@ export default function TemplatePreview() {
                     const isFree = i < currentFreeLimit
                     return (
                       <div key={i} className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg border text-xs transition-all ${
-                        isFree ? 'bg-[#f7fafd] border-transparent' : 'bg-[#FFF8E1] border-[#FFE082]'
+                        isFree ? 'bg-[#faf9f6] border-transparent' : 'bg-[#FFF8E1] border-[#FFE082]'
                       }`}>
                         <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${
-                          isFree ? 'bg-[#10B981]/10' : 'bg-[#F59E0B]/10'
+                          isFree ? 'bg-[#29503c]/10' : 'bg-[#F59E0B]/10'
                         }`}>
-                          <Check className={`h-2.5 w-2.5 ${isFree ? 'text-[#10B981]' : 'text-[#F59E0B]'}`} />
+                          <Check className={`h-2.5 w-2.5 ${isFree ? 'text-[#29503c]' : 'text-[#F59E0B]'}`} />
                         </div>
                         <span className="text-[#43474d] flex-1 truncate">{feature}</span>
                         {!isFree && (
@@ -709,7 +709,7 @@ export default function TemplatePreview() {
                     className={`w-full border-dashed h-8 text-xs ${
                       planType === 'store'
                         ? 'border-[#F59E0B]/50 hover:border-[#F59E0B] hover:bg-[#F59E0B]/5 text-[#92400E] hover:text-[#F59E0B]'
-                        : 'border-[#c4c6ce] hover:border-[#00D1FF] hover:bg-[#00D1FF]/5 text-[#74777e] hover:text-[#00D1FF]'
+                        : 'border-[#c1c8c1] hover:border-[#416853] hover:bg-[#416853]/5 text-[#717973] hover:text-[#416853]'
                     }`}
                   >
                     <Plus className="h-3.5 w-3.5 mr-1.5" />
@@ -720,22 +720,22 @@ export default function TemplatePreview() {
                   </Button>
 
                   {showFeaturePicker && (
-                    <div className="absolute left-0 right-0 top-10 z-20 bg-white rounded-xl border border-[#e6ebf1] shadow-lg max-h-48 overflow-y-auto">
+                    <div className="absolute left-0 right-0 top-10 z-20 bg-white rounded-xl border border-[#c1c8c1] shadow-lg max-h-48 overflow-y-auto">
                       <div className="p-2">
                         <div className="space-y-0.5">
                           {availableFeatures.map((feature, i) => (
                             <button
                               key={i}
                               onClick={() => addFeature(feature)}
-                              className="w-full text-left px-3 py-2 rounded-lg text-xs text-[#43474d] hover:bg-[#00D1FF]/5 hover:text-[#000f22] transition-colors flex items-center gap-2"
+                              className="w-full text-left px-3 py-2 rounded-lg text-xs text-[#43474d] hover:bg-[#416853]/5 hover:text-[#29503c] transition-colors flex items-center gap-2"
                             >
-                              <Plus className="h-3 w-3 text-[#00D1FF]" />
+                              <Plus className="h-3 w-3 text-[#416853]" />
                               {feature}
                             </button>
                           ))}
                         </div>
                         {availableFeatures.length === 0 && (
-                          <p className="text-xs text-[#74777e] text-center py-2">All features selected</p>
+                          <p className="text-xs text-[#717973] text-center py-2">All features selected</p>
                         )}
                       </div>
                     </div>
@@ -746,21 +746,21 @@ export default function TemplatePreview() {
                 <div className="relative">
                   <div className="flex items-center gap-2">
                     <div className="relative flex-1">
-                      <PenLine className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#74777e]" />
+                      <PenLine className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#717973]" />
                       <input
                         type="text"
                         value={customFeatureInput}
                         onChange={(e) => setCustomFeatureInput(e.target.value)}
                         onKeyDown={handleCustomFeatureKeyDown}
                         placeholder="Type your own feature..."
-                        className="w-full pl-9 pr-3 py-2 rounded-lg border border-dashed border-[#c4c6ce] bg-[#f7fafd] text-xs text-[#000f22] placeholder:text-[#74777e] focus:outline-none focus:ring-2 focus:ring-[#00D1FF]/20 focus:border-[#00D1FF] transition-all"
+                        className="w-full pl-9 pr-3 py-2 rounded-lg border border-dashed border-[#c1c8c1] bg-[#faf9f6] text-xs text-[#29503c] placeholder:text-[#717973] focus:outline-none focus:ring-2 focus:ring-[#416853]/20 focus:border-[#416853] transition-all"
                       />
                     </div>
                     <Button
                       variant="outline"
                       onClick={addCustomFeature}
                       disabled={!customFeatureInput.trim()}
-                      className="h-8 px-3 border-[#00D1FF] text-[#00D1FF] hover:bg-[#00D1FF] hover:text-[#000f22] disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-[#00D1FF] text-xs flex-shrink-0"
+                      className="h-8 px-3 border-[#416853] text-[#416853] hover:bg-[#416853] hover:text-[#29503c] disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-[#416853] text-xs flex-shrink-0"
                     >
                       <Plus className="h-3.5 w-3.5 mr-1" />
                       Add
@@ -775,14 +775,14 @@ export default function TemplatePreview() {
               </div>
 
               {/* Additional Notes */}
-              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
+              <div className="bg-white rounded-2xl p-5 border border-[#c1c8c1] shadow-card">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-7 h-7 rounded-lg bg-[#00D1FF]/10 flex items-center justify-center">
-                    <MessageSquare className="h-4 w-4 text-[#00D1FF]" />
+                  <div className="w-7 h-7 rounded-lg bg-[#416853]/10 flex items-center justify-center">
+                    <MessageSquare className="h-4 w-4 text-[#416853]" />
                   </div>
                   <div>
-                    <h2 className="text-sm font-bold text-[#000f22]">Additional Information</h2>
-                    <p className="text-[11px] text-[#74777e]">Share any details or special requests for your website</p>
+                    <h2 className="text-sm font-bold text-[#29503c]">Additional Information</h2>
+                    <p className="text-[11px] text-[#717973]">Share any details or special requests for your website</p>
                   </div>
                 </div>
                 <textarea
@@ -792,17 +792,17 @@ export default function TemplatePreview() {
                     if (additionalInfoSaved) setAdditionalInfoSaved(false)
                   }}
                   placeholder="e.g., I want a modern look with blue accents, need Arabic language support, prefer a minimalist homepage..."
-                  className="w-full px-4 py-3 rounded-xl border border-[#e6ebf1] bg-[#f7fafd] text-sm text-[#000f22] placeholder:text-[#74777e] focus:outline-none focus:ring-2 focus:ring-[#00D1FF]/30 focus:border-[#00D1FF] resize-none transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-[#c1c8c1] bg-[#faf9f6] text-sm text-[#29503c] placeholder:text-[#717973] focus:outline-none focus:ring-2 focus:ring-[#416853]/30 focus:border-[#416853] resize-none transition-all"
                   rows={4}
                   disabled={additionalInfoSaved}
                 />
                 <div className="flex items-center justify-between mt-3">
                   {additionalInfo.length > 0 && (
-                    <p className="text-[10px] text-[#74777e]">{additionalInfo.length} characters</p>
+                    <p className="text-[10px] text-[#717973]">{additionalInfo.length} characters</p>
                   )}
                   <div className="ml-auto flex items-center gap-2">
                     {additionalInfoSaved && (
-                      <span className="text-[10px] text-[#10B981] font-medium flex items-center gap-1">
+                      <span className="text-[10px] text-[#29503c] font-medium flex items-center gap-1">
                         <Check className="h-3 w-3" /> Saved
                       </span>
                     )}
@@ -810,7 +810,7 @@ export default function TemplatePreview() {
                       <Button
                         onClick={handleEditAdditionalInfo}
                         variant="outline"
-                        className="h-8 px-4 border-[#e6ebf1] text-[#43474d] hover:bg-[#f7fafd] text-xs"
+                        className="h-8 px-4 border-[#c1c8c1] text-[#43474d] hover:bg-[#faf9f6] text-xs"
                       >
                         <PenLine className="h-3 w-3 mr-1" />
                         Edit
@@ -819,7 +819,7 @@ export default function TemplatePreview() {
                       <Button
                         onClick={handleSaveAdditionalInfo}
                         disabled={!additionalInfo.trim()}
-                        className="h-8 px-4 bg-[#000f22] hover:bg-[#0A2540] text-white text-xs disabled:opacity-40"
+                        className="h-8 px-4 bg-[#29503c] hover:bg-[#284e3b] text-white text-xs disabled:opacity-40"
                       >
                         Save Information
                       </Button>
@@ -829,26 +829,26 @@ export default function TemplatePreview() {
               </div>
 
               {/* Similar Website Reference */}
-              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
+              <div className="bg-white rounded-2xl p-5 border border-[#c1c8c1] shadow-card">
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-7 h-7 rounded-lg bg-[#7C3AED]/10 flex items-center justify-center">
                     <Globe className="h-4 w-4 text-[#7C3AED]" />
                   </div>
                   <div>
-                    <h2 className="text-sm font-bold text-[#000f22]">Similar Website</h2>
-                    <p className="text-[11px] text-[#74777e]">Optional — reference a website you like</p>
+                    <h2 className="text-sm font-bold text-[#29503c]">Similar Website</h2>
+                    <p className="text-[11px] text-[#717973]">Optional — reference a website you like</p>
                   </div>
                 </div>
 
                 {/* URL input */}
                 <div className="relative mb-4">
-                  <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#74777e]" />
+                  <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#717973]" />
                   <input
                     type="url"
                     value={similarSiteUrl}
                     onChange={(e) => setSimilarSiteUrl(e.target.value)}
                     placeholder="https://example.com"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#e6ebf1] bg-[#f7fafd] text-sm text-[#000f22] placeholder:text-[#74777e] focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#c1c8c1] bg-[#faf9f6] text-sm text-[#29503c] placeholder:text-[#717973] focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all"
                   />
                   {similarSiteUrl && (
                     <button
@@ -862,7 +862,7 @@ export default function TemplatePreview() {
 
                 {/* Similarity options - multi-select */}
                 <div>
-                  <p className="text-xs font-medium text-[#43474d] mb-2">What do you like about it? <span className="text-[#74777e] font-normal">(select all that apply)</span></p>
+                  <p className="text-xs font-medium text-[#43474d] mb-2">What do you like about it? <span className="text-[#717973] font-normal">(select all that apply)</span></p>
                   <div className="flex flex-wrap gap-2">
                     {SIMILARITY_OPTIONS.map((option) => {
                       const isSelected = selectedSimilarities.includes(option.id)
@@ -873,7 +873,7 @@ export default function TemplatePreview() {
                           className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border text-xs font-medium transition-all duration-200 ${
                             isSelected
                               ? 'border-[#7C3AED] bg-[#7C3AED]/5 ring-1 ring-[#7C3AED]/30 text-[#7C3AED]'
-                              : 'border-[#e6ebf1] text-[#4F5B76] hover:border-[#c4c6ce] hover:bg-[#f7fafd]'
+                              : 'border-[#c1c8c1] text-[#414843] hover:border-[#c1c8c1] hover:bg-[#faf9f6]'
                           }`}
                         >
                           <span>{option.icon}</span>
@@ -898,7 +898,7 @@ export default function TemplatePreview() {
                       {similarSiteUrl}
                     </a>
                     {selectedSimilarities.length > 0 && (
-                      <span className="text-[10px] text-[#74777e] ml-auto flex-shrink-0">
+                      <span className="text-[10px] text-[#717973] ml-auto flex-shrink-0">
                         {selectedSimilarities.length} similarity{selectedSimilarities.length > 1 ? 'ies' : 'y'}
                       </span>
                     )}
@@ -1038,28 +1038,28 @@ export default function TemplatePreview() {
               </div>
 
               {/* Domain Search */}
-              <div className="bg-white rounded-2xl p-5 border border-[#e6ebf1] shadow-card">
+              <div className="bg-white rounded-2xl p-5 border border-[#c1c8c1] shadow-card">
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-7 h-7 rounded-lg bg-[#FF6B35]/10 flex items-center justify-center">
                     <Globe className="h-4 w-4 text-[#FF6B35]" />
                   </div>
                   <div>
-                    <h2 className="text-sm font-bold text-[#000f22]">Search Domain</h2>
-                    <p className="text-[11px] text-[#74777e]">Find & add a domain to your order</p>
+                    <h2 className="text-sm font-bold text-[#29503c]">Search Domain</h2>
+                    <p className="text-[11px] text-[#717973]">Find & add a domain to your order</p>
                   </div>
                 </div>
 
                 {/* Search input */}
                 <div className="flex gap-2 mb-3">
                   <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#74777e]" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#717973]" />
                     <input
                       type="text"
                       value={domainQuery}
                       onChange={(e) => setDomainQuery(e.target.value)}
                       onKeyDown={handleDomainKeyDown}
                       placeholder="e.g. mybusiness.com or mybrand"
-                      className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-[#e6ebf1] bg-[#f7fafd] text-sm text-[#000f22] placeholder:text-[#74777e] focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/20 focus:border-[#FF6B35] transition-all"
+                      className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-[#c1c8c1] bg-[#faf9f6] text-sm text-[#29503c] placeholder:text-[#717973] focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/20 focus:border-[#FF6B35] transition-all"
                     />
                   </div>
                   <Button
@@ -1096,7 +1096,7 @@ export default function TemplatePreview() {
                             ? 'border-[#fecaca] bg-[#fef2f2] opacity-60 cursor-not-allowed'
                             : selectedDomain?.domain === result.domain
                               ? 'border-[#FF6B35] bg-[#FF6B35]/5 ring-1 ring-[#FF6B35]/30'
-                              : 'border-[#e6ebf1] hover:border-[#FF6B35]/40 hover:bg-[#f7fafd] cursor-pointer'
+                              : 'border-[#c1c8c1] hover:border-[#FF6B35]/40 hover:bg-[#faf9f6] cursor-pointer'
                         }`}
                       >
                         <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
@@ -1104,28 +1104,28 @@ export default function TemplatePreview() {
                             ? 'bg-[#ef4444]/10'
                             : selectedDomain?.domain === result.domain
                               ? 'bg-[#FF6B35] text-white'
-                              : 'bg-[#10B981]/10'
+                              : 'bg-[#29503c]/10'
                         }`}>
                           {!result.available ? (
                             <X className="h-3.5 w-3.5 text-[#ef4444]" />
                           ) : selectedDomain?.domain === result.domain ? (
                             <Check className="h-3.5 w-3.5" />
                           ) : (
-                            <Check className="h-3.5 w-3.5 text-[#10B981]" />
+                            <Check className="h-3.5 w-3.5 text-[#29503c]" />
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
                             <span className={`text-xs font-medium truncate ${
-                              !result.available ? 'text-[#74777e] line-through' : 'text-[#000f22]'
+                              !result.available ? 'text-[#717973] line-through' : 'text-[#29503c]'
                             }`}>
                               {result.domain}
                             </span>
-                            <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-[#f1f4f7] text-[#74777e] uppercase font-medium">
+                            <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-[#eeeeea] text-[#717973] uppercase font-medium">
                               {result.tld}
                             </span>
                           </div>
-                          <p className="text-[10px] text-[#74777e]">
+                          <p className="text-[10px] text-[#717973]">
                             {result.available ? 'Available — click to select' : 'Taken'}
                           </p>
                         </div>
@@ -1142,7 +1142,7 @@ export default function TemplatePreview() {
                 {selectedDomain && (
                   <div className="p-3 rounded-xl bg-[#FF6B35]/5 border border-[#FF6B35]/20">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-semibold text-[#000f22]">Selected Domain</span>
+                      <span className="text-xs font-semibold text-[#29503c]">Selected Domain</span>
                       <button
                         onClick={() => setSelectedDomain(null)}
                         className="w-4 h-4 rounded-full bg-[#ef4444]/10 hover:bg-[#ef4444]/20 flex items-center justify-center"
@@ -1154,7 +1154,7 @@ export default function TemplatePreview() {
                     <div className="mt-1.5 text-[10px] text-[#43474d] space-y-0.5" translate="no" lang="en">
                       <p>Domain cost: <span className="font-semibold">${selectedDomain.price.toFixed(2)}/yr</span></p>
                       {selectedDomain.price <= domainBaseIncluded ? (
-                        <p className="text-[#10B981] font-medium">Included free (under ${domainBaseIncluded})</p>
+                        <p className="text-[#29503c] font-medium">Included free (under ${domainBaseIncluded})</p>
                       ) : (
                         <p className="text-[#F59E0B] font-medium">
                           ${domainBaseIncluded} included + ${domainExcess.toFixed(2)} split into $3/{period} for {domainInstallmentMonths} months
@@ -1169,18 +1169,18 @@ export default function TemplatePreview() {
             {/* Right: Pricing & Add-ons (1 column) */}
             <div className="space-y-6">
               {/* Price summary with billing toggle */}
-              <div className="bg-gradient-to-br from-[#000f22] via-[#0A2540] to-[#0A2540] rounded-2xl text-white sticky top-36 overflow-hidden">
+              <div className="bg-gradient-to-br from-[#29503c] via-[#284e3b] to-[#284e3b] rounded-2xl text-white sticky top-36 overflow-hidden">
                 {/* Billing toggle */}
-                <div className="px-6 pt-5 pb-4 border-b border-[#768dad]/20">
+                <div className="px-6 pt-5 pb-4 border-b border-[#717973]/20">
                   <div className="flex items-center gap-2 mb-3">
-                    <ShoppingCart className="h-5 w-5 text-[#00D1FF]" />
+                    <ShoppingCart className="h-5 w-5 text-[#416853]" />
                     <span className="font-semibold">Choose your plan</span>
                   </div>
                   <div className="flex bg-white/10 rounded-xl p-1 gap-1">
                     <button
                       onClick={() => setBilling('monthly')}
                       className={`flex-1 px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
-                        billing === 'monthly' ? 'bg-[#00D1FF] text-[#000f22] shadow-md' : 'text-[#768dad] hover:text-white'
+                        billing === 'monthly' ? 'bg-[#416853] text-[#29503c] shadow-md' : 'text-[#717973] hover:text-white'
                       }`}
                     >
                       Monthly
@@ -1188,12 +1188,12 @@ export default function TemplatePreview() {
                     <button
                       onClick={() => setBilling('semi_annual')}
                       className={`flex-1 px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200 flex items-center justify-center gap-1 ${
-                        billing === 'semi_annual' ? 'bg-[#00D1FF] text-[#000f22] shadow-md' : 'text-[#768dad] hover:text-white'
+                        billing === 'semi_annual' ? 'bg-[#416853] text-[#29503c] shadow-md' : 'text-[#717973] hover:text-white'
                       }`}
                     >
                       6-Mo
                       <span className={`text-[8px] font-bold px-1 py-0.5 rounded-full ${
-                        billing === 'semi_annual' ? 'bg-[#000f22] text-[#00D1FF]' : 'bg-[#F59E0B]/20 text-[#F59E0B]'
+                        billing === 'semi_annual' ? 'bg-[#29503c] text-[#416853]' : 'bg-[#F59E0B]/20 text-[#F59E0B]'
                       }`} translate="no" lang="en">
                         -11%
                       </span>
@@ -1201,19 +1201,19 @@ export default function TemplatePreview() {
                     <button
                       onClick={() => setBilling('annual')}
                       className={`flex-1 px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200 flex items-center justify-center gap-1 ${
-                        billing === 'annual' ? 'bg-[#00D1FF] text-[#000f22] shadow-md' : 'text-[#768dad] hover:text-white'
+                        billing === 'annual' ? 'bg-[#416853] text-[#29503c] shadow-md' : 'text-[#717973] hover:text-white'
                       }`}
                     >
                       Annual
                       <span className={`text-[8px] font-bold px-1 py-0.5 rounded-full ${
-                        billing === 'annual' ? 'bg-[#000f22] text-[#00D1FF]' : 'bg-[#10B981]/20 text-[#10B981]'
+                        billing === 'annual' ? 'bg-[#29503c] text-[#416853]' : 'bg-[#29503c]/20 text-[#29503c]'
                       }`} translate="no" lang="en">
                         -17%
                       </span>
                     </button>
                   </div>
                   <div className="mt-2 text-center">
-                    <span className={`text-[11px] ${planType === 'store' ? 'text-[#F59E0B] font-semibold' : 'text-[#768dad]'}`} translate="no" lang="en">
+                    <span className={`text-[11px] ${planType === 'store' ? 'text-[#F59E0B] font-semibold' : 'text-[#717973]'}`} translate="no" lang="en">
                       {billing === 'monthly'
                         ? `$${planType === 'store' ? storePriceMonthly : basePriceMonthly}/month`
                         : billing === 'semi_annual'
@@ -1226,17 +1226,17 @@ export default function TemplatePreview() {
                 </div>
 
                 {/* Order details */}
-                <div className="p-6 space-y-2.5 pb-4 border-b border-[#768dad]/20">
+                <div className="p-6 space-y-2.5 pb-4 border-b border-[#717973]/20">
                   <div className="flex items-center gap-3">
                     <img src={template.image} alt="" className="w-12 h-12 rounded-lg object-cover flex-shrink-0" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{template.title}</p>
-                      <p className="text-xs text-[#768dad]">{template.category}</p>
+                      <p className="text-xs text-[#717973]">{template.category}</p>
                     </div>
                   </div>
 
                   <div className="flex justify-between text-sm pt-2" translate="no" lang="en">
-                    <span className="text-[#768dad] flex items-center gap-1">
+                    <span className="text-[#717973] flex items-center gap-1">
                       {planType === 'store' && <ShoppingCart className="h-3 w-3 text-[#F59E0B]" />}
                       {planType === 'store' ? 'Store Package' : 'Plan'} ({billing === 'monthly' ? 'Monthly' : billing === 'semi_annual' ? 'Semi-Annual' : 'Annual'})
                     </span>
@@ -1245,14 +1245,14 @@ export default function TemplatePreview() {
 
                   {extraFeaturesCount > 0 && (
                     <div className="flex justify-between text-sm" translate="no" lang="en">
-                      <span className="text-[#768dad]">Extra features ({extraFeaturesCount} × $3)</span>
+                      <span className="text-[#717973]">Extra features ({extraFeaturesCount} × $3)</span>
                       <span className="text-[#F59E0B]">+${extraFeatureTotal}/{period}</span>
                     </div>
                   )}
 
                   {selectedDomain && domainMonthlyInstallment > 0 && (
                     <div className="flex justify-between text-sm" translate="no" lang="en">
-                      <span className="text-[#768dad]">Domain installment ({domainInstallmentMonths} × $3)</span>
+                      <span className="text-[#717973]">Domain installment ({domainInstallmentMonths} × $3)</span>
                       <span className="text-[#FF6B35]">+${domainInstallmentTotal}/{period}</span>
                     </div>
                   )}
@@ -1271,7 +1271,7 @@ export default function TemplatePreview() {
                         </span>
                       )}
                       {additionalInfo && (
-                        <span className="text-[9px] px-2 py-0.5 rounded-full bg-[#00D1FF]/20 text-[#67e8f9] flex items-center gap-1">
+                        <span className="text-[9px] px-2 py-0.5 rounded-full bg-[#416853]/20 text-[#67e8f9] flex items-center gap-1">
                           <MessageSquare className="h-2.5 w-2.5" /> Notes added
                         </span>
                       )}
@@ -1281,29 +1281,29 @@ export default function TemplatePreview() {
 
                 <div className="px-6 pt-4 pb-6">
                   <div className="flex justify-between items-baseline mb-2" translate="no" lang="en">
-                    <span className="text-[#768dad] text-sm">Total</span>
+                    <span className="text-[#717973] text-sm">Total</span>
                     <div className="text-right">
                       <span className="text-3xl font-bold">${total}</span>
-                      <span className="text-[#768dad] text-sm">/{period}</span>
+                      <span className="text-[#717973] text-sm">/{period}</span>
                     </div>
                   </div>
 
                   {(extraFeaturesCount > 0 || selectedAddOns.length > 0) && (
-                    <p className="text-[10px] text-[#768dad] mb-4 leading-relaxed">
+                    <p className="text-[10px] text-[#717973] mb-4 leading-relaxed">
                       * Extra features & add-ons fees apply for the first year only
                     </p>
                   )}
 
                   {/* Delivery & Dashboard alerts */}
                   <div className="space-y-2 mb-4">
-                    <div className="flex items-start gap-2.5 p-2.5 rounded-lg bg-[#10B981]/10 border border-[#10B981]/20">
-                      <LayoutDashboard className="h-4 w-4 text-[#10B981] flex-shrink-0 mt-0.5" />
-                      <p className="text-[11px] text-[#10B981] leading-relaxed">
+                    <div className="flex items-start gap-2.5 p-2.5 rounded-lg bg-[#29503c]/10 border border-[#29503c]/20">
+                      <LayoutDashboard className="h-4 w-4 text-[#29503c] flex-shrink-0 mt-0.5" />
+                      <p className="text-[11px] text-[#29503c] leading-relaxed">
                         <span className="font-semibold">Website Control Panel Included</span> — You&apos;ll get a full dashboard to manage your website content, pages, and settings.
                       </p>
                     </div>
-                    <div className="flex items-start gap-2.5 p-2.5 rounded-lg bg-[#00D1FF]/10 border border-[#00D1FF]/20">
-                      <Clock className="h-4 w-4 text-[#00D1FF] flex-shrink-0 mt-0.5" />
+                    <div className="flex items-start gap-2.5 p-2.5 rounded-lg bg-[#416853]/10 border border-[#416853]/20">
+                      <Clock className="h-4 w-4 text-[#416853] flex-shrink-0 mt-0.5" />
                       <p className="text-[11px] text-[#67e8f9] leading-relaxed">
                         <span className="font-semibold">Delivery: 5-7 Business Days</span> — Your website will be ready within 5 to 7 business days after order confirmation.
                       </p>
@@ -1315,7 +1315,7 @@ export default function TemplatePreview() {
                     className={`w-full font-semibold h-12 text-base shadow-md transition-colors ${
                       planType === 'store'
                         ? 'bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#B45309] text-white shadow-[#F59E0B]/30'
-                        : 'bg-[#10B981] hover:bg-[#059669] text-white shadow-[#10B981]/20'
+                        : 'bg-[#29503c] hover:bg-[#284e3b] text-white shadow-[#29503c]/20'
                     }`}
                   >
                     {planType === 'store' ? '🛍️ Get Store Package' : 'Get This Template'} — ${basePrice}/{period}
@@ -1323,7 +1323,7 @@ export default function TemplatePreview() {
                   </Button>
 
                   {!user && (
-                    <p className="text-[10px] text-[#768dad] text-center mt-2">
+                    <p className="text-[10px] text-[#717973] text-center mt-2">
                       You&apos;ll need to sign in to complete your purchase
                     </p>
                   )}
@@ -1339,15 +1339,15 @@ export default function TemplatePreview() {
             <p className="text-[#dc2626] text-sm font-medium">{templateError}</p>
             <button
               onClick={() => setPreviewTemplate(null)}
-              className="text-sm text-[#4F5B76] hover:text-[#000f22] underline"
+              className="text-sm text-[#414843] hover:text-[#29503c] underline"
             >
               Close and try again
             </button>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-32 gap-3">
-            <div className="w-8 h-8 border-[3px] border-[#00D1FF] border-t-transparent rounded-full animate-spin" />
-            <p className="text-xs text-[#4F5B76]">Loading template...</p>
+            <div className="w-8 h-8 border-[3px] border-[#416853] border-t-transparent rounded-full animate-spin" />
+            <p className="text-xs text-[#414843]">Loading template...</p>
           </div>
         )}
       </div>
@@ -1356,11 +1356,11 @@ export default function TemplatePreview() {
       {showFullPreview && template && (
         <div className="fixed inset-0 z-[60] bg-[#1a1a2e] flex flex-col">
           {/* Top navigation bar */}
-          <div className="flex items-center justify-between px-4 sm:px-6 h-14 bg-[#0A2540] border-b border-[#768dad]/20 flex-shrink-0">
+          <div className="flex items-center justify-between px-4 sm:px-6 h-14 bg-[#284e3b] border-b border-[#717973]/20 flex-shrink-0">
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setShowFullPreview(false)}
-                className="flex items-center gap-2 text-sm font-medium text-[#768dad] hover:text-white transition-colors bg-[#768dad]/10 hover:bg-[#768dad]/20 px-3 py-1.5 rounded-lg"
+                className="flex items-center gap-2 text-sm font-medium text-[#717973] hover:text-white transition-colors bg-[#717973]/10 hover:bg-[#717973]/20 px-3 py-1.5 rounded-lg"
               >
                 <ArrowLeft className="h-4 w-4" />
                 Back to Template
@@ -1369,16 +1369,16 @@ export default function TemplatePreview() {
             <span className="text-sm font-semibold text-white truncate hidden sm:block">{template.title} — Live Preview</span>
             <button
               onClick={() => setShowFullPreview(false)}
-              className="w-8 h-8 rounded-lg bg-[#768dad]/10 hover:bg-[#768dad]/20 flex items-center justify-center text-[#768dad] hover:text-white transition-colors"
+              className="w-8 h-8 rounded-lg bg-[#717973]/10 hover:bg-[#717973]/20 flex items-center justify-center text-[#717973] hover:text-white transition-colors"
             >
               <X className="h-4 w-4" />
             </button>
           </div>
 
           {/* Browser frame */}
-          <div className="flex-1 overflow-hidden flex flex-col bg-[#2a2a3e] m-3 sm:m-5 rounded-xl border border-[#768dad]/20 shadow-2xl">
+          <div className="flex-1 overflow-hidden flex flex-col bg-[#2a2a3e] m-3 sm:m-5 rounded-xl border border-[#717973]/20 shadow-2xl">
             {/* Browser address bar */}
-            <div className="flex items-center gap-3 px-4 h-10 bg-[#1e1e32] border-b border-[#768dad]/15 flex-shrink-0 rounded-t-xl">
+            <div className="flex items-center gap-3 px-4 h-10 bg-[#1e1e32] border-b border-[#717973]/15 flex-shrink-0 rounded-t-xl">
               {/* Traffic lights */}
               <div className="flex items-center gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
@@ -1387,22 +1387,22 @@ export default function TemplatePreview() {
               </div>
               {/* Navigation buttons */}
               <div className="flex items-center gap-1 ml-2">
-                <div className="w-6 h-6 rounded flex items-center justify-center text-[#768dad]">
+                <div className="w-6 h-6 rounded flex items-center justify-center text-[#717973]">
                   <ArrowLeft className="h-3 w-3" />
                 </div>
-                <div className="w-6 h-6 rounded flex items-center justify-center text-[#768dad]">
+                <div className="w-6 h-6 rounded flex items-center justify-center text-[#717973]">
                   <ArrowRight className="h-3 w-3" />
                 </div>
-                <div className="w-6 h-6 rounded flex items-center justify-center text-[#768dad]">
+                <div className="w-6 h-6 rounded flex items-center justify-center text-[#717973]">
                   <RotateCw className="h-3 w-3" />
                 </div>
               </div>
               {/* URL bar */}
-              <div className="flex-1 flex items-center gap-2 bg-[#0A2540] rounded-lg px-3 py-1.5 max-w-lg mx-auto">
-                <div className="w-3 h-3 rounded-full border border-[#10B981] flex items-center justify-center">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
+              <div className="flex-1 flex items-center gap-2 bg-[#284e3b] rounded-lg px-3 py-1.5 max-w-lg mx-auto">
+                <div className="w-3 h-3 rounded-full border border-[#29503c] flex items-center justify-center">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#29503c]" />
                 </div>
-                <span className="text-xs text-[#768dad] truncate">
+                <span className="text-xs text-[#717973] truncate">
                   https://{selectedDomain?.domain || template.title.toLowerCase().replace(/\s+/g, '') + '.com'}
                 </span>
               </div>
@@ -1413,8 +1413,8 @@ export default function TemplatePreview() {
                 <>
                   {!iframeLoaded && (
                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-white z-10 gap-3">
-                      <div className="w-10 h-10 border-[3px] border-[#00D1FF] border-t-transparent rounded-full animate-spin" />
-                      <p className="text-xs text-[#4F5B76]">Loading live preview...</p>
+                      <div className="w-10 h-10 border-[3px] border-[#416853] border-t-transparent rounded-full animate-spin" />
+                      <p className="text-xs text-[#414843]">Loading live preview...</p>
                     </div>
                   )}
                   <iframe

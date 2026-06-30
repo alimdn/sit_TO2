@@ -214,11 +214,11 @@ export default function PlansPage() {
     <div>
       {/* Plans header */}
       <div className="text-center mb-10">
-        <span className="text-[#00D1FF] text-xs font-semibold uppercase tracking-widest block mb-3">Pricing Plans</span>
-        <h2 className="text-3xl sm:text-4xl font-bold text-[#000f22]" style={{ letterSpacing: '-0.02em' }}>
+        <span className="text-[#416853] text-xs font-semibold uppercase tracking-widest block mb-3">Pricing Plans</span>
+        <h2 className="text-3xl sm:text-4xl font-bold text-[#29503c]" style={{ letterSpacing: '-0.02em' }}>
           Simple, Transparent Pricing
         </h2>
-        <p className="mt-4 text-[#4F5B76] max-w-2xl mx-auto">
+        <p className="mt-4 text-[#414843] max-w-2xl mx-auto">
           One plan with everything you need. Choose your billing cycle and get started today.
         </p>
       </div>
@@ -226,14 +226,14 @@ export default function PlansPage() {
       {/* Plan Type Toggle — Regular vs Store Package */}
       <div className="flex flex-col items-center gap-6 mb-10">
         <div>
-          <p className="text-center text-xs text-[#4F5B76] mb-3 uppercase tracking-wider font-semibold">Choose Plan Type</p>
-          <div className="inline-flex items-center bg-[#f1f4f7] rounded-xl p-1.5 gap-1">
+          <p className="text-center text-xs text-[#414843] mb-3 uppercase tracking-wider font-semibold">Choose Plan Type</p>
+          <div className="inline-flex items-center bg-[#eeeeea] rounded-xl p-1.5 gap-1">
             <button
               onClick={() => setPlanType('regular')}
               className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
                 planType === 'regular'
-                  ? 'bg-[#000f22] text-white shadow-md'
-                  : 'text-[#43474d] hover:text-[#000f22]'
+                  ? 'bg-[#29503c] text-white shadow-md'
+                  : 'text-[#43474d] hover:text-[#29503c]'
               }`}
             >
               Regular
@@ -243,7 +243,7 @@ export default function PlansPage() {
               className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
                 planType === 'store'
                   ? 'bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white shadow-md'
-                  : 'text-[#43474d] hover:text-[#000f22]'
+                  : 'text-[#43474d] hover:text-[#29503c]'
               }`}
             >
               🛍️ Store Package
@@ -256,14 +256,14 @@ export default function PlansPage() {
 
         {/* Billing Cycle Toggle — Monthly / Semi-Annual / Annual */}
         <div>
-          <p className="text-center text-xs text-[#4F5B76] mb-3 uppercase tracking-wider font-semibold">Billing Cycle</p>
-          <div className="inline-flex items-center bg-[#f1f4f7] rounded-xl p-1.5 gap-1">
+          <p className="text-center text-xs text-[#414843] mb-3 uppercase tracking-wider font-semibold">Billing Cycle</p>
+          <div className="inline-flex items-center bg-[#eeeeea] rounded-xl p-1.5 gap-1">
             <button
               onClick={() => setCycle('monthly')}
               className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
                 cycle === 'monthly'
-                  ? planType === 'store' ? 'bg-[#F59E0B] text-white shadow-md' : 'bg-[#000f22] text-white shadow-md'
-                  : 'text-[#43474d] hover:text-[#000f22]'
+                  ? planType === 'store' ? 'bg-[#F59E0B] text-white shadow-md' : 'bg-[#29503c] text-white shadow-md'
+                  : 'text-[#43474d] hover:text-[#29503c]'
               }`}
             >
               Monthly
@@ -272,8 +272,8 @@ export default function PlansPage() {
               onClick={() => setCycle('semi_annual')}
               className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
                 cycle === 'semi_annual'
-                  ? planType === 'store' ? 'bg-[#F59E0B] text-white shadow-md' : 'bg-[#000f22] text-white shadow-md'
-                  : 'text-[#43474d] hover:text-[#000f22]'
+                  ? planType === 'store' ? 'bg-[#F59E0B] text-white shadow-md' : 'bg-[#29503c] text-white shadow-md'
+                  : 'text-[#43474d] hover:text-[#29503c]'
               }`}
             >
               Semi-Annual
@@ -281,7 +281,7 @@ export default function PlansPage() {
                 cycle === 'semi_annual'
                   ? planType === 'store'
                     ? 'bg-white/20 text-white'
-                    : 'bg-[#00D1FF] text-[#000f22]'
+                    : 'bg-[#416853] text-[#29503c]'
                   : 'bg-[#F59E0B]/10 text-[#F59E0B]'
               }`}>
                 {planType === 'store' ? '-8%' : '-11%'}
@@ -291,8 +291,8 @@ export default function PlansPage() {
               onClick={() => setCycle('annual')}
               className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 ${
                 cycle === 'annual'
-                  ? planType === 'store' ? 'bg-[#F59E0B] text-white shadow-md' : 'bg-[#000f22] text-white shadow-md'
-                  : 'text-[#43474d] hover:text-[#000f22]'
+                  ? planType === 'store' ? 'bg-[#F59E0B] text-white shadow-md' : 'bg-[#29503c] text-white shadow-md'
+                  : 'text-[#43474d] hover:text-[#29503c]'
               }`}
             >
               Annual
@@ -300,13 +300,13 @@ export default function PlansPage() {
                 cycle === 'annual'
                   ? planType === 'store'
                     ? 'bg-white/20 text-white'
-                    : 'bg-[#00D1FF] text-[#000f22]'
-                  : 'bg-[#10B981]/10 text-[#10B981]'
+                    : 'bg-[#416853] text-[#29503c]'
+                  : 'bg-[#29503c]/10 text-[#29503c]'
               }`}>
                 {planType === 'store' ? '-8%' : '-17%'}
               </span>
               {planType !== 'store' && cycle !== 'annual' && (
-                <span className="text-[9px] font-bold text-[#10B981] uppercase tracking-wide ml-1">Best Value</span>
+                <span className="text-[9px] font-bold text-[#29503c] uppercase tracking-wide ml-1">Best Value</span>
               )}
             </button>
           </div>
@@ -318,11 +318,11 @@ export default function PlansPage() {
         <div className={`relative rounded-2xl p-8 text-white shadow-2xl transition-all duration-300 ${
           planType === 'store'
             ? 'bg-gradient-to-br from-[#1a1a2e] via-[#3a2a0a] to-[#1a1a2e] ring-2 ring-[#F59E0B]/50'
-            : 'bg-gradient-to-br from-[#000f22] via-[#0A2540] to-[#0A2540] ring-1 ring-[#00D1FF]/30'
+            : 'bg-gradient-to-br from-[#29503c] via-[#284e3b] to-[#284e3b] ring-1 ring-[#416853]/30'
         }`}>
           {/* Best Value badge (only when regular annual is selected) */}
           {billing === 'annual' && (
-            <div className="absolute top-4 right-4 bg-[#10B981] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full shadow-lg z-10">
+            <div className="absolute top-4 right-4 bg-[#29503c] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full shadow-lg z-10">
               ★ Best Value
             </div>
           )}
@@ -333,13 +333,13 @@ export default function PlansPage() {
             </div>
           )}
           {/* Background decoration */}
-          <div className="absolute top-0 right-0 w-40 h-40 bg-[#00D1FF]/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#10B981]/5 rounded-full blur-3xl" />
+          <div className="absolute top-0 right-0 w-40 h-40 bg-[#416853]/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#29503c]/5 rounded-full blur-3xl" />
 
           <div className="relative">
             {/* Plan name */}
             <div className="flex items-center gap-2 mb-4">
-              <Sparkles className="h-5 w-5 text-[#00D1FF]" />
+              <Sparkles className="h-5 w-5 text-[#416853]" />
               <h3 className="text-lg font-semibold text-white">
                 {currentLabel}
               </h3>
@@ -348,30 +348,30 @@ export default function PlansPage() {
             {/* Price */}
             <div className="flex items-baseline gap-2 mb-2">
               <span className="text-5xl font-bold text-white">${currentPrice}</span>
-              <span className="text-[#768dad] text-lg">/{currentPeriod}</span>
+              <span className="text-[#717973] text-lg">/{currentPeriod}</span>
             </div>
 
             {/* Savings badge */}
             {currentSavings ? (
-              <div className="inline-flex items-center gap-1.5 bg-[#10B981]/15 border border-[#10B981]/30 rounded-full px-3 py-1 mb-6">
-                <Check className="h-3.5 w-3.5 text-[#10B981]" />
-                <span className="text-[#10B981] text-xs font-semibold">{currentSavings}</span>
+              <div className="inline-flex items-center gap-1.5 bg-[#29503c]/15 border border-[#29503c]/30 rounded-full px-3 py-1 mb-6">
+                <Check className="h-3.5 w-3.5 text-[#29503c]" />
+                <span className="text-[#29503c] text-xs font-semibold">{currentSavings}</span>
               </div>
             ) : (
               <div className="mb-6" />
             )}
 
             {/* Divider */}
-            <div className="border-t border-[#768dad]/20 mb-6" />
+            <div className="border-t border-[#717973]/20 mb-6" />
 
             {/* Features */}
             <div className="space-y-3 mb-8">
               {currentFeatures.map((feature, i) => (
                 <div key={i} className="flex items-start gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-[#00D1FF]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Check className="h-3 w-3 text-[#00D1FF]" />
+                  <div className="w-5 h-5 rounded-full bg-[#416853]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Check className="h-3 w-3 text-[#416853]" />
                   </div>
-                  <span className="text-sm text-[#c4c6ce] leading-relaxed">{feature}</span>
+                  <span className="text-sm text-[#c1c8c1] leading-relaxed">{feature}</span>
                 </div>
               ))}
             </div>
@@ -383,7 +383,7 @@ export default function PlansPage() {
               className={`w-full h-12 font-semibold text-base transition-colors ${
                 planType === 'store'
                   ? 'bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#B45309] text-white shadow-lg shadow-[#F59E0B]/30'
-                  : 'bg-[#00D1FF] hover:bg-[#00b8e6] text-[#000f22]'
+                  : 'bg-[#416853] hover:bg-[#284e3b] text-[#29503c]'
               }`}
             >
               {subscribing ? (
@@ -399,7 +399,7 @@ export default function PlansPage() {
               )}
             </Button>
 
-            <p className="text-center text-xs text-[#768dad] mt-3">
+            <p className="text-center text-xs text-[#717973] mt-3">
               {planType === 'store'
                 ? 'Includes daily backups + e-commerce + all services · 5-7 day delivery'
                 : 'No hidden fees. Cancel anytime.'
@@ -411,7 +411,7 @@ export default function PlansPage() {
 
       {/* Subscription Policies */}
       <div className="mb-16">
-        <h3 className="text-2xl font-bold text-[#000f22] text-center mb-8">Subscription Policies</h3>
+        <h3 className="text-2xl font-bold text-[#29503c] text-center mb-8">Subscription Policies</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
             {
@@ -432,8 +432,8 @@ export default function PlansPage() {
           ].map((policy, i) => (
             <div key={i} className="p-6 rounded-xl bg-white shadow-card text-center">
               <div className="text-3xl mb-4">{policy.icon}</div>
-              <h4 className="font-semibold text-[#000f22] mb-2">{policy.title}</h4>
-              <p className="text-sm text-[#4F5B76] leading-relaxed">{policy.description}</p>
+              <h4 className="font-semibold text-[#29503c] mb-2">{policy.title}</h4>
+              <p className="text-sm text-[#414843] leading-relaxed">{policy.description}</p>
             </div>
           ))}
         </div>
@@ -442,8 +442,8 @@ export default function PlansPage() {
       {/* Real customer testimonials (social proof before purchase) */}
       {testimonials.length > 0 && (
         <div className="mb-16">
-          <h3 className="text-2xl font-bold text-[#000f22] text-center mb-2">What Our Customers Say</h3>
-          <p className="text-center text-[#4F5B76] text-sm mb-8">Real feedback from real subscribers</p>
+          <h3 className="text-2xl font-bold text-[#29503c] text-center mb-2">What Our Customers Say</h3>
+          <p className="text-center text-[#414843] text-sm mb-8">Real feedback from real subscribers</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {testimonials.map((t) => (
               <div key={t.id} className="p-6 rounded-xl bg-white shadow-card">
@@ -453,9 +453,9 @@ export default function PlansPage() {
                   ))}
                 </div>
                 <p className="text-sm text-[#43474d] leading-relaxed mb-4 italic">"{t.content}"</p>
-                <div className="pt-3 border-t border-[#e6ebf1]">
-                  <div className="font-semibold text-[#000f22] text-sm">{t.name}</div>
-                  <div className="text-xs text-[#4F5B76]">{t.role}</div>
+                <div className="pt-3 border-t border-[#c1c8c1]">
+                  <div className="font-semibold text-[#29503c] text-sm">{t.name}</div>
+                  <div className="text-xs text-[#414843]">{t.role}</div>
                 </div>
               </div>
             ))}
@@ -464,9 +464,9 @@ export default function PlansPage() {
       )}
 
       {/* Bottom CTA */}
-      <div className="rounded-2xl bg-gradient-to-r from-[#000f22] to-[#0A2540] p-8 sm:p-12 text-center">
+      <div className="rounded-2xl bg-gradient-to-r from-[#29503c] to-[#284e3b] p-8 sm:p-12 text-center">
         <h3 className="text-2xl font-bold text-white mb-3">Ready to Get Started?</h3>
-        <p className="text-[#768dad] max-w-lg mx-auto mb-6">
+        <p className="text-[#717973] max-w-lg mx-auto mb-6">
           Get your professional website designed, hosted, and maintained — starting at $30/month.
         </p>
         <Button
@@ -474,7 +474,7 @@ export default function PlansPage() {
             setCurrentPage('templates')
             window.scrollTo({ top: 0, behavior: 'smooth' })
           }}
-          className="bg-[#00D1FF] hover:bg-[#00b8e6] text-[#000f22] font-semibold h-11 px-8"
+          className="bg-[#416853] hover:bg-[#284e3b] text-[#29503c] font-semibold h-11 px-8"
         >
           Browse Templates
         </Button>

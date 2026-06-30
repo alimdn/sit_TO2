@@ -74,7 +74,7 @@ export default function FavoriteButton({ templateId }: FavoriteButtonProps) {
       className={`flex items-center gap-2 px-4 py-2 rounded-xl border-2 transition-all duration-200 flex-shrink-0 mt-1 ${
         isFavorited
           ? 'border-[#ef4444] bg-[#ef4444]/5 text-[#ef4444]'
-          : 'border-[#e6ebf1] hover:border-[#ef4444] text-[#43474d] hover:text-[#ef4444]'
+          : 'border-[#c1c8c1] hover:border-[#ef4444] text-[#43474d] hover:text-[#ef4444]'
       }`}
       title={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
     >

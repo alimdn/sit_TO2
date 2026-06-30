@@ -40,11 +40,11 @@ export default function FAQSection() {
     <section className="py-20 section-bg">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
-          <span className="label-style text-[#00D1FF] text-xs block mb-3">FAQ</span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#000f22]" style={{ letterSpacing: '-0.02em' }}>
+          <span className="label-style text-[#416853] text-xs block mb-3">FAQ</span>
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#29503c]" style={{ letterSpacing: '-0.02em' }}>
             Frequently Asked Questions
           </h2>
-          <p className="mt-4 text-[#4F5B76]">
+          <p className="mt-4 text-[#414843]">
             Find answers to common questions about our subscription service.
           </p>
         </div>
@@ -53,7 +53,7 @@ export default function FAQSection() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
           {/* Side image — configurable via admin (key: home_faq_image) */}
           <div className="lg:col-span-2">
-            <div className="relative rounded-2xl overflow-hidden shadow-card border border-[#e6ebf1] bg-white">
+            <div className="relative rounded-2xl overflow-hidden shadow-card border border-[#c1c8c1] bg-white">
               <img
                 src={imgSrc}
                 alt="WebForge — FAQ illustration"
@@ -63,10 +63,10 @@ export default function FAQSection() {
                   ;(e.currentTarget as HTMLImageElement).src = '/images/home/faq-default.png'
                 }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#000f22]/30 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#29503c]/30 to-transparent pointer-events-none" />
               <div className="absolute bottom-4 left-4 right-4 bg-white/85 backdrop-blur-sm rounded-xl p-3 border border-white/50">
-                <div className="text-sm font-bold text-[#000f22]">Still have questions?</div>
-                <div className="text-xs text-[#4F5B76] mt-1">Our team is one message away — reach out via the Contact page.</div>
+                <div className="text-sm font-bold text-[#29503c]">Still have questions?</div>
+                <div className="text-xs text-[#414843] mt-1">Our team is one message away — reach out via the Contact page.</div>
               </div>
             </div>
           </div>
@@ -79,12 +79,12 @@ export default function FAQSection() {
                   <AccordionItem
                     key={faq.id}
                     value={faq.id}
-                    className={index < faqs.length - 1 ? 'border-b border-[#e6ebf1]' : ''}
+                    className={index < faqs.length - 1 ? 'border-b border-[#c1c8c1]' : ''}
                   >
-                    <AccordionTrigger className="px-6 py-4 text-left text-sm font-medium text-[#000f22] hover:no-underline hover:bg-[#f7fafd] transition-colors">
+                    <AccordionTrigger className="px-6 py-4 text-left text-sm font-medium text-[#29503c] hover:no-underline hover:bg-[#faf9f6] transition-colors">
                       {faq.question}
                     </AccordionTrigger>
-                    <AccordionContent className="px-6 pb-4 text-sm text-[#4F5B76] leading-relaxed">
+                    <AccordionContent className="px-6 pb-4 text-sm text-[#414843] leading-relaxed">
                       {faq.answer}
                     </AccordionContent>
                   </AccordionItem>

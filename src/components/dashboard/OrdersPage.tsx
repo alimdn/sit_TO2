@@ -233,11 +233,11 @@ export default function OrdersPage() {
   // clearly marked as a demo/test order. This is NOT a real purchase.
 
   const statusColors: Record<string, string> = {
-    active: 'bg-[#10B981]/10 text-[#10B981]',
+    active: 'bg-[#29503c]/10 text-[#29503c]',
     pending: 'bg-[#FFB800]/10 text-[#FFB800]',
-    in_progress: 'bg-[#00D1FF]/10 text-[#00D1FF]',
-    completed: 'bg-[#10B981]/10 text-[#10B981]',
-    review: 'bg-[#768dad]/10 text-[#768dad]',
+    in_progress: 'bg-[#416853]/10 text-[#416853]',
+    completed: 'bg-[#29503c]/10 text-[#29503c]',
+    review: 'bg-[#717973]/10 text-[#717973]',
     failed: 'bg-[#ba1a1a]/10 text-[#ba1a1a]',
   }
 
@@ -250,7 +250,7 @@ export default function OrdersPage() {
     return (
       <div className="space-y-6">
         {[1, 2].map(i => (
-          <div key={i} className="h-40 rounded-xl bg-[#f1f4f7] animate-pulse" />
+          <div key={i} className="h-40 rounded-xl bg-[#eeeeea] animate-pulse" />
         ))}
       </div>
     )
@@ -260,8 +260,8 @@ export default function OrdersPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-[#000f22]">My Orders</h2>
-          <p className="text-xs text-[#4F5B76] mt-1">
+          <h2 className="text-2xl font-bold text-[#29503c]">My Orders</h2>
+          <p className="text-xs text-[#414843] mt-1">
             {orders.length} order{orders.length !== 1 ? 's' : ''} · Auto-refreshing every 10s
           </p>
         </div>
@@ -269,7 +269,7 @@ export default function OrdersPage() {
           variant="outline"
           onClick={handleManualRefresh}
           disabled={refreshing}
-          className="h-9 border-[#e6ebf1] hover:bg-[#f7fafd]"
+          className="h-9 border-[#c1c8c1] hover:bg-[#faf9f6]"
         >
           <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
           Refresh
@@ -279,21 +279,21 @@ export default function OrdersPage() {
       {orders.length === 0 ? (
         <Card className="shadow-card">
           <CardContent className="p-8 text-center space-y-4">
-            <div className="w-16 h-16 rounded-full bg-[#f1f4f7] flex items-center justify-center mx-auto">
-              <LayoutDashboard className="h-8 w-8 text-[#74777e]" />
+            <div className="w-16 h-16 rounded-full bg-[#eeeeea] flex items-center justify-center mx-auto">
+              <LayoutDashboard className="h-8 w-8 text-[#717973]" />
             </div>
             <div>
-              <p className="text-[#4F5B76] font-medium">No orders yet</p>
-              <p className="text-xs text-[#74777e] mt-1">Subscribe to a plan to get started, or create a demo order to see how it works.</p>
+              <p className="text-[#414843] font-medium">No orders yet</p>
+              <p className="text-xs text-[#717973] mt-1">Subscribe to a plan to get started, or create a demo order to see how it works.</p>
             </div>
             <Button
               onClick={handleCreateDemoOrder}
               disabled={creatingDemo}
-              className="bg-[#00D1FF] hover:bg-[#00b8e6] text-[#000f22] font-semibold h-10"
+              className="bg-[#416853] hover:bg-[#284e3b] text-[#29503c] font-semibold h-10"
             >
               {creatingDemo ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-[#000f22] border-t-transparent rounded-full animate-spin mr-2" />
+                  <div className="w-4 h-4 border-2 border-[#29503c] border-t-transparent rounded-full animate-spin mr-2" />
                   Creating...
                 </>
               ) : (
@@ -328,7 +328,7 @@ export default function OrdersPage() {
                       {order.status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
                     </Badge>
                   </div>
-                  <p className="text-xs text-[#4F5B76]">
+                  <p className="text-xs text-[#414843]">
                     Created {new Date(order.createdAt).toLocaleDateString()} • {order.billing === 'annual' || order.billing === 'store_annual' ? 'Annual' : order.billing === 'semi_annual' || order.billing === 'store_semi_annual' ? 'Semi-Annual' : 'Monthly'} Plan
                     {isStorePlan(order.billing) && <span className="text-[#F59E0B] font-medium"> • 🛍️ Store Package</span>}
                     {order.isDemo && <span className="text-[#F59E0B] font-medium"> • Demo order (not a real purchase)</span>}
@@ -353,8 +353,8 @@ export default function OrdersPage() {
                     return (
                       <div>
                         <div className="flex items-center justify-between mb-4">
-                          <h4 className="text-sm font-semibold text-[#000f22]">Order Progress</h4>
-                          <span className="text-xs font-medium text-[#00D1FF]" translate="no" lang="en">
+                          <h4 className="text-sm font-semibold text-[#29503c]">Order Progress</h4>
+                          <span className="text-xs font-medium text-[#416853]" translate="no" lang="en">
                             {order.progress}%
                           </span>
                         </div>
@@ -362,10 +362,10 @@ export default function OrdersPage() {
                         {/* Horizontal Stepper */}
                         <div className="relative pb-2">
                           {/* Connection line (background) */}
-                          <div className="absolute top-5 left-5 right-5 h-0.5 bg-[#e6ebf1] rounded-full" />
+                          <div className="absolute top-5 left-5 right-5 h-0.5 bg-[#c1c8c1] rounded-full" />
                           {/* Connection line (filled — green→cyan gradient for completed steps) */}
                           <div
-                            className="absolute top-5 left-5 h-0.5 bg-gradient-to-r from-[#10B981] to-[#00D1FF] rounded-full transition-all duration-700"
+                            className="absolute top-5 left-5 h-0.5 bg-gradient-to-r from-[#29503c] to-[#416853] rounded-full transition-all duration-700"
                             style={{ width: `calc((100% - 40px) * ${fillPercent / 100})` }}
                           />
 
@@ -380,12 +380,12 @@ export default function OrdersPage() {
                                   <div
                                     className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all z-10 ${
                                       isCompleted
-                                        ? 'bg-[#10B981] border-[#10B981] shadow-md shadow-[#10B981]/30'
+                                        ? 'bg-[#29503c] border-[#29503c] shadow-md shadow-[#29503c]/30'
                                         : isCurrent
-                                          ? 'bg-[#00D1FF] border-[#00D1FF] ring-4 ring-[#00D1FF]/20 animate-pulse'
+                                          ? 'bg-[#416853] border-[#416853] ring-4 ring-[#416853]/20 animate-pulse'
                                           : isLastCompleted
-                                            ? 'bg-[#10B981] border-[#10B981] shadow-md shadow-[#10B981]/30'
-                                            : 'bg-white border-[#e6ebf1]'
+                                            ? 'bg-[#29503c] border-[#29503c] shadow-md shadow-[#29503c]/30'
+                                            : 'bg-white border-[#c1c8c1]'
                                     }`}
                                   >
                                     {isCompleted ? (
@@ -395,21 +395,21 @@ export default function OrdersPage() {
                                     ) : isLastCompleted ? (
                                       <Check className="h-5 w-5 text-white" />
                                     ) : (
-                                      <span className="text-xs font-bold text-[#74777e]">{i + 1}</span>
+                                      <span className="text-xs font-bold text-[#717973]">{i + 1}</span>
                                     )}
                                   </div>
                                   <p className={`text-[10px] mt-2 text-center font-medium leading-tight transition-colors ${
-                                    isCompleted ? 'text-[#10B981]' : isCurrent ? 'text-[#00D1FF]' : 'text-[#74777e]'
+                                    isCompleted ? 'text-[#29503c]' : isCurrent ? 'text-[#416853]' : 'text-[#717973]'
                                   }`}>
                                     {m.name}
                                   </p>
                                   {m.date && isCompleted && (
-                                    <p className="text-[8px] text-[#10B981] mt-0.5" translate="no" lang="en">
+                                    <p className="text-[8px] text-[#29503c] mt-0.5" translate="no" lang="en">
                                       {new Date(m.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                                     </p>
                                   )}
                                   {isCurrent && (
-                                    <p className="text-[8px] text-[#00D1FF] mt-0.5">In progress…</p>
+                                    <p className="text-[8px] text-[#416853] mt-0.5">In progress…</p>
                                   )}
                                 </div>
                               )
@@ -418,26 +418,26 @@ export default function OrdersPage() {
                         </div>
 
                         {/* Current step description */}
-                        <div className="mt-3 p-3 rounded-lg bg-gradient-to-r from-[#f7fafd] to-[#00D1FF]/5 border border-[#00D1FF]/20">
+                        <div className="mt-3 p-3 rounded-lg bg-gradient-to-r from-[#faf9f6] to-[#416853]/5 border border-[#416853]/20">
                           <div className="flex items-center gap-2">
                             {order.status === 'completed' ? (
                               <>
-                                <Check className="h-4 w-4 text-[#10B981] flex-shrink-0" />
-                                <p className="text-xs text-[#10B981] font-semibold">
+                                <Check className="h-4 w-4 text-[#29503c] flex-shrink-0" />
+                                <p className="text-xs text-[#29503c] font-semibold">
                                   Your website is complete and ready! 🎉
                                 </p>
                               </>
                             ) : currentStepIdx >= 0 ? (
                               <>
-                                <ArrowRight className="h-4 w-4 text-[#00D1FF] flex-shrink-0" />
+                                <ArrowRight className="h-4 w-4 text-[#416853] flex-shrink-0" />
                                 <p className="text-xs text-[#43474d]">
-                                  <span className="font-semibold text-[#00D1FF]">Current step:</span>{' '}
+                                  <span className="font-semibold text-[#416853]">Current step:</span>{' '}
                                   {milestones[currentStepIdx].name}
                                 </p>
                               </>
                             ) : (
                               <>
-                                <Clock className="h-4 w-4 text-[#00D1FF] flex-shrink-0" />
+                                <Clock className="h-4 w-4 text-[#416853] flex-shrink-0" />
                                 <p className="text-xs text-[#43474d]">Processing…</p>
                               </>
                             )}
@@ -451,12 +451,12 @@ export default function OrdersPage() {
                               <div
                                 key={i}
                                 className={`w-2 h-2 rounded-full transition-colors ${
-                                  m.status === 'completed' ? 'bg-[#10B981]' : 'bg-[#e6ebf1]'
+                                  m.status === 'completed' ? 'bg-[#29503c]' : 'bg-[#c1c8c1]'
                                 }`}
                               />
                             ))}
                           </div>
-                          <span className="text-[10px] text-[#74777e]" translate="no" lang="en">
+                          <span className="text-[10px] text-[#717973]" translate="no" lang="en">
                             {completedCount} of {totalCount} steps completed
                           </span>
                         </div>
@@ -467,12 +467,12 @@ export default function OrdersPage() {
                   {/* Quick info row */}
                   <div className="flex flex-wrap gap-2">
                     {features.length > 0 && (
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#f1f4f7] text-[#4F5B76]">
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#eeeeea] text-[#414843]">
                         {features.length} features
                       </span>
                     )}
                     {addOns.length > 0 && (
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#00D1FF]/10 text-[#00D1FF]">
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#416853]/10 text-[#416853]">
                         {addOns.length} add-ons
                       </span>
                     )}
@@ -490,11 +490,11 @@ export default function OrdersPage() {
 
                   {/* Delivery & Dashboard notice */}
                   <div className="flex flex-col sm:flex-row gap-2">
-                    <div className="flex items-center gap-1.5 text-[10px] px-2.5 py-1.5 rounded-lg bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/20">
+                    <div className="flex items-center gap-1.5 text-[10px] px-2.5 py-1.5 rounded-lg bg-[#29503c]/10 text-[#29503c] border border-[#29503c]/20">
                       <LayoutDashboard className="h-3.5 w-3.5" />
                       <span className="font-medium">Control Panel Included</span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-[10px] px-2.5 py-1.5 rounded-lg bg-[#00D1FF]/10 text-[#00D1FF] border border-[#00D1FF]/20">
+                    <div className="flex items-center gap-1.5 text-[10px] px-2.5 py-1.5 rounded-lg bg-[#416853]/10 text-[#416853] border border-[#416853]/20">
                       <Clock className="h-3.5 w-3.5" />
                       <span className="font-medium">Delivery: 5-7 Business Days</span>
                     </div>
@@ -505,14 +505,14 @@ export default function OrdersPage() {
                     variant="outline"
                     size="sm"
                     onClick={() => setSelectedOrder(order)}
-                    className="w-full border-[#e6ebf1] text-[#43474d] hover:bg-[#f7fafd] text-xs"
+                    className="w-full border-[#c1c8c1] text-[#43474d] hover:bg-[#faf9f6] text-xs"
                   >
                     View Full Details
                   </Button>
 
                   {/* Notes */}
                   {order.notes && (
-                    <p className="text-sm text-[#4F5B76] p-3 bg-[#f7fafd] rounded-lg">{order.notes}</p>
+                    <p className="text-sm text-[#414843] p-3 bg-[#faf9f6] rounded-lg">{order.notes}</p>
                   )}
                 </CardContent>
               </Card>
@@ -538,12 +538,12 @@ export default function OrdersPage() {
                 {/* Features */}
                 {features.length > 0 && (
                   <div>
-                    <p className="text-xs font-semibold text-[#000f22] mb-2">Selected Features</p>
+                    <p className="text-xs font-semibold text-[#29503c] mb-2">Selected Features</p>
                     <div className="flex flex-wrap gap-1.5">
                       {features.map((f, i) => (
                         <span key={i} className={`text-[10px] px-2 py-0.5 rounded-full border ${
                           i < orderFreeLimit
-                            ? 'bg-[#f7fafd] text-[#43474d] border-[#e6ebf1]'
+                            ? 'bg-[#faf9f6] text-[#43474d] border-[#c1c8c1]'
                             : 'bg-[#FFF8E1] text-[#92400E] border-[#FFE082]'
                         }`}>
                           {f}{i >= orderFreeLimit && ' (+$3)'}
@@ -556,10 +556,10 @@ export default function OrdersPage() {
                 {/* Add-ons */}
                 {addOns.length > 0 && (
                   <div>
-                    <p className="text-xs font-semibold text-[#000f22] mb-2">Add-Ons</p>
+                    <p className="text-xs font-semibold text-[#29503c] mb-2">Add-Ons</p>
                     <div className="flex flex-wrap gap-1.5">
                       {addOns.map((id) => (
-                        <span key={id} className="text-[10px] px-2 py-0.5 rounded-full bg-[#00D1FF]/10 text-[#00D1FF] border border-[#00D1FF]/20">
+                        <span key={id} className="text-[10px] px-2 py-0.5 rounded-full bg-[#416853]/10 text-[#416853] border border-[#416853]/20">
                           {ADD_ON_NAMES[id] || id}
                         </span>
                       ))}
@@ -569,10 +569,10 @@ export default function OrdersPage() {
 
                 {/* Additional Info */}
                 {selectedOrder.additionalInfo && (
-                  <div className="p-3 bg-[#f7fafd] rounded-xl border border-[#e6ebf1]">
+                  <div className="p-3 bg-[#faf9f6] rounded-xl border border-[#c1c8c1]">
                     <div className="flex items-center gap-1.5 mb-1">
-                      <MessageSquare className="h-3.5 w-3.5 text-[#00D1FF]" />
-                      <span className="text-xs font-semibold text-[#000f22]">Additional Info</span>
+                      <MessageSquare className="h-3.5 w-3.5 text-[#416853]" />
+                      <span className="text-xs font-semibold text-[#29503c]">Additional Info</span>
                     </div>
                     <p className="text-sm text-[#43474d]">{selectedOrder.additionalInfo}</p>
                   </div>
@@ -583,7 +583,7 @@ export default function OrdersPage() {
                   <div className="p-3 bg-[#7C3AED]/5 rounded-xl border border-[#7C3AED]/10">
                     <div className="flex items-center gap-1.5 mb-1">
                       <Globe className="h-3.5 w-3.5 text-[#7C3AED]" />
-                      <span className="text-xs font-semibold text-[#000f22]">Similar Website</span>
+                      <span className="text-xs font-semibold text-[#29503c]">Similar Website</span>
                     </div>
                     <a
                       href={selectedOrder.similarSiteUrl.startsWith('http') ? selectedOrder.similarSiteUrl : `https://${selectedOrder.similarSiteUrl}`}
@@ -673,7 +673,7 @@ export default function OrdersPage() {
                   <div className="p-3 bg-[#FF6B35]/5 rounded-xl border border-[#FF6B35]/10">
                     <div className="flex items-center gap-1.5 mb-1">
                       <Globe className="h-3.5 w-3.5 text-[#FF6B35]" />
-                      <span className="text-xs font-semibold text-[#000f22]">Selected Domain</span>
+                      <span className="text-xs font-semibold text-[#29503c]">Selected Domain</span>
                     </div>
                     <p className="text-sm font-bold text-[#FF6B35]">{selectedOrder.domain}</p>
                     <div className="text-[10px] text-[#43474d] mt-1">
@@ -681,15 +681,15 @@ export default function OrdersPage() {
                       {selectedOrder.domainPrice && selectedOrder.domainPrice > 50 ? (
                         <span className="text-[#F59E0B] ml-1">— $50 included + ${(selectedOrder.domainPrice - 50).toFixed(2)} split at $3/mo</span>
                       ) : selectedOrder.domainPrice && selectedOrder.domainPrice <= 50 ? (
-                        <span className="text-[#10B981] ml-1">— Included free</span>
+                        <span className="text-[#29503c] ml-1">— Included free</span>
                       ) : null}
                     </div>
                   </div>
                 )}
 
                 {selectedOrder.notes && (
-                  <div className="p-3 bg-[#f7fafd] rounded-lg">
-                    <span className="text-xs text-[#4F5B76]">Admin Notes:</span>
+                  <div className="p-3 bg-[#faf9f6] rounded-lg">
+                    <span className="text-xs text-[#414843]">Admin Notes:</span>
                     <p className="text-sm mt-1">{selectedOrder.notes}</p>
                   </div>
                 )}
@@ -731,7 +731,7 @@ export default function OrdersPage() {
                         {payment.status}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-[#4F5B76]">
+                    <TableCell className="text-[#414843]">
                       {new Date(payment.createdAt).toLocaleDateString()}
                     </TableCell>
                   </TableRow>

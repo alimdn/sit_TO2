@@ -85,8 +85,8 @@ export default function ContactForm() {
       {/* Contact form */}
       <div className="lg:col-span-2">
         <div className="rounded-xl bg-white shadow-card p-6 sm:p-8">
-          <h2 className="text-2xl font-bold text-[#000f22] mb-2">Send Us a Message</h2>
-          <p className="text-sm text-[#4F5B76] mb-6">Fill out the form below and we&apos;ll get back to you as soon as possible.</p>
+          <h2 className="text-2xl font-bold text-[#29503c] mb-2">Send Us a Message</h2>
+          <p className="text-sm text-[#414843] mb-6">Fill out the form below and we&apos;ll get back to you as soon as possible.</p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -97,7 +97,7 @@ export default function ContactForm() {
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   placeholder="John Doe"
-                  className="bg-[#f7fafd]"
+                  className="bg-[#faf9f6]"
                 />
               </div>
               <div className="space-y-2">
@@ -108,7 +108,7 @@ export default function ContactForm() {
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   placeholder="john@example.com"
-                  className="bg-[#f7fafd]"
+                  className="bg-[#faf9f6]"
                 />
               </div>
             </div>
@@ -121,13 +121,13 @@ export default function ContactForm() {
                   value={form.subject}
                   onChange={(e) => setForm({ ...form, subject: e.target.value })}
                   placeholder="How can we help?"
-                  className="bg-[#f7fafd]"
+                  className="bg-[#faf9f6]"
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="category">Category</Label>
                 <Select value={form.category} onValueChange={(value) => setForm({ ...form, category: value })}>
-                  <SelectTrigger className="bg-[#f7fafd]">
+                  <SelectTrigger className="bg-[#faf9f6]">
                     <SelectValue placeholder="Select a category" />
                   </SelectTrigger>
                   <SelectContent>
@@ -148,14 +148,14 @@ export default function ContactForm() {
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
                 placeholder="Tell us more about your inquiry..."
                 rows={6}
-                className="bg-[#f7fafd] resize-none"
+                className="bg-[#faf9f6] resize-none"
               />
             </div>
 
             <Button
               type="submit"
               disabled={loading}
-              className="bg-[#000f22] hover:bg-[#0A2540] text-white h-11 px-8"
+              className="bg-[#29503c] hover:bg-[#284e3b] text-white h-11 px-8"
             >
               <Send className="h-4 w-4 mr-2" />
               {loading ? 'Sending...' : 'Send Message'}
@@ -169,24 +169,24 @@ export default function ContactForm() {
         <Card className="shadow-card">
           <CardContent className="p-6 space-y-6">
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-lg bg-[#000f22]/5 flex items-center justify-center flex-shrink-0">
-                <Mail className="h-5 w-5 text-[#000f22]" />
+              <div className="w-10 h-10 rounded-lg bg-[#29503c]/5 flex items-center justify-center flex-shrink-0">
+                <Mail className="h-5 w-5 text-[#29503c]" />
               </div>
               <div>
-                <h4 className="font-medium text-[#000f22] text-sm">Email</h4>
-                <a href={`mailto:${contactEmail}`} className="text-sm text-[#00D1FF] hover:underline break-all">
+                <h4 className="font-medium text-[#29503c] text-sm">Email</h4>
+                <a href={`mailto:${contactEmail}`} className="text-sm text-[#416853] hover:underline break-all">
                   {contactEmail}
                 </a>
               </div>
             </div>
             {addressLine1 && (
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-lg bg-[#000f22]/5 flex items-center justify-center flex-shrink-0">
-                  <MapPin className="h-5 w-5 text-[#000f22]" />
+                <div className="w-10 h-10 rounded-lg bg-[#29503c]/5 flex items-center justify-center flex-shrink-0">
+                  <MapPin className="h-5 w-5 text-[#29503c]" />
                 </div>
                 <div>
-                  <h4 className="font-medium text-[#000f22] text-sm">Address</h4>
-                  <p className="text-sm text-[#4F5B76]">
+                  <h4 className="font-medium text-[#29503c] text-sm">Address</h4>
+                  <p className="text-sm text-[#414843]">
                     {addressLine1}
                     {addressLine2 && <><br />{addressLine2}</>}
                   </p>
@@ -196,11 +196,11 @@ export default function ContactForm() {
           </CardContent>
         </Card>
 
-        <Card className="shadow-card bg-[#000f22] border-0">
+        <Card className="shadow-card bg-[#29503c] border-0">
           <CardContent className="p-6 text-center">
-            <Clock className="h-8 w-8 text-[#00D1FF] mx-auto mb-3" />
+            <Clock className="h-8 w-8 text-[#416853] mx-auto mb-3" />
             <h4 className="font-semibold text-white mb-2">Response Time</h4>
-            <p className="text-sm text-[#768dad]">
+            <p className="text-sm text-[#717973]">
               We typically respond within 24 hours on business days. For urgent issues, please mention it in your subject line.
             </p>
           </CardContent>

@@ -26,8 +26,8 @@ export default function AdminSidebar() {
             onClick={() => setAdminTab(tab.id)}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
               adminTab === tab.id
-                ? 'bg-[#000f22] text-white'
-                : 'text-[#43474d] hover:bg-[#f1f4f7]'
+                ? 'bg-[#29503c] text-white'
+                : 'text-[#43474d] hover:bg-[#eeeeea]'
             }`}
           >
             {tab.icon}

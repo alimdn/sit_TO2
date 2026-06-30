@@ -52,7 +52,7 @@ export default function HeroSection() {
       const parts = rawTitle.split(/(Website)/)
       return parts.map((part, i) =>
         part === 'Website'
-          ? <span key={i} className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D1FF] to-[#10B981]">Website</span>
+          ? <span key={i} className="text-transparent bg-clip-text bg-gradient-to-r from-[#416853] to-[#29503c]">Website</span>
           : <span key={i}>{part}</span>
       )
     }
@@ -60,7 +60,7 @@ export default function HeroSection() {
     const words = rawTitle.split(' ')
     if (words.length <= 1) return rawTitle
     const last = words.pop()
-    return <>{words.join(' ')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D1FF] to-[#10B981]">{last}</span></>
+    return <>{words.join(' ')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#416853] to-[#29503c]">{last}</span></>
   }
 
   // Navigate + scroll to top helper
@@ -70,7 +70,7 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[#000f22] via-[#0A2540] to-[#000f22] min-h-[450px] flex items-center">
+    <section className="relative overflow-hidden bg-gradient-to-br from-[#29503c] via-[#284e3b] to-[#29503c] min-h-[450px] flex items-center">
       {/* Background pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-0 w-full h-full" style={{
@@ -89,10 +89,10 @@ export default function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="animate-fade-in-up">
             {/* Premium Store Package announcement — replaces old AI-Powered badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#F59E0B]/15 to-[#10B981]/15 border border-[#F59E0B]/30 mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#F59E0B]/15 to-[#29503c]/15 border border-[#F59E0B]/30 mb-6">
               <span className="text-base">🛍️</span>
               <span className="text-[#F59E0B] text-sm font-bold">New: Store Package</span>
-              <span className="text-[#768dad] text-xs">·</span>
+              <span className="text-[#717973] text-xs">·</span>
               <span className="text-white text-xs">$100/month · Daily Backups Included</span>
             </div>
 
@@ -100,7 +100,7 @@ export default function HeroSection() {
               {renderTitle()}
             </h1>
 
-            <p className="text-base text-[#768dad] leading-relaxed mb-6 max-w-lg">
+            <p className="text-base text-[#717973] leading-relaxed mb-6 max-w-lg">
               {subtitle}
             </p>
 
@@ -108,7 +108,7 @@ export default function HeroSection() {
               {/* Primary CTA - green/large */}
               <Button
                 onClick={() => navigateTo('plans')}
-                className="bg-[#10B981] hover:bg-[#059669] text-white font-semibold h-12 px-8 text-base shadow-lg shadow-[#10B981]/20"
+                className="bg-[#29503c] hover:bg-[#284e3b] text-white font-semibold h-12 px-8 text-base shadow-lg shadow-[#29503c]/20"
               >
                 Get Started Now
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -117,18 +117,18 @@ export default function HeroSection() {
               <Button
                 onClick={() => navigateTo('templates')}
                 variant="outline"
-                className="border-[#00D1FF]/50 text-[#00D1FF] hover:bg-[#00D1FF]/10 hover:border-[#00D1FF] h-12 px-8 text-base"
+                className="border-[#416853]/50 text-[#416853] hover:bg-[#416853]/10 hover:border-[#416853] h-12 px-8 text-base"
               >
                 Browse Templates
               </Button>
             </div>
 
             {/* Real stats — no fake numbers */}
-            <div className="flex items-center gap-6 mt-6 pt-6 border-t border-[#768dad]/20">
+            <div className="flex items-center gap-6 mt-6 pt-6 border-t border-[#717973]/20">
               {REAL_STATS.map((stat, i) => (
                 <div key={i}>
                   <div className="text-xl font-bold text-white">{stat.value}</div>
-                  <div className="text-xs text-[#768dad]">{stat.label}</div>
+                  <div className="text-xs text-[#717973]">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -137,8 +137,8 @@ export default function HeroSection() {
           {/* Hero image — URL configurable from admin Settings (key: home_hero_image) */}
           <div className="hidden lg:block animate-slide-in-right">
             <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-[#00D1FF]/20 to-[#10B981]/20 rounded-2xl blur-xl" />
-              <div className="relative rounded-2xl overflow-hidden shadow-overlay border border-[#768dad]/20">
+              <div className="absolute -inset-4 bg-gradient-to-r from-[#416853]/20 to-[#29503c]/20 rounded-2xl blur-xl" />
+              <div className="relative rounded-2xl overflow-hidden shadow-overlay border border-[#717973]/20">
                 <img
                   src={settings.home_hero_image || '/images/home/hero-default.png'}
                   alt="Professional Website Design"
@@ -148,19 +148,19 @@ export default function HeroSection() {
                     ;(e.currentTarget as HTMLImageElement).src = '/images/home/hero-default.png'
                   }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#000f22]/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#29503c]/60 to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6">
                   <button
                     onClick={() => navigateTo('contact')}
                     className="w-full text-left bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/10 hover:bg-white/15 transition-colors cursor-pointer"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-[#00D1FF] flex items-center justify-center">
-                        <Play className="h-4 w-4 text-[#000f22] ml-0.5" />
+                      <div className="w-10 h-10 rounded-lg bg-[#416853] flex items-center justify-center">
+                        <Play className="h-4 w-4 text-[#29503c] ml-0.5" />
                       </div>
                       <div>
                         <div className="text-white text-sm font-medium">Schedule a Demo</div>
-                        <div className="text-[#768dad] text-xs">Book a 15-minute walkthrough</div>
+                        <div className="text-[#717973] text-xs">Book a 15-minute walkthrough</div>
                       </div>
                     </div>
                   </button>
@@ -171,14 +171,14 @@ export default function HeroSection() {
         </div>
 
         {/* Trust Bar — horizontal bar below hero content */}
-        <div className="mt-10 pt-8 border-t border-[#768dad]/10">
+        <div className="mt-10 pt-8 border-t border-[#717973]/10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {TRUST_ITEMS.map((item, i) => {
               const Icon = item.icon
               return (
-                <div key={i} className="flex items-center gap-3 text-[#768dad]">
-                  <div className="w-8 h-8 rounded-lg bg-[#10B981]/10 border border-[#10B981]/20 flex items-center justify-center flex-shrink-0">
-                    <Icon className="h-4 w-4 text-[#10B981]" />
+                <div key={i} className="flex items-center gap-3 text-[#717973]">
+                  <div className="w-8 h-8 rounded-lg bg-[#29503c]/10 border border-[#29503c]/20 flex items-center justify-center flex-shrink-0">
+                    <Icon className="h-4 w-4 text-[#29503c]" />
                   </div>
                   <span className="text-xs font-medium">{item.label}</span>
                 </div>

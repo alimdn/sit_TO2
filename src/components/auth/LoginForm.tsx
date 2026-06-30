@@ -69,12 +69,12 @@ export default function LoginForm() {
         {/* Brand */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 mb-4">
-            <div className="w-10 h-10 bg-[#000f22] rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-[#29503c] rounded-xl flex items-center justify-center">
               <span className="text-white font-bold text-lg">W</span>
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-[#000f22]">Welcome Back</h1>
-          <p className="text-sm text-[#4F5B76] mt-1">Sign in to your account</p>
+          <h1 className="text-2xl font-bold text-[#29503c]">Welcome Back</h1>
+          <p className="text-sm text-[#414843] mt-1">Sign in to your account</p>
         </div>
 
         {/* Form */}
@@ -88,14 +88,14 @@ export default function LoginForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="bg-[#f7fafd]"
+                className="bg-[#faf9f6]"
               />
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
-                <button type="button" className="text-xs text-[#00D1FF] hover:underline">
+                <button type="button" className="text-xs text-[#416853] hover:underline">
                   Forgot Password?
                 </button>
               </div>
@@ -106,12 +106,12 @@ export default function LoginForm() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  className="bg-[#f7fafd] pr-10"
+                  className="bg-[#faf9f6] pr-10"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#74777e] hover:text-[#000f22]"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#717973] hover:text-[#29503c]"
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
@@ -132,17 +132,17 @@ export default function LoginForm() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#000f22] hover:bg-[#0A2540] text-white h-11"
+              className="w-full bg-[#29503c] hover:bg-[#284e3b] text-white h-11"
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </Button>
           </form>
 
-          <div className="mt-6 pt-6 border-t border-[#e6ebf1] text-center">
-            <p className="text-sm text-[#4F5B76]">
+          <div className="mt-6 pt-6 border-t border-[#c1c8c1] text-center">
+            <p className="text-sm text-[#414843]">
               Demo accounts available:
             </p>
-            <div className="mt-2 space-y-1 text-xs text-[#4F5B76]">
+            <div className="mt-2 space-y-1 text-xs text-[#414843]">
               <p>Admin: admin@webforge.com / admin123</p>
               <p>User: demo@webforge.com / demo123</p>
             </div>

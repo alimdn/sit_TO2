@@ -111,10 +111,10 @@ export default function AdminMessages() {
   }
 
   const statusColors: Record<string, string> = {
-    open: 'bg-[#00D1FF]/10 text-[#00D1FF]',
+    open: 'bg-[#416853]/10 text-[#416853]',
     in_progress: 'bg-[#FFB800]/10 text-[#FFB800]',
-    resolved: 'bg-[#10B981]/10 text-[#10B981]',
-    closed: 'bg-[#74777e]/10 text-[#74777e]',
+    resolved: 'bg-[#29503c]/10 text-[#29503c]',
+    closed: 'bg-[#717973]/10 text-[#717973]',
   }
 
   const unreadCount = contacts.filter(c => !c.isRead).length
@@ -123,7 +123,7 @@ export default function AdminMessages() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-[#000f22] flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-[#29503c] flex items-center gap-2">
             Messages
             {unreadCount > 0 && (
               <Badge className="bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/20">
@@ -131,7 +131,7 @@ export default function AdminMessages() {
               </Badge>
             )}
           </h2>
-          <p className="text-xs text-[#4F5B76] mt-1">
+          <p className="text-xs text-[#414843] mt-1">
             Auto-refreshing every 8 seconds — new messages appear automatically.
           </p>
         </div>
@@ -140,7 +140,7 @@ export default function AdminMessages() {
             variant="outline"
             size="sm"
             onClick={() => setAutoRefresh(!autoRefresh)}
-            className={`h-9 border-[#e6ebf1] ${autoRefresh ? 'text-[#10B981]' : 'text-[#74777e]'}`}
+            className={`h-9 border-[#c1c8c1] ${autoRefresh ? 'text-[#29503c]' : 'text-[#717973]'}`}
           >
             {autoRefresh ? 'Auto: ON' : 'Auto: OFF'}
           </Button>
@@ -149,7 +149,7 @@ export default function AdminMessages() {
             size="sm"
             onClick={handleManualRefresh}
             disabled={refreshing}
-            className="h-9 border-[#e6ebf1] hover:bg-[#f7fafd]"
+            className="h-9 border-[#c1c8c1] hover:bg-[#faf9f6]"
           >
             <RefreshCw className={`h-4 w-4 mr-1.5 ${refreshing ? 'animate-spin' : ''}`} />
             Refresh
@@ -158,7 +158,7 @@ export default function AdminMessages() {
       </div>
 
       <Tabs defaultValue="contact">
-        <TabsList className="bg-[#f1f4f7]">
+        <TabsList className="bg-[#eeeeea]">
           <TabsTrigger value="contact">Contact Messages ({contacts.length})</TabsTrigger>
           <TabsTrigger value="support">Support Tickets ({tickets.length})</TabsTrigger>
         </TabsList>
@@ -183,17 +183,17 @@ export default function AdminMessages() {
                       <TableCell>
                         <div>
                           <div className="font-medium text-sm">{c.name}</div>
-                          <div className="text-xs text-[#4F5B76]">{c.email}</div>
+                          <div className="text-xs text-[#414843]">{c.email}</div>
                         </div>
                       </TableCell>
                       <TableCell className="text-sm">{c.subject}</TableCell>
                       <TableCell><Badge variant="secondary" className="text-xs capitalize">{c.category}</Badge></TableCell>
                       <TableCell>
-                        <Badge className={c.isRead ? 'bg-[#10B981]/10 text-[#10B981]' : 'bg-[#FFB800]/10 text-[#FFB800]'}>
+                        <Badge className={c.isRead ? 'bg-[#29503c]/10 text-[#29503c]' : 'bg-[#FFB800]/10 text-[#FFB800]'}>
                           {c.isRead ? 'Read' : 'Unread'}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-xs text-[#4F5B76]">{new Date(c.createdAt).toLocaleDateString()}</TableCell>
+                      <TableCell className="text-xs text-[#414843]">{new Date(c.createdAt).toLocaleDateString()}</TableCell>
                       <TableCell>
                         <div className="flex items-center gap-1">
                           <Button
@@ -210,7 +210,7 @@ export default function AdminMessages() {
                               variant="ghost"
                               size="sm"
                               onClick={() => markAsRead(c.id)}
-                              className="h-8 px-2 text-[#10B981] hover:bg-[#10B981]/10"
+                              className="h-8 px-2 text-[#29503c] hover:bg-[#29503c]/10"
                               title="Mark as read"
                             >
                               <MailOpen className="h-4 w-4" />
@@ -231,7 +231,7 @@ export default function AdminMessages() {
                   ))}
                   {contacts.length === 0 && (
                     <TableRow>
-                      <TableCell colSpan={6} className="text-center py-8 text-[#4F5B76]">No contact messages</TableCell>
+                      <TableCell colSpan={6} className="text-center py-8 text-[#414843]">No contact messages</TableCell>
                     </TableRow>
                   )}
                 </TableBody>
@@ -260,7 +260,7 @@ export default function AdminMessages() {
                       <TableCell>
                         <div>
                           <div className="font-medium text-sm">{t.user?.name || 'Unknown'}</div>
-                          <div className="text-xs text-[#4F5B76]">{t.user?.email || ''}</div>
+                          <div className="text-xs text-[#414843]">{t.user?.email || ''}</div>
                         </div>
                       </TableCell>
                       <TableCell className="text-sm">{t.subject}</TableCell>
@@ -270,7 +270,7 @@ export default function AdminMessages() {
                         </Badge>
                       </TableCell>
                       <TableCell className="capitalize text-sm">{t.priority}</TableCell>
-                      <TableCell className="text-xs text-[#4F5B76]">{new Date(t.createdAt).toLocaleDateString()}</TableCell>
+                      <TableCell className="text-xs text-[#414843]">{new Date(t.createdAt).toLocaleDateString()}</TableCell>
                       <TableCell>
                         <Button variant="ghost" size="sm" onClick={() => setSelectedTicket(t)}>View</Button>
                       </TableCell>
@@ -292,13 +292,13 @@ export default function AdminMessages() {
           {selectedContact && (
             <div className="space-y-4 mt-4">
               <div className="grid grid-cols-2 gap-4 text-sm">
-                <div><span className="text-[#4F5B76]">From:</span> <span className="font-medium">{selectedContact.name}</span></div>
-                <div><span className="text-[#4F5B76]">Email:</span> <span className="font-medium">{selectedContact.email}</span></div>
-                <div><span className="text-[#4F5B76]">Category:</span> <span className="font-medium capitalize">{selectedContact.category}</span></div>
-                <div><span className="text-[#4F5B76]">Date:</span> <span className="font-medium">{new Date(selectedContact.createdAt).toLocaleString()}</span></div>
+                <div><span className="text-[#414843]">From:</span> <span className="font-medium">{selectedContact.name}</span></div>
+                <div><span className="text-[#414843]">Email:</span> <span className="font-medium">{selectedContact.email}</span></div>
+                <div><span className="text-[#414843]">Category:</span> <span className="font-medium capitalize">{selectedContact.category}</span></div>
+                <div><span className="text-[#414843]">Date:</span> <span className="font-medium">{new Date(selectedContact.createdAt).toLocaleString()}</span></div>
               </div>
-              <div className="p-4 bg-[#f7fafd] rounded-xl">
-                <p className="text-sm text-[#000f22] whitespace-pre-wrap">{selectedContact.message}</p>
+              <div className="p-4 bg-[#faf9f6] rounded-xl">
+                <p className="text-sm text-[#29503c] whitespace-pre-wrap">{selectedContact.message}</p>
               </div>
             </div>
           )}
@@ -322,19 +322,19 @@ export default function AdminMessages() {
               <ScrollArea className="h-64">
                 <div className="space-y-3">
                   {selectedTicket.messages?.map((msg) => (
-                    <div key={msg.id} className="p-3 bg-[#f7fafd] rounded-lg">
+                    <div key={msg.id} className="p-3 bg-[#faf9f6] rounded-lg">
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-xs font-medium">{msg.sender?.name || 'Unknown'}</span>
-                        <span className="text-xs text-[#74777e]">{new Date(msg.createdAt).toLocaleString()}</span>
+                        <span className="text-xs text-[#717973]">{new Date(msg.createdAt).toLocaleString()}</span>
                       </div>
-                      <p className="text-sm text-[#000f22] whitespace-pre-wrap">{msg.content}</p>
+                      <p className="text-sm text-[#29503c] whitespace-pre-wrap">{msg.content}</p>
                     </div>
                   ))}
                 </div>
               </ScrollArea>
               <div className="flex gap-2">
-                <Button size="sm" onClick={() => updateTicketStatus(selectedTicket.id, 'resolved')} className="bg-[#10B981] hover:bg-[#059669] text-white">Resolve</Button>
-                <Button size="sm" variant="outline" onClick={() => updateTicketStatus(selectedTicket.id, 'closed')} className="border-[#e6ebf1]">Close</Button>
+                <Button size="sm" onClick={() => updateTicketStatus(selectedTicket.id, 'resolved')} className="bg-[#29503c] hover:bg-[#284e3b] text-white">Resolve</Button>
+                <Button size="sm" variant="outline" onClick={() => updateTicketStatus(selectedTicket.id, 'closed')} className="border-[#c1c8c1]">Close</Button>
               </div>
             </div>
           )}

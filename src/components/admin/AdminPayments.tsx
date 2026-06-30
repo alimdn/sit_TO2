@@ -90,8 +90,8 @@ export default function AdminPayments() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-[#000f22]">Payment Gateways</h2>
-        <Button onClick={openCreate} className="bg-[#000f22] hover:bg-[#0A2540] text-white h-9">
+        <h2 className="text-2xl font-bold text-[#29503c]">Payment Gateways</h2>
+        <Button onClick={openCreate} className="bg-[#29503c] hover:bg-[#284e3b] text-white h-9">
           <Plus className="h-4 w-4 mr-2" /> Add Gateway
         </Button>
       </div>
@@ -106,7 +106,7 @@ export default function AdminPayments() {
                   <CardTitle className="text-base">{gateway.name}</CardTitle>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Badge className={gateway.active ? 'bg-[#10B981]/10 text-[#10B981]' : 'bg-[#74777e]/10 text-[#74777e]'}>
+                  <Badge className={gateway.active ? 'bg-[#29503c]/10 text-[#29503c]' : 'bg-[#717973]/10 text-[#717973]'}>
                     {gateway.active ? 'Active' : 'Inactive'}
                   </Badge>
                 </div>
@@ -118,10 +118,10 @@ export default function AdminPayments() {
                   <Badge variant="outline" className="text-xs border-[#FFB800] text-[#FFB800]">Test Mode</Badge>
                 )}
                 {gateway.apiKey && (
-                  <p className="text-xs text-[#4F5B76]">Key: {gateway.apiKey.slice(0, 10)}...</p>
+                  <p className="text-xs text-[#414843]">Key: {gateway.apiKey.slice(0, 10)}...</p>
                 )}
               </div>
-              <Button variant="outline" size="sm" onClick={() => openEdit(gateway)} className="w-full border-[#e6ebf1]">
+              <Button variant="outline" size="sm" onClick={() => openEdit(gateway)} className="w-full border-[#c1c8c1]">
                 <Pencil className="h-4 w-4 mr-2" /> Configure
               </Button>
             </CardContent>
@@ -148,7 +148,7 @@ export default function AdminPayments() {
                       key={p}
                       onClick={() => setForm({ ...form, provider: p })}
                       className={`flex-1 py-2 rounded-lg text-xs font-medium transition-colors capitalize ${
-                        form.provider === p ? 'bg-[#000f22] text-white' : 'bg-[#f1f4f7] text-[#43474d]'
+                        form.provider === p ? 'bg-[#29503c] text-white' : 'bg-[#eeeeea] text-[#43474d]'
                       }`}
                     >
                       {p === 'bank' ? 'Bank' : p}
@@ -175,7 +175,7 @@ export default function AdminPayments() {
                 <Label>Active</Label>
               </div>
             </div>
-            <Button onClick={handleSave} className="w-full bg-[#000f22] hover:bg-[#0A2540] text-white">
+            <Button onClick={handleSave} className="w-full bg-[#29503c] hover:bg-[#284e3b] text-white">
               {editing ? 'Update Gateway' : 'Add Gateway'}
             </Button>
           </div>

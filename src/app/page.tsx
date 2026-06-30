@@ -72,28 +72,28 @@ function TemplatesPage() {
     <div className="page-enter py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
-          <span className="label-style text-[#00D1FF] text-xs block mb-3">Our Templates</span>
+          <span className="label-style text-[#416853] text-xs block mb-3">Our Templates</span>
           <div className="flex items-center justify-center gap-3 flex-wrap">
-            <h1 className="text-3xl sm:text-4xl font-bold text-[#000f22]" style={{ letterSpacing: '-0.02em' }}>
+            <h1 className="text-3xl sm:text-4xl font-bold text-[#29503c]" style={{ letterSpacing: '-0.02em' }}>
               Browse Website Templates
             </h1>
             {templateCount !== null && (
               <span
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-semibold bg-[#000f22] text-white shadow-card"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-semibold bg-[#29503c] text-white shadow-card"
                 title={`${templateCount} templates available`}
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-[#00D1FF] animate-pulse" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#416853] animate-pulse" />
                 {templateCount}
               </span>
             )}
           </div>
-          <p className="mt-4 text-[#4F5B76] max-w-2xl mx-auto">
+          <p className="mt-4 text-[#414843] max-w-2xl mx-auto">
             Choose from our collection of professionally designed templates. Each one is fully customizable to match your brand.
           </p>
         </div>
         <TemplateGrid />
       </div>
-      <Suspense fallback={<div className="fixed inset-0 z-50 bg-[#f7fafd] flex items-center justify-center"><div className="w-8 h-8 border-[3px] border-[#00D1FF] border-t-transparent rounded-full animate-spin" /></div>}>
+      <Suspense fallback={<div className="fixed inset-0 z-50 bg-[#faf9f6] flex items-center justify-center"><div className="w-8 h-8 border-[3px] border-[#416853] border-t-transparent rounded-full animate-spin" /></div>}>
         <TemplatePreview />
       </Suspense>
     </div>
@@ -115,11 +115,11 @@ function ContactPage() {
     <div className="page-enter py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
-          <span className="label-style text-[#00D1FF] text-xs block mb-3">Get In Touch</span>
-          <h1 className="text-3xl sm:text-4xl font-bold text-[#000f22]" style={{ letterSpacing: '-0.02em' }}>
+          <span className="label-style text-[#416853] text-xs block mb-3">Get In Touch</span>
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#29503c]" style={{ letterSpacing: '-0.02em' }}>
             Contact Us
           </h1>
-          <p className="mt-4 text-[#4F5B76] max-w-2xl mx-auto">
+          <p className="mt-4 text-[#414843] max-w-2xl mx-auto">
             Have a question or need help? We&apos;d love to hear from you. Send us a message and we&apos;ll respond as soon as possible.
           </p>
         </div>
@@ -147,11 +147,11 @@ function CheckoutPageRoute() {
           <div className="w-16 h-16 rounded-full bg-[#FFF8E1] flex items-center justify-center mx-auto mb-4">
             <svg className="w-8 h-8 text-[#F59E0B]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
           </div>
-          <h2 className="text-xl font-bold text-[#000f22] mb-2">Sign In Required</h2>
-          <p className="text-[#4F5B76] mb-6">You need to create an account or sign in to complete your purchase and proceed to payment.</p>
+          <h2 className="text-xl font-bold text-[#29503c] mb-2">Sign In Required</h2>
+          <p className="text-[#414843] mb-6">You need to create an account or sign in to complete your purchase and proceed to payment.</p>
           <Button
             onClick={() => setCurrentPage('login')}
-            className="bg-[#000f22] hover:bg-[#0A2540] text-white font-semibold h-11 px-8"
+            className="bg-[#29503c] hover:bg-[#284e3b] text-white font-semibold h-11 px-8"
           >
             Sign In to Continue
           </Button>
@@ -176,10 +176,10 @@ function DashboardPage() {
     return (
       <div className="min-h-[50vh] flex items-center justify-center">
         <div className="text-center">
-          <p className="text-[#4F5B76] mb-4">Please sign in to access your dashboard.</p>
+          <p className="text-[#414843] mb-4">Please sign in to access your dashboard.</p>
           <button
             onClick={() => setCurrentPage('login')}
-            className="text-[#00D1FF] font-medium hover:underline"
+            className="text-[#416853] font-medium hover:underline"
           >
             Sign In
           </button>
@@ -219,10 +219,10 @@ function AdminPage() {
     return (
       <div className="min-h-[50vh] flex items-center justify-center">
         <div className="text-center">
-          <p className="text-[#4F5B76] mb-4">You don&apos;t have access to the admin panel.</p>
+          <p className="text-[#414843] mb-4">You don&apos;t have access to the admin panel.</p>
           <button
             onClick={() => setCurrentPage('home')}
-            className="text-[#00D1FF] font-medium hover:underline"
+            className="text-[#416853] font-medium hover:underline"
           >
             Go Home
           </button>
@@ -295,7 +295,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f7fafd]">
+    <div className="min-h-screen flex flex-col bg-[#faf9f6]">
       <Header />
       <main className="flex-1">
         {renderPage()}
@@ -336,7 +336,7 @@ function ScrollToBottomButton() {
   return (
     <button
       onClick={() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' })}
-      className="fixed bottom-6 right-6 z-40 w-11 h-11 rounded-full bg-[#000f22] hover:bg-[#0A2540] text-white shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 group"
+      className="fixed bottom-6 right-6 z-40 w-11 h-11 rounded-full bg-[#29503c] hover:bg-[#284e3b] text-white shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 group"
       title="Scroll to bottom"
       aria-label="Scroll to bottom"
     >

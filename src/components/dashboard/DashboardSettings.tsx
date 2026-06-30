@@ -84,7 +84,7 @@ export default function DashboardSettings() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-[#000f22]">Settings</h2>
+      <h2 className="text-2xl font-bold text-[#29503c]">Settings</h2>
 
       {/* Profile */}
       <Card className="shadow-card">
@@ -98,7 +98,7 @@ export default function DashboardSettings() {
               <Input
                 value={profile.name}
                 onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-                className="bg-[#f7fafd]"
+                className="bg-[#faf9f6]"
               />
             </div>
             <div className="space-y-2">
@@ -106,7 +106,7 @@ export default function DashboardSettings() {
               <Input
                 value={profile.email}
                 onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-                className="bg-[#f7fafd]"
+                className="bg-[#faf9f6]"
                 disabled
               />
             </div>
@@ -115,7 +115,7 @@ export default function DashboardSettings() {
               <Input
                 value={profile.phone}
                 onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
-                className="bg-[#f7fafd]"
+                className="bg-[#faf9f6]"
                 placeholder="+1 (555) 123-4567"
               />
             </div>
@@ -124,12 +124,12 @@ export default function DashboardSettings() {
               <Input
                 value={profile.company}
                 onChange={(e) => setProfile({ ...profile, company: e.target.value })}
-                className="bg-[#f7fafd]"
+                className="bg-[#faf9f6]"
                 placeholder="Your company name"
               />
             </div>
           </div>
-          <Button onClick={handleProfileSave} className="bg-[#000f22] hover:bg-[#0A2540] text-white">
+          <Button onClick={handleProfileSave} className="bg-[#29503c] hover:bg-[#284e3b] text-white">
             Save Changes
           </Button>
         </CardContent>
@@ -147,7 +147,7 @@ export default function DashboardSettings() {
               type="password"
               value={passwords.current}
               onChange={(e) => setPasswords({ ...passwords, current: e.target.value })}
-              className="bg-[#f7fafd]"
+              className="bg-[#faf9f6]"
             />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -157,7 +157,7 @@ export default function DashboardSettings() {
                 type="password"
                 value={passwords.newPass}
                 onChange={(e) => setPasswords({ ...passwords, newPass: e.target.value })}
-                className="bg-[#f7fafd]"
+                className="bg-[#faf9f6]"
               />
             </div>
             <div className="space-y-2">
@@ -166,11 +166,11 @@ export default function DashboardSettings() {
                 type="password"
                 value={passwords.confirm}
                 onChange={(e) => setPasswords({ ...passwords, confirm: e.target.value })}
-                className="bg-[#f7fafd]"
+                className="bg-[#faf9f6]"
               />
             </div>
           </div>
-          <Button onClick={handlePasswordChange} className="bg-[#000f22] hover:bg-[#0A2540] text-white">
+          <Button onClick={handlePasswordChange} className="bg-[#29503c] hover:bg-[#284e3b] text-white">
             Change Password
           </Button>
         </CardContent>
@@ -182,12 +182,12 @@ export default function DashboardSettings() {
           <CardTitle className="text-base">Account Preferences</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center justify-between p-4 bg-[#f7fafd] rounded-xl">
+          <div className="flex items-center justify-between p-4 bg-[#faf9f6] rounded-xl">
             <div>
-              <p className="font-medium text-[#000f22] text-sm">Email Notifications</p>
-              <p className="text-xs text-[#4F5B76] mt-0.5">Receive updates about your orders and subscriptions</p>
+              <p className="font-medium text-[#29503c] text-sm">Email Notifications</p>
+              <p className="text-xs text-[#414843] mt-0.5">Receive updates about your orders and subscriptions</p>
             </div>
-            <Button variant="outline" size="sm" className="border-[#e6ebf1]">
+            <Button variant="outline" size="sm" className="border-[#c1c8c1]">
               Enabled
             </Button>
           </div>

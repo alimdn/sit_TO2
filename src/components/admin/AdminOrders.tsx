@@ -662,21 +662,21 @@ export default function AdminOrders() {
 
   const statusColors: Record<string, string> = {
     pending: 'bg-[#FFB800]/10 text-[#FFB800]',
-    in_progress: 'bg-[#00D1FF]/10 text-[#00D1FF]',
-    review: 'bg-[#768dad]/10 text-[#768dad]',
-    completed: 'bg-[#10B981]/10 text-[#10B981]',
+    in_progress: 'bg-[#416853]/10 text-[#416853]',
+    review: 'bg-[#717973]/10 text-[#717973]',
+    completed: 'bg-[#29503c]/10 text-[#29503c]',
   }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-[#000f22]">Orders Management</h2>
-          <p className="text-xs text-[#4F5B76] mt-1 flex items-center gap-3 flex-wrap">
+          <h2 className="text-2xl font-bold text-[#29503c]">Orders Management</h2>
+          <p className="text-xs text-[#414843] mt-1 flex items-center gap-3 flex-wrap">
             <span>
-              <span className="font-semibold text-[#10B981]">{orders.filter(o => o.status === 'completed').length}</span> completed
+              <span className="font-semibold text-[#29503c]">{orders.filter(o => o.status === 'completed').length}</span> completed
               <span className="mx-1">·</span>
-              <span className="font-semibold text-[#00D1FF]">{orders.filter(o => o.status === 'in_progress').length}</span> in progress
+              <span className="font-semibold text-[#416853]">{orders.filter(o => o.status === 'in_progress').length}</span> in progress
               <span className="mx-1">·</span>
               <span className="font-semibold text-[#FFB800]">{orders.filter(o => o.status === 'pending').length}</span> pending
               <span className="mx-1">·</span>
@@ -689,7 +689,7 @@ export default function AdminOrders() {
             variant="outline"
             onClick={handleRefresh}
             disabled={refreshing}
-            className="h-9 border-[#e6ebf1] hover:bg-[#f7fafd]"
+            className="h-9 border-[#c1c8c1] hover:bg-[#faf9f6]"
           >
             <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
             Refresh
@@ -697,7 +697,7 @@ export default function AdminOrders() {
           <Button
             onClick={handleCreateTestOrder}
             disabled={creating}
-            className="bg-[#000f22] hover:bg-[#0A2540] text-white h-9"
+            className="bg-[#29503c] hover:bg-[#284e3b] text-white h-9"
           >
             {creating ? (
               <>
@@ -746,7 +746,7 @@ export default function AdminOrders() {
                     <TableCell>
                       <div>
                         <div className="text-sm font-medium">{order.user?.name || 'Unknown'}</div>
-                        <div className="text-xs text-[#4F5B76]">{order.user?.email || ''}</div>
+                        <div className="text-xs text-[#414843]">{order.user?.email || ''}</div>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -756,18 +756,18 @@ export default function AdminOrders() {
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        <div className="w-16 h-1.5 rounded-full bg-[#e6ebf1] overflow-hidden">
-                          <div className="h-full bg-[#00D1FF] rounded-full transition-all" style={{ width: `${order.progress}%` }} />
+                        <div className="w-16 h-1.5 rounded-full bg-[#c1c8c1] overflow-hidden">
+                          <div className="h-full bg-[#416853] rounded-full transition-all" style={{ width: `${order.progress}%` }} />
                         </div>
                         <span className="text-xs">{order.progress}%</span>
                       </div>
                     </TableCell>
                     <TableCell>
-                      <span className="text-xs text-[#4F5B76]">
+                      <span className="text-xs text-[#414843]">
                         {features.length} feat{addOns.length > 0 ? ` + ${addOns.length} add` : ''}
                       </span>
                     </TableCell>
-                    <TableCell className="text-[#4F5B76]">{new Date(order.createdAt).toLocaleDateString()}</TableCell>
+                    <TableCell className="text-[#414843]">{new Date(order.createdAt).toLocaleDateString()}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-1">
                         <Button variant="ghost" size="sm" onClick={() => openOrderDetail(order)}>
@@ -789,7 +789,7 @@ export default function AdminOrders() {
               })}
               {orders.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center py-8 text-[#4F5B76]">No orders yet</TableCell>
+                  <TableCell colSpan={7} className="text-center py-8 text-[#414843]">No orders yet</TableCell>
                 </TableRow>
               )}
             </TableBody>
@@ -802,7 +802,7 @@ export default function AdminOrders() {
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <FileText className="h-5 w-5 text-[#00D1FF]" />
+              <FileText className="h-5 w-5 text-[#416853]" />
               Order #{selected?.id.slice(-8)}
             </DialogTitle>
           </DialogHeader>
@@ -818,36 +818,36 @@ export default function AdminOrders() {
                 {/* Customer & Order Info */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
                   <div>
-                    <span className="text-[#4F5B76] text-xs">Customer</span>
+                    <span className="text-[#414843] text-xs">Customer</span>
                     <p className="font-medium">{selected.user?.name}</p>
                   </div>
                   <div>
-                    <span className="text-[#4F5B76] text-xs">Email</span>
+                    <span className="text-[#414843] text-xs">Email</span>
                     <p className="font-medium text-xs">{selected.user?.email}</p>
                   </div>
                   <div>
-                    <span className="text-[#4F5B76] text-xs">Billing</span>
+                    <span className="text-[#414843] text-xs">Billing</span>
                     <p className="font-medium capitalize">{selected.billing || 'N/A'}</p>
                   </div>
                   <div>
-                    <span className="text-[#4F5B76] text-xs">Created</span>
+                    <span className="text-[#414843] text-xs">Created</span>
                     <p className="font-medium">{new Date(selected.createdAt).toLocaleDateString()}</p>
                   </div>
                 </div>
 
                 {/* ─── WORK MANAGEMENT SECTION ─── */}
-                <div className="border border-[#e6ebf1] rounded-2xl overflow-hidden">
-                  <div className="flex items-center justify-between px-5 py-3 bg-[#f7fafd] border-b border-[#e6ebf1]">
+                <div className="border border-[#c1c8c1] rounded-2xl overflow-hidden">
+                  <div className="flex items-center justify-between px-5 py-3 bg-[#faf9f6] border-b border-[#c1c8c1]">
                     <div className="flex items-center gap-2">
-                      <Edit3 className="h-4 w-4 text-[#000f22]" />
-                      <span className="font-semibold text-sm text-[#000f22]">Work Management</span>
+                      <Edit3 className="h-4 w-4 text-[#29503c]" />
+                      <span className="font-semibold text-sm text-[#29503c]">Work Management</span>
                     </div>
                     {!isEditing ? (
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => setIsEditing(true)}
-                        className="h-7 text-xs border-[#00D1FF] text-[#00D1FF] hover:bg-[#00D1FF] hover:text-[#000f22]"
+                        className="h-7 text-xs border-[#416853] text-[#416853] hover:bg-[#416853] hover:text-[#29503c]"
                       >
                         <Edit3 className="h-3 w-3 mr-1" /> Edit
                       </Button>
@@ -864,7 +864,7 @@ export default function AdminOrders() {
                         <Button
                           size="sm"
                           onClick={handleSaveWork}
-                          className="h-7 text-xs bg-[#10B981] hover:bg-[#059669] text-white"
+                          className="h-7 text-xs bg-[#29503c] hover:bg-[#284e3b] text-white"
                         >
                           <Save className="h-3 w-3 mr-1" /> Save
                         </Button>
@@ -903,14 +903,14 @@ export default function AdminOrders() {
                               max="100"
                               value={editProgress}
                               onChange={(e) => setEditProgress(Number(e.target.value))}
-                              className="flex-1 h-1.5 accent-[#00D1FF]"
+                              className="flex-1 h-1.5 accent-[#416853]"
                             />
                             <span className="text-xs font-medium w-8 text-right">{editProgress}%</span>
                           </div>
                         ) : (
                           <div className="flex items-center gap-2 mt-1">
-                            <div className="flex-1 h-2 rounded-full bg-[#e6ebf1] overflow-hidden">
-                              <div className="h-full bg-[#00D1FF] rounded-full transition-all" style={{ width: `${selected.progress}%` }} />
+                            <div className="flex-1 h-2 rounded-full bg-[#c1c8c1] overflow-hidden">
+                              <div className="h-full bg-[#416853] rounded-full transition-all" style={{ width: `${selected.progress}%` }} />
                             </div>
                             <span className="text-xs font-medium">{selected.progress}%</span>
                           </div>
@@ -922,7 +922,7 @@ export default function AdminOrders() {
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
                         <Label className="text-xs">Milestones (click to toggle status — auto-saves)</Label>
-                        <span className="text-[10px] font-medium text-[#00D1FF]">
+                        <span className="text-[10px] font-medium text-[#416853]">
                           {editMilestones.filter(m => m.status === 'completed').length}/{editMilestones.length} done
                         </span>
                       </div>
@@ -932,10 +932,10 @@ export default function AdminOrders() {
                             key={i}
                             className={`flex items-center gap-2 p-2 rounded-lg border transition-all ${
                               ms.status === 'completed'
-                                ? 'bg-[#10B981]/5 border-[#10B981]/30'
+                                ? 'bg-[#29503c]/5 border-[#29503c]/30'
                                 : ms.status === 'in_progress'
-                                  ? 'bg-[#00D1FF]/5 border-[#00D1FF]/30'
-                                  : 'bg-[#f7fafd] border-[#e6ebf1]'
+                                  ? 'bg-[#416853]/5 border-[#416853]/30'
+                                  : 'bg-[#faf9f6] border-[#c1c8c1]'
                             }`}
                           >
                             <button
@@ -943,29 +943,29 @@ export default function AdminOrders() {
                               title={`Click to change status (current: ${ms.status})`}
                               className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 transition-all cursor-pointer hover:scale-110 ${
                                 ms.status === 'completed'
-                                  ? 'bg-[#10B981] text-white'
+                                  ? 'bg-[#29503c] text-white'
                                   : ms.status === 'in_progress'
-                                    ? 'bg-[#00D1FF] text-white'
-                                    : 'bg-white border-2 border-[#c4c6ce] text-transparent hover:border-[#10B981]'
+                                    ? 'bg-[#416853] text-white'
+                                    : 'bg-white border-2 border-[#c1c8c1] text-transparent hover:border-[#29503c]'
                               }`}
                             >
                               {ms.status === 'completed' && <Check className="h-3.5 w-3.5" />}
                               {ms.status === 'in_progress' && <span className="text-[9px] font-bold">→</span>}
                             </button>
                             <div className="flex-1 min-w-0">
-                              <span className={`text-xs block ${ms.status === 'pending' ? 'text-[#74777e]' : 'text-[#000f22] font-medium'}`}>
+                              <span className={`text-xs block ${ms.status === 'pending' ? 'text-[#717973]' : 'text-[#29503c] font-medium'}`}>
                                 {ms.name}
                               </span>
                               {ms.date && ms.status === 'completed' && (
-                                <span className="text-[9px] text-[#10B981]">
+                                <span className="text-[9px] text-[#29503c]">
                                   ✓ {new Date(ms.date).toLocaleDateString()} {new Date(ms.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </span>
                               )}
                             </div>
                             <Badge className={`text-[9px] px-1.5 py-0 ${
-                              ms.status === 'completed' ? 'bg-[#10B981]/10 text-[#10B981]' :
-                              ms.status === 'in_progress' ? 'bg-[#00D1FF]/10 text-[#00D1FF]' :
-                              'bg-[#e6ebf1] text-[#74777e]'
+                              ms.status === 'completed' ? 'bg-[#29503c]/10 text-[#29503c]' :
+                              ms.status === 'in_progress' ? 'bg-[#416853]/10 text-[#416853]' :
+                              'bg-[#c1c8c1] text-[#717973]'
                             }`}>
                               {ms.status === 'completed' ? 'Done' : ms.status === 'in_progress' ? 'Active' : 'Pending'}
                             </Badge>
@@ -996,7 +996,7 @@ export default function AdminOrders() {
                             size="sm"
                             onClick={addMilestone}
                             disabled={!newMilestoneName.trim()}
-                            className="h-8 px-3 border-[#00D1FF] text-[#00D1FF] hover:bg-[#00D1FF] hover:text-[#000f22] text-xs flex-shrink-0"
+                            className="h-8 px-3 border-[#416853] text-[#416853] hover:bg-[#416853] hover:text-[#29503c] text-xs flex-shrink-0"
                           >
                             <Plus className="h-3 w-3 mr-1" /> Add
                           </Button>
@@ -1025,20 +1025,20 @@ export default function AdminOrders() {
                 </div>
 
                 {/* Features as Copyable Text Block */}
-                <div className="bg-[#0A2540] rounded-2xl overflow-hidden">
-                  <div className="flex items-center justify-between px-5 py-3 border-b border-[#768dad]/20">
+                <div className="bg-[#284e3b] rounded-2xl overflow-hidden">
+                  <div className="flex items-center justify-between px-5 py-3 border-b border-[#717973]/20">
                     <div className="flex items-center gap-2">
-                      <Sparkles className="h-4 w-4 text-[#00D1FF]" />
+                      <Sparkles className="h-4 w-4 text-[#416853]" />
                       <span className="text-white text-sm font-semibold">Order Details (Copyable)</span>
                     </div>
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => handleCopy(orderText)}
-                      className="text-[#768dad] hover:text-white hover:bg-white/10 h-7 px-2.5 text-xs"
+                      className="text-[#717973] hover:text-white hover:bg-white/10 h-7 px-2.5 text-xs"
                     >
                       {copied ? (
-                        <><Check className="h-3.5 w-3.5 mr-1.5 text-[#10B981]" /> Copied!</>
+                        <><Check className="h-3.5 w-3.5 mr-1.5 text-[#29503c]" /> Copied!</>
                       ) : (
                         <><Copy className="h-3.5 w-3.5 mr-1.5" /> Copy All</>
                       )}
@@ -1054,12 +1054,12 @@ export default function AdminOrders() {
                 {/* Visual Feature Tags */}
                 {features.length > 0 && (
                   <div>
-                    <p className="text-xs font-medium text-[#4F5B76] mb-2">Features Overview</p>
+                    <p className="text-xs font-medium text-[#414843] mb-2">Features Overview</p>
                     <div className="flex flex-wrap gap-1.5">
                       {features.map((f, i) => (
                         <span key={i} className={`text-[10px] px-2 py-0.5 rounded-full border ${
                           i < orderFreeLimit
-                            ? 'bg-[#f7fafd] text-[#43474d] border-[#e6ebf1]'
+                            ? 'bg-[#faf9f6] text-[#43474d] border-[#c1c8c1]'
                             : 'bg-[#FFF8E1] text-[#92400E] border-[#FFE082]'
                         }`}>
                           {f}{i >= orderFreeLimit && ' (+$3)'}
@@ -1072,10 +1072,10 @@ export default function AdminOrders() {
                 {/* Add-ons tags */}
                 {addOns.length > 0 && (
                   <div>
-                    <p className="text-xs font-medium text-[#4F5B76] mb-2">Add-Ons</p>
+                    <p className="text-xs font-medium text-[#414843] mb-2">Add-Ons</p>
                     <div className="flex flex-wrap gap-1.5">
                       {addOns.map((id) => (
-                        <span key={id} className="text-[10px] px-2 py-0.5 rounded-full bg-[#00D1FF]/10 text-[#00D1FF] border border-[#00D1FF]/20">
+                        <span key={id} className="text-[10px] px-2 py-0.5 rounded-full bg-[#416853]/10 text-[#416853] border border-[#416853]/20">
                           {ADD_ON_NAMES[id] || id} (+$3/mo)
                         </span>
                       ))}
@@ -1085,10 +1085,10 @@ export default function AdminOrders() {
 
                 {/* Additional Info */}
                 {selected.additionalInfo && (
-                  <div className="p-3 bg-[#f7fafd] rounded-xl border border-[#e6ebf1]">
+                  <div className="p-3 bg-[#faf9f6] rounded-xl border border-[#c1c8c1]">
                     <div className="flex items-center gap-1.5 mb-1.5">
-                      <MessageSquare className="h-3.5 w-3.5 text-[#00D1FF]" />
-                      <span className="text-xs font-semibold text-[#000f22]">Additional Info</span>
+                      <MessageSquare className="h-3.5 w-3.5 text-[#416853]" />
+                      <span className="text-xs font-semibold text-[#29503c]">Additional Info</span>
                     </div>
                     <p className="text-sm text-[#43474d] leading-relaxed">{selected.additionalInfo}</p>
                   </div>
@@ -1099,7 +1099,7 @@ export default function AdminOrders() {
                   <div className="p-3 bg-[#7C3AED]/5 rounded-xl border border-[#7C3AED]/10">
                     <div className="flex items-center gap-1.5 mb-1.5">
                       <Globe className="h-3.5 w-3.5 text-[#7C3AED]" />
-                      <span className="text-xs font-semibold text-[#000f22]">Similar Website</span>
+                      <span className="text-xs font-semibold text-[#29503c]">Similar Website</span>
                     </div>
                     <a
                       href={selected.similarSiteUrl.startsWith('http') ? selected.similarSiteUrl : `https://${selected.similarSiteUrl}`}
@@ -1192,7 +1192,7 @@ export default function AdminOrders() {
                   <div className="p-3 bg-[#FF6B35]/5 rounded-xl border border-[#FF6B35]/10">
                     <div className="flex items-center gap-1.5 mb-1.5">
                       <Globe className="h-3.5 w-3.5 text-[#FF6B35]" />
-                      <span className="text-xs font-semibold text-[#000f22]">Domain</span>
+                      <span className="text-xs font-semibold text-[#29503c]">Domain</span>
                     </div>
                     <p className="text-sm font-bold text-[#FF6B35]">{selected.domain}</p>
                     <p className="text-[10px] text-[#43474d] mt-0.5">
@@ -1209,7 +1209,7 @@ export default function AdminOrders() {
 
                 {/* Quick status update (when not editing) */}
                 {!isEditing && (
-                  <div className="space-y-2 pt-2 border-t border-[#e6ebf1]">
+                  <div className="space-y-2 pt-2 border-t border-[#c1c8c1]">
                     <Label className="text-xs">Quick Status Update</Label>
                     <div className="flex gap-2">
                       <Select value={statusUpdate} onValueChange={setStatusUpdate}>
@@ -1221,7 +1221,7 @@ export default function AdminOrders() {
                           <SelectItem value="completed">Completed</SelectItem>
                         </SelectContent>
                       </Select>
-                      <Button onClick={handleStatusOnlyUpdate} className="h-9 bg-[#000f22] hover:bg-[#0A2540] text-white text-xs px-4">
+                      <Button onClick={handleStatusOnlyUpdate} className="h-9 bg-[#29503c] hover:bg-[#284e3b] text-white text-xs px-4">
                         Update
                       </Button>
                     </div>

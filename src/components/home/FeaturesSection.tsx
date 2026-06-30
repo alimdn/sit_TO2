@@ -92,11 +92,11 @@ export default function FeaturesSection() {
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
-          <span className="label-style text-[#00D1FF] text-xs block mb-3">Why Choose Us</span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#000f22]" style={{ letterSpacing: '-0.02em' }}>
+          <span className="label-style text-[#416853] text-xs block mb-3">Why Choose Us</span>
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#29503c]" style={{ letterSpacing: '-0.02em' }}>
             Everything You Need to Succeed Online
           </h2>
-          <p className="mt-4 text-[#4F5B76] max-w-2xl mx-auto">
+          <p className="mt-4 text-[#414843] max-w-2xl mx-auto">
             Our subscription includes everything from design to deployment, with ongoing support to keep your website running smoothly.
           </p>
         </div>
@@ -106,12 +106,12 @@ export default function FeaturesSection() {
           {/* Left: Website Design & Creation */}
           <div className="space-y-4">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00D1FF] to-[#10B981] flex items-center justify-center">
-                <Palette className="h-5 w-5 text-[#000f22]" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#416853] to-[#29503c] flex items-center justify-center">
+                <Palette className="h-5 w-5 text-[#29503c]" />
               </div>
               <div>
-                <h3 className="font-bold text-[#000f22] text-lg">Website Design & Creation</h3>
-                <p className="text-xs text-[#4F5B76]">We design and build your website from scratch</p>
+                <h3 className="font-bold text-[#29503c] text-lg">Website Design & Creation</h3>
+                <p className="text-xs text-[#414843]">We design and build your website from scratch</p>
               </div>
             </div>
 
@@ -131,14 +131,14 @@ export default function FeaturesSection() {
             {designServices.map((feature, index) => (
               <div
                 key={index}
-                className="group flex items-start gap-4 p-4 rounded-xl bg-[#f7fafd] hover:bg-white hover:shadow-card transition-all duration-300 border border-transparent hover:border-[#e6ebf1]"
+                className="group flex items-start gap-4 p-4 rounded-xl bg-[#faf9f6] hover:bg-white hover:shadow-card transition-all duration-300 border border-transparent hover:border-[#c1c8c1]"
               >
-                <div className="w-10 h-10 rounded-lg bg-[#00D1FF]/10 group-hover:bg-[#00D1FF]/20 flex items-center justify-center text-[#00D1FF] flex-shrink-0 transition-colors">
+                <div className="w-10 h-10 rounded-lg bg-[#416853]/10 group-hover:bg-[#416853]/20 flex items-center justify-center text-[#416853] flex-shrink-0 transition-colors">
                   {feature.icon}
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-semibold text-[#000f22] text-sm mb-1">{feature.title}</h4>
-                  <p className="text-xs text-[#4F5B76] leading-relaxed">{feature.description}</p>
+                  <h4 className="font-semibold text-[#29503c] text-sm mb-1">{feature.title}</h4>
+                  <p className="text-xs text-[#414843] leading-relaxed">{feature.description}</p>
                 </div>
               </div>
             ))}
@@ -147,12 +147,12 @@ export default function FeaturesSection() {
           {/* Right: Hosting & Management */}
           <div className="space-y-4">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#000f22] to-[#0A2540] flex items-center justify-center">
-                <Server className="h-5 w-5 text-[#00D1FF]" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#29503c] to-[#284e3b] flex items-center justify-center">
+                <Server className="h-5 w-5 text-[#416853]" />
               </div>
               <div>
-                <h3 className="font-bold text-[#000f22] text-lg">Hosting & Management</h3>
-                <p className="text-xs text-[#4F5B76]">We host, maintain, and support your website</p>
+                <h3 className="font-bold text-[#29503c] text-lg">Hosting & Management</h3>
+                <p className="text-xs text-[#414843]">We host, maintain, and support your website</p>
               </div>
             </div>
 
@@ -172,14 +172,14 @@ export default function FeaturesSection() {
             {hostingServices.map((feature, index) => (
               <div
                 key={index}
-                className="group flex items-start gap-4 p-4 rounded-xl bg-[#f7fafd] hover:bg-white hover:shadow-card transition-all duration-300 border border-transparent hover:border-[#e6ebf1]"
+                className="group flex items-start gap-4 p-4 rounded-xl bg-[#faf9f6] hover:bg-white hover:shadow-card transition-all duration-300 border border-transparent hover:border-[#c1c8c1]"
               >
-                <div className="w-10 h-10 rounded-lg bg-[#000f22]/5 group-hover:bg-[#000f22]/10 flex items-center justify-center text-[#000f22] flex-shrink-0 transition-colors">
+                <div className="w-10 h-10 rounded-lg bg-[#29503c]/5 group-hover:bg-[#29503c]/10 flex items-center justify-center text-[#29503c] flex-shrink-0 transition-colors">
                   {feature.icon}
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-semibold text-[#000f22] text-sm mb-1">{feature.title}</h4>
-                  <p className="text-xs text-[#4F5B76] leading-relaxed">{feature.description}</p>
+                  <h4 className="font-semibold text-[#29503c] text-sm mb-1">{feature.title}</h4>
+                  <p className="text-xs text-[#414843] leading-relaxed">{feature.description}</p>
                 </div>
               </div>
             ))}

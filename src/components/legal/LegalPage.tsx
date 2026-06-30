@@ -266,16 +266,16 @@ export default function LegalPage({ pageType }: LegalPageProps) {
     lines.forEach((line, i) => {
       if (line.startsWith('# ')) {
         flushList()
-        elements.push(<h1 key={i} className="text-3xl font-bold text-[#000f22] mb-4">{line.slice(2)}</h1>)
+        elements.push(<h1 key={i} className="text-3xl font-bold text-[#29503c] mb-4">{line.slice(2)}</h1>)
       } else if (line.startsWith('## ')) {
         flushList()
-        elements.push(<h2 key={i} className="text-xl font-bold text-[#000f22] mt-6 mb-3">{line.slice(3)}</h2>)
+        elements.push(<h2 key={i} className="text-xl font-bold text-[#29503c] mt-6 mb-3">{line.slice(3)}</h2>)
       } else if (line.startsWith('### ')) {
         flushList()
-        elements.push(<h3 key={i} className="text-lg font-semibold text-[#000f22] mt-4 mb-2">{line.slice(4)}</h3>)
+        elements.push(<h3 key={i} className="text-lg font-semibold text-[#29503c] mt-4 mb-2">{line.slice(4)}</h3>)
       } else if (line.startsWith('---')) {
         flushList()
-        elements.push(<hr key={i} className="border-[#e6ebf1] my-6" />)
+        elements.push(<hr key={i} className="border-[#c1c8c1] my-6" />)
       } else if (line.startsWith('- ')) {
         listItems.push(line.slice(2))
       } else if (line.trim() === '') {
@@ -295,7 +295,7 @@ export default function LegalPage({ pageType }: LegalPageProps) {
         {/* Back button */}
         <button
           onClick={() => { setCurrentPage('home'); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
-          className="flex items-center gap-2 text-sm text-[#4F5B76] hover:text-[#000f22] transition-colors mb-8"
+          className="flex items-center gap-2 text-sm text-[#414843] hover:text-[#29503c] transition-colors mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Home
@@ -303,14 +303,14 @@ export default function LegalPage({ pageType }: LegalPageProps) {
 
         {/* Title + Admin actions */}
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-[#000f22]" style={{ letterSpacing: '-0.02em' }}>
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#29503c]" style={{ letterSpacing: '-0.02em' }}>
             {meta.title}
           </h1>
           {isAdmin && !isEditing && (
             <Button
               onClick={() => { setEditContent(content); setIsEditing(true) }}
               variant="outline"
-              className="h-9 border-[#e6ebf1] hover:bg-[#f7fafd]"
+              className="h-9 border-[#c1c8c1] hover:bg-[#faf9f6]"
             >
               <Edit3 className="h-4 w-4 mr-2" />
               Edit
@@ -321,7 +321,7 @@ export default function LegalPage({ pageType }: LegalPageProps) {
         {/* Content */}
         {!loaded ? (
           <div className="flex items-center justify-center py-32">
-            <div className="w-8 h-8 border-[3px] border-[#00D1FF] border-t-transparent rounded-full animate-spin" />
+            <div className="w-8 h-8 border-[3px] border-[#416853] border-t-transparent rounded-full animate-spin" />
           </div>
         ) : isEditing ? (
           <div className="space-y-4">
@@ -329,15 +329,15 @@ export default function LegalPage({ pageType }: LegalPageProps) {
               value={editContent}
               onChange={(e) => setEditContent(e.target.value)}
               rows={25}
-              className="w-full p-4 rounded-xl border border-[#e6ebf1] text-sm text-[#000f22] font-mono focus:outline-none focus:ring-2 focus:ring-[#00D1FF]/20 focus:border-[#00D1FF] transition-all bg-[#f7fafd]"
+              className="w-full p-4 rounded-xl border border-[#c1c8c1] text-sm text-[#29503c] font-mono focus:outline-none focus:ring-2 focus:ring-[#416853]/20 focus:border-[#416853] transition-all bg-[#faf9f6]"
               placeholder="Enter content here (supports Markdown)..."
             />
-            <p className="text-xs text-[#74777e]">Supports Markdown: # Heading, ## Subheading, - List items, --- divider</p>
+            <p className="text-xs text-[#717973]">Supports Markdown: # Heading, ## Subheading, - List items, --- divider</p>
             <div className="flex gap-3">
               <Button
                 onClick={handleSave}
                 disabled={saving}
-                className="bg-[#000f22] hover:bg-[#0A2540] text-white h-10"
+                className="bg-[#29503c] hover:bg-[#284e3b] text-white h-10"
               >
                 <Save className="h-4 w-4 mr-2" />
                 {saving ? 'Saving...' : 'Save Content'}
@@ -354,16 +354,16 @@ export default function LegalPage({ pageType }: LegalPageProps) {
               <Button
                 onClick={() => setIsEditing(false)}
                 variant="outline"
-                className="h-10 border-[#e6ebf1]"
+                className="h-10 border-[#c1c8c1]"
               >
                 Cancel
               </Button>
             </div>
           </div>
         ) : (
-          <div className="bg-white rounded-2xl p-8 sm:p-12 shadow-card border border-[#e6ebf1]">
+          <div className="bg-white rounded-2xl p-8 sm:p-12 shadow-card border border-[#c1c8c1]">
             {content ? renderMarkdown(content) : (
-              <p className="text-[#4F5B76] text-center py-8">No content available. {isAdmin && 'Click Edit to add content.'}</p>
+              <p className="text-[#414843] text-center py-8">No content available. {isAdmin && 'Click Edit to add content.'}</p>
             )}
           </div>
         )}

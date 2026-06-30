@@ -38,7 +38,7 @@ export default function TestimonialsSection() {
       .catch((e) => console.error('[TestimonialsSection] fetch error:', e))
   }, [])
 
-  const colors = ['#00D1FF', '#10B981', '#0A2540', '#768dad']
+  const colors = ['#416853', '#29503c', '#284e3b', '#717973']
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -79,11 +79,11 @@ export default function TestimonialsSection() {
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
-          <span className="label-style text-[#00D1FF] text-xs block mb-3">Testimonials</span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#000f22]" style={{ letterSpacing: '-0.02em' }}>
+          <span className="label-style text-[#416853] text-xs block mb-3">Testimonials</span>
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#29503c]" style={{ letterSpacing: '-0.02em' }}>
             What Our Clients Say
           </h2>
-          <p className="mt-4 text-[#4F5B76] max-w-2xl mx-auto">
+          <p className="mt-4 text-[#414843] max-w-2xl mx-auto">
             Read what our customers say about their experience with WebForge.
           </p>
         </div>
@@ -99,7 +99,7 @@ export default function TestimonialsSection() {
                   <Star
                     key={i}
                     className={`h-4 w-4 ${
-                      i < testimonial.rating ? 'fill-[#FFB800] text-[#FFB800]' : 'text-[#c4c6ce]'
+                      i < testimonial.rating ? 'fill-[#FFB800] text-[#FFB800]' : 'text-[#c1c8c1]'
                     }`}
                   />
                 ))}
@@ -107,7 +107,7 @@ export default function TestimonialsSection() {
               <p className="text-[#43474d] text-sm leading-relaxed mb-6 italic">
                 &ldquo;{testimonial.content}&rdquo;
               </p>
-              <div className="flex items-center gap-3 pt-4 border-t border-[#e6ebf1]">
+              <div className="flex items-center gap-3 pt-4 border-t border-[#c1c8c1]">
                 <div
                   className="w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold text-sm"
                   style={{ backgroundColor: colors[index % colors.length] }}
@@ -115,8 +115,8 @@ export default function TestimonialsSection() {
                   {testimonial.name.split(' ').map(n => n[0]).join('')}
                 </div>
                 <div>
-                  <div className="font-medium text-sm text-[#000f22]">{testimonial.name}</div>
-                  <div className="text-xs text-[#4F5B76]">
+                  <div className="font-medium text-sm text-[#29503c]">{testimonial.name}</div>
+                  <div className="text-xs text-[#414843]">
                     {testimonial.role}{testimonial.company ? ` at ${testimonial.company}` : ''}
                   </div>
                 </div>
@@ -130,12 +130,12 @@ export default function TestimonialsSection() {
           <Button
             onClick={() => setDialogOpen(true)}
             variant="outline"
-            className="bg-[#000f22] hover:bg-[#0A2540] text-white border-[#000f22] hover:border-[#0A2540] h-11 px-7"
+            className="bg-[#29503c] hover:bg-[#284e3b] text-white border-[#29503c] hover:border-[#284e3b] h-11 px-7"
           >
             <MessageSquarePlus className="h-4 w-4 mr-2" />
             Write a Review
           </Button>
-          <p className="mt-3 text-xs text-[#74777e]">
+          <p className="mt-3 text-xs text-[#717973]">
             Share your experience — reviews are published after admin approval.
           </p>
         </div>
@@ -170,7 +170,7 @@ export default function TestimonialsSection() {
                       className={`h-7 w-7 ${
                         n <= (hoverRating || form.rating)
                           ? 'fill-[#FFB800] text-[#FFB800]'
-                          : 'text-[#c4c6ce]'
+                          : 'text-[#c1c8c1]'
                       }`}
                     />
                   </button>
@@ -215,7 +215,7 @@ export default function TestimonialsSection() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="t-content">Your Review * <span className="text-xs text-[#74777e]">(min 20 chars)</span></Label>
+              <Label htmlFor="t-content">Your Review * <span className="text-xs text-[#717973]">(min 20 chars)</span></Label>
               <Textarea
                 id="t-content"
                 value={form.content}
@@ -224,7 +224,7 @@ export default function TestimonialsSection() {
                 rows={5}
                 required
               />
-              <p className="text-xs text-[#74777e] text-right">{form.content.length} characters</p>
+              <p className="text-xs text-[#717973] text-right">{form.content.length} characters</p>
             </div>
 
             <div className="flex items-center justify-end gap-3 pt-2">
@@ -232,7 +232,7 @@ export default function TestimonialsSection() {
                 type="button"
                 variant="outline"
                 onClick={() => setDialogOpen(false)}
-                className="border-[#e6ebf1]"
+                className="border-[#c1c8c1]"
               >
                 <X className="h-4 w-4 mr-1.5" />
                 Cancel
@@ -240,7 +240,7 @@ export default function TestimonialsSection() {
               <Button
                 type="submit"
                 disabled={submitting}
-                className="bg-[#000f22] hover:bg-[#0A2540] text-white"
+                className="bg-[#29503c] hover:bg-[#284e3b] text-white"
               >
                 {submitting ? 'Submitting...' : 'Submit Review'}
               </Button>

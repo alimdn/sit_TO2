@@ -169,29 +169,29 @@ export default function AdminSettings() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-[#000f22]">Settings & Overview</h2>
+      <h2 className="text-2xl font-bold text-[#29503c]">Settings & Overview</h2>
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         <Card className="shadow-card">
           <CardContent className="p-4 flex items-center gap-4">
-            <div className="w-10 h-10 rounded-lg bg-[#00D1FF]/10 flex items-center justify-center">
-              <Users className="h-5 w-5 text-[#00D1FF]" />
+            <div className="w-10 h-10 rounded-lg bg-[#416853]/10 flex items-center justify-center">
+              <Users className="h-5 w-5 text-[#416853]" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-[#000f22]">{stats?.users || 0}</p>
-              <p className="text-xs text-[#4F5B76]">Users</p>
+              <p className="text-2xl font-bold text-[#29503c]">{stats?.users || 0}</p>
+              <p className="text-xs text-[#414843]">Users</p>
             </div>
           </CardContent>
         </Card>
         <Card className="shadow-card">
           <CardContent className="p-4 flex items-center gap-4">
-            <div className="w-10 h-10 rounded-lg bg-[#10B981]/10 flex items-center justify-center">
-              <ShoppingBag className="h-5 w-5 text-[#10B981]" />
+            <div className="w-10 h-10 rounded-lg bg-[#29503c]/10 flex items-center justify-center">
+              <ShoppingBag className="h-5 w-5 text-[#29503c]" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-[#000f22]">{stats?.orders || 0}</p>
-              <p className="text-xs text-[#4F5B76]">Orders</p>
+              <p className="text-2xl font-bold text-[#29503c]">{stats?.orders || 0}</p>
+              <p className="text-xs text-[#414843]">Orders</p>
             </div>
           </CardContent>
         </Card>
@@ -201,41 +201,41 @@ export default function AdminSettings() {
               <CreditCard className="h-5 w-5 text-[#FFB800]" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-[#000f22]">{stats?.subscriptions || 0}</p>
-              <p className="text-xs text-[#4F5B76]">Subscriptions</p>
+              <p className="text-2xl font-bold text-[#29503c]">{stats?.subscriptions || 0}</p>
+              <p className="text-xs text-[#414843]">Subscriptions</p>
             </div>
           </CardContent>
         </Card>
         <Card className="shadow-card">
           <CardContent className="p-4 flex items-center gap-4">
-            <div className="w-10 h-10 rounded-lg bg-[#000f22]/10 flex items-center justify-center">
-              <DollarSign className="h-5 w-5 text-[#000f22]" />
+            <div className="w-10 h-10 rounded-lg bg-[#29503c]/10 flex items-center justify-center">
+              <DollarSign className="h-5 w-5 text-[#29503c]" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-[#000f22]">${stats?.revenue || 0}</p>
-              <p className="text-xs text-[#4F5B76]">Revenue</p>
+              <p className="text-2xl font-bold text-[#29503c]">${stats?.revenue || 0}</p>
+              <p className="text-xs text-[#414843]">Revenue</p>
             </div>
           </CardContent>
         </Card>
         <Card className="shadow-card">
           <CardContent className="p-4 flex items-center gap-4">
-            <div className="w-10 h-10 rounded-lg bg-[#768dad]/10 flex items-center justify-center">
-              <MessageSquare className="h-5 w-5 text-[#768dad]" />
+            <div className="w-10 h-10 rounded-lg bg-[#717973]/10 flex items-center justify-center">
+              <MessageSquare className="h-5 w-5 text-[#717973]" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-[#000f22]">{stats?.tickets || 0}</p>
-              <p className="text-xs text-[#4F5B76]">Support Tickets</p>
+              <p className="text-2xl font-bold text-[#29503c]">{stats?.tickets || 0}</p>
+              <p className="text-xs text-[#414843]">Support Tickets</p>
             </div>
           </CardContent>
         </Card>
         <Card className="shadow-card">
           <CardContent className="p-4 flex items-center gap-4">
-            <div className="w-10 h-10 rounded-lg bg-[#10B981]/10 flex items-center justify-center">
-              <TrendingUp className="h-5 w-5 text-[#10B981]" />
+            <div className="w-10 h-10 rounded-lg bg-[#29503c]/10 flex items-center justify-center">
+              <TrendingUp className="h-5 w-5 text-[#29503c]" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-[#000f22]">{stats?.messages || 0}</p>
-              <p className="text-xs text-[#4F5B76]">Messages</p>
+              <p className="text-2xl font-bold text-[#29503c]">{stats?.messages || 0}</p>
+              <p className="text-xs text-[#414843]">Messages</p>
             </div>
           </CardContent>
         </Card>
@@ -369,16 +369,16 @@ export default function AdminSettings() {
                   value={settings[field.key] || ''}
                   onChange={(e) => setSettings({ ...settings, [field.key]: e.target.value })}
                   placeholder={`Enter ${field.label.toLowerCase()}`}
-                  className="bg-[#f7fafd]"
+                  className="bg-[#faf9f6]"
                 />
               </div>
-              <Button onClick={() => handleSaveSetting(field.key)} size="sm" className="bg-[#000f22] hover:bg-[#0A2540] text-white mb-0.5">
+              <Button onClick={() => handleSaveSetting(field.key)} size="sm" className="bg-[#29503c] hover:bg-[#284e3b] text-white mb-0.5">
                 Save
               </Button>
             </div>
           ))}
-          <div className="mt-4 p-3 rounded-lg bg-[#00D1FF]/5 border border-[#00D1FF]/20 text-xs text-[#4F5B76] leading-relaxed">
-            <strong className="text-[#00D1FF]">Note:</strong> Changes are saved to the database and reflected on the live site immediately (Header logo text, Footer contact info, Hero section, Contact page). If a field is left empty, the default hardcoded value is used.
+          <div className="mt-4 p-3 rounded-lg bg-[#416853]/5 border border-[#416853]/20 text-xs text-[#414843] leading-relaxed">
+            <strong className="text-[#416853]">Note:</strong> Changes are saved to the database and reflected on the live site immediately (Header logo text, Footer contact info, Hero section, Contact page). If a field is left empty, the default hardcoded value is used.
           </div>
         </CardContent>
       </Card>
